@@ -1,0 +1,261 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::TabStrip</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_TabStrip">Package Win32::GUI::TabStrip</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Methods">Methods</A>
+			<LI><A HREF="#Events">Events</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_TabStrip">Package Win32::GUI::TabStrip</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_TabStrip_PARENT_">new Win32::GUI::TabStrip(PARENT, %OPTIONS)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Methods">Methods</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#ChangeItem_ITEM_OPTIONS_">ChangeItem(ITEM, %OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Count_">Count()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#DeleteItem_ITEM_">DeleteItem(ITEM)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetString_ITEM_">GetString(ITEM)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#InsertItem_OPTIONS_">InsertItem(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Reset_">Reset()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Select_INDEX_">Select(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SelectedItem_">SelectedItem()</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Events">Events</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Change_">Change()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Changing_">Changing()</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_TabStrip_PARENT_">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::TabStrip(PARENT, %OPTIONS)</A></STRONG><DD>
+<P>
+Creates a new TabStrip object; can also be called as
+PARENT-&gt;AddTabStrip(%OPTIONS). Class specific <CODE>%OPTIONS</CODE> are:
+
+<P>
+<PRE>  -bottom    =&gt; 0/1 (default 0)
+  -buttons   =&gt; 0/1 (default 0)
+  -hottrack  =&gt; 0/1 (default 0)
+  -imagelist =&gt; Win32::GUI::ImageList object
+  -justify   =&gt; 0/1 (default 0)
+  -multiline =&gt; 0/1 (default 0)
+  -right     =&gt; 0/1 (default 0)
+  -vertical  =&gt; 0/1 (default 0)
+</PRE>
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Methods">Methods</A></H3>
+<A NAME="ChangeItem_ITEM_OPTIONS_">
+
+<DL>
+<DT><STRONG><A NAME="item_ChangeItem">ChangeItem(ITEM, %OPTIONS)</A></STRONG><DD>
+<P>
+Change most of the options used when the item was created (see  <A HREF="#InsertItem_OPTIONS_">InsertItem()</A>). Allowed <CODE>%OPTIONS</CODE> are:
+
+<P>
+<PRE>    -image
+    -text
+</PRE>
+<P>
+
+<A NAME="Count_">
+
+<DT><STRONG><A NAME="item_Count">Count()</A></STRONG><DD>
+<P>
+Returns the number of items in the TabStrip.
+
+<P>
+
+<A NAME="DeleteItem_ITEM_">
+
+<DT><STRONG><A NAME="item_DeleteItem">DeleteItem(ITEM)</A></STRONG><DD>
+<P>
+Removes the specified ITEM from the TabStrip.
+
+<P>
+
+<A NAME="GetString_ITEM_">
+
+<DT><STRONG><A NAME="item_GetString">GetString(ITEM)</A></STRONG><DD>
+<P>
+Returns the string associated with the specified ITEM in the TabStrip.
+
+<P>
+
+<A NAME="InsertItem_OPTIONS_">
+
+<DT><STRONG><A NAME="item_InsertItem">InsertItem(%OPTIONS)</A></STRONG><DD>
+<P>
+Adds an item to the TabStrip. Allowed <CODE>%OPTIONS</CODE> are:
+
+<P>
+<PRE> -image =&gt; NUMBER
+   the index of an image from the associated ImageList
+ -index =&gt; NUMBER
+   the position for the new item (if not specified, the item
+   is added at the end of the control)
+ -text  =&gt; STRING
+   the text that will appear on the item
+</PRE>
+<P>
+
+<A NAME="Reset_">
+
+<DT><STRONG><A NAME="item_Reset">Reset()</A></STRONG><DD>
+<P>
+Deletes all items from the TabStrip.
+
+<P>
+
+<A NAME="Select_INDEX_">
+
+<DT><STRONG><A NAME="item_Select">Select(INDEX)</A></STRONG><DD>
+<P>
+Selects the zero-based INDEX item in the TabStrip.
+
+<P>
+
+<A NAME="SelectedItem_">
+
+<DT><STRONG><A NAME="item_SelectedItem">SelectedItem()</A></STRONG><DD>
+<P>
+Returns the zero-based index of the currently selected item.
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Events">Events</A></H3>
+<A NAME="Change_">
+
+<DL>
+<DT><STRONG><A NAME="item_Change">Change()</A></STRONG><DD>
+<P>
+Sent when the current selection has changed. Use
+<CODE>SelectedItem()</CODE> to determine the current selection.
+
+<P>
+
+<A NAME="Changing_">
+
+<DT><STRONG><A NAME="item_Changing">Changing()</A></STRONG><DD>
+<P>
+Sent before the current selection changes. Use <CODE>SelectedItem()</CODE>
+to determine the current selection. The event should return 0 to prevent
+the selection changing, 1 to allow it.
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

@@ -39,17 +39,7 @@ T_HANDLE
     } else
         $var = ($type) SvIV($arg);
 T_COLOR
-    if(SvROK($arg) && SvTYPE(SvRV($arg)) == SVt_PVAV) {
-        $var = ($type) (
-            ((BYTE) (av_fetch((AV*)SvRV($arg), 0, 0) == NULL) ? 
-                     0 : SvIV(*(av_fetch((AV*)SvRV($arg), 0, 0))) ) |
-            ((BYTE) (av_fetch((AV*)SvRV($arg), 1, 0) == NULL) ? 
-                     0 : SvIV(*(av_fetch((AV*)SvRV($arg), 1, 0))) )<<8 |
-            ((BYTE) (av_fetch((AV*)SvRV($arg), 2, 0) == NULL) ? 
-                     0 : SvIV(*(av_fetch((AV*)SvRV($arg), 2, 0))) )<<16
-        );
-    } else
-        $var = ($type) SvIV($arg);
+    $var = SvCOLORREF(NOTXSCALL $arg);
 
 ################################################################################
 OUTPUT

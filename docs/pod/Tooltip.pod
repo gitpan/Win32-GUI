@@ -1,0 +1,103 @@
+=head2 Package Win32::GUI::Tooltip
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::Tooltip(PARENT, %OPTIONS)|/new_Win32_GUI_Tooltip_PARENT_>
+
+=back
+
+=item *
+
+L<Methods>
+
+=over
+
+=item *
+
+L<Add(...)|/Add_>
+
+=item *
+
+L<Count()|/Count_>
+
+=back
+
+=item *
+
+L<Events>
+
+=over
+
+=item *
+
+L<NeedText(ID)|/NeedText_ID_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_Tooltip_PARENT_">
+
+=item new Win32::GUI::Tooltip(PARENT, %OPTIONS)
+
+(preliminary) creates a new Tooltip object
+
+=for html <P>
+
+=back
+
+=head3 Methods
+
+=over 4
+
+=for html <A NAME="Add_">
+
+=item Add(...)
+
+[TBD]
+
+
+
+=for html <P>
+
+=for html <A NAME="Count_">
+
+=item Count()
+
+Returns the number of tools in the Tooltip.
+
+=for html <P>
+
+=back
+
+=head3 Events
+
+=over 4
+
+=for html <A NAME="NeedText_ID_">
+
+=item NeedText(ID)
+
+[TBD]
+
+
+
+=for html <P>
+
+=back
+
+=cut

@@ -1,0 +1,78 @@
+=head2 Package Win32::GUI::Brush
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::Brush(COLOR &#124; %OPTIONS)|/new_Win32_GUI_Brush_COLOR_O>
+
+=back
+
+=item *
+
+L<Methods>
+
+=over
+
+=item *
+
+L<Info()|/Info_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_Brush_COLOR_O">
+
+=item new Win32::GUI::Brush(COLOR | %OPTIONS)
+
+Creates a new Brush object.
+Allowed %OPTIONS are:
+
+  -style =>
+    0 BS_SOLID
+    1 BS_NULL
+    2 BS_HATCHED
+    3 BS_PATTERN
+  -pattern => Win32::GUI::Bitmap object (valid for -style => BS_PATTERN)
+  -hatch => (valid for -style => BS_HATCHED)
+    0 HS_ORIZONTAL (-----)
+    1 HS_VERTICAL  (|||||)
+    2 HS_FDIAGONAL (\\\\\)
+    3 HS_BDIAGONAL (/////)
+    4 HS_CROSS     (+++++)
+    5 HS_DIAGCROSS (xxxxx)
+  -color => COLOR
+
+=for html <P>
+
+=back
+
+=head3 Methods
+
+=over 4
+
+=for html <A NAME="Info_">
+
+=item Info()
+
+Returns an associative array of information about the Brush object, with
+the same options given when creating the Brush.
+
+=for html <P>
+
+=back
+
+=cut

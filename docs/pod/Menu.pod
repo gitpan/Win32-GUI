@@ -1,0 +1,89 @@
+=head2 Package Win32::GUI::Menu
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::Menu(...)|/new_Win32_GUI_Menu_>
+
+=back
+
+=item *
+
+L<Methods>
+
+=over
+
+=item *
+
+L<AddMenuButton()|/AddMenuButton_>
+
+=back
+
+=item *
+
+L<Events>
+
+=over
+
+=item *
+
+L<Click()|/Click_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_Menu_">
+
+=item new Win32::GUI::Menu(...)
+
+[TBD]
+
+
+
+=for html <P>
+
+=back
+
+=head3 Methods
+
+=over 4
+
+=for html <A NAME="AddMenuButton_">
+
+=item AddMenuButton()
+
+see  L<new Win32::GUI::MenuButton()|MenuButton/new_Win32_GUI_MenuButton_>
+
+=for html <P>
+
+=back
+
+=head3 Events
+
+=over 4
+
+=for html <A NAME="Click_">
+
+=item Click()
+
+Sent when the users choose a menu point.
+
+=for html <P>
+
+=back
+
+=cut

@@ -1,0 +1,52 @@
+=head2 Package Win32::GUI::Class
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::Class(%OPTIONS)|/new_Win32_GUI_Class_OPTIONS_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_Class_OPTIONS_">
+
+=item new Win32::GUI::Class(%OPTIONS)
+
+Creates a new window class object.
+Allowed %OPTIONS are:
+
+  -name => STRING
+      the name for the class (it must be unique!).
+  -icon => Win32::GUI::Icon object
+  -cursor => Win32::GUI::Cursor object
+  -color => COLOR or Win32::GUI::Brush object
+      the window background color.
+  -menu => STRING
+      a menu name (not yet implemented).
+  -extends => STRING
+      name of the class to extend (aka subclassing).
+  -widget => STRING
+      name of a widget class to subclass; currently available are:
+      Button, Listbox, TabStrip, RichEdit.
+  -style => FLAGS
+      use with caution!
+
+=for html <P>
+
+=back
+
+=cut

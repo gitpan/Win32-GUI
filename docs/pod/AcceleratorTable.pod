@@ -1,0 +1,87 @@
+=head2 Package Win32::GUI::AcceleratorTable
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::AcceleratorTable(%ACCELERATORS)|/new_Win32_GUI_AcceleratorTable>
+
+=back
+
+=item *
+
+L<Events>
+
+=over
+
+=item *
+
+L<Click()|/Click_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_AcceleratorTable">
+
+=item new Win32::GUI::AcceleratorTable(%ACCELERATORS)
+
+Creates an AcceleratorTable object.
+%ACCELERATORS is an associative array of key combinations and
+accelerator names, in pair:
+Example:
+
+    $A = new Win32::GUI::AcceleratorTable(
+        "Ctrl-X"       => "Close",
+        "Shift-N"      => "New",
+        "Ctrl-Alt-Del" => "Reboot",
+    );
+
+The AcceleratorTable object can be associated to a window
+with the -accel option; then, when an accelerator is used, a 
+corresponding <name>_Click event is fired. 
+Keyboard combinations currently support the following modifier :
+
+    Shift
+    Ctrl  (or Control)
+    Alt
+
+and the following keys:
+
+    A..Z, 0..9
+    Left, Right, Up, Down
+    Home, End, PageUp, PageDown (or PgUp/PgDn)
+    Space, Ins, Del, Esc, Backspace, Tab, Return
+    F1..F12
+
+=for html <P>
+
+=back
+
+=head3 Events
+
+=over 4
+
+=for html <A NAME="Click_">
+
+=item Click()
+
+Sent when the users triggers an Accelerator object.
+
+=for html <P>
+
+=back
+
+=cut

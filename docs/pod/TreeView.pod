@@ -1,0 +1,558 @@
+=head2 Package Win32::GUI::TreeView
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::TreeView(PARENT, %OPTIONS)|/new_Win32_GUI_TreeView_PARENT_>
+
+=back
+
+=item *
+
+L<Methods>
+
+=over
+
+=item *
+
+L<BackColor([COLOR])|/BackColor_COLOR_>
+
+=item *
+
+L<ChangeItem(NODE, %OPTIONS)|/ChangeItem_NODE_OPTIONS_>
+
+=item *
+
+L<Clear([NODE])|/Clear_NODE_>
+
+=item *
+
+L<Collapse(NODE)|/Collapse_NODE_>
+
+=item *
+
+L<Count()|/Count_>
+
+=item *
+
+L<DeleteItem(NODE)|/DeleteItem_NODE_>
+
+=item *
+
+L<EnsureVisible(NODE)|/EnsureVisible_NODE_>
+
+=item *
+
+L<Expand(NODE, [FLAG])|/Expand_NODE_FLAG_>
+
+=item *
+
+L<FirstVisible([NODE])|/FirstVisible_NODE_>
+
+=item *
+
+L<GetChild(NODE)|/GetChild_NODE_>
+
+=item *
+
+L<GetItem(NODE)|/GetItem_NODE_>
+
+=item *
+
+L<GetLastVisible()|/GetLastVisible_>
+
+=item *
+
+L<GetNextSibling(NODE)|/GetNextSibling_NODE_>
+
+=item *
+
+L<GetNextVisible(NODE)|/GetNextVisible_NODE_>
+
+=item *
+
+L<GetParent(NODE)|/GetParent_NODE_>
+
+=item *
+
+L<GetPrevSibling(NODE)|/GetPrevSibling_NODE_>
+
+=item *
+
+L<GetPrevVisible(NODE)|/GetPrevVisible_NODE_>
+
+=item *
+
+L<GetRoot()|/GetRoot_>
+
+=item *
+
+L<HitTest(X, Y)|/HitTest_X_Y_>
+
+=item *
+
+L<Indent([VALUE])|/Indent_VALUE_>
+
+=item *
+
+L<InsertItem(%OPTIONS)|/InsertItem_OPTIONS_>
+
+=item *
+
+L<ItemCheck(NODE, [VALUE])|/ItemCheck_NODE_VALUE_>
+
+=item *
+
+L<ItemInfo(NODE)|/ItemInfo_NODE_>
+
+=item *
+
+L<Reset()|/Reset_>
+
+=item *
+
+L<Select(NODE, [FLAG])|/Select_NODE_FLAG_>
+
+=item *
+
+L<SelectedItem()|/SelectedItem_>
+
+=item *
+
+L<SetImageList(IMAGELIST, [TYPE])|/SetImageList_IMAGELIST_TYPE_>
+
+=item *
+
+L<Sort(NODE)|/Sort_NODE_>
+
+=item *
+
+L<TextColor([COLOR])|/TextColor_COLOR_>
+
+=item *
+
+L<VisibleCount()|/VisibleCount_>
+
+=back
+
+=item *
+
+L<Events>
+
+=over
+
+=item *
+
+L<Collapse(NODE)|/Collapse_NODE_>
+
+=item *
+
+L<Collapsing(NODE)|/Collapsing_NODE_>
+
+=item *
+
+L<Expand(NODE)|/Expand_NODE_>
+
+=item *
+
+L<Expanding(NODE)|/Expanding_NODE_>
+
+=item *
+
+L<KeyDown(KEY)|/KeyDown_KEY_>
+
+=item *
+
+L<NodeClick(NODE)|/NodeClick_NODE_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_TreeView_PARENT_">
+
+=item new Win32::GUI::TreeView(PARENT, %OPTIONS)
+
+Creates a new TreeView object
+can also be called as PARENT->AddTreeView(%OPTIONS).
+
+=for html <P>
+
+=back
+
+=head3 Methods
+
+=over 4
+
+=for html <A NAME="BackColor_COLOR_">
+
+=item BackColor([COLOR])
+
+Gets or sets the background color for the control.
+
+=for html <P>
+
+=for html <A NAME="ChangeItem_NODE_OPTIONS_">
+
+=item ChangeItem(NODE, %OPTIONS)
+
+Change most of the options used when the item was created
+(see  L<InsertItem()|/InsertItem_OPTIONS_>).
+Allowed %OPTIONS are:
+
+    -bold
+    -image
+    -selected
+    -selectedimage
+    -text
+
+=for html <P>
+
+=for html <A NAME="Clear_NODE_">
+
+=item Clear([NODE])
+
+Deletes all nodes from the TreeView if no argument is given;
+otherwise, delete all nodes under the given NODE.
+
+=for html <P>
+
+=for html <A NAME="Collapse_NODE_">
+
+=item Collapse(NODE)
+
+Closes a NODE of the TreeView.
+
+=for html <P>
+
+=for html <A NAME="Count_">
+
+=item Count()
+
+Returns the number of nodes in the TreeView.
+
+=for html <P>
+
+=for html <A NAME="DeleteItem_NODE_">
+
+=item DeleteItem(NODE)
+
+Removes the specified NODE from the TreeView.
+
+=for html <P>
+
+=for html <A NAME="EnsureVisible_NODE_">
+
+=item EnsureVisible(NODE)
+
+Ensures that the specified NODE is visible in the TreeView.
+
+=for html <P>
+
+=for html <A NAME="Expand_NODE_FLAG_">
+
+=item Expand(NODE, [FLAG])
+
+Opens a NODE of the TreeView; the optional FLAG parameter can
+indicate different operations:
+
+  1 expand (this is the default)
+  2 collapse
+  3 toggle (expand if it was collapsed and collapse if it was expanded)
+
+=for html <P>
+
+=for html <A NAME="FirstVisible_NODE_">
+
+=item FirstVisible([NODE])
+
+Gets or sets the first visible NODE in the TreeView; if a NODE is given,
+it is selected and, if possible, it becomes the first visible one; the
+return value is the handle of the previously first visible.
+If no NODE is given, returns the handle of the current first visible one.
+
+=for html <P>
+
+=for html <A NAME="GetChild_NODE_">
+
+=item GetChild(NODE)
+
+Returns the handle of the first child node for the given NODE.
+
+=for html <P>
+
+=for html <A NAME="GetItem_NODE_">
+
+=item GetItem(NODE)
+
+See  L<ItemInfo()|/ItemInfo_NODE_>.
+
+=for html <P>
+
+=for html <A NAME="GetLastVisible_">
+
+=item GetLastVisible()
+
+Returns the handle of the last expanded node in the TreeView.
+
+=for html <P>
+
+=for html <A NAME="GetNextSibling_NODE_">
+
+=item GetNextSibling(NODE)
+
+Returns the handle of the next sibling node for the given NODE.
+
+=for html <P>
+
+=for html <A NAME="GetNextVisible_NODE_">
+
+=item GetNextVisible(NODE)
+
+Returns the handle of the next visible node for the given NODE.
+
+=for html <P>
+
+=for html <A NAME="GetParent_NODE_">
+
+=item GetParent(NODE)
+
+Returns the handle of the parent node for the given NODE.
+
+=for html <P>
+
+=for html <A NAME="GetPrevSibling_NODE_">
+
+=item GetPrevSibling(NODE)
+
+Returns the handle of the previous sibling node for the given NODE.
+
+=for html <P>
+
+=for html <A NAME="GetPrevVisible_NODE_">
+
+=item GetPrevVisible(NODE)
+
+Returns the handle of the previous visible node for the given NODE.
+
+=for html <P>
+
+=for html <A NAME="GetRoot_">
+
+=item GetRoot()
+
+Returns the handle of the TreeView root node.
+
+=for html <P>
+
+=for html <A NAME="HitTest_X_Y_">
+
+=item HitTest(X, Y)
+
+Checks if the specified point in the TreeView area is occupied by a
+node; it returns the handle to the found node or zero if none was found.
+If called in an array context, it returns an additional value containing
+more info about the position of the specified point.
+
+=for html <P>
+
+=for html <A NAME="Indent_VALUE_">
+
+=item Indent([VALUE])
+
+Gets or sets the indentation width, in pixels, between parents and child
+nodes; if the VALUE is less than the system-defined minimum, it is set to
+the system-defined minimum.
+
+=for html <P>
+
+=for html <A NAME="InsertItem_OPTIONS_">
+
+=item InsertItem(%OPTIONS)
+
+Inserts a new node in the TreeView.
+Allowed %OPTIONS are:
+
+    -bold => 0/1, default 0
+    -image => NUMBER
+        index of an image from the associated ImageList
+    -item => NUMBER
+        handle of the node after which the new node is to be inserted,
+        or one of the following special values:
+            0xFFFF0001: at the beginning of the list
+            0xFFFF0002: at the end of the list
+            0xFFFF0003: in alphabetical order
+        the default value is at the end of the list
+    -parent => NUMBER
+        handle of the parent node for the new node
+    -selected => 0/1, default 0
+    -selectedimage => NUMBER
+        index of an image from the associated ImageList
+    -text => STRING
+        the text for the node
+
+=for html <P>
+
+=for html <A NAME="ItemCheck_NODE_VALUE_">
+
+=item ItemCheck(NODE, [VALUE])
+
+Gets or sets the check state of the given NODE (valid only if the
+control was created with the -checkboxes => 1 option).
+
+=for html <P>
+
+=for html <A NAME="ItemInfo_NODE_">
+
+=item ItemInfo(NODE)
+
+Returns an associative array of information about the given NODE:
+
+    -children
+    -image
+    -parent
+    -selectedimage
+    -state
+    -text
+
+=for html <P>
+
+=for html <A NAME="Reset_">
+
+=item Reset()
+
+Deletes all nodes from the TreeView.
+
+=for html <P>
+
+=for html <A NAME="Select_NODE_FLAG_">
+
+=item Select(NODE, [FLAG])
+
+Selects the given NODE in the TreeView; the optional FLAG parameter
+can be set to 5 if you want the selected NODE to become, if possible,
+the first visible item in the TreeView.
+If NODE is 0 (zero), the selected item, if any, is deselected.
+
+=for html <P>
+
+=for html <A NAME="SelectedItem_">
+
+=item SelectedItem()
+
+Returns the handle of the currently selected node.
+
+=for html <P>
+
+=for html <A NAME="SetImageList_IMAGELIST_TYPE_">
+
+=item SetImageList(IMAGELIST, [TYPE])
+
+[TBD]
+
+
+
+=for html <P>
+
+=for html <A NAME="Sort_NODE_">
+
+=item Sort(NODE)
+
+Sorts the childs of the specified NODE in the TreeView.
+
+=for html <P>
+
+=for html <A NAME="TextColor_COLOR_">
+
+=item TextColor([COLOR])
+
+Gets or sets the text color for the control.
+
+=for html <P>
+
+=for html <A NAME="VisibleCount_">
+
+=item VisibleCount()
+
+Returns the number of items that can be fully visible in the TreeView.
+
+=for html <P>
+
+=back
+
+=head3 Events
+
+=over 4
+
+=for html <A NAME="Collapse_NODE_">
+
+=item Collapse(NODE)
+
+Sent when the user closes the specified NODE of the TreeView.
+
+=for html <P>
+
+=for html <A NAME="Collapsing_NODE_">
+
+=item Collapsing(NODE)
+
+Sent when the user is about to close the
+specified NODE of the TreeView.
+The event should return 0 to prevent the
+action, 1 to allow it.
+
+=for html <P>
+
+=for html <A NAME="Expand_NODE_">
+
+=item Expand(NODE)
+
+Sent when the user opens the specified NODE of the TreeView.
+
+=for html <P>
+
+=for html <A NAME="Expanding_NODE_">
+
+=item Expanding(NODE)
+
+Sent when the user is about to open the
+specified NODE of the TreeView
+The event should return 0 to prevent the
+action, 1 to allow it.
+
+=for html <P>
+
+=for html <A NAME="KeyDown_KEY_">
+
+=item KeyDown(KEY)
+
+Sent when the user presses a key while the TreeView
+control has focus; KEY is the ASCII code of the
+key being pressed.
+
+=for html <P>
+
+=for html <A NAME="NodeClick_NODE_">
+
+=item NodeClick(NODE)
+
+Sent when the user clicks on the specified NODE of the TreeView.
+
+=for html <P>
+
+=back
+
+=cut

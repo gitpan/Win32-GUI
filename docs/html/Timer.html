@@ -1,0 +1,141 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::Timer</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_Timer">Package Win32::GUI::Timer</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Methods">Methods</A>
+			<LI><A HREF="#Events">Events</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_Timer">Package Win32::GUI::Timer</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_Timer_PARENT_NA">new Win32::GUI::Timer(PARENT, NAME, ELAPSE)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Methods">Methods</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Interval_ELAPSE_">Interval(ELAPSE)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Kill_">Kill()</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Events">Events</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Timer_">Timer()</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_Timer_PARENT_NA">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::Timer(PARENT, NAME, ELAPSE)</A></STRONG><DD>
+<P>
+Creates a new timer in the PARENT window named NAME that will trigger its
+<CODE>Timer()</CODE> event after ELAPSE milliseconds. Can also be called as
+PARENT-&gt;AddTimer(NAME, ELAPSE).
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Methods">Methods</A></H3>
+<A NAME="Interval_ELAPSE_">
+
+<DL>
+<DT><STRONG><A NAME="item_Interval">Interval(ELAPSE)</A></STRONG><DD>
+<P>
+Changes the timeout value of the Timer to ELAPSE milliseconds. If ELAPSE is
+0, the Timer is disabled; can also be used to resume a Timer after a
+<CODE>Kill().</CODE>
+
+<P>
+
+<A NAME="Kill_">
+
+<DT><STRONG><A NAME="item_Kill">Kill()</A></STRONG><DD>
+<P>
+Disables the Timer.
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Events">Events</A></H3>
+<A NAME="Timer_">
+
+<DL>
+<DT><STRONG><A NAME="item_Timer">Timer()</A></STRONG><DD>
+<P>
+Sent when the Timer reaches its timeout value, eg. after the number of
+milliseconds specified when creating the Timer.
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

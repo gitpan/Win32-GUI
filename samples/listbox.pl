@@ -30,7 +30,7 @@ $List1 = $W->AddListbox(
     -width => 100,
     -foreground => [255, 255, 255],
     -background => [64, 64, 64],
-    -style => WS_VSCROLL | WS_VISIBLE | WS_HSCROLL | 0x0200,
+    -style => WS_VSCROLL | WS_VISIBLE | WS_CHILD,
 ) or print_and_die("new Listbox");
 
 $List1->SendMessage(0x0195, 201, 0);
@@ -40,11 +40,23 @@ $List1->AddString("Item 2");
 $List1->AddString("Item 3");
 $List1->AddString("Item 4");
 $List1->AddString("Item 5");
+$List1->AddString("Item 2");
+$List1->AddString("Item 3");
+$List1->AddString("Item 4");
+$List1->AddString("Item 5");
+$List1->AddString("Item 2");
+$List1->AddString("Item 3");
+$List1->AddString("Item 4");
+$List1->AddString("Item 5");
+$List1->AddString("Item 2");
+$List1->AddString("Item 3");
+$List1->AddString("Item 4");
+$List1->AddString("Item 5");
 $List1->Select(0);
 
 $List2 = $W->AddListbox(
     -name => "List2",
-    -style => WS_CHILD | WS_VISIBLE | 1,
+    -addstyle => WS_CHILD | WS_VISIBLE | 1,
     -left => 250,
     -top  => 5,
     -height => 120,
@@ -53,6 +65,7 @@ $List2 = $W->AddListbox(
     -group => 1, 
     -width => 100,
     -multisel => 1,
+    -vscroll => 1,
 );
 
 

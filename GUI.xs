@@ -5,9 +5,9 @@
 #
 # 29 Jan 1997 by Aldo Calpini <dada@perl.it>
 #
-# Version: 0.0.502 (13 Dec 2000)
+# Version: 0.0.558 (15 Jan 2001)
 #
-# Copyright (c) 1997..2000 Aldo Calpini. All rights reserved.
+# Copyright (c) 1997..2001 Aldo Calpini. All rights reserved.
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
@@ -18,9 +18,8 @@
  * Uncomment the next two lines (in increasing verbose order)
  * for debugging info
  */
-// #define WIN32__GUI__DEBUG
-// #define WIN32__GUI__STRONG__DEBUG
-
+/* #define PERLWIN32GUI_DEBUG */
+/* #define PERLWIN32GUI_STRONGDEBUG */
 
 #define  WIN32_LEAN_AND_MEAN
 #define _WIN32_IE 0x0401
@@ -57,187 +56,11 @@ extern "C" {
 }
 #endif
 
-/*
- * Various definitions to accomodate the different Perl versions around
- * (mainly courtesy of Dave Roth :-)
- */
-#ifdef PERL_OBJECT
-#   ifdef _INC_WIN32_PERL5
-#       pragma message( "\n*** Using the 5.005 Perl Object CPerlObj class.\n" )
-#       define NOTXSPROC   CPerlObj *pPerl,
-#       define NOTXSCALL   pPerl,
-#       define CPerl CPerlObj
-
-#   else // not _INC_WIN32_PERL5
-
-#       pragma message( "\n*** Using the 5.004 Perl Object CPerl class.\n" )
-#       define NOTXSPROC   CPerl *pPerl,
-#       define NOTXSCALL   pPerl,
-#   endif  //  _INC_WIN32_PERL5
-
-#   define  EMBEDDED_PERL_OBJECT    0x01
-#   define  EMBEDDED_SELF_OBJECT    0x02
-
-#   define  PERL_OBJECT_FROM_WINDOW(x)  (CPerl*) ExtractPerlObject(EMBEDDED_PERL_OBJECT, (PerlData *) GetWindowLong((x), GWL_USERDATA))
-#   define  SV_SELF_FROM_WINDOW(x)      (SV*) ExtractPerlObject(EMBEDDED_SELF_OBJECT, (PerlData *) GetWindowLong((x), GWL_USERDATA))
-#   define  HV_SELF_FROM_WINDOW(x)      (SV_SELF_FROM_WINDOW(x) ? (HV*) SvRV(SV_SELF_FROM_WINDOW(x)) : NULL)
-
-#   define  _PERL_DATA_TEST_STRING  "This is a formal Test, baby!"
-
-    typedef struct _PERL_DATA_ {
-        CPerl   *pPerl; // a pointer to the Perl Object
-        SV*     hvSelf;
-        SV*     svCode;
-        char    *pTest; // structure validator
-        LPCTSTR lpszName;
-
-        /* _PERL_DATA_ Constructor */
-        _PERL_DATA_() {
-            pPerl = NULL;
-            hvSelf = NULL;
-            svCode = NULL;
-            pTest = _PERL_DATA_TEST_STRING;
-        }
-
-        /* _PERL_DATA_ Destructor */
-        ~_PERL_DATA_() {
-            /*
-             * Here we should check for a valid SV* (or HV*).
-             * If it exists we should decriment it's reference
-             * count so it will die if need be.
-             */
-            while(SvREFCNT(hvSelf) > 0) {
-				SvREFCNT_dec(hvSelf);
-			}
-            pPerl = NULL;
-            hvSelf = NULL;
-            pTest = NULL;
-            svCode = NULL;
-        }
-    } PerlData;
-
-    void *ExtractPerlObject( int iType, PerlData *pData ) {
-        void *pReturn = NULL;
-/*
-#ifdef WIN32__GUI__STRONG__DEBUG
-		printf("!XS(ExtractPerlObject) entering(%d)\n", iType);
-#endif
-*/
-        if( NULL != pData ) {
-            /*
-             * Put the test condition in a try/catch exception
-             * handler since it is possible (for some reason)
-             * that the pData is *not* a valid pData structure.
-             * We need to compare it with the test string.
-             * This may cause an exception. This typically
-             * happens when focus in inside of an edit control
-             * and you hit some hot key mapped to a button.
-             */
-            try {
-                if( 0 == strcmp(_PERL_DATA_TEST_STRING, (char*) pData->pTest)) {
-                    switch( iType ) {
-                    case EMBEDDED_PERL_OBJECT:
-                        pReturn = (void *) pData->pPerl;
-                        break;
-
-                    case EMBEDDED_SELF_OBJECT:
-/*
-#ifdef WIN32__GUI__STRONG__DEBUG
-						printf("!XS(ExtractPerlObject) pData is valid (hvSelf=%ld)\n", (long) pData->hvSelf);
-#endif
-*/
-                        pReturn = (void *) pData->hvSelf;
-                        break;
-                    }
-                }
-/*
-#ifdef WIN32__GUI__STRONG__DEBUG
-				  else {
-					printf("!XS(ExtractPerlObject) pData is NOT valid\n");
-				}
-#endif
-*/
-
-            }
-            catch(...) { }
-        }
-/*
-#ifdef WIN32__GUI__STRONG__DEBUG
-		printf("!XS(ExtractPerlObject) returning %ld\n", pReturn);
-#endif
-*/
-        return( pReturn );
-    }
-
-    void CleanUpWindow(HWND pHwnd) {
-        PerlData *pData = (PerlData *) GetWindowLong(pHwnd, GWL_USERDATA);
-        if( NULL != pData ) {
-            try {
-                if( 0 == strcmp((char*) pData->pTest, _PERL_DATA_TEST_STRING)) {
-                    delete pData;
-                    pData = NULL;
-                }
-            }
-            catch(...) { }
-        }
-    }
-
-#else   // not PERL_OBJECT
-
-#   pragma message( "\n*** Using a non-Object Core Perl.\n" )
-
-#   define NOTXSPROC
-#   define NOTXSCALL
-#   define SV_SELF_FROM_WINDOW(x) (SV*)GetWindowLong((x), GWL_USERDATA)
-#   define HV_SELF_FROM_WINDOW(x) (SV_SELF_FROM_WINDOW(x) ? (HV*)SvRV(SV_SELF_FROM_WINDOW(x)) : NULL)
-
-#endif  // PERL_OBJECT
-
-#undef WORD
-#define WORD __TEMP_WORD
-
-/*
- * Section for the constant definitions.
- */
-#define CROAK croak
+#define MAX_WINDOW_NAME 128
 #define MAX_EVENT_NAME 255
 
 #define WM_EXITLOOP   (WM_APP+1)    /* custom message to exit from the Dialog() function */
 #define WM_NOTIFYICON (WM_APP+2)    /* custom message to process NotifyIcon events */
-
-/*
- * some Perl macros
- */
-#define SETIV(index,value) sv_setiv(ST(index), value)
-#define SETPV(index,string) sv_setpv(ST(index), string)
-#define SETPVN(index, buffer, length) sv_setpvn(ST(index), (char*)buffer, length)
-
-#define NEW(x,v,n,t)  (v = (t*)safemalloc((MEM_SIZE)((n) * sizeof(t))))
-
-#ifndef SvIV
-#define SvIV(sv) (SvIOK(sv) ? SvIVX(sv) : sv_2iv(sv))
-#endif
-
-#ifndef SvPV
-#define SvPV(sv, lp) (SvPOK(sv) ? ((lp = SvCUR(sv)), SvPVX(sv)) : sv_2pv(sv, &lp))
-#endif
-
-#define PERLPUSHMARK(p) if (++markstack_ptr == markstack_max)   \
-    markstack_grow();           \
-    *markstack_ptr = (p) - stack_base
-
-#define PERLXPUSHs(s)   do {\
-    if (stack_max - sp < 1) {\
-        sp = stack_grow(sp, sp, 1);\
-    }\
-    (*++sp = (s)); } while (0)
-
-#ifdef NT_BUILD_NUMBER
-#   define boolSV(b) ((b) ? &sv_yes : &sv_no)
-#   ifndef dowarn
-#       define dowarn FALSE
-#   endif
-#endif
 
 /*
  * object types (for switch()ing)
@@ -276,9 +99,30 @@ extern "C" {
 #define WIN32__GUI__MDICLIENT  103
 
 /*
+ * Various definitions to accomodate the different Perl versions around
+ */
+#ifdef PERL_OBJECT
+#   ifdef _INC_WIN32_PERL5
+#       pragma message( "\n*** Using the 5.005 Perl Object CPerlObj class.\n" )
+#       define NOTXSPROC   CPerlObj *pPerl,
+#       define NOTXSCALL   pPerl,
+#       define CPerl CPerlObj
+#   else // not _INC_WIN32_PERL5
+#       pragma message( "\n*** Using the 5.004 Perl Object CPerl class.\n" )
+#       define NOTXSPROC   CPerl *pPerl,
+#       define NOTXSCALL   pPerl,
+#   endif  //  _INC_WIN32_PERL5
+#	define	SvPV_nolen(x)	SvPV(x, na)
+#else
+#   pragma message( "\n*** Using a non-Object Core Perl.\n" )
+#   define NOTXSPROC
+#   define NOTXSCALL
+#endif
+
+/*
  * an extension to Window's CREATESTRUCT structure
  */
-typedef struct tagPERLCREATESTRUCT {
+typedef struct tagPERLWIN32GUI_CREATESTRUCT {
     CREATESTRUCT cs;
     /*
     CREATESTRUCT has the following members:
@@ -296,14 +140,211 @@ typedef struct tagPERLCREATESTRUCT {
         DWORD       dwExStyle;
     */
     HIMAGELIST  hImageList;
-    HV*         parent;
-    HV*         self;
+    HV*         hvParent;
+    HV*         hvSelf;
     char *      szWindowName;
     char *      szWindowFunction;
     HFONT       hFont;
-    int         nClass;
+    int         iClass;
 	HACCEL		hAcc;
-} PERLCREATESTRUCT, *LPPERLCREATESTRUCT;
+	int			iMinWidth;
+	int			iMaxWidth;
+	int			iMinHeight;
+	int			iMaxHeight;
+	COLORREF	clrForeground;
+	COLORREF	clrBackground;
+	HBRUSH		hBackgroundBrush;
+} PERLWIN32GUI_CREATESTRUCT, *LPPERLWIN32GUI_CREATESTRUCT;
+
+/*
+ * what we'll store in GWL_USERDATA
+ */
+typedef struct tagPERLWIN32GUI_USERDATA {
+	DWORD 		dwSize;							// struct size (our signature)
+#ifdef PERL_OBJECT
+	CPerl   	*pPerl; 						// a pointer to the Perl Object
+#endif
+	SV*			svSelf;							// a pointer to ourself
+	char 		szWindowName[MAX_WINDOW_NAME];	// our -name
+	BOOL		fDialogUI;						// are we to intercept dialog messages?
+	int			iClass;							// our (Perl) class
+	HACCEL		hAcc;							// our accelerator table
+	int			iMinWidth;
+	int			iMaxWidth;
+	int			iMinHeight;
+	int			iMaxHeight;
+	COLORREF	clrForeground;
+	COLORREF	clrBackground;
+	HBRUSH		hBackgroundBrush;
+} PERLWIN32GUI_USERDATA, *LPPERLWIN32GUI_USERDATA;
+
+/*
+ * Various definitions to accomodate the different Perl versions around
+ * (mainly courtesy of Dave Roth :-)
+ */
+#ifdef PERL_OBJECT
+#   define  EMBEDDED_PERL_OBJECT    0x01
+#   define  EMBEDDED_SELF_OBJECT    0x02
+#   define  PERL_OBJECT_FROM_WINDOW(x)  (CPerl*) ExtractPerlObject(EMBEDDED_PERL_OBJECT, (PerlData *) GetWindowLong((x), GWL_USERDATA))
+#   define  SV_SELF_FROM_WINDOW(x)      (SV*) ExtractPerlObject(EMBEDDED_SELF_OBJECT, (PerlData *) GetWindowLong((x), GWL_USERDATA))
+#   define  HV_SELF_FROM_WINDOW(x)      (SV_SELF_FROM_WINDOW(x) ? (HV*) SvRV(SV_SELF_FROM_WINDOW(x)) : NULL)
+#   define  _PERL_DATA_TEST_STRING  "This is a formal Test, baby!"
+
+    typedef struct _PERL_DATA_ {
+        CPerl   *pPerl; // a pointer to the Perl Object
+        SV*     hvSelf;
+        SV*     svCode;
+        char    *pTest; // structure validator
+        LPCTSTR lpszName;
+
+        /* _PERL_DATA_ Constructor */
+        _PERL_DATA_() {
+            pPerl = NULL;
+            hvSelf = NULL;
+            svCode = NULL;
+            pTest = _PERL_DATA_TEST_STRING;
+        }
+
+        /* _PERL_DATA_ Destructor */
+        ~_PERL_DATA_() {
+            /*
+             * Here we should check for a valid SV* (or HV*).
+             * If it exists we should decriment it's reference
+             * count so it will die if need be.
+             */
+            while(SvREFCNT(hvSelf) > 0) {
+				SvREFCNT_dec(hvSelf);
+			}
+            pPerl = NULL;
+            hvSelf = NULL;
+            pTest = NULL;
+            svCode = NULL;
+        }
+    } PerlData;
+
+    void *ExtractPerlObject( int iType, PerlData *pData ) {
+        void *pReturn = NULL;
+		/*
+#ifdef PERLWIN32GUI_STRONGDEBUG
+		printf("!XS(ExtractPerlObject) entering(%d)\n", iType);
+#endif
+		*/
+        if( NULL != pData ) {
+            /*
+             * Put the test condition in a try/catch exception
+             * handler since it is possible (for some reason)
+             * that the pData is *not* a valid pData structure.
+             * We need to compare it with the test string.
+             * This may cause an exception. This typically
+             * happens when focus in inside of an edit control
+             * and you hit some hot key mapped to a button.
+             */
+            try {
+                if( 0 == strcmp(_PERL_DATA_TEST_STRING, (char*) pData->pTest)) {
+                    switch( iType ) {
+                    case EMBEDDED_PERL_OBJECT:
+                        pReturn = (void *) pData->pPerl;
+                        break;
+
+                    case EMBEDDED_SELF_OBJECT:
+						/*
+#ifdef PERLWIN32GUI_STRONGDEBUG
+						printf("!XS(ExtractPerlObject) pData is valid (hvSelf=%ld)\n", (long) pData->hvSelf);
+#endif
+						*/
+                        pReturn = (void *) pData->hvSelf;
+                        break;
+                    }
+                }
+/*
+#ifdef PERLWIN32GUI_STRONGDEBUG
+				  else {
+					printf("!XS(ExtractPerlObject) pData is NOT valid\n");
+				}
+#endif
+*/
+
+            }
+            catch(...) { }
+        }
+		/*
+#ifdef PERLWIN32GUI_STRONGDEBUG
+		printf("!XS(ExtractPerlObject) returning %ld\n", pReturn);
+#endif
+		*/
+        return( pReturn );
+    }
+
+    void CleanUpWindow(HWND pHwnd) {
+        PerlData *pData = (PerlData *) GetWindowLong(pHwnd, GWL_USERDATA);
+        if( NULL != pData ) {
+            try {
+                if( 0 == strcmp((char*) pData->pTest, _PERL_DATA_TEST_STRING)) {
+                    delete pData;
+                    pData = NULL;
+                }
+            }
+            catch(...) { }
+        }
+    }
+
+#else   // not PERL_OBJECT
+	SV *
+	SV_SELF_FROM_WINDOW(HWND hwnd) {
+		LPPERLWIN32GUI_USERDATA perlud;
+
+		perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(hwnd, GWL_USERDATA);
+		if(perlud != NULL && perlud->dwSize == sizeof(PERLWIN32GUI_USERDATA)) {
+			return perlud->svSelf;
+		} else {
+			return NULL;
+		}
+	}
+#   define HV_SELF_FROM_WINDOW(x) (SV_SELF_FROM_WINDOW(x) ? (HV*)SvRV(SV_SELF_FROM_WINDOW(x)) : NULL)
+#endif  // PERL_OBJECT
+
+#undef WORD
+#define WORD __TEMP_WORD
+
+/*
+ * Section for the constant definitions.
+ */
+#define CROAK croak
+
+
+/*
+ * some Perl macros
+ */
+#define SETIV(index,value) sv_setiv(ST(index), value)
+#define SETPV(index,string) sv_setpv(ST(index), string)
+#define SETPVN(index, buffer, length) sv_setpvn(ST(index), (char*)buffer, length)
+
+#define NEW(x,v,n,t)  (v = (t*)safemalloc((MEM_SIZE)((n) * sizeof(t))))
+
+#ifndef SvIV
+#define SvIV(sv) (SvIOK(sv) ? SvIVX(sv) : sv_2iv(sv))
+#endif
+
+#ifndef SvPV
+#define SvPV(sv, lp) (SvPOK(sv) ? ((lp = SvCUR(sv)), SvPVX(sv)) : sv_2pv(sv, &lp))
+#endif
+
+#define PERLPUSHMARK(p) if (++markstack_ptr == markstack_max)   \
+    markstack_grow();           \
+    *markstack_ptr = (p) - stack_base
+
+#define PERLXPUSHs(s)   do {\
+    if (stack_max - sp < 1) {\
+        sp = stack_grow(sp, sp, 1);\
+    }\
+    (*++sp = (s)); } while (0)
+
+#ifdef NT_BUILD_NUMBER
+#   define boolSV(b) ((b) ? &sv_yes : &sv_no)
+#   ifndef dowarn
+#       define dowarn FALSE
+#   endif
+#endif
 
 /*
  * other useful things
@@ -353,7 +394,9 @@ hv_magic_check (NOTXSPROC HV *hv, bool *needs_copy, bool *needs_store)
 		*needs_store = FALSE;
 	    }
 	}
+#ifdef PERLWIN32GUI_STRONGDEBUG
     printf("!XS(hv_magic_check) magic='%c' needs_store='%d'\n", mg->mg_type, *needs_store);
+#endif
 	mg = mg->mg_moremagic;
     }
 }
@@ -399,10 +442,10 @@ char *classname_From(NOTXSPROC SV *pSv) {
             pHv = hv_fetch((HV*) SvRV(pSv), szKey, strlen(szKey), 0);
             if(SvMAGICAL((HV*) SvRV(pSv))) mg_get(*pHv);
             if(pHv != NULL) {
-                pszName = SvPV(*pHv, na);
+                pszName = SvPV_nolen(*pHv);
             }
         } else {
-            pszName = SvPV(pSv, na);
+            pszName = SvPV_nolen(pSv);
         }
     }
     return(pszName);
@@ -412,34 +455,58 @@ char *classname_From(NOTXSPROC SV *pSv) {
     /*
      ##########################################################################
      # (@)INTERNAL:SvCOLORREF(SV*)
-     # returns a COLORREF from either a numerical value or
-     # a color expressed as [RR, GG, BB]
+     # returns a COLORREF from either a numerical value
+     # or a color expressed as [RR, GG, BB]
+     # or a color expressed in HTML notation (#RRGGBB)
      */
 COLORREF SvCOLORREF(NOTXSPROC SV* c) {
     SV** t;
-    BYTE r;
-    BYTE g;
-    BYTE b;
+    int r;
+    int g;
+    int b;
     COLORREF color;
+    char html_color[8];
+    char html_color_component[3];
+
+	ZeroMemory(html_color, 8);
+	ZeroMemory(html_color_component, 3);
     r = 0;
     g = 0;
     b = 0;
     if(SvROK(c) && SvTYPE(SvRV(c)) == SVt_PVAV) {
         t = av_fetch((AV*)SvRV(c), 0, 0);
         if(t != NULL) {
-            r = (BYTE) SvIV(*t);
+            r = SvIV(*t);
         }
         t = av_fetch((AV*)SvRV(c), 1, 0);
         if(t!= NULL) {
-            g = (BYTE) SvIV(*t);
+            g = SvIV(*t);
         }
         t = av_fetch((AV*)SvRV(c), 2, 0);
         if(t != NULL) {
-            b = (BYTE) SvIV(*t);
+            b = SvIV(*t);
         }
-        return RGB(r, g, b);
+        return RGB((BYTE) r, (BYTE) g, (BYTE) b);
     } else {
-        return (COLORREF) SvIV(c);
+		if(SvPOK(c)) {
+			strncpy(html_color, SvPV_nolen(c), 7);
+			if(strncmp(html_color, "#", 1) == 0) {
+				strncpy(html_color_component, html_color+1, 2);
+				*(html_color_component+2) = 0;
+				sscanf(html_color_component, "%x", &r);
+				strncpy(html_color_component, html_color+3, 2);
+				*(html_color_component+2) = 0;
+				sscanf(html_color_component, "%x", &g);
+				strncpy(html_color_component, html_color+5, 2);
+				*(html_color_component+2) = 0;
+				sscanf(html_color_component, "%x", &b);
+				return RGB((BYTE) r, (BYTE) g, (BYTE) b);
+			} else {
+        		return (COLORREF) SvIV(c);
+			}
+		} else {
+        	return (COLORREF) SvIV(c);
+		}
     }
 }
 
@@ -451,7 +518,7 @@ COLORREF SvCOLORREF(NOTXSPROC SV* c) {
      */
 void CalcControlSize(
     NOTXSPROC
-    LPPERLCREATESTRUCT perlcs,
+    LPPERLWIN32GUI_CREATESTRUCT perlcs,
     int add_x,
     int add_y
 ) {
@@ -466,9 +533,9 @@ void CalcControlSize(
                 hfont = perlcs->hFont;
             } else {
                 hfont = (HFONT) GetStockObject(DEFAULT_GUI_FONT);
-                if(perlcs->parent != NULL) {
-                    font = hv_fetch(perlcs->parent, "-font", 5, FALSE);
-                    if(SvMAGICAL(perlcs->parent)) mg_get(*font);
+                if(perlcs->hvParent != NULL) {
+                    font = hv_fetch(perlcs->hvParent, "-font", 5, FALSE);
+                    if(SvMAGICAL(perlcs->hvParent)) mg_get(*font);
                     if(font != NULL && SvOK(*font)) {
                         hfont = (HFONT) handle_From(NOTXSCALL *font);
                     }
@@ -493,20 +560,29 @@ void CalcControlSize(
      # returns FALSE if no name found.
      */
 BOOL GetObjectName(NOTXSPROC HWND hwnd, char *Name) {
-    HV* self;
+
+	LPPERLWIN32GUI_USERDATA perlud;
+	perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(hwnd, GWL_USERDATA);
+#ifdef PERLWIN32GUI_STRONGDEBUG
+	printf("!XS(GetObjectName): perlud=%ld\n", perlud);
+#endif
+	if(NULL != perlud && perlud->dwSize == sizeof(PERLWIN32GUI_USERDATA)) {
+		strcat(Name, (char *) perlud->szWindowName);
+		return TRUE;
+	} else {
+		return FALSE;
+	}
+	/*
+	HV* self;
     SV** name;
     self = HV_SELF_FROM_WINDOW(hwnd);
-/*
-#ifdef WIN32__GUI__STRONG__DEBUG
-	printf("!XS(GetObjectName) self=%ld\n", (long) self);
-#endif
-*/
     if(self == NULL) return FALSE;
     name = hv_fetch(self, "-name", 5, FALSE);
 	if(SvMAGICAL(self)) mg_get(*name);
     if(name == NULL) return FALSE;
-    strcat(Name, (char *) SvPV(*name, na));
+    strcat(Name, (char *) SvPV_nolen(*name));
     return TRUE;
+	*/
 }
 
     /*
@@ -516,25 +592,44 @@ BOOL GetObjectName(NOTXSPROC HWND hwnd, char *Name) {
      # returns FALSE if no name found.
      */
 BOOL GetObjectNameAndClass(NOTXSPROC HWND hwnd, char *Name, int *obj_class) {
+
+	LPPERLWIN32GUI_USERDATA perlud;
+
+	perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(hwnd, GWL_USERDATA);
+
+#ifdef PERLWIN32GUI_STRONGDEBUG
+	printf("!XS(GetObjectNameAndClass): perlud=%ld\n", perlud);
+#endif
+
+	if(NULL != perlud && perlud->dwSize == sizeof(PERLWIN32GUI_USERDATA)) {
+		strcat(Name, (char *) perlud->szWindowName);
+		*obj_class = perlud->iClass;
+#ifdef PERLWIN32GUI_STRONGDEBUG
+		printf("!XS(GetObjectNameAndClass): returning TRUE\n");
+#endif
+		return TRUE;
+	} else {
+#ifdef PERLWIN32GUI_STRONGDEBUG
+		printf("!XS(GetObjectNameAndClass): returning FALSE\n");
+#endif
+		return FALSE;
+	}
+	/*
 	HV* self;
     SV** name;
     SV** type;
     self = HV_SELF_FROM_WINDOW(hwnd);
-/*
-#ifdef WIN32__GUI__STRONG__DEBUG
-    printf("!XS(GetObjectNameAndClass): self=%ld\n", (long) self);
-#endif
-*/
     if(self == NULL) return FALSE;
     name = hv_fetch(self, "-name", 5, FALSE);
     if(SvMAGICAL(self)) mg_get(*name);
     if(name == NULL) return FALSE;
-    strcat(Name, (char *) SvPV(*name, na));
+    strcat(Name, (char *) SvPV_nolen(*name));
     type = hv_fetch(self, "-type", 5, FALSE);
     if(SvMAGICAL(self)) mg_get(*type);
     if(type == NULL) return FALSE;
     *obj_class = SvIV(*type);
     return TRUE;
+	*/
 }
 
     /*
@@ -556,7 +651,7 @@ BOOL GetMenuName(NOTXSPROC int nID, char *Name) {
     name = hv_fetch( ( (HV*) SvRV(*obj)), "-name", 5, FALSE);
     if(SvMAGICAL((HV*) SvRV(*obj))) mg_get(*name);
     if(name == NULL) return FALSE;
-    strcat(Name, (char *) SvPV(*name, na));
+    strcat(Name, (char *) SvPV_nolen(*name));
     return TRUE;
 }
 
@@ -575,7 +670,7 @@ BOOL GetAcceleratorName(NOTXSPROC int nID, char *Name) {
     name = hv_fetch(hash, temp, strlen(temp), FALSE);
     if(SvMAGICAL(hash)) mg_get(*name);
     if(name == NULL) return FALSE;
-    strcat(Name, (char *) SvPV(*name, na));
+    strcat(Name, (char *) SvPV_nolen(*name));
     return TRUE;
 }
 
@@ -608,7 +703,7 @@ BOOL GetTimerName(NOTXSPROC HWND hwnd, UINT nID, char *Name) {
     name = hv_fetch(obj, "-name", 5, FALSE);
     if(SvMAGICAL(obj)) mg_get(*name);
     if(name == NULL) return FALSE;
-    strcat(Name, (char *) SvPV(*name, na));
+    strcat(Name, (char *) SvPV_nolen(*name));
     return TRUE;
 }
 
@@ -640,7 +735,7 @@ BOOL GetNotifyIconName(NOTXSPROC HWND hwnd, UINT nID, char *Name) {
     name = hv_fetch(obj, "-name", 5, FALSE);
     if(SvMAGICAL(obj)) mg_get(*name);
     if(name == NULL) return FALSE;
-    strcat(Name, (char *) SvPV(*name, na));
+    strcat(Name, (char *) SvPV_nolen(*name));
     return TRUE;
 }
 
@@ -737,11 +832,11 @@ void DrawSplitter(NOTXSPROC HWND hwnd) {
      */
 BOOL ProcessEventError(NOTXSPROC char *Name, int* PerlResult) {
     if(strncmp(Name, "main::", 6) == 0) Name += 6;
-    if(SvTRUE(GvSV(errgv))) {
+    if(SvTRUE(ERRSV)) {
         MessageBeep(MB_ICONASTERISK);
         *PerlResult = MessageBox(
             NULL,
-            SvPV(GvSV(errgv), na),
+            SvPV_nolen(ERRSV),
             Name,
             MB_ICONERROR | MB_OKCANCEL
         );
@@ -764,26 +859,26 @@ int DoEvent_Generic(NOTXSPROC char *Name) {
     int PerlResult;
     int count;
     PerlResult = 1;
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
     printf("!XS(DoEvent_Generic): EVENT: %s\n", Name);
 #endif
     if(perl_get_cv(Name, FALSE) != NULL) {
         dSP;
         dTARG;
-        ENTER ;
+        ENTER;
         SAVETMPS;
-        PUSHMARK(sp) ;
-        PUTBACK ;
+        PUSHMARK(SP);
+        PUTBACK;
         count = perl_call_pv(Name, G_EVAL|G_NOARGS);
-        SPAGAIN ;
+        SPAGAIN;
         if(!ProcessEventError(NOTXSCALL Name, &PerlResult)) {
             if(count > 0) PerlResult = POPi;
         }
-        PUTBACK ;
-        FREETMPS ;
-        LEAVE ;
+        PUTBACK;
+        FREETMPS;
+        LEAVE;
     }
-#ifdef WIN32__GUI__STRONG__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
     printf("!XS(DoEvent_Generic): returning %d\n", PerlResult);
 #endif
     return PerlResult;
@@ -799,7 +894,7 @@ int DoEvent_Long(NOTXSPROC char *Name, long argh) {
     int PerlResult;
     int count;
     PerlResult = 1;
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
     printf("!XS(DoEvent_Long): EVENT: %s\n", Name);
 #endif
     if(perl_get_cv(Name, FALSE) != NULL) {
@@ -807,7 +902,7 @@ int DoEvent_Long(NOTXSPROC char *Name, long argh) {
         dTARG;
         ENTER ;
         SAVETMPS;
-        PUSHMARK(sp) ;
+        PUSHMARK(SP) ;
         XPUSHs(sv_2mortal(newSViv(argh)));
         PUTBACK ;
         count = perl_call_pv(Name, G_EVAL|G_ARRAY);
@@ -832,7 +927,7 @@ int DoEvent_TwoLongs(NOTXSPROC char *Name, long argone, long argtwo) {
     int PerlResult;
     int count;
     PerlResult = 1;
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
     printf("!XS(DoEvent_TwoLongs): EVENT: %s\n", Name);
 #endif
     if(perl_get_cv(Name, FALSE) != NULL) {
@@ -840,7 +935,7 @@ int DoEvent_TwoLongs(NOTXSPROC char *Name, long argone, long argtwo) {
         dTARG;
         ENTER ;
         SAVETMPS;
-        PUSHMARK(sp) ;
+        PUSHMARK(SP) ;
         XPUSHs(sv_2mortal(newSViv(argone)));
         XPUSHs(sv_2mortal(newSViv(argtwo)));
         PUTBACK ;
@@ -868,7 +963,7 @@ int DoEvent_ButtonClick(NOTXSPROC char *Name, WPARAM wParam) {
     int count;
     PerlResult = 1;
     strcat(Name, "_ButtonClick");
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
     printf("!XS(DoEvent_ButtonClick): EVENT: %s\n", Name);
 #endif
     if(perl_get_cv(Name, FALSE) != NULL) {
@@ -876,7 +971,7 @@ int DoEvent_ButtonClick(NOTXSPROC char *Name, WPARAM wParam) {
         dTARG;
         ENTER ;
         SAVETMPS;
-        PUSHMARK(sp) ;
+        PUSHMARK(SP) ;
         XPUSHs(sv_2mortal(newSViv(LOWORD(wParam))));
         PUTBACK ;
         count = perl_call_pv(Name, G_EVAL|G_ARRAY);
@@ -914,7 +1009,7 @@ int DoEvent_ListView(NOTXSPROC char *Name, LPARAM lParam) {
         argh = (long) lv_notify->iSubItem;
         break;
     }
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
     printf("!XS(DoEvent_ListView): EVENT: %s\n", Name);
 #endif
     if(perl_get_cv(Name, FALSE) != NULL) {
@@ -922,7 +1017,7 @@ int DoEvent_ListView(NOTXSPROC char *Name, LPARAM lParam) {
         dTARG;
         ENTER ;
         SAVETMPS;
-        PUSHMARK(sp) ;
+        PUSHMARK(SP) ;
         XPUSHs(sv_2mortal(newSViv(argh)));
         PUTBACK ;
         count = perl_call_pv(Name, G_EVAL|G_ARRAY);
@@ -965,15 +1060,15 @@ int DoEvent_TreeView(NOTXSPROC char *Name, LPARAM lParam) {
             strcat(Name, "_Expanding");
         break;
     }
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
     printf("!XS(DoEvent_TreeView): EVENT: %s\n", Name);
 #endif
-    if(perl_get_cv(Name, FALSE) != NULL) {
+	if(perl_get_cv(Name, FALSE) != NULL) {
         dSP;
         dTARG;
         ENTER ;
         SAVETMPS;
-        PUSHMARK(sp) ;
+        PUSHMARK(SP) ;
         XPUSHs(sv_2mortal(newSViv((long) tv_notify->itemNew.hItem)));
         PUTBACK ;
         count = perl_call_pv(Name, G_EVAL|G_ARRAY);
@@ -999,7 +1094,7 @@ int DoEvent_MouseMove(NOTXSPROC char *Name, WPARAM wParam, LPARAM lParam) {
     int count;
     PerlResult = 1;
     strcat(Name, "_MouseMove");
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
     printf("!XS(DoEvent_MouseMove): EVENT: %s\n", Name);
 #endif
     if(perl_get_cv(Name, FALSE) != NULL) {
@@ -1007,7 +1102,7 @@ int DoEvent_MouseMove(NOTXSPROC char *Name, WPARAM wParam, LPARAM lParam) {
         dTARG;
         ENTER ;
         SAVETMPS;
-        PUSHMARK(sp) ;
+        PUSHMARK(SP) ;
         XPUSHs(sv_2mortal(newSViv(wParam)));
         XPUSHs(sv_2mortal(newSViv(LOWORD(lParam))));
         XPUSHs(sv_2mortal(newSViv(HIWORD(lParam))));
@@ -1034,7 +1129,7 @@ int DoEvent_MouseButton(NOTXSPROC char *Name, WPARAM wParam, LPARAM lParam) {
     int PerlResult;
     int count;
     PerlResult = 1;
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
     printf("!XS(DoEvent_MouseButton): EVENT: %s\n", Name);
 #endif
     if(perl_get_cv(Name, FALSE) != NULL) {
@@ -1042,7 +1137,7 @@ int DoEvent_MouseButton(NOTXSPROC char *Name, WPARAM wParam, LPARAM lParam) {
         dTARG;
         ENTER ;
         SAVETMPS;
-        PUSHMARK(sp) ;
+        PUSHMARK(SP) ;
         XPUSHs(sv_2mortal(newSViv(wParam)));
         XPUSHs(sv_2mortal(newSViv(LOWORD(lParam))));
         XPUSHs(sv_2mortal(newSViv(HIWORD(lParam))));
@@ -1076,7 +1171,7 @@ char * DoEvent_NeedText(NOTXSPROC char *Name, UINT id) {
         safefree(textneeded);
         textneeded = NULL;
     }
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
     printf("!XS(DoEvent_NeedText): EVENT: %s\n", Name);
 #endif
     if(perl_get_cv(Name, FALSE) != NULL) {
@@ -1084,7 +1179,7 @@ char * DoEvent_NeedText(NOTXSPROC char *Name, UINT id) {
         dTARG;
         ENTER ;
         SAVETMPS;
-        PUSHMARK(sp) ;
+        PUSHMARK(SP) ;
         XPUSHs(sv_2mortal(newSViv(id)));
         PUTBACK ;
         count = perl_call_pv(Name, G_EVAL|G_ARRAY);
@@ -1093,9 +1188,9 @@ char * DoEvent_NeedText(NOTXSPROC char *Name, UINT id) {
             if(count > 0) {
                 svt = POPs;
                 textneeded = (char *) safemalloc(sv_len(svt));
-                strcpy(textneeded, SvPV(svt, na));
+                strcpy(textneeded, SvPV_nolen(svt));
             } else {
-#ifdef WIN32__GUI__STRONG__DEBUG
+#ifdef PERLWIN32GUI_STRONGDEBUG
                 printf("!XS(DoEvent_NeedText): sub returned nothing\n");
 #endif
             }
@@ -1104,7 +1199,7 @@ char * DoEvent_NeedText(NOTXSPROC char *Name, UINT id) {
         FREETMPS ;
         LEAVE ;
     }
-#ifdef WIN32__GUI__STRONG__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
     printf("!XS(DoEvent_NeedText): returning '%s'\n", textneeded);
 #endif
     return textneeded;
@@ -1125,23 +1220,6 @@ char * DoEvent_NeedText(NOTXSPROC char *Name, UINT id) {
     */
 LRESULT CALLBACK SplitterMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-#ifdef WIN32__GUI__STRONG__DEBUG
-    printf("!XS(SplitterMsgLoop) got (%ld, 0x%x, %ld, %ld)\n", hwnd, uMsg, wParam, lParam);
-#endif
-#ifdef PERL_OBJECT
-    CPerl *pPerl;
-    PerlData *pData;
-    if(uMsg == WM_CREATE || uMsg == WM_NCCREATE) {
-        pData = (PerlData *) ((CREATESTRUCT *) lParam)->lpCreateParams;
-        if(pData != NULL) {
-            pPerl = pData->pPerl;
-            SetWindowLong(hwnd, GWL_USERDATA, (long) pData);
-        }
-        return DefWindowProc(hwnd, uMsg, wParam, lParam);
-    } else {
-        pPerl = PERL_OBJECT_FROM_WINDOW(hwnd);
-    }
-#endif
     int PerlResult;
     char Name[MAX_EVENT_NAME];
     HV* self;
@@ -1154,6 +1232,21 @@ LRESULT CALLBACK SplitterMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
     HWND phwnd;
     HDC hdc;
     RECT rc;
+	LPPERLWIN32GUI_USERDATA perlud;
+
+#ifdef PERLWIN32GUI_STRONGDEBUG
+    printf("!XS(SplitterMsgLoop) got (%ld, 0x%x, %ld, %ld)\n", hwnd, uMsg, wParam, lParam);
+#endif
+
+    if(uMsg == WM_DESTROY) {
+		safefree( (LPPERLWIN32GUI_USERDATA) GetWindowLong(hwnd, GWL_USERDATA));
+		return DefWindowProc(hwnd, uMsg, wParam, lParam);
+	}
+
+#ifdef PERL_OBJECT
+	pPerl = ((LPPERLWIN32GUI_USERDATA) GetWindowLong(hwnd, GWL_USERDATA))->pPerl;
+#endif
+
     PerlResult = 1;
     strcpy(Name, "main::");
     if(GetObjectName(NOTXSCALL hwnd, Name)) {
@@ -1364,7 +1457,7 @@ LRESULT CALLBACK ListboxMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
     */
 LRESULT CALLBACK RichEditMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-#ifdef WIN32__GUI__STRONG__DEBUG
+#ifdef PERLWIN32GUI_STRONGDEBUG
     printf("!XS(RichEditMsgLoop) got (%ld, 0x%x, %ld, %ld)\n", hwnd, uMsg, wParam, lParam);
 #endif
 #ifdef PERL_OBJECT
@@ -1475,14 +1568,14 @@ LRESULT CALLBACK GraphicMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 
     PerlResult = 1;
 
-#ifdef WIN32__GUI__STRONG__DEBUG
-    printf("!XS(GraphicMsgLoop) got (%ld, 0x%x, %ld, %ld)\n", hwnd, uMsg, wParam, lParam);
+#ifdef PERLWIN32GUI_STRONGDEBUG
+	    printf("!XS(GraphicMsgLoop) got (%ld, 0x%x, %ld, %ld)\n", hwnd, uMsg, wParam, lParam);
 #endif
     if(uMsg == WM_PAINT) {
 	    strcpy((char *) Name, "main::");
     	if(GetObjectName(NOTXSCALL hwnd, Name)) {
-#ifdef WIN32__GUI__STRONG__DEBUG
-		    printf("!XS(GraphicMsgLoop) name=%s\n", Name);
+#ifdef PERLWIN32GUI_STRONGDEBUG
+			    printf("!XS(GraphicMsgLoop) name=%s\n", Name);
 #endif
 			strcat((char *) Name, "_Paint");
     		if(perl_get_cv(Name, FALSE) != NULL) {
@@ -1518,27 +1611,27 @@ LRESULT CALLBACK GraphicMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
         		dTARG;
         		ENTER;
         		SAVETMPS;
-        		PUSHMARK(sp);
-#ifdef WIN32__GUI__STRONG__DEBUG
-			    printf("!XS(GraphicMsgLoop) pushing parameters...\n");
+        		PUSHMARK(SP);
+#ifdef PERLWIN32GUI_STRONGDEBUG
+				    printf("!XS(GraphicMsgLoop) pushing parameters...\n");
 #endif
 				XPUSHs(sv_2mortal(newSVpv("Win32::GUI::DC", 0)));
-#ifdef WIN32__GUI__STRONG__DEBUG
-			    printf("!XS(GraphicMsgLoop) done parameter 1...\n");
+#ifdef PERLWIN32GUI_STRONGDEBUG
+				    printf("!XS(GraphicMsgLoop) done parameter 1...\n");
 #endif
 				XPUSHs(SV_SELF_FROM_WINDOW(hwnd));
-#ifdef WIN32__GUI__STRONG__DEBUG
-			    printf("!XS(GraphicMsgLoop) done parameter 2...\n");
+#ifdef PERLWIN32GUI_STRONGDEBUG
+				    printf("!XS(GraphicMsgLoop) done parameter 2...\n");
 #endif
         		PUTBACK ;
-#ifdef WIN32__GUI__STRONG__DEBUG
-			    printf("!XS(GraphicMsgLoop) doing perl_call...\n");
+#ifdef PERLWIN32GUI_STRONGDEBUG
+				    printf("!XS(GraphicMsgLoop) doing perl_call...\n");
 #endif
 				count = perl_call_pv("Win32::GUI::DC::new", 0);
         		SPAGAIN ;
 				newdc = newSVsv(POPs);
-#ifdef WIN32__GUI__STRONG__DEBUG
-			    printf("!XS(GraphicMsgLoop) perl_call got(%d): %s\n", count, SvPV(newdc, na));
+#ifdef PERLWIN32GUI_STRONGDEBUG
+				    printf("!XS(GraphicMsgLoop) perl_call got(%d): %s\n", count, SvPV_nolen(newdc));
 #endif
 				PUTBACK;
 				FREETMPS;
@@ -1546,11 +1639,11 @@ LRESULT CALLBACK GraphicMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 
 				ENTER;
 				SAVETMPS;
-	       		PUSHMARK(sp);
+	       		PUSHMARK(SP);
 				XPUSHs(sv_2mortal(newdc));
 				// XPUSHs(sv_2mortal(newdc));
-#ifdef WIN32__GUI__STRONG__DEBUG
-			    printf("!XS(GraphicMsgLoop) doing perl_call_pv...\n");
+#ifdef PERLWIN32GUI_STRONGDEBUG
+				    printf("!XS(GraphicMsgLoop) doing perl_call_pv...\n");
 #endif
 				PUTBACK;
         		count = perl_call_pv(Name, G_EVAL|G_ARRAY);
@@ -1608,8 +1701,8 @@ LRESULT CALLBACK InteractiveGraphicMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, 
 
     PerlResult = 1;
 
-#ifdef WIN32__GUI__STRONG__DEBUG
-    printf("!XS(InteractiveGraphicMsgLoop) got (%ld, 0x%x, %ld, %ld)\n", hwnd, uMsg, wParam, lParam);
+#ifdef PERLWIN32GUI_STRONGDEBUG
+	    printf("!XS(InteractiveGraphicMsgLoop) got (%ld, 0x%x, %ld, %ld)\n", hwnd, uMsg, wParam, lParam);
 #endif
 
 	strcpy((char *) Name, "main::");
@@ -1640,7 +1733,7 @@ LRESULT CALLBACK InteractiveGraphicMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, 
         		dTARG;
         		ENTER;
         		SAVETMPS;
-        		PUSHMARK(sp);
+        		PUSHMARK(SP);
 				XPUSHs(sv_2mortal(newSVpv("Win32::GUI::DC", 0)));
 				XPUSHs(SV_SELF_FROM_WINDOW(hwnd));
         		PUTBACK ;
@@ -1653,7 +1746,7 @@ LRESULT CALLBACK InteractiveGraphicMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, 
 
 				ENTER;
 				SAVETMPS;
-	       		PUSHMARK(sp);
+	       		PUSHMARK(SP);
 				XPUSHs(sv_2mortal(newdc));
 				PUTBACK;
         		count = perl_call_pv(Name, G_EVAL|G_ARRAY);
@@ -1707,33 +1800,39 @@ LRESULT CALLBACK InteractiveGraphicMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, 
     */
 LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-#ifdef PERL_OBJECT
-    CPerl *pPerl;
-    PerlData *pData;
-    if(uMsg == WM_NCCREATE) {
-        pData = (PerlData *) ((CREATESTRUCT *) lParam)->lpCreateParams;
-        if(pData != NULL) {
-            pPerl = pData->pPerl;
-            SetWindowLong(hwnd, GWL_USERDATA, (long) pData);
-            SetWindowText(hwnd, pData->lpszName);
-        }
-        return(1);
-    } else {
-        pPerl = PERL_OBJECT_FROM_WINDOW(hwnd);
-    }
-#endif
+	dSP;
     int PerlResult;
     char Name[MAX_EVENT_NAME];
     int obj_class;
     LPNMHDR notify;
     LPNM_TREEVIEW tv_notify;
     TV_KEYDOWN FAR * tv_keydown;
+	LPPERLWIN32GUI_USERDATA perlud;
 
-#ifdef WIN32__GUI__STRONG__DEBUG
-    printf("!XS(WindowMsgLoop) got (%ld, 0x%x, %ld, %ld)\n", hwnd, uMsg, wParam, lParam);
+#ifdef PERLWIN32GUI_STRONGDEBUG
+	    printf("!XS(WindowMsgLoop) got (%ld, 0x%x, %ld, %ld)\n", hwnd, uMsg, wParam, lParam);
 #endif
-    PerlResult = 1;
 
+    if(uMsg == WM_CREATE || uMsg == WM_NCCREATE) {
+        perlud = (LPPERLWIN32GUI_USERDATA) ((CREATESTRUCT *) lParam)->lpCreateParams;
+        if(perlud!= NULL) {
+            SetWindowLong(hwnd, GWL_USERDATA, (long) perlud);
+        }
+        return DefWindowProc(hwnd, uMsg, wParam, lParam);
+    }
+
+    if(uMsg == WM_DESTROY) {
+		safefree( (LPPERLWIN32GUI_USERDATA) GetWindowLong(hwnd, GWL_USERDATA));
+		return DefWindowProc(hwnd, uMsg, wParam, lParam);
+	}
+#ifdef PERL_OBJECT
+	pPerl = ((LPPERLWIN32GUI_USERDATA) GetWindowLong(hwnd, GWL_USERDATA))->pPerl;
+#endif
+
+	ENTER;
+	SAVETMPS;
+
+    PerlResult = 1;
     strcpy(Name, "main::");
 
     switch(uMsg) {
@@ -1809,8 +1908,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
     case WM_COMMAND:
         if(HIWORD(wParam) == 0 && lParam == NULL) {
             // menu command processing
-#ifdef WIN32__GUI__STRONG__DEBUG
-			printf("!XS(WindowMsgLoop) got WM_COMMAND for a menu...\n");
+#ifdef PERLWIN32GUI_STRONGDEBUG
+				printf("!XS(WindowMsgLoop) got WM_COMMAND for a menu...\n");
 #endif
             if(GetMenuName(NOTXSCALL LOWORD(wParam), Name)) {
                 /*
@@ -1823,8 +1922,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
             }
         } else if(HIWORD(wParam) == 1 && lParam == NULL) {
             // accelerator processing
-#ifdef WIN32__GUI__STRONG__DEBUG
-			printf("!XS(WindowMsgLoop) got WM_COMMAND for an accelerator...\n");
+#ifdef PERLWIN32GUI_STRONGDEBUG
+				printf("!XS(WindowMsgLoop) got WM_COMMAND for an accelerator...\n");
 #endif
             if(GetAcceleratorName(NOTXSCALL LOWORD(wParam), Name)) {
                 /*
@@ -1836,12 +1935,12 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
                 PerlResult = DoEvent_Generic(NOTXSCALL Name);
             }
         } else {
-#ifdef WIN32__GUI__STRONG__DEBUG
-			printf("!XS(WindowMsgLoop) got WM_COMMAND, doing GetObjectNameAndClass...\n");
+#ifdef PERLWIN32GUI_STRONGDEBUG
+				printf("!XS(WindowMsgLoop) got WM_COMMAND, doing GetObjectNameAndClass...\n");
 #endif
             if(GetObjectNameAndClass(NOTXSCALL (HWND) lParam, Name, &obj_class)) {
-#ifdef WIN32__GUI__STRONG__DEBUG
-			printf("!XS(WindowMsgLoop) GetObjectNameAndClass succeeded (Name=%s, class=%d)...\n", Name, obj_class);
+#ifdef PERLWIN32GUI_STRONGDEBUG
+					printf("!XS(WindowMsgLoop) GetObjectNameAndClass succeeded (Name=%s, class=%d)...\n", Name, obj_class);
 #endif
                 switch(obj_class) {
 
@@ -1906,8 +2005,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 						break;
                     default:
                         strcat((char *) Name, "_Anonymous");
-#ifdef WIN32__GUI__STRONG__DEBUG
-                        printf("!XS(WindowMsgLoop): BUTTON WM_COMMAND NotifyCode=%d\n", HIWORD(wParam));
+#ifdef PERLWIN32GUI_STRONGDEBUG
+	                        printf("!XS(WindowMsgLoop): BUTTON WM_COMMAND NotifyCode=%d\n", HIWORD(wParam));
 #endif
                         PerlResult = DoEvent_Generic(NOTXSCALL Name);
                         break;
@@ -1953,8 +2052,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
                         break;
                     default:
                         strcat((char *) Name, "_Anonymous");
-#ifdef WIN32__GUI__STRONG__DEBUG
-                        printf("!XS(WindowMsgLoop): LISTBOX WM_COMMAND NotifyCode=%d\n", HIWORD(wParam));
+#ifdef PERLWIN32GUI_STRONGDEBUG
+	                        printf("!XS(WindowMsgLoop): LISTBOX WM_COMMAND NotifyCode=%d\n", HIWORD(wParam));
 #endif
                         PerlResult = DoEvent_Generic(NOTXSCALL Name);
                         break;
@@ -1993,8 +2092,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
                         break;
                     default:
                         strcat((char *) Name, "_Anonymous");
-#ifdef WIN32__GUI__STRONG__DEBUG
-                        printf("!XS(WindowMsgLoop): EDIT WM_COMMAND NotifyCode=%d\n", HIWORD(wParam));
+#ifdef PERLWIN32GUI_STRONGDEBUG
+	                        printf("!XS(WindowMsgLoop): EDIT WM_COMMAND NotifyCode=%d\n", HIWORD(wParam));
 #endif
                         PerlResult = DoEvent_Generic(NOTXSCALL Name);
                         break;
@@ -2021,8 +2120,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
                         break;
                     default:
                         strcat((char *) Name, "_Anonymous");
-#ifdef WIN32__GUI__STRONG__DEBUG
-                        printf("!XS(WindowMsgLoop): STATIC WM_COMMAND NotifyCode=%d\n", HIWORD(wParam));
+#ifdef PERLWIN32GUI_STRONGDEBUG
+	                        printf("!XS(WindowMsgLoop): STATIC WM_COMMAND NotifyCode=%d\n", HIWORD(wParam));
 #endif
                         PerlResult = DoEvent_Generic(NOTXSCALL Name);
                         break;
@@ -2061,9 +2160,11 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
                         break;
                     default:
                         strcat((char *) Name, "_Anonymous");
-#ifdef WIN32__GUI__STRONG__DEBUG
-                        printf("!XS(WindowMsgLoop): COMBOBOX WM_COMMAND NotifyCode=%d\n", HIWORD(wParam));
-                        printf("!XS(WindowMsgLoop): COMBOBOX WM_COMMAND hWnd=%ld\n", lParam);
+#ifdef PERLWIN32GUI_STRONGDEBUG
+	                        printf("!XS(WindowMsgLoop): COMBOBOX WM_COMMAND NotifyCode=%d\n", HIWORD(wParam));
+#endif
+#ifdef PERLWIN32GUI_STRONGDEBUG
+	                        printf("!XS(WindowMsgLoop): COMBOBOX WM_COMMAND hWnd=%ld\n", lParam);
 #endif
                         PerlResult = DoEvent_Long(NOTXSCALL Name, HIWORD(wParam));
                         break;
@@ -2097,8 +2198,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
                 {
                     LPTBNOTIFY tbn;
                     tbn = (LPTBNOTIFY) lParam;
-#ifdef WIN32__GUI__STRONG__DEBUG
-                    printf("!XS(WindowMsgLoop): TOOLBAR WM_NOTIFY Code=%ud\n", tbn->hdr.code);
+#ifdef PERLWIN32GUI_STRONGDEBUG
+	                printf("!XS(WindowMsgLoop): TOOLBAR WM_NOTIFY Code=%ud\n", tbn->hdr.code);
 #endif
                 }
                 break;
@@ -2194,6 +2295,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
                          */
                         strcat(Name, "_Expanding");
                     PerlResult = DoEvent_Long(NOTXSCALL Name, (long) tv_notify->itemNew.hItem);
+                    FREETMPS;
+                    LEAVE;
                     if(PerlResult == 0) return TRUE;
                     else                return FALSE;
                     break;
@@ -2237,6 +2340,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
                      */
                     strcat((char *) Name, "_Changing");
                     PerlResult = DoEvent_Generic(NOTXSCALL Name);
+                    FREETMPS;
+                    LEAVE;
                     if(PerlResult == 0) return TRUE;
                     else                return FALSE;
                     break;
@@ -2263,8 +2368,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
                     LPTOOLTIPTEXT lptt;
                     lptt = (LPTOOLTIPTEXT) lParam;
                     lptt->lpszText = (LPTSTR) DoEvent_NeedText(NOTXSCALL Name, lptt->hdr.idFrom);
-#ifdef WIN32__GUI__STRONG__DEBUG
-                    printf("!XS(WindowMsgLoop): TTN_NEEDTEXT got '%s'\n", lptt->lpszText);
+#ifdef PERLWIN32GUI_STRONGDEBUG
+	                    printf("!XS(WindowMsgLoop): TTN_NEEDTEXT got '%s'\n", lptt->lpszText);
 #endif
                     PerlResult = 1;
 
@@ -2303,6 +2408,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
                         nmh->iItem,
                         nmh->pitem->cxy
                     );
+                    FREETMPS;
+                    LEAVE;
                     if(PerlResult == 0) return TRUE;
                     else                return FALSE;
                 } else if(((LPNMHDR)lParam)->code == HDN_ENDTRACK) {
@@ -2342,6 +2449,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
                         nmh->iItem,
                         nmh->pitem->cxy
                     );
+                    FREETMPS;
+                    LEAVE;
                     if(PerlResult == 0) return TRUE;
                     else                return FALSE;
                 } else if(((LPNMHDR)lParam)->code == HDN_DIVIDERDBLCLICK) {
@@ -2496,15 +2605,15 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
                 if(rtts != NULL && SvOK(*rtts)) {
                 	if(SvROK(*rtts) && SvTYPE(SvRV(*rtts)) == SVt_PVAV) {
 	                    tts = (AV*) SvRV(*rtts);
-#ifdef WIN32__GUI__STRONG__DEBUG
-	                    printf("!XS(WindowMsgLoop): found -tooltips (%d)...\n", av_len(tts));
+#ifdef PERLWIN32GUI_STRONGDEBUG
+		                printf("!XS(WindowMsgLoop): found -tooltips (%d)...\n", av_len(tts));
 #endif
 	                    for(ttsi=0;ttsi<av_len(tts);ttsi++) {
                         	rtt = av_fetch(tts, ttsi, 0);
                         	if(rtt != NULL) {
 	                            tt = (HWND) SvIV(*rtt);
-#ifdef WIN32__GUI__STRONG__DEBUG
-	                            printf("!XS(WindowMsgLoop): relaying to tooltip %ld...\n", tt);
+#ifdef PERLWIN32GUI_STRONGDEBUG
+		                        printf("!XS(WindowMsgLoop): relaying to tooltip %ld...\n", tt);
 #endif
 	                            ttmsg.hwnd = hwnd;
                             	ttmsg.lParam = lParam;
@@ -2525,59 +2634,56 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
     case WM_CTLCOLORBTN:
     case WM_CTLCOLORLISTBOX:
         {
-			SV* obj;
-            HV* self;
-            SV** color;
+			LPPERLWIN32GUI_USERDATA perlud;
+
             if(uMsg == WM_CTLCOLORSTATIC
             && GetWindowLong((HWND) lParam, GWL_STYLE) & SS_SIMPLE) {
-                // PerlResult = 1;
+				FREETMPS;
+				LEAVE;
                 return FALSE;
-            } else {
-                if(uMsg == WM_CTLCOLORSTATIC) SetBkMode((HDC) wParam, TRANSPARENT);
-                obj = SV_SELF_FROM_WINDOW((HWND) lParam);
-                if(obj != NULL) {
-					self = (HV*) SvRV(obj);
-				} else {
-					self = (HV*) NULL;
-				}
-                if(self != NULL) {
-					color = hv_fetch(self, "-foreground", 11, FALSE);
-                    if(SvMAGICAL(self)) mg_get(*color);
-                    if(color != NULL && SvOK(*color)) {
-                        SetTextColor((HDC) wParam, (COLORREF) SvIV(*color));
-                    }
-                    color = hv_fetch(self, "-background", 11, FALSE);
-                    if(SvMAGICAL(self)) mg_get(*color);
-                    if(color != NULL && SvOK(*color)) {
-                        SetBkColor((HDC) wParam, (COLORREF) SvIV(*color));
-                        return ((LRESULT) (HBRUSH) SvIV(*color));
-                    } else {
-                        HBRUSH defBrush;
-                        switch(uMsg) {
-                        case WM_CTLCOLOREDIT:
-                        case WM_CTLCOLORLISTBOX:
-                            defBrush = GetSysColorBrush(COLOR_WINDOW);
-                            break;
-                        default:
-                            defBrush = GetSysColorBrush(COLOR_BTNFACE);
-                            break;
-                        }
-                        return ((LRESULT) defBrush);
-                    }
-                } else {
-                    HBRUSH defBrush;
-                    switch(uMsg) {
-                    case WM_CTLCOLOREDIT:
-                    case WM_CTLCOLORLISTBOX:
-                        defBrush = GetSysColorBrush(COLOR_WINDOW);
-                        break;
-                    default:
-                        defBrush = GetSysColorBrush(COLOR_BTNFACE);
-                        break;
-                    }
-                    return ((LRESULT) defBrush);
-                }
             }
+
+			perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong((HWND) lParam, GWL_USERDATA);
+			if(perlud == NULL || perlud->dwSize != sizeof(PERLWIN32GUI_USERDATA)) {
+				HBRUSH defBrush;
+				switch(uMsg) {
+				case WM_CTLCOLOREDIT:
+				case WM_CTLCOLORLISTBOX:
+					defBrush = GetSysColorBrush(COLOR_WINDOW);
+					break;
+				default:
+					defBrush = GetSysColorBrush(COLOR_BTNFACE);
+					break;
+				}
+				FREETMPS;
+				LEAVE;
+				return ((LRESULT) defBrush);
+			}
+
+			if(uMsg == WM_CTLCOLORSTATIC) SetBkMode((HDC) wParam, TRANSPARENT);
+			if(perlud->clrForeground != CLR_INVALID) {
+				SetTextColor((HDC) wParam, perlud->clrForeground);
+			}
+			if(perlud->clrBackground != CLR_INVALID) {
+				SetBkColor((HDC) wParam, perlud->clrBackground);
+				FREETMPS;
+				LEAVE;
+				return ((LRESULT) perlud->hBackgroundBrush);
+			} else {
+				HBRUSH defBrush;
+				switch(uMsg) {
+				case WM_CTLCOLOREDIT:
+				case WM_CTLCOLORLISTBOX:
+					defBrush = GetSysColorBrush(COLOR_WINDOW);
+					break;
+				default:
+					defBrush = GetSysColorBrush(COLOR_BTNFACE);
+					break;
+				}
+				FREETMPS;
+				LEAVE;
+				return ((LRESULT) defBrush);
+			}
         }
         break;
 
@@ -2621,37 +2727,25 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 
     case WM_GETMINMAXINFO:
         {
-            HV* self;
-            SV** t;
             LPMINMAXINFO minmax;
-			if(GetWindowLong(hwnd, GWL_USERDATA) != NULL) {
+            LPPERLWIN32GUI_USERDATA perlud;
+            perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(hwnd, GWL_USERDATA);
+#ifdef PERLWIN32GUI_STRONGDEBUG
+	        printf("!XS(WindowMsgLoop): WM_GETMINMAXINFO perlud=%ld\n", perlud);
+#endif
+            if(NULL != perlud && perlud->dwSize == sizeof(PERLWIN32GUI_USERDATA)) {
 	            minmax = (LPMINMAXINFO) lParam;
-#ifdef WIN32__GUI__STRONG__DEBUG
-				printf("!XS(WindowMsgLoop) got GETMINMAXINFO (pData=%ld)\n", GetWindowLong(hwnd, GWL_USERDATA));
-#endif
-	            self = HV_SELF_FROM_WINDOW(hwnd);
-#ifdef WIN32__GUI__STRONG__DEBUG
-				printf("!XS(WindowMsgLoop) passed HV_SELF_FROM_WINDOW\n");
-#endif
-	            if(self != NULL) {
-	                t = hv_fetch(self, "-minwidth", 9, FALSE);
-	                if(SvMAGICAL(self)) mg_get(*t);
-	                if(t != NULL && SvOK(*t)) minmax->ptMinTrackSize.x = (LONG) SvIV(*t);
-	                t = hv_fetch(self, "-minheight", 10, FALSE);
-	                if(SvMAGICAL(self)) mg_get(*t);
-	                if(t != NULL && SvOK(*t)) minmax->ptMinTrackSize.y = (LONG) SvIV(*t);
-	                t = hv_fetch(self, "-maxwidth", 9, FALSE);
-	                if(SvMAGICAL(self)) mg_get(*t);
-	                if(t != NULL && SvOK(*t)) minmax->ptMaxTrackSize.x = (LONG) SvIV(*t);
-	                t = hv_fetch(self, "-maxheight", 10, FALSE);
-	                if(SvMAGICAL(self)) mg_get(*t);
-	                if(t != NULL && SvOK(*t)) minmax->ptMaxTrackSize.y = (LONG) SvIV(*t);
-	                PerlResult = 1;
-	            }
-	        }
+				if(perlud->iMinWidth != 0) minmax->ptMinTrackSize.x = (LONG) perlud->iMinWidth;
+				if(perlud->iMaxWidth != 0) minmax->ptMaxTrackSize.x = (LONG) perlud->iMaxWidth;
+				if(perlud->iMinHeight != 0) minmax->ptMinTrackSize.y = (LONG) perlud->iMinHeight;
+				if(perlud->iMaxHeight != 0) minmax->ptMaxTrackSize.y = (LONG) perlud->iMaxHeight;
+				PerlResult = 1;
+			}
 		}
         break;
     }
+	FREETMPS;
+	LEAVE;
 
     if(PerlResult == -1) {
         PostMessage(hwnd, WM_EXITLOOP, -1, 0);
@@ -2692,8 +2786,8 @@ LRESULT CALLBACK MsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     ENTER ;
     SAVETMPS;
 
-    PUSHMARK(sp) ;
-    EXTEND(sp,4) ;
+    PUSHMARK(SP) ;
+    EXTEND(SP,4) ;
     PUSHs(sv_2mortal(newSViv((long)hwnd)));
     PUSHs(sv_2mortal(newSViv((long)uMsg)));
     PUSHs(sv_2mortal(newSViv((long)wParam)));
@@ -2751,7 +2845,7 @@ LRESULT CALLBACK MsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
             cb_ref = hv_fetch(cb_hash, temp, strlen(temp), FALSE);
 
-            perl_call_pv((char *)SvPV(*cb_ref, na), G_ARRAY);
+            perl_call_pv((char *)SvPV_nolen(*cb_ref), G_ARRAY);
 
             SPAGAIN ;
             PerlResult = POPi;
@@ -2759,7 +2853,7 @@ LRESULT CALLBACK MsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
         }
         break;
     case 1:
-        perl_call_pv((char *)SvPV(*cb_ref, na), G_ARRAY);
+        perl_call_pv((char *)SvPV_nolen(*cb_ref), G_ARRAY);
         SPAGAIN ;
         PerlResult = POPi;
         PUTBACK ;
@@ -2769,8 +2863,8 @@ LRESULT CALLBACK MsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     LEAVE ;
 
     if(PerlResult == -1) {
-#ifdef WIN32__GUI__DEBUG
-        printf("!XS(MsgLoop): posting WM_EXITLOOP to %ld...\n", hwnd);
+#ifdef PERLWIN32GUI_DEBUG
+	        printf("!XS(MsgLoop): posting WM_EXITLOOP to %ld...\n", hwnd);
 #endif
         PostMessage(hwnd, WM_EXITLOOP, -1, 0);
         return 0;
@@ -2800,7 +2894,7 @@ void ParseWindowOptions(
     I32 ax,
     I32 items,
     int from_i,
-    LPPERLCREATESTRUCT perlcs
+    LPPERLWIN32GUI_CREATESTRUCT perlcs
 ) {
     dTHR;
 	int i, next_i;
@@ -2808,15 +2902,15 @@ void ParseWindowOptions(
     char * classname;
     SV** stored;
     SV* storing;
-#ifdef WIN32__GUI__STRONG__DEBUG
+#ifdef PERLWIN32GUI_STRONGDEBUG
     printf("!XS(ParseWindowOptions): from_i=%d\n", from_i);
     printf("!XS(ParseWindowOptions): items=%d\n", items);
 #endif
     next_i = -1;
-    for(i = from_i; i < items; i++) {
+    for(i=from_i; i<items; i++) {
         if(next_i == -1) {
-            option = SvPV(ST(i), na);
-#ifdef WIN32__GUI__STRONG__DEBUG
+            option = SvPV_nolen(ST(i));
+#ifdef PERLWIN32GUI_STRONGDEBUG
             printf("!XS(ParseWindowOptions): got option '%s'\n", option);
 #endif
             if(strcmp(option, "-class") == 0) {
@@ -2826,7 +2920,7 @@ void ParseWindowOptions(
             ||        strcmp(option, "-caption") == 0
             ||        strcmp(option, "-title") == 0) {
                 next_i = i + 1;
-                perlcs->cs.lpszName = (LPCTSTR) SvPV(ST(next_i), na);
+                perlcs->cs.lpszName = (LPCTSTR) SvPV_nolen(ST(next_i));
             } else if(strcmp(option, "-style") == 0) {
                 next_i = i + 1;
                 perlcs->cs.style = (DWORD) SvIV(ST(next_i));
@@ -2868,7 +2962,7 @@ void ParseWindowOptions(
             } else if(strcmp(option, "-parent") == 0) {
                 next_i = i + 1;
                 perlcs->cs.hwndParent = (HWND) handle_From(NOTXSCALL ST(next_i));
-                perlcs->parent = (HV*) SvRV(ST(next_i));
+                perlcs->hvParent = (HV*) SvRV(ST(next_i));
             } else if(strcmp(option, "-menu") == 0) {
                 next_i = i + 1;
                 perlcs->cs.hMenu = (HMENU) handle_From(NOTXSCALL ST(next_i));
@@ -2878,13 +2972,13 @@ void ParseWindowOptions(
             } else if(strcmp(option, "-data") == 0) {
                 next_i = i + 1;
 /* ! */
-                // pPointer = (LPVOID) SvPV(ST(next_i), na);
+                // pPointer = (LPVOID) SvPV_nolen(ST(next_i));
             } else if(strcmp(option, "-name") == 0) {
                 next_i = i + 1;
-                perlcs->szWindowName = SvPV(ST(next_i), na);
+                perlcs->szWindowName = SvPV_nolen(ST(next_i));
             } else if(strcmp(option, "-function") == 0) {
                 next_i = i + 1;
-                perlcs->szWindowFunction = SvPV(ST(next_i), na);
+                perlcs->szWindowFunction = SvPV_nolen(ST(next_i));
             } else if(strcmp(option, "-font") == 0) {
                 next_i = i + 1;
                 perlcs->hFont = (HFONT) handle_From(NOTXSCALL ST(next_i));
@@ -2902,14 +2996,29 @@ void ParseWindowOptions(
                 SwitchFlag(perlcs->cs.style, WS_TABSTOP, SvIV(ST(next_i)));
             } else if(strcmp(option, "-foreground") == 0) {
                 next_i = i + 1;
-                storing = newSViv((long) SvCOLORREF(NOTXSCALL ST(next_i)));
-				stored = hv_store(perlcs->self, "-foreground", 11, storing, 0);
-				if(SvMAGICAL(perlcs->self)) mg_set(storing);
+                perlcs->clrForeground = SvCOLORREF(NOTXSCALL ST(next_i));
+                storing = newSViv((long) perlcs->clrForeground);
+				stored = hv_store(perlcs->hvSelf, "-foreground", 11, storing, 0);
+				if(SvMAGICAL(perlcs->hvSelf)) mg_set(storing);
             } else if(strcmp(option, "-background") == 0) {
                 next_i = i + 1;
-                storing = newSViv((long) SvCOLORREF(NOTXSCALL ST(next_i)));
-				stored = hv_store(perlcs->self, "-background", 11, storing, 0);
-				if(SvMAGICAL(perlcs->self)) mg_set(storing);
+                perlcs->clrBackground = SvCOLORREF(NOTXSCALL ST(next_i));
+                {
+					LOGBRUSH lb;
+					ZeroMemory(&lb, sizeof(LOGBRUSH));
+			        lb.lbStyle = BS_SOLID;
+        			lb.lbColor = perlcs->clrBackground;
+					if(perlcs->hBackgroundBrush != NULL) {
+						DeleteObject((HGDIOBJ) perlcs->hBackgroundBrush);
+					}
+        			perlcs->hBackgroundBrush = CreateBrushIndirect(&lb);
+				}
+                storing = newSViv((long) perlcs->clrBackground);
+				stored = hv_store(perlcs->hvSelf, "-background", 11, storing, 0);
+				if(SvMAGICAL(perlcs->hvSelf)) mg_set(storing);
+                storing = newSViv((long) perlcs->hBackgroundBrush);
+				stored = hv_store(perlcs->hvSelf, "-backgroundbrush", 16, storing, 0);
+				if(SvMAGICAL(perlcs->hvSelf)) mg_set(storing);
             } else if(strcmp(option, "-hscroll") == 0) {
                 next_i = i + 1;
                 SwitchFlag(perlcs->cs.style, WS_HSCROLL, SvIV(ST(next_i)));
@@ -2929,7 +3038,7 @@ void ParseWindowOptions(
 						perlcs->cs.cy = (int) SvIV(*t);
 					}
 				} else {
-					if(dowarn)
+					if(PL_dowarn)
 						warn("Win32::GUI: Argument to -size is not an array reference!");
 				}
             } else if(strcmp(option, "-pos") == 0) {
@@ -2945,14 +3054,14 @@ void ParseWindowOptions(
 						perlcs->cs.y = (int) SvIV(*t);
 					}
 				} else {
-					if(dowarn)
+					if(PL_dowarn)
 						warn("Win32::GUI: Argument to -pos is not an array reference!");
 				}
 			}
             // ######################
             // class-specific parsing
             // ######################
-            switch(perlcs->nClass) {
+            switch(perlcs->iClass) {
 
             case WIN32__GUI__WINDOW:
             case WIN32__GUI__DIALOG:
@@ -2962,18 +3071,20 @@ void ParseWindowOptions(
                         SV** t;
                         t = av_fetch((AV*)SvRV(ST(next_i)), 0, 0);
                         if(t != NULL) {
+							perlcs->iMinWidth = (int) SvIV(*t);
                             storing = newSViv((LONG) SvIV(*t));
-                            stored = hv_store(perlcs->self, "-minwidth", 9, storing, 0);
-                            if(SvMAGICAL(perlcs->self)) mg_set(storing);
+                            stored = hv_store(perlcs->hvSelf, "-minwidth", 9, storing, 0);
+                            if(SvMAGICAL(perlcs->hvSelf)) mg_set(storing);
                         }
                         t = av_fetch((AV*)SvRV(ST(next_i)), 1, 0);
                         if(t != NULL) {
+							perlcs->iMinHeight = (int) SvIV(*t);
                             storing = newSViv((LONG) SvIV(*t));
-                            stored = hv_store(perlcs->self, "-minheight", 10, storing, 0);
-                            if(SvMAGICAL(perlcs->self)) mg_set(storing);
+                            stored = hv_store(perlcs->hvSelf, "-minheight", 10, storing, 0);
+                            if(SvMAGICAL(perlcs->hvSelf)) mg_set(storing);
                         }
                     } else {
-                        if(dowarn)
+                        if(PL_dowarn)
                             warn("Win32::GUI: Argument to -minsize is not an array reference!");
                     }
                 } else if(strcmp(option, "-maxsize") == 0) {
@@ -2982,40 +3093,46 @@ void ParseWindowOptions(
                         SV** t;
                         t = av_fetch((AV*)SvRV(ST(next_i)), 0, 0);
                         if(t != NULL) {
+							perlcs->iMaxWidth = (int) SvIV(*t);
                             storing = newSViv((LONG) SvIV(*t));
-                            stored = hv_store(perlcs->self, "-maxwidth", 9, storing, 0);
-                            if(SvMAGICAL(perlcs->self)) mg_set(storing);
+                            stored = hv_store(perlcs->hvSelf, "-maxwidth", 9, storing, 0);
+                            if(SvMAGICAL(perlcs->hvSelf)) mg_set(storing);
                         }
                         t = av_fetch((AV*)SvRV(ST(next_i)), 1, 0);
                         if(t != NULL) {
+							perlcs->iMaxHeight = (int) SvIV(*t);
                             storing = newSViv((LONG) SvIV(*t));
-                            stored = hv_store(perlcs->self, "-maxheight", 10, storing, 0);
-                            if(SvMAGICAL(perlcs->self)) mg_set(storing);
+                            stored = hv_store(perlcs->hvSelf, "-maxheight", 10, storing, 0);
+                            if(SvMAGICAL(perlcs->hvSelf)) mg_set(storing);
                         }
                     } else {
-                        if(dowarn)
+                        if(PL_dowarn)
                             warn("Win32::GUI: Argument to -maxsize is not an array reference!");
                     }
                 } else if(strcmp(option, "-minwidth") == 0) {
                     next_i = i + 1;
+                    perlcs->iMinWidth = (int) SvIV(ST(next_i));
                     storing = newSViv((LONG) SvIV(ST(next_i)));
-                    stored = hv_store(perlcs->self, "-minwidth", 9, storing, 0);
-                    if(SvMAGICAL(perlcs->self)) mg_set(storing);
+                    stored = hv_store(perlcs->hvSelf, "-minwidth", 9, storing, 0);
+                    if(SvMAGICAL(perlcs->hvSelf)) mg_set(storing);
                 } else if(strcmp(option, "-minheight") == 0) {
                     next_i = i + 1;
+                    perlcs->iMinHeight = (int) SvIV(ST(next_i));
                     storing = newSViv((LONG) SvIV(ST(next_i)));
-                    stored = hv_store(perlcs->self, "-minheight", 10, storing, 0);
-                    if(SvMAGICAL(perlcs->self)) mg_set(storing);
+                    stored = hv_store(perlcs->hvSelf, "-minheight", 10, storing, 0);
+                    if(SvMAGICAL(perlcs->hvSelf)) mg_set(storing);
                 } else if(strcmp(option, "-maxwidth") == 0) {
                     next_i = i + 1;
+                    perlcs->iMaxWidth = (int) SvIV(ST(next_i));
                     storing = newSViv((LONG) SvIV(ST(next_i)));
-                    stored = hv_store(perlcs->self, "-maxwidth", 9, storing, 0);
-                    if(SvMAGICAL(perlcs->self)) mg_set(storing);
+                    stored = hv_store(perlcs->hvSelf, "-maxwidth", 9, storing, 0);
+                    if(SvMAGICAL(perlcs->hvSelf)) mg_set(storing);
                 } else if(strcmp(option, "-maxheight") == 0) {
                     next_i = i + 1;
+                    perlcs->iMaxHeight = (int) SvIV(ST(next_i));
                     storing = newSViv((LONG) SvIV(ST(next_i)));
-                    stored = hv_store(perlcs->self, "-maxheight", 10, storing, 0);
-                    if(SvMAGICAL(perlcs->self)) mg_set(storing);
+                    stored = hv_store(perlcs->hvSelf, "-maxheight", 10, storing, 0);
+                    if(SvMAGICAL(perlcs->hvSelf)) mg_set(storing);
                 } else if(strcmp(option, "-topmost") == 0) {
                     next_i = i + 1;
                     SwitchFlag(perlcs->cs.dwExStyle, WS_EX_TOPMOST, SvIV(ST(next_i)));
@@ -3049,26 +3166,29 @@ void ParseWindowOptions(
 				||        strcmp(option, "-acceleratortable") == 0) {
 					next_i = i + 1;
 					perlcs->hAcc = (HACCEL) handle_From(NOTXSCALL ST(next_i));
+                    storing = newSViv((LONG) handle_From(NOTXSCALL ST(next_i)));
+                    stored = hv_store(perlcs->hvSelf, "-accel", 6, storing, 0);
+                    if(SvMAGICAL(perlcs->hvSelf)) mg_set(storing);
 				}
 				break;
 
             case WIN32__GUI__STATIC:
                 if(strcmp(option, "-align") == 0) {
                     next_i = i + 1;
-                    if(strcmp(SvPV(ST(next_i), na), "left") == 0) {
+                    if(strcmp(SvPV_nolen(ST(next_i)), "left") == 0) {
                         SwitchFlag(perlcs->cs.style, SS_LEFT, 1);
                         SwitchFlag(perlcs->cs.style, SS_CENTER, 0);
                         SwitchFlag(perlcs->cs.style, SS_RIGHT, 0);
-                    } else if(strcmp(SvPV(ST(next_i), na), "center") == 0) {
+                    } else if(strcmp(SvPV_nolen(ST(next_i)), "center") == 0) {
                         SwitchFlag(perlcs->cs.style, SS_LEFT, 0);
                         SwitchFlag(perlcs->cs.style, SS_CENTER, 1);
                         SwitchFlag(perlcs->cs.style, SS_RIGHT, 0);
-                    } else if(strcmp(SvPV(ST(next_i), na), "right") == 0) {
+                    } else if(strcmp(SvPV_nolen(ST(next_i)), "right") == 0) {
                         SwitchFlag(perlcs->cs.style, SS_LEFT, 0);
                         SwitchFlag(perlcs->cs.style, SS_CENTER, 0);
                         SwitchFlag(perlcs->cs.style, SS_RIGHT, 1);
                     } else {
-                        if(dowarn) warn("Win32::GUI: Invalid value for -align!");
+                        if(PL_dowarn) warn("Win32::GUI: Invalid value for -align!");
                     }
                 } else if(strcmp(option, "-bitmap") == 0
                 ||        strcmp(option, "-picture") == 0) {
@@ -3077,11 +3197,11 @@ void ParseWindowOptions(
                     perlcs->hImageList = (HIMAGELIST) handle_From(NOTXSCALL ST(next_i));
                 } else if(strcmp(option, "-truncate") == 0) {
                     next_i = i + 1;
-                    if(strcmp(SvPV(ST(next_i), na), "path") == 0) {
+                    if(strcmp(SvPV_nolen(ST(next_i)), "path") == 0) {
                         SwitchFlag(perlcs->cs.style, SS_PATHELLIPSIS, 1);
                         SwitchFlag(perlcs->cs.style, SS_ENDELLIPSIS, 0);
                         SwitchFlag(perlcs->cs.style, SS_WORDELLIPSIS, 0);
-                    } else if(strcmp(SvPV(ST(next_i), na), "word") == 0) {
+                    } else if(strcmp(SvPV_nolen(ST(next_i)), "word") == 0) {
                         SwitchFlag(perlcs->cs.style, SS_PATHELLIPSIS, 0);
                         SwitchFlag(perlcs->cs.style, SS_ENDELLIPSIS, 0);
                         SwitchFlag(perlcs->cs.style, SS_WORDELLIPSIS, 1);
@@ -3096,22 +3216,22 @@ void ParseWindowOptions(
                     }
                 } else if(strcmp(option, "-frame") == 0) {
                     next_i = i + 1;
-                    if(strcmp(SvPV(ST(next_i), na), "black") == 0) {
+                    if(strcmp(SvPV_nolen(ST(next_i)), "black") == 0) {
                         SwitchFlag(perlcs->cs.style, SS_BLACKFRAME, 1);
                         SwitchFlag(perlcs->cs.style, SS_GRAYFRAME, 0);
                         SwitchFlag(perlcs->cs.style, SS_WHITEFRAME, 0);
                         SwitchFlag(perlcs->cs.style, SS_ETCHEDFRAME, 0);
-                    } else if(strcmp(SvPV(ST(next_i), na), "gray") == 0) {
+                    } else if(strcmp(SvPV_nolen(ST(next_i)), "gray") == 0) {
                         SwitchFlag(perlcs->cs.style, SS_BLACKFRAME, 0);
                         SwitchFlag(perlcs->cs.style, SS_GRAYFRAME, 1);
                         SwitchFlag(perlcs->cs.style, SS_WHITEFRAME, 0);
                         SwitchFlag(perlcs->cs.style, SS_ETCHEDFRAME, 0);
-                    } else if(strcmp(SvPV(ST(next_i), na), "white") == 0) {
+                    } else if(strcmp(SvPV_nolen(ST(next_i)), "white") == 0) {
                         SwitchFlag(perlcs->cs.style, SS_BLACKFRAME, 0);
                         SwitchFlag(perlcs->cs.style, SS_GRAYFRAME, 0);
                         SwitchFlag(perlcs->cs.style, SS_WHITEFRAME, 1);
                         SwitchFlag(perlcs->cs.style, SS_ETCHEDFRAME, 0);
-                    } else if(strcmp(SvPV(ST(next_i), na), "etched") == 0) {
+                    } else if(strcmp(SvPV_nolen(ST(next_i)), "etched") == 0) {
                         SwitchFlag(perlcs->cs.style, SS_BLACKFRAME, 0);
                         SwitchFlag(perlcs->cs.style, SS_GRAYFRAME, 0);
                         SwitchFlag(perlcs->cs.style, SS_WHITEFRAME, 0);
@@ -3124,19 +3244,19 @@ void ParseWindowOptions(
                     }
                 } else if(strcmp(option, "-fill") == 0) {
                     next_i = i + 1;
-                    if(strcmp(SvPV(ST(next_i), na), "black") == 0) {
+                    if(strcmp(SvPV_nolen(ST(next_i)), "black") == 0) {
                         SwitchFlag(perlcs->cs.style, SS_BLACKRECT, 1);
                         SwitchFlag(perlcs->cs.style, SS_GRAYRECT, 0);
                         SwitchFlag(perlcs->cs.style, SS_WHITERECT, 0);
-                    } else if(strcmp(SvPV(ST(next_i), na), "gray") == 0) {
+                    } else if(strcmp(SvPV_nolen(ST(next_i)), "gray") == 0) {
                         SwitchFlag(perlcs->cs.style, SS_BLACKRECT, 0);
                         SwitchFlag(perlcs->cs.style, SS_GRAYRECT, 1);
                         SwitchFlag(perlcs->cs.style, SS_WHITERECT, 0);
-                    } else if(strcmp(SvPV(ST(next_i), na), "white") == 0) {
+                    } else if(strcmp(SvPV_nolen(ST(next_i)), "white") == 0) {
                         SwitchFlag(perlcs->cs.style, SS_BLACKRECT, 0);
                         SwitchFlag(perlcs->cs.style, SS_GRAYRECT, 0);
                         SwitchFlag(perlcs->cs.style, SS_WHITERECT, 1);
-                    } else if(strcmp(SvPV(ST(next_i), na), "etched") == 0) {
+                    } else if(strcmp(SvPV_nolen(ST(next_i)), "etched") == 0) {
                         SwitchFlag(perlcs->cs.style, SS_BLACKRECT, 0);
                         SwitchFlag(perlcs->cs.style, SS_GRAYRECT, 0);
                         SwitchFlag(perlcs->cs.style, SS_WHITERECT, 0);
@@ -3165,20 +3285,20 @@ void ParseWindowOptions(
             case WIN32__GUI__RICHEDIT:
                 if(strcmp(option, "-align") == 0) {
                     next_i = i + 1;
-                    if(strcmp(SvPV(ST(next_i), na), "left") == 0) {
+                    if(strcmp(SvPV_nolen(ST(next_i)), "left") == 0) {
                         SwitchFlag(perlcs->cs.style, ES_LEFT, 1);
                         SwitchFlag(perlcs->cs.style, ES_CENTER, 0);
                         SwitchFlag(perlcs->cs.style, ES_RIGHT, 0);
-                    } else if(strcmp(SvPV(ST(next_i), na), "center") == 0) {
+                    } else if(strcmp(SvPV_nolen(ST(next_i)), "center") == 0) {
                         SwitchFlag(perlcs->cs.style, ES_LEFT, 0);
                         SwitchFlag(perlcs->cs.style, ES_CENTER, 1);
                         SwitchFlag(perlcs->cs.style, ES_RIGHT, 0);
-                    } else if(strcmp(SvPV(ST(next_i), na), "right") == 0) {
+                    } else if(strcmp(SvPV_nolen(ST(next_i)), "right") == 0) {
                         SwitchFlag(perlcs->cs.style, ES_LEFT, 0);
                         SwitchFlag(perlcs->cs.style, ES_CENTER, 0);
                         SwitchFlag(perlcs->cs.style, ES_RIGHT, 1);
                     } else {
-                        if(dowarn) warn("Win32::GUI: Invalid value for -align!");
+                        if(PL_dowarn) warn("Win32::GUI: Invalid value for -align!");
                     }
                 } else if(strcmp(option, "-multiline") == 0) {
                     next_i = i + 1;
@@ -3221,37 +3341,37 @@ void ParseWindowOptions(
             case WIN32__GUI__CHECKBOX:
                 if(strcmp(option, "-align") == 0) {
                     next_i = i + 1;
-                    if(strcmp(SvPV(ST(next_i), na), "left") == 0) {
+                    if(strcmp(SvPV_nolen(ST(next_i)), "left") == 0) {
                         SwitchFlag(perlcs->cs.style, BS_LEFT, 1);
                         SwitchFlag(perlcs->cs.style, BS_CENTER, 0);
                         SwitchFlag(perlcs->cs.style, BS_RIGHT, 0);
-                    } else if(strcmp(SvPV(ST(next_i), na), "center") == 0) {
+                    } else if(strcmp(SvPV_nolen(ST(next_i)), "center") == 0) {
                         SwitchFlag(perlcs->cs.style, BS_LEFT, 0);
                         SwitchFlag(perlcs->cs.style, BS_CENTER, 1);
                         SwitchFlag(perlcs->cs.style, BS_RIGHT, 0);
-                    } else if(strcmp(SvPV(ST(next_i), na), "right") == 0) {
+                    } else if(strcmp(SvPV_nolen(ST(next_i)), "right") == 0) {
                         SwitchFlag(perlcs->cs.style, BS_LEFT, 0);
                         SwitchFlag(perlcs->cs.style, BS_CENTER, 0);
                         SwitchFlag(perlcs->cs.style, BS_RIGHT, 1);
                     } else {
-                        if(dowarn) warn("Win32::GUI: Invalid value for -align!");
+                        if(PL_dowarn) warn("Win32::GUI: Invalid value for -align!");
                     }
                 } else if(strcmp(option, "-valign") == 0) {
                     next_i = i + 1;
-                    if(strcmp(SvPV(ST(next_i), na), "top") == 0) {
+                    if(strcmp(SvPV_nolen(ST(next_i)), "top") == 0) {
                         SwitchFlag(perlcs->cs.style, BS_TOP, 1);
                         SwitchFlag(perlcs->cs.style, BS_VCENTER, 0);
                         SwitchFlag(perlcs->cs.style, BS_BOTTOM, 0);
-                    } else if(strcmp(SvPV(ST(next_i), na), "center") == 0) {
+                    } else if(strcmp(SvPV_nolen(ST(next_i)), "center") == 0) {
                         SwitchFlag(perlcs->cs.style, BS_TOP, 0);
                         SwitchFlag(perlcs->cs.style, BS_VCENTER, 1);
                         SwitchFlag(perlcs->cs.style, BS_BOTTOM, 0);
-                    } else if(strcmp(SvPV(ST(next_i), na), "bottom") == 0) {
+                    } else if(strcmp(SvPV_nolen(ST(next_i)), "bottom") == 0) {
                         SwitchFlag(perlcs->cs.style, BS_TOP, 0);
                         SwitchFlag(perlcs->cs.style, BS_VCENTER, 0);
                         SwitchFlag(perlcs->cs.style, BS_BOTTOM, 1);
                     } else {
-                        if(dowarn) warn("Win32::GUI: Invalid value for -valign!");
+                        if(PL_dowarn) warn("Win32::GUI: Invalid value for -valign!");
                     }
                 } else if(strcmp(option, "-ok") == 0) {
                     next_i = i + 1;
@@ -3291,7 +3411,7 @@ void ParseWindowOptions(
                         SwitchFlag(perlcs->cs.style, LBS_MULTIPLESEL, 1);
                         SwitchFlag(perlcs->cs.style, LBS_EXTENDEDSEL, 1);
                     } else {
-                        if(dowarn) warn("Win32::GUI: Invalid value for -multisel!");
+                        if(PL_dowarn) warn("Win32::GUI: Invalid value for -multisel!");
                     }
                 } else if(strcmp(option, "-sort") == 0) {
                     next_i = i + 1;
@@ -3354,14 +3474,14 @@ void ParseWindowOptions(
             case WIN32__GUI__LISTVIEW:
                 if(strcmp(option, "-align") == 0) {
                     next_i = i + 1;
-                    if(strcmp(SvPV(ST(next_i), na), "left") == 0) {
+                    if(strcmp(SvPV_nolen(ST(next_i)), "left") == 0) {
                         SwitchFlag(perlcs->cs.style, LVS_ALIGNLEFT, 1);
                         SwitchFlag(perlcs->cs.style, LVS_ALIGNTOP, 0);
-                    } else if(strcmp(SvPV(ST(next_i), na), "top") == 0) {
+                    } else if(strcmp(SvPV_nolen(ST(next_i)), "top") == 0) {
                         SwitchFlag(perlcs->cs.style, LVS_ALIGNLEFT, 0);
                         SwitchFlag(perlcs->cs.style, LVS_ALIGNTOP, 1);
                     } else {
-                        if(dowarn) warn("Win32::GUI: Invalid value for -align!");
+                        if(PL_dowarn) warn("Win32::GUI: Invalid value for -align!");
                     }
                 } else if(strcmp(option, "-imagelist") == 0) {
                     next_i = i + 1;
@@ -3446,14 +3566,14 @@ void ParseWindowOptions(
             case WIN32__GUI__UPDOWN:
                 if(strcmp(option, "-align") == 0) {
                     next_i = i + 1;
-                    if(strcmp(SvPV(ST(next_i), na), "left") == 0) {
+                    if(strcmp(SvPV_nolen(ST(next_i)), "left") == 0) {
                         SwitchFlag(perlcs->cs.style, UDS_ALIGNLEFT, 1);
                         SwitchFlag(perlcs->cs.style, UDS_ALIGNRIGHT, 0);
-                    } else if(strcmp(SvPV(ST(next_i), na), "right") == 0) {
+                    } else if(strcmp(SvPV_nolen(ST(next_i)), "right") == 0) {
                         SwitchFlag(perlcs->cs.style, UDS_ALIGNLEFT, 0);
                         SwitchFlag(perlcs->cs.style, UDS_ALIGNRIGHT, 1);
                     } else {
-                        if(dowarn) warn("Win32::GUI: Invalid value for -align!");
+                        if(PL_dowarn) warn("Win32::GUI: Invalid value for -align!");
                     }
                 } else if(strcmp(option, "-nothousands") == 0) {
                     next_i = i + 1;
@@ -3564,35 +3684,35 @@ void ParseWindowOptions(
 						perlcs->cs.lpszClass = "Win32::GUI::Splitter(vertical)";
 					}
 					storing = newSViv((LONG) SvIV(ST(next_i)));
-					stored = hv_store(perlcs->self, "-horizontal", 11, storing, 0);
-					if(SvMAGICAL(perlcs->self)) mg_set(storing);
+					stored = hv_store(perlcs->hvSelf, "-horizontal", 11, storing, 0);
+					if(SvMAGICAL(perlcs->hvSelf)) mg_set(storing);
                 } else if(strcmp(option, "-min") == 0) {
                     next_i = i + 1;
                     storing = newSViv((LONG) SvIV(ST(next_i)));
-                    stored = hv_store(perlcs->self, "-min", 4, storing, 0);
-                    if(SvMAGICAL(perlcs->self)) mg_set(storing);
+                    stored = hv_store(perlcs->hvSelf, "-min", 4, storing, 0);
+                    if(SvMAGICAL(perlcs->hvSelf)) mg_set(storing);
 				} else if(strcmp(option, "-max") == 0) {
                     next_i = i + 1;
                     storing = newSViv((LONG) SvIV(ST(next_i)));
-                    stored = hv_store(perlcs->self, "-max", 4, storing, 0);
-                    if(SvMAGICAL(perlcs->self)) mg_set(storing);
+                    stored = hv_store(perlcs->hvSelf, "-max", 4, storing, 0);
+                    if(SvMAGICAL(perlcs->hvSelf)) mg_set(storing);
 				} else if(strcmp(option, "-range") == 0) {
                     if(SvROK(ST(next_i)) && SvTYPE(SvRV(ST(next_i))) == SVt_PVAV) {
                         SV** t;
                         t = av_fetch((AV*)SvRV(ST(next_i)), 0, 0);
                         if(t != NULL) {
                             storing = newSViv((LONG) SvIV(*t));
-                            stored = hv_store(perlcs->self, "-min", 4, storing, 0);
-                            if(SvMAGICAL(perlcs->self)) mg_set(storing);
+                            stored = hv_store(perlcs->hvSelf, "-min", 4, storing, 0);
+                            if(SvMAGICAL(perlcs->hvSelf)) mg_set(storing);
                         }
                         t = av_fetch((AV*)SvRV(ST(next_i)), 1, 0);
                         if(t != NULL) {
                             storing = newSViv((LONG) SvIV(*t));
-                            stored = hv_store(perlcs->self, "-max", 4, storing, 0);
-                            if(SvMAGICAL(perlcs->self)) mg_set(storing);
+                            stored = hv_store(perlcs->hvSelf, "-max", 4, storing, 0);
+                            if(SvMAGICAL(perlcs->hvSelf)) mg_set(storing);
                         }
                     } else {
-                        if(dowarn)
+                        if(PL_dowarn)
                             warn("Win32::GUI: Argument to -range is not an array reference!");
                     }
 				}
@@ -3623,13 +3743,13 @@ void ParseMenuItemOptions(
     char * option;
     unsigned int textlength;
     next_i = -1;
-#ifdef WIN32__GUI__STRONG__DEBUG
+#ifdef PERLWIN32GUI_STRONGDEBUG
     printf("!XS(ParseMenuItemOptions): items='%d'\n", items);
 #endif
     for(i = from_i; i < items; i++) {
         if(next_i == -1) {
-            option = SvPV(ST(i), na);
-#ifdef WIN32__GUI__STRONG__DEBUG
+            option = SvPV_nolen(ST(i));
+#ifdef PERLWIN32GUI_STRONGDEBUG
             printf("!XS(ParseMenuItemOptions): got option '%s'\n", option);
 #endif
             if(strcmp(option, "-mask") == 0) {
@@ -3666,7 +3786,7 @@ void ParseMenuItemOptions(
                 next_i = i + 1;
                 mii->dwTypeData = SvPV(ST(next_i), textlength);
                 mii->cch = textlength;
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_STRONGDEBUG
                 printf("!XS(ParseMenuItemOptions): dwTypeData='%s' cch=%d\n", mii->dwTypeData, mii->cch);
 #endif
             }
@@ -3723,7 +3843,7 @@ void ParseHeaderItemOptions(
     next_i = -1;
     for(i = from_i; i < items; i++) {
         if(next_i == -1) {
-            option = SvPV(ST(i), na);
+            option = SvPV_nolen(ST(i));
             if(strcmp(option, "-text") == 0) {
                 next_i = i + 1;
                 hditem->pszText = SvPV(ST(next_i), tlen);
@@ -3759,20 +3879,20 @@ void ParseHeaderItemOptions(
                 SwitchFlag(hditem->mask, HDI_ORDER, 1);
             } else if(strcmp(option, "-align") == 0) {
                 next_i = i + 1;
-                if(strcmp(SvPV(ST(next_i), na), "left") == 0) {
+                if(strcmp(SvPV_nolen(ST(next_i)), "left") == 0) {
                     SwitchFlag(hditem->fmt, HDF_LEFT, 1);
                     SwitchFlag(hditem->fmt, HDF_CENTER, 0);
                     SwitchFlag(hditem->fmt, HDF_RIGHT, 0);
-                } else if(strcmp(SvPV(ST(next_i), na), "center") == 0) {
+                } else if(strcmp(SvPV_nolen(ST(next_i)), "center") == 0) {
                     SwitchFlag(hditem->fmt, HDF_LEFT, 0);
                     SwitchFlag(hditem->fmt, HDF_CENTER, 1);
                     SwitchFlag(hditem->fmt, HDF_RIGHT, 0);
-                } else if(strcmp(SvPV(ST(next_i), na), "right") == 0) {
+                } else if(strcmp(SvPV_nolen(ST(next_i)), "right") == 0) {
                     SwitchFlag(hditem->fmt, HDF_LEFT, 0);
                     SwitchFlag(hditem->fmt, HDF_CENTER, 0);
                     SwitchFlag(hditem->fmt, HDF_RIGHT, 1);
                 } else {
-                    if(dowarn) warn("Win32::GUI: Invalid value for -align!");
+                    if(PL_dowarn) warn("Win32::GUI: Invalid value for -align!");
                 }
             } else
             if(strcmp(option, "-item") == 0
@@ -3808,7 +3928,7 @@ void ParseComboboxExItemOptions(
     next_i = -1;
     for(i = from_i; i < items; i++) {
         if(next_i == -1) {
-            option = SvPV(ST(i), na);
+            option = SvPV_nolen(ST(i));
             if(strcmp(option, "-text") == 0) {
                 next_i = i + 1;
                 item->pszText = SvPV(ST(next_i), tlen);
@@ -3951,12 +4071,10 @@ PPCODE:
     wcx.lpszMenuName = NULL;
 
     for(i = 0; i < items; i++) {
-        if(strcmp(SvPV(ST(i), na), "-extends") == 0) {
+        if(strcmp(SvPV_nolen(ST(i)), "-extends") == 0) {
             next_i = i + 1;
-            if(!GetClassInfoEx((HINSTANCE) NULL,
-                               (LPCTSTR) SvPV(ST(next_i), na),
-                               &wcx)) {
-                if(dowarn) warn("Win32::GUI: Class '%s' not found!\n", SvPV(ST(next_i), na));
+            if(!GetClassInfoEx((HINSTANCE) NULL, (LPCTSTR) SvPV_nolen(ST(next_i)), &wcx)) {
+                if(PL_dowarn) warn("Win32::GUI: Class '%s' not found!\n", SvPV_nolen(ST(next_i)));
                 XSRETURN_NO;
             }
         }
@@ -3965,10 +4083,10 @@ PPCODE:
     next_i = -1;
     for(i = 0; i < items; i++) {
         if(next_i == -1) {
-            option = SvPV(ST(i), na);
+            option = SvPV_nolen(ST(i));
             if(strcmp(option, "-name") == 0) {
                 next_i = i + 1;
-                wcx.lpszClassName = (char *) SvPV(ST(next_i), na);
+                wcx.lpszClassName = (char *) SvPV_nolen(ST(next_i));
             } else if(strcmp(option, "-color") == 0) {
                 next_i = i + 1;
                 wcx.hbrBackground = (HBRUSH) SvCOLORREF(NOTXSCALL ST(next_i));
@@ -3980,26 +4098,26 @@ PPCODE:
                 }
             } else if(strcmp(option, "-widget") == 0) {
                 next_i = i + 1;
-                if(strcmp(SvPV(ST(next_i), na), "Button") == 0) {
+                if(strcmp(SvPV_nolen(ST(next_i)), "Button") == 0) {
                     DefButtonProc = wcx.lpfnWndProc;
                     wcx.lpfnWndProc = ButtonMsgLoop;
-                } else if(strcmp(SvPV(ST(next_i), na), "Listbox") == 0) {
+                } else if(strcmp(SvPV_nolen(ST(next_i)), "Listbox") == 0) {
                     DefListboxProc = wcx.lpfnWndProc;
                     wcx.lpfnWndProc = ListboxMsgLoop;
-                } else if(strcmp(SvPV(ST(next_i), na), "TabStrip") == 0) {
+                } else if(strcmp(SvPV_nolen(ST(next_i)), "TabStrip") == 0) {
                     DefTabStripProc = wcx.lpfnWndProc;
                     wcx.lpfnWndProc = TabStripMsgLoop;
-                } else if(strcmp(SvPV(ST(next_i), na), "RichEdit") == 0) {
+                } else if(strcmp(SvPV_nolen(ST(next_i)), "RichEdit") == 0) {
                     DefRichEditProc = wcx.lpfnWndProc;
                     wcx.lpfnWndProc = RichEditMsgLoop;
-                } else if(strcmp(SvPV(ST(next_i), na), "Graphic") == 0) {
+                } else if(strcmp(SvPV_nolen(ST(next_i)), "Graphic") == 0) {
                     wcx.lpfnWndProc = GraphicMsgLoop;
-                } else if(strcmp(SvPV(ST(next_i), na), "InteractiveGraphic") == 0) {
+                } else if(strcmp(SvPV_nolen(ST(next_i)), "InteractiveGraphic") == 0) {
                     wcx.lpfnWndProc = InteractiveGraphicMsgLoop;
-                } else if(strcmp(SvPV(ST(next_i), na), "Splitter") == 0) {
+                } else if(strcmp(SvPV_nolen(ST(next_i)), "Splitter") == 0) {
                     wcx.lpfnWndProc = SplitterMsgLoop;
                     wcx.hCursor = LoadCursor(hinstance, MAKEINTRESOURCE(IDC_HSPLIT));
-                } else if(strcmp(SvPV(ST(next_i), na), "SplitterH") == 0) {
+                } else if(strcmp(SvPV_nolen(ST(next_i)), "SplitterH") == 0) {
                     wcx.lpfnWndProc = SplitterMsgLoop;
                     wcx.hCursor = LoadCursor(hinstance, MAKEINTRESOURCE(IDC_VSPLIT));
                 }
@@ -4014,7 +4132,7 @@ PPCODE:
                 wcx.hCursor = (HCURSOR) handle_From(NOTXSCALL ST(next_i));
             } else if(strcmp(option, "-menu") == 0) {
                 next_i = i + 1;
-                wcx.lpszMenuName = (char *) SvPV(ST(next_i), na);
+                wcx.lpszMenuName = (char *) SvPV_nolen(ST(next_i));
             }
         } else {
             next_i = -1;
@@ -4047,6 +4165,7 @@ PPCODE:
     LPCTSTR szClassname;
     LPCTSTR szText;
     int nX, nY, nWidth, nHeight;
+	char * option;
 
     hParent = NULL;
     hMenu = NULL;
@@ -4059,62 +4178,63 @@ PPCODE:
     next_i = -1;
     for(i = 0; i < items; i++) {
         if(next_i == -1) {
-            if(strcmp(SvPV(ST(i), na), "-exstyle") == 0) {
+			option = SvPV_nolen(ST(i));
+            if(strcmp(option, "-exstyle") == 0) {
                 next_i = i + 1;
                 dwExStyle = (DWORD) SvIV(ST(next_i));
             }
-            if(strcmp(SvPV(ST(i), na), "-class") == 0) {
+            if(strcmp(option, "-class") == 0) {
                 next_i = i + 1;
-                szClassname = (LPCTSTR) SvPV(ST(next_i), na);
+                szClassname = (LPCTSTR) SvPV_nolen(ST(next_i));
             }
-            if(strcmp(SvPV(ST(i), na), "-text") == 0
-            || strcmp(SvPV(ST(i), na), "-title") == 0) {
+            if(strcmp(option, "-text") == 0
+            || strcmp(option, "-title") == 0) {
                 next_i = i + 1;
-                szText = (LPCTSTR) SvPV(ST(next_i), na);
+                szText = (LPCTSTR) SvPV_nolen(ST(next_i));
             }
-            if(strcmp(SvPV(ST(i), na), "-style") == 0) {
+            if(strcmp(option, "-style") == 0) {
                 next_i = i + 1;
                 dwStyle = (DWORD) SvIV(ST(next_i));
             }
 
-            if(strcmp(SvPV(ST(i), na), "-left") == 0) {
+            if(strcmp(option, "-left") == 0) {
                 next_i = i + 1;
                 nX = (int) SvIV(ST(next_i));
             }
-            if(strcmp(SvPV(ST(i), na), "-top") == 0) {
+            if(strcmp(option, "-top") == 0) {
                 next_i = i + 1;
                 nY = (int) SvIV(ST(next_i));
             }
-            if(strcmp(SvPV(ST(i), na), "-height") == 0) {
+            if(strcmp(option, "-height") == 0) {
                 next_i = i + 1;
                 nHeight = (int) SvIV(ST(next_i));
             }
-            if(strcmp(SvPV(ST(i), na), "-width") == 0) {
+            if(strcmp(option, "-width") == 0) {
                 next_i = i + 1;
                 nWidth = (int) SvIV(ST(next_i));
             }
-            if(strcmp(SvPV(ST(i), na), "-parent") == 0) {
+            if(strcmp(option, "-parent") == 0) {
                 next_i = i + 1;
                 hParent = (HWND) handle_From(NOTXSCALL ST(next_i));
             }
-            if(strcmp(SvPV(ST(i), na), "-menu") == 0) {
+            if(strcmp(option, "-menu") == 0) {
                 next_i = i + 1;
                 hMenu = (HMENU) handle_From(NOTXSCALL ST(next_i));
             }
-            if(strcmp(SvPV(ST(i), na), "-instance") == 0) {
+            if(strcmp(option, "-instance") == 0) {
                 next_i = i + 1;
                 hInstance = (HINSTANCE) SvIV(ST(next_i));
             }
-            if(strcmp(SvPV(ST(i), na), "-data") == 0) {
+            if(strcmp(option, "-data") == 0) {
                 next_i = i + 1;
-                pPointer = (LPVOID) SvPV(ST(next_i), na);
+                pPointer = (LPVOID) SvPV_nolen(ST(next_i));
             }
 
         } else {
             next_i = -1;
         }
     }
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
     printf("XS(CreateWindowEx): Done parsing parameters...\n");
     printf("XS(CreateWindowEx): dwExStyle = %ld\n", dwExStyle);
     printf("XS(CreateWindowEx): szClassname = %s\n", szClassname);
@@ -4155,8 +4275,8 @@ Create(...)
 PPCODE:
     HWND myhandle;
     int first_i;
-    PERLCREATESTRUCT perlcs;
-    int nClass;
+    PERLWIN32GUI_CREATESTRUCT perlcs;
+    int iClass;
     LPVOID pPointer;
     SV* tempsv;
     HV* windows;
@@ -4166,21 +4286,24 @@ PPCODE:
     SV* storing;
     SV** font;
     char temp[80];
+	LPPERLWIN32GUI_USERDATA perlud;
 #ifdef PERL_OBJECT
     PerlData *pData;
 #endif
 
-    ZeroMemory(&perlcs, sizeof(PERLCREATESTRUCT));
+    ZeroMemory(&perlcs, sizeof(PERLWIN32GUI_CREATESTRUCT));
 
     self = newSVsv(ST(0));
-    perlcs.self = (HV*) SvRV(self);
-    perlcs.nClass = SvIV(ST(1));
+    perlcs.hvSelf = (HV*) SvRV(self);
+    perlcs.iClass = SvIV(ST(1));
+	perlcs.clrForeground = CLR_INVALID;
+	perlcs.clrBackground = CLR_INVALID;
     /*
      * #######################################
      * fill the default parameters for classes
      * #######################################
      */
-    switch(perlcs.nClass) {
+    switch(perlcs.iClass) {
     case WIN32__GUI__WINDOW:
         perlcs.cs.style = WS_OVERLAPPEDWINDOW;
         break;
@@ -4309,7 +4432,7 @@ PPCODE:
     first_i = 2;
     if(SvROK(ST(2))) {
         perlcs.cs.hwndParent = (HWND) handle_From(NOTXSCALL ST(2));
-        perlcs.parent = (HV*) SvRV(ST(2));
+        perlcs.hvParent = (HV*) SvRV(ST(2));
         first_i = 3;
     }
     /*
@@ -4323,7 +4446,7 @@ PPCODE:
      * post-processing default parameters
      * ##################################
      */
-    switch(perlcs.nClass) {
+    switch(perlcs.iClass) {
     case WIN32__GUI__WINDOW:
     case WIN32__GUI__DIALOG:
         if(perlcs.cs.lpszClass == NULL) {
@@ -4334,8 +4457,8 @@ PPCODE:
                 tempsv = perl_get_sv("Win32::GUI::StandardWinClassVisual", FALSE);
                 perlcs.cs.lpszClass = classname_From(NOTXSCALL tempsv);
             }
-#ifdef WIN32__GUI__STRONG__DEBUG
-            printf("XS(Create): using class '%s'\n", perlcs.cs.lpszClass);
+#ifdef PERLWIN32GUI_STRONGDEBUG
+	            printf("XS(Create): using class '%s'\n", perlcs.cs.lpszClass);
 #endif
         }
         break;
@@ -4353,11 +4476,11 @@ PPCODE:
      * default styles for all controls
      * ###############################
      */
-    if(perlcs.nClass != WIN32__GUI__WINDOW
-    && perlcs.nClass != WIN32__GUI__DIALOG) {
+    if(perlcs.iClass != WIN32__GUI__WINDOW
+    && perlcs.iClass != WIN32__GUI__DIALOG) {
         SwitchFlag(perlcs.cs.style, WS_CHILD, 1);
     }
-#ifdef WIN32__GUI__STRONG__DEBUG
+#ifdef PERLWIN32GUI_STRONGDEBUG
     printf("XS(Create): Done parsing parameters...\n");
     printf("XS(Create): dwExStyle = 0x%x\n", perlcs.cs.dwExStyle);
     printf("XS(Create): szClassname = %s\n", perlcs.cs.lpszClass);
@@ -4377,9 +4500,28 @@ PPCODE:
      * prepare the ground for the window
      * #################################
      */
-#ifdef WIN32__GUI__STRONG__DEBUG
-	printf("XS(Create): initializing pPointer...\n");
+#ifdef PERLWIN32GUI_STRONGDEBUG
+		printf("XS(Create): initializing pPointer...\n");
 #endif
+	Newz(0, perlud, 1, PERLWIN32GUI_USERDATA);
+	perlud->dwSize = sizeof(PERLWIN32GUI_USERDATA);
+#ifdef PERL_OBJECT
+	perlud->pPerl = pPerl;
+#endif
+	perlud->svSelf = self;
+	strcpy( (perlud->szWindowName), perlcs.szWindowName);
+	perlud->fDialogUI = 0;
+	perlud->iClass = perlcs.iClass;
+	perlud->hAcc = perlcs.hAcc;
+	perlud->iMinWidth = perlcs.iMinWidth;
+	perlud->iMaxWidth = perlcs.iMaxWidth;
+	perlud->iMinHeight = perlcs.iMinHeight;
+	perlud->iMaxHeight = perlcs.iMaxHeight;
+	perlud->clrForeground = perlcs.clrForeground;
+	perlud->clrBackground = perlcs.clrBackground;
+	perlud->hBackgroundBrush = perlcs.hBackgroundBrush;
+	pPointer = perlud;
+/*
 #ifdef PERL_OBJECT
     pData = NULL;
     if(NULL != (pData = new PerlData)) {
@@ -4391,27 +4533,29 @@ PPCODE:
 #else
     pPointer = NULL;
 #endif
+*/
+
     /* the following can be vital for the window
      * because as soon as it is created the message
      * loop is activated and data needs to be there
      */
-#ifdef WIN32__GUI__STRONG__DEBUG
+#ifdef PERLWIN32GUI_STRONGDEBUG
 	printf("XS(Create): storing -type/-name...\n");
 #endif
-    storing = newSViv((long) perlcs.nClass);
-    stored = hv_store(perlcs.self, "-type", 5, storing, 0);
-   	if(SvMAGICAL(perlcs.self)) mg_set(storing);
+    storing = newSViv((long) perlcs.iClass);
+    stored = hv_store(perlcs.hvSelf, "-type", 5, storing, 0);
+   	if(SvMAGICAL(perlcs.hvSelf)) mg_set(storing);
     if(perlcs.szWindowName != NULL) {
         storing = newSVpv((char *)perlcs.szWindowName, 0);
-        stored = hv_store(perlcs.self, "-name", 5, storing, 0);
-       	if(SvMAGICAL(perlcs.self)) mg_set(storing);
+        stored = hv_store(perlcs.hvSelf, "-name", 5, storing, 0);
+       	if(SvMAGICAL(perlcs.hvSelf)) mg_set(storing);
     }
     /*
      * ###################################
      * and finally, creation of the window
      * ###################################
      */
-#ifdef WIN32__GUI__STRONG__DEBUG
+#ifdef PERLWIN32GUI_STRONGDEBUG
 	printf("XS(Create): calling CreateWindowEx...\n");
 #endif
     if(myhandle = CreateWindowEx(
@@ -4433,24 +4577,24 @@ PPCODE:
          * ok, we can fill this object's hash
          * ##################################
          */
-#ifdef WIN32__GUI__STRONG__DEBUG
-	printf("XS(Create): succeeded, storing -handle...\n");
+#ifdef PERLWIN32GUI_STRONGDEBUG
+		printf("XS(Create): succeeded, storing -handle...\n");
 #endif
         storing = newSViv((long) myhandle);
-        stored = hv_store(perlcs.self, "-handle", 7, storing, 0);
-       	if(SvMAGICAL(perlcs.self)) mg_set(storing);
+        stored = hv_store(perlcs.hvSelf, "-handle", 7, storing, 0);
+       	if(SvMAGICAL(perlcs.hvSelf)) mg_set(storing);
         // set the font for the control
-#ifdef WIN32__GUI__STRONG__DEBUG
-	printf("XS(Create): storing -font...\n");
+#ifdef PERLWIN32GUI_STRONGDEBUG
+		printf("XS(Create): storing -font...\n");
 #endif
         if(perlcs.hFont != NULL) {
 	        storing = newSViv((long) perlcs.hFont);
-        	stored = hv_store(perlcs.self, "-font", 5, storing, 0);
-       		if(SvMAGICAL(perlcs.self)) mg_set(storing);
+        	stored = hv_store(perlcs.hvSelf, "-font", 5, storing, 0);
+       		if(SvMAGICAL(perlcs.hvSelf)) mg_set(storing);
             SendMessage(myhandle, WM_SETFONT, (WPARAM) perlcs.hFont, 0);
         } else if(perlcs.cs.hwndParent != NULL) {
-            font = hv_fetch(perlcs.parent, "-font", 5, FALSE);
-           	if(SvMAGICAL(perlcs.parent)) mg_get(*font);
+            font = hv_fetch(perlcs.hvParent, "-font", 5, FALSE);
+           	if(SvMAGICAL(perlcs.hvParent)) mg_get(*font);
             if(font != NULL && SvOK(*font)) {
                 perlcs.hFont = (HFONT) handle_From(NOTXSCALL *font);
                 SendMessage(myhandle, WM_SETFONT, (WPARAM) perlcs.hFont, 0);
@@ -4459,33 +4603,32 @@ PPCODE:
                 SendMessage(myhandle, WM_SETFONT, (WPARAM) perlcs.hFont, 0);
             }
         }
-        if(perlcs.hAcc != NULL) {
-	        storing = newSViv((long) perlcs.hFont);
-        	stored = hv_store(perlcs.self, "-accel", 6, storing, 0);
-       		if(SvMAGICAL(perlcs.self)) mg_set(storing);
+        if(NULL == perlcs.hAcc) {
+        	stored = hv_store(perlcs.hvSelf, "-accel", 6, newSViv(0), 0);
+       		if(SvMAGICAL(perlcs.hvSelf)) mg_set(storing);
 		}
         /*
          * ##################################
          * store the child in the parent hash
          * ##################################
          */
-#ifdef WIN32__GUI__STRONG__DEBUG
-	printf("XS(Create): storing object in parent...\n");
+#ifdef PERLWIN32GUI_STRONGDEBUG
+		printf("XS(Create): storing object in parent...\n");
 #endif
-        if(perlcs.parent != NULL && perlcs.szWindowName != NULL) {
+        if(perlcs.hvParent != NULL && perlcs.szWindowName != NULL) {
 	        storing = self;
-        	stored = hv_store(perlcs.parent, perlcs.szWindowName, strlen(perlcs.szWindowName), storing, 0);
-        	if(SvMAGICAL(perlcs.parent)) mg_set(storing);
+        	stored = hv_store(perlcs.hvParent, perlcs.szWindowName, strlen(perlcs.szWindowName), storing, 0);
+        	if(SvMAGICAL(perlcs.hvParent)) mg_set(storing);
         }
         /*
          * #####################################################
          * other post-creation class-specific initializations...
          * #####################################################
          */
-#ifdef WIN32__GUI__STRONG__DEBUG
-	printf("XS(Create): finalizing...\n");
+#ifdef PERLWIN32GUI_STRONGDEBUG
+		printf("XS(Create): finalizing...\n");
 #endif
-        switch(perlcs.nClass) {
+        switch(perlcs.iClass) {
         case WIN32__GUI__STATIC:
             if(perlcs.hImageList != NULL) {
 				if(perlcs.cs.style & SS_ICON) {
@@ -4542,7 +4685,7 @@ PPCODE:
         case WIN32__GUI__TREEVIEW:
             if(perlcs.hImageList != NULL)
                 TreeView_SetImageList(myhandle, perlcs.hImageList, TVSIL_NORMAL);
-            // later we'll cope with TVSIL_STATE too...
+            // TODO: later we'll cope with TVSIL_STATE too...
             break;
         case WIN32__GUI__REBAR:
             {
@@ -4575,8 +4718,9 @@ PPCODE:
          * store a pointer to the Perl object in the window's USERDATA
          * ###########################################################
          */
-#ifdef WIN32__GUI__STRONG__DEBUG
-	printf("XS(Create): doing SetWindowLong(pData)...\n");
+/*
+#ifdef PERLWIN32GUI_STRONGDEBUG
+		printf("XS(Create): doing SetWindowLong(pData)...\n");
 #endif
 #ifdef PERL_OBJECT
         pData->pPerl = pPerl;
@@ -4586,10 +4730,24 @@ PPCODE:
 #else
         SetWindowLong(myhandle, GWL_USERDATA, (long) self);
 #endif
+*/
+		if(perlcs.iClass != WIN32__GUI__WINDOW
+		&& perlcs.iClass != WIN32__GUI__DIALOG) {
+#ifdef PERLWIN32GUI_STRONGDEBUG
+			printf("XS(Create): doing SetWindowLong...\n");
+#endif
+			/*
+			 * POSSIBLE PROBLEM HERE:
+			 * since we don't provide a MsgLoop function
+			 * for each control, we can't control WM_DESTROY
+			 * to deallocate memory perl our USERDATA structure.
+			 */
+			SetWindowLong(myhandle, GWL_USERDATA, (long) perlud);
+		}
         XSRETURN_IV((long) myhandle);
     } else {
-#ifdef WIN32__GUI__STRONG__DEBUG
-	printf("XS(Create): failed, returning undef\n");
+#ifdef PERLWIN32GUI_STRONGDEBUG
+		printf("XS(Create): failed, returning undef\n");
 #endif
         XSRETURN_NO;
     }
@@ -4602,51 +4760,67 @@ void
 Change(...)
 PPCODE:
     HWND handle;
-    PERLCREATESTRUCT perlcs;
+    PERLWIN32GUI_CREATESTRUCT perlcs;
     int visibleSeen;
-    SV* tempsv;
-    SV** type;
+    SV** tempsv;
     HV* windows;
     HV* hash;
     char temp[80];
 
     handle = (HWND) handle_From(NOTXSCALL ST(0));
-#ifdef WIN32__GUI__STRONG__DEBUG
+#ifdef PERLWIN32GUI_STRONGDEBUG
     printf("XS(Change): handle=%ld\n", handle);
+#endif
+#ifdef PERLWIN32GUI_STRONGDEBUG
     printf("XS(Change): items=%d\n", items);
 #endif
-    ZeroMemory(&perlcs, sizeof(PERLCREATESTRUCT));
+    ZeroMemory(&perlcs, sizeof(PERLWIN32GUI_CREATESTRUCT));
 
-    perlcs.self = HV_SELF_FROM_WINDOW(handle);
-    if(perlcs.self != NULL) {
-        type = hv_fetch(perlcs.self, "-type", 5, 0);
-        if(SvMAGICAL(perlcs.self)) mg_get(*type);
-        if(type == NULL) {
-            perlcs.nClass = 0;
-        } else {
-            perlcs.nClass = SvIV(*type);
-        }
-#ifdef WIN32__GUI__STRONG__DEBUG
-        printf("XS(Change): nClass=%d\n", perlcs.nClass);
-#endif
+    perlcs.hvSelf = HV_SELF_FROM_WINDOW(handle);
+    if(perlcs.hvSelf != NULL) {
         /*
          * #####################
          * retrieve windows data
          * #####################
          */
+        tempsv = hv_fetch(perlcs.hvSelf, "-type", 5, 0);
+        if(SvMAGICAL(perlcs.hvSelf)) mg_get(*tempsv);
+        if(tempsv == NULL) {
+            perlcs.iClass = 0;
+        } else {
+            perlcs.iClass = SvIV(*tempsv);
+        }
+#ifdef PERLWIN32GUI_STRONGDEBUG
+	    printf("XS(Change): iClass=%d\n", perlcs.iClass);
+#endif
+        tempsv = hv_fetch(perlcs.hvSelf, "-backgroundbrush", 16, 0);
+        if(SvMAGICAL(perlcs.hvSelf)) mg_get(*tempsv);
+        if(tempsv == NULL) {
+            perlcs.hBackgroundBrush = NULL;
+        } else {
+            perlcs.hBackgroundBrush = (HBRUSH) SvIV(*tempsv);
+        }
+#ifdef PERLWIN32GUI_STRONGDEBUG
+	    printf("XS(Change): hBackgroundBrush=%ld\n", perlcs.hBackgroundBrush);
+#endif
         perlcs.cs.style = GetWindowLong(handle, GWL_STYLE);
         perlcs.cs.dwExStyle = GetWindowLong(handle, GWL_EXSTYLE);
+        /*
+         * ########################
+         * parse new window options
+         * ########################
+         */
         ParseWindowOptions(NOTXSCALL sp, mark, ax, items, 1, &perlcs);
         /*
          * ###############################
          * default styles for all controls
          * ###############################
          */
-        if(perlcs.nClass != WIN32__GUI__WINDOW
-        && perlcs.nClass != WIN32__GUI__DIALOG) {
+        if(perlcs.iClass != WIN32__GUI__WINDOW
+        && perlcs.iClass != WIN32__GUI__DIALOG) {
             SwitchFlag(perlcs.cs.style, WS_CHILD, 1);
         }
-#ifdef WIN32__GUI__STRONG__DEBUG
+#ifdef PERLWIN32GUI_STRONGDEBUG
         printf("XS(Change): Done parsing parameters...\n");
         printf("XS(Change): dwExStyle = 0x%x\n", perlcs.cs.dwExStyle);
         printf("XS(Change): szClassname = %s\n", perlcs.cs.lpszClass);
@@ -4677,10 +4851,10 @@ PPCODE:
                                  SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_NOMOVE);
         if(perlcs.cs.hMenu != NULL)
             SetMenu(handle, perlcs.cs.hMenu);
-        if(perlcs.nClass == WIN32__GUI__LISTVIEW)
+        if(perlcs.iClass == WIN32__GUI__LISTVIEW)
             ListView_SetExtendedListViewStyle(handle, perlcs.cs.dwExStyle);
 /* TODO: change class ???
-		if(perlcs.cs.nClass != NULL)
+		if(perlcs.cs.iClass != NULL)
         	SetWindowLong(handle, GWL_
 */
         XSRETURN_YES;
@@ -4702,12 +4876,17 @@ PREINIT:
     int stayhere;
     BOOL fIsDialog;
     HACCEL acc;
+    LPPERLWIN32GUI_USERDATA perlud;
 CODE:
     stayhere = 1;
     fIsDialog = FALSE;
     while (stayhere) {
+
+		ENTER;
+		SAVETMPS;
+
         stayhere = GetMessage(&msg, hwnd, 0, 0);
-#ifdef WIN32__GUI__STRONG__DEBUG
+#ifdef PERLWIN32GUI_STRONGDEBUG
         printf("XS(Dialog): GetMessage returned %d\n", stayhere);
 #endif
         if(msg.message == WM_EXITLOOP) {
@@ -4726,8 +4905,12 @@ CODE:
                 // now see if the parent window is a DialogBox
                 fIsDialog = FALSE;
                 acc = NULL;
+				perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(phwnd, GWL_USERDATA);
+                /*
                 self = HV_SELF_FROM_WINDOW(phwnd);
-                if(self != NULL) {
+                */
+                if(perlud != NULL && perlud->dwSize == sizeof(PERLWIN32GUI_USERDATA)) {
+                    /*
                     // was: tempsv = hv_fetch(self, "-type", 5, FALSE);
                     tempsv = hv_fetch(self, "-dialogui", 9, FALSE);
            			if(SvMAGICAL(self)) mg_get(*tempsv);
@@ -4737,11 +4920,17 @@ CODE:
                             fIsDialog = TRUE;
                         }
                     }
+                    */
+                    fIsDialog = perlud->fDialogUI;
+
+                    /*
                     tempsv = hv_fetch(self, "-accel", 6, FALSE);
            			if(SvMAGICAL(self)) mg_get(*tempsv);
                     if(tempsv != NULL) {
                         acc = (HACCEL) SvIV(*tempsv);
                     }
+                    */
+                    acc = perlud->hAcc;
                 }
                 if(fIsDialog) {
 					if(acc != NULL) {
@@ -4770,6 +4959,10 @@ CODE:
                 }
             }
         }
+
+        FREETMPS;
+        LEAVE;
+
     }
 	RETVAL = msg.wParam;
 OUTPUT:
@@ -4795,7 +4988,7 @@ CODE:
     fIsDialog = FALSE;
     while(stayhere) {
         stayhere = PeekMessage(&msg, hwnd, 0, 0, PM_REMOVE);
-#ifdef WIN32__GUI__STRONG__DEBUG
+#ifdef PERLWIN32GUI_STRONGDEBUG
         printf("XS(DoEvents): PeekMessage returned %d\n", stayhere);
 #endif
         if(msg.message == WM_EXITLOOP) {
@@ -4831,7 +5024,7 @@ CODE:
                     }
                 }
                 if(fIsDialog) {
-					if(acc) {
+					if(acc != NULL) {
 						if(!TranslateAccelerator(phwnd, acc, &msg)) {
 							if(!IsDialogMessage(phwnd, &msg)) {
 								TranslateMessage(&msg);
@@ -4845,7 +5038,7 @@ CODE:
 						}
 					}
                 } else {
-					if(acc) {
+					if(acc != NULL) {
 						if(!TranslateAccelerator(phwnd, acc, &msg)) {
 	                    	TranslateMessage(&msg);
 	                    	DispatchMessage(&msg);
@@ -5401,7 +5594,7 @@ PPCODE:
     #   - the y coordinate at which message occurs
     #
 BOOL
-PeekMessage(handle, min=0, max=0, message=&sv_undef)
+PeekMessage(handle, min=0, max=0, message=&PL_sv_undef)
     HWND handle
     UINT min
     UINT max
@@ -5411,7 +5604,7 @@ PREINIT:
 CODE:
     ZeroMemory(&msg, sizeof(msg));
     RETVAL = PeekMessage(&msg, handle, min, max, PM_NOREMOVE);
-    if(message != &sv_undef && SvROK(message)) {
+    if(message != &PL_sv_undef && SvROK(message)) {
         if(SvTYPE(SvRV(message)) == SVt_PVAV) {
             av_clear((AV*) SvRV(message));
             av_push((AV*) SvRV(message), sv_2mortal(newSViv((long) msg.hwnd)));
@@ -5422,7 +5615,7 @@ CODE:
             av_push((AV*) SvRV(message), sv_2mortal(newSViv(msg.pt.x)));
             av_push((AV*) SvRV(message), sv_2mortal(newSViv(msg.pt.y)));
         } else {
-            if(dowarn) warn("Win32::GUI: fourth parameter to PeekMessage is not an array reference");
+            if(PL_dowarn) warn("Win32::GUI: fourth parameter to PeekMessage is not an array reference");
         }
     }
 OUTPUT:
@@ -5461,7 +5654,7 @@ PPCODE:
         }
         XSRETURN_NO;
     } else {
-        XSRETURN_IV((long) SetWindowText(handle, (LPCTSTR) SvPV(ST(1), na)));
+        XSRETURN_IV((long) SetWindowText(handle, (LPCTSTR) SvPV_nolen(ST(1))));
     }
 
 
@@ -6049,7 +6242,7 @@ PREINIT:
 PPCODE:
     szString = SvPV(ST(1), cbString);
     hdc = GetDC(handle);
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
     printf("XS(GetTextExtentPoint32).font=%ld\n", font);
     printf("XS(GetTextExtentPoint32).string=%s\n", string);
 #endif
@@ -6146,6 +6339,33 @@ PPCODE:
     XST_mIV(3, r.bottom);
     XSRETURN(4);
 
+
+    ###########################################################################
+    # (@)METHOD:DialogUI(HANDLE, [FLAG])
+void
+DialogUI(handle,...)
+    HWND handle
+PREINIT:
+	LPPERLWIN32GUI_USERDATA perlud;
+PPCODE:
+    if(items > 2) {
+        CROAK("Usage: DialogUI(handle, [value]);\n");
+    }
+
+    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(handle, GWL_USERDATA);
+    if(perlud == NULL || perlud->dwSize != sizeof(PERLWIN32GUI_USERDATA)) {
+		XSRETURN_UNDEF;
+	} else {
+    	if(items == 1) {
+			XSRETURN_IV( (long) perlud->fDialogUI );
+		} else {
+			perlud->fDialogUI = SvIV(ST(1));
+			SetWindowLong( handle, GWL_USERDATA, (long) perlud );
+			XSRETURN_IV( (long) perlud->fDialogUI );
+		}
+    }
+
+
     # TODO: GetIconInfo
 
     ###########################################################################
@@ -6179,8 +6399,8 @@ CODE:
             RETVAL = PlayEnhMetaFile(hdc, hmeta, &rect);
             DeleteEnhMetaFile(hmeta);
         } else {
-#ifdef WIN32__GUI__DEBUG
-            printf("XS(PlayEnhMetaFile): GetEnhMetaFile failed, error = %d\n", GetLastError());
+#ifdef PERLWIN32GUI_DEBUG
+	            printf("XS(PlayEnhMetaFile): GetEnhMetaFile failed, error = %d\n", GetLastError());
 #endif
             RETVAL = 0;
         }
@@ -6203,30 +6423,32 @@ PREINIT:
     UINT size;
     LPVOID data;
 CODE:
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
     printf("XS(PlayWinMetaFile): filename = %s\n", filename);
 #endif
     SetLastError(0);
     hwinmeta = GetMetaFile(filename);
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
     printf("XS(PlayWinMetaFile): hwinmeta = %ld\n", hwinmeta);
+#endif
+#ifdef PERLWIN32GUI_DEBUG
     printf("XS(PlayWinMetaFile): GetLastError = %ld\n", GetLastError());
 #endif
     size = GetMetaFileBitsEx(hwinmeta, 0, NULL);
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
     printf("XS(PlayWinMetaFile): size = %d\n", size);
 #endif
     data = (LPVOID) safemalloc(size);
     GetMetaFileBitsEx(hwinmeta, size, data);
     hmeta = SetWinMetaFileBits(size, (CONST BYTE *) data, NULL, NULL);
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
     printf("XS(PlayWinMetaFile): hmeta = %ld\n", hmeta);
 #endif
     hdc = GetDC(handle);
     GetClientRect(handle, &rect);
     SetLastError(0);
     RETVAL = PlayEnhMetaFile(hdc, hmeta, &rect);
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
     printf("XS(PlayWinMetaFile): GetLastError after PlayEnhMetaFile = %d\n", GetLastError());
 #endif
     DeleteEnhMetaFile(hmeta);
@@ -6305,17 +6527,13 @@ OUTPUT:
     #
     #    obj_dc = hv_fetch((HV*)SvRV(obj), "dc", 2, 0);
     #    if(obj_dc != NULL) {
-    ##ifdef WIN32__GUI__DEBUG
-    #        printf("!XS(GetOrInitDC): obj{dc} = %ld\n", SvIV(*obj_dc));
-    ##endif
+    #        __DEBUG("!XS(GetOrInitDC): obj{dc} = %ld\n", SvIV(*obj_dc));
     #        return (HDC) SvIV(*obj_dc);
     #    } else {
     #        obj_hwnd = hv_fetch((HV*)SvRV(obj), "handle", 6, 0);
     #        hwnd = (HWND) SvIV(*obj_hwnd);
     #        hdc = GetDC(hwnd);
-    ##ifdef WIN32__GUI__DEBUG
-    #        printf("!XS(GetOrInitDC): GetDC = %ld\n", hdc);
-    ##endif
+    #        __DEBUG("!XS(GetOrInitDC): GetDC = %ld\n", hdc);
     #        hv_store((HV*) SvRV(obj), "dc", 2, newSViv((long) hdc), 0);
     #        return hdc;
     #    }
@@ -6879,25 +7097,25 @@ PPCODE:
     next_i = -1;
     for(i = 0; i < items; i++) {
         if(next_i == -1) {
-            option = SvPV(ST(i), na);
+            option = SvPV_nolen(ST(i));
             if(strcmp(option, "-owner") == 0) {
                 next_i = i + 1;
                 ofn.hwndOwner = (HWND) handle_From(NOTXSCALL ST(next_i));
             }
             if(strcmp(option, "-title") == 0) {
                 next_i = i + 1;
-                ofn.lpstrTitle = SvPV(ST(next_i), na);
+                ofn.lpstrTitle = SvPV_nolen(ST(next_i));
             }
             if(strcmp(option, "-directory") == 0) {
                 next_i = i + 1;
-                ofn.lpstrInitialDir = SvPV(ST(next_i), na);
+                ofn.lpstrInitialDir = SvPV_nolen(ST(next_i));
             }
             if(strcmp(option, "-filter") == 0) {
                 next_i = i + 1;
                 if(SvROK(ST(next_i)) && SvTYPE(SvRV(ST(next_i))) == SVt_PVAV) {
                     AV* filters;
                     SV** t;
-                    int i, filterlen;
+                    int i, filterlen = 0;
                     char *fpointer;
                     filters = (AV*)SvRV(ST(next_i));
                     for(i=0; i<=av_len(filters); i++) {
@@ -6912,23 +7130,22 @@ PPCODE:
                     for(i=0; i<=av_len(filters); i++) {
                         t = av_fetch(filters, i, 0);
                         if(t != NULL) {
-                            strcpy(fpointer, SvPV(*t, na));
-                            fpointer += SvCUR(*t) + 1;
-                            *fpointer = 0;
+                            strcpy(fpointer, SvPV_nolen(*t));
+                            fpointer += SvCUR(*t);
+                            *fpointer++ = 0;
                         }
 
                     }
-                    fpointer++;
                     *fpointer = 0;
                     ofn.lpstrFilter = (LPCTSTR) filter;
                 } else {
-                    if(dowarn) warn("Win32::GUI: argument to -filter is not an array reference!");
+                    if(PL_dowarn) warn("Win32::GUI: argument to -filter is not an array reference!");
                 }
 
             }
             if(strcmp(option, "-file") == 0) {
                 next_i = i + 1;
-                strcpy(filename, SvPV(ST(next_i), na));
+                strcpy(filename, SvPV_nolen(ST(next_i)));
             }
         } else {
             next_i = -1;
@@ -6988,25 +7205,25 @@ PPCODE:
     next_i = -1;
     for(i = 0; i < items; i++) {
         if(next_i == -1) {
-            option = SvPV(ST(i), na);
+            option = SvPV_nolen(ST(i));
             if(strcmp(option, "-owner") == 0) {
                 next_i = i + 1;
                 ofn.hwndOwner = (HWND) handle_From(NOTXSCALL ST(next_i));
             }
             if(strcmp(option, "-title") == 0) {
                 next_i = i + 1;
-                ofn.lpstrTitle = SvPV(ST(next_i), na);
+                ofn.lpstrTitle = SvPV_nolen(ST(next_i));
             }
             if(strcmp(option, "-directory") == 0) {
                 next_i = i + 1;
-                ofn.lpstrInitialDir = SvPV(ST(next_i), na);
+                ofn.lpstrInitialDir = SvPV_nolen(ST(next_i));
             }
             if(strcmp(option, "-filter") == 0) {
                 next_i = i + 1;
                 if(SvROK(ST(next_i)) && SvTYPE(SvRV(ST(next_i))) == SVt_PVAV) {
                     AV* filters;
                     SV** t;
-                    int i, filterlen;
+                    int i, filterlen = 0;
                     char *fpointer;
                     filters = (AV*)SvRV(ST(next_i));
                     for(i=0; i<=av_len(filters); i++) {
@@ -7021,23 +7238,22 @@ PPCODE:
                     for(i=0; i<=av_len(filters); i++) {
                         t = av_fetch(filters, i, 0);
                         if(t != NULL) {
-                            strcpy(fpointer, SvPV(*t, na));
-                            fpointer += SvCUR(*t) + 1;
-                            *fpointer = 0;
+                            strcpy(fpointer, SvPV_nolen(*t));
+                            fpointer += SvCUR(*t);
+                            *fpointer++ = 0;
                         }
 
                     }
-                    fpointer++;
                     *fpointer = 0;
                     ofn.lpstrFilter = (LPCTSTR) filter;
                 } else {
-                    if(dowarn) warn("Win32::GUI: argument to -filter is not an array reference!");
+                    if(PL_dowarn) warn("Win32::GUI: argument to -filter is not an array reference!");
                 }
 
             }
             if(strcmp(option, "-file") == 0) {
                 next_i = i + 1;
-                strcpy(filename, SvPV(ST(next_i), na));
+                strcpy(filename, SvPV_nolen(ST(next_i)));
             }
         } else {
             next_i = -1;
@@ -7063,7 +7279,6 @@ PPCODE:
 void
 BrowseForFolder(...)
 PPCODE:
-
     BROWSEINFO bi;
     LPITEMIDLIST retval;
     LPITEMIDLIST pidl;
@@ -7079,13 +7294,13 @@ PPCODE:
     next_i = -1;
     for(i = 0; i < items; i++) {
         if(next_i == -1) {
-            option = SvPV(ST(i), na);
+            option = SvPV_nolen(ST(i));
             if(strcmp(option, "-owner") == 0) {
                 next_i = i + 1;
                 bi.hwndOwner = (HWND) handle_From(NOTXSCALL ST(next_i));
             } else if(strcmp(option, "-title") == 0) {
                 next_i = i + 1;
-                bi.lpszTitle = SvPV(ST(next_i), na);
+                bi.lpszTitle = SvPV_nolen(ST(next_i));
             } else if(strcmp(option, "-computeronly") == 0) {
                 next_i = i + 1;
                 SwitchFlag(bi.ulFlags, BIF_BROWSEFORCOMPUTER, SvIV(ST(next_i)));
@@ -7106,7 +7321,7 @@ PPCODE:
                 SwitchFlag(bi.ulFlags, BIF_BROWSEINCLUDEFILES, SvIV(ST(next_i)));
             } else if(strcmp(option, "-directory") == 0) {
                 next_i = i + 1;
-                strcpy(folder, SvPV(ST(next_i), na));
+                strcpy(folder, SvPV_nolen(ST(next_i)));
             } else if(strcmp(option, "-root") == 0) {
                 next_i = i + 1;
                 if(SvIOK(ST(next_i))) {
@@ -7116,7 +7331,7 @@ PPCODE:
 					MultiByteToWideChar(
 						CP_ACP,
 						MB_PRECOMPOSED,
-						SvPV(ST(next_i), na), -1,
+						SvPV_nolen(ST(next_i)), -1,
 						olePath, MAX_PATH
 					);
 					hr = pDesktopFolder->ParseDisplayName(
@@ -7129,7 +7344,7 @@ PPCODE:
 						NULL
 					);
 					if(FAILED(hr)) {
-						if(dowarn) warn("Win32::GUI::BrowseForFolder: can't get ITEMIDLIST for -root!\n");
+						if(PL_dowarn) warn("Win32::GUI::BrowseForFolder: can't get ITEMIDLIST for -root!\n");
 						pDesktopFolder->Release();
 						XSRETURN_NO;
 					} else {
@@ -7172,6 +7387,7 @@ PPCODE:
     BOOL retval;
     int i, next_i;
     unsigned int lpstrlen;
+    char * option;
 
     ZeroMemory(&cc, sizeof(CHOOSECOLOR));
     cc.lStructSize = sizeof(CHOOSECOLOR);
@@ -7184,11 +7400,11 @@ PPCODE:
     next_i = -1;
     for(i = 0; i < items; i++) {
         if(next_i == -1) {
-            if(strcmp(SvPV(ST(i), na), "-owner") == 0) {
+			option = SvPV_nolen(ST(i));
+            if(strcmp(option, "-owner") == 0) {
                 next_i = i + 1;
                 cc.hwndOwner = (HWND) handle_From(NOTXSCALL ST(next_i));
-            }
-            if(strcmp(SvPV(ST(i), na), "-color") == 0) {
+            } else if(strcmp(option, "-color") == 0) {
                 next_i = i + 1;
                 cc.rgbResult = (COLORREF) SvCOLORREF(NOTXSCALL ST(next_i));
                 cc.Flags = cc.Flags | CC_RGBINIT;
@@ -7257,7 +7473,7 @@ PPCODE:
     next_i = -1;
     for(i = 0; i < items; i++) {
         if(next_i == -1) {
-            option = SvPV(ST(i), na);
+            option = SvPV_nolen(ST(i));
             if(strcmp(option, "-owner") == 0) {
                 next_i = i + 1;
                 cf.hwndOwner = (HWND) handle_From(NOTXSCALL ST(next_i));
@@ -7340,7 +7556,7 @@ PPCODE:
             if(strcmp(option, "-name") == 0
             || strcmp(option, "-face") == 0) {
                 next_i = i + 1;
-                strncpy(lf.lfFaceName, SvPV(ST(next_i), na), 32);
+                strncpy(lf.lfFaceName, SvPV_nolen(ST(next_i)), 32);
                 SwitchFlag(cf.Flags, CF_INITTOLOGFONTSTRUCT, 1);
             }
             if(strcmp(option, "-color") == 0) {
@@ -7559,9 +7775,9 @@ PREINIT:
 	int a, c, i;
 CODE:
 	a = items/3;
-	acc = (LPACCEL) safemalloc(a*sizeof(ACCEL));
+	acc = (LPACCEL) safemalloc(a * sizeof(ACCEL));
 	c = 0;
-	for(i=0;i<items;i+=3) {
+	for(i=0; i<items; i+=3) {
 		acc[c].cmd   = (WORD) SvIV(ST(i));
 		acc[c].key   = (WORD) SvIV(ST(i+1));
 		acc[c].fVirt = (BYTE) SvIV(ST(i+2));
@@ -7664,35 +7880,25 @@ PPCODE:
             hMenu = (HMENU) handle_From(NOTXSCALL ST(0));
         }
     }
-#ifdef WIN32__GUI__DEBUG
-    printf("XS(MenuItem::Change): hMenu=%ld\n", hMenu);
-    printf("XS(MenuItem::Change): myItem=%d\n", myItem);
+#ifdef PERLWIN32GUI_DEBUG
+	    printf("XS(MenuItem::Change): hMenu=%ld\n", hMenu);
+#endif
+#ifdef PERLWIN32GUI_DEBUG
+	    printf("XS(MenuItem::Change): myItem=%d\n", myItem);
 #endif
     ZeroMemory(&myMII, sizeof(MENUITEMINFO));
     myMII.cbSize = sizeof(MENUITEMINFO);
     myMII.fMask = MIIM_STATE | MIIM_SUBMENU | MIIM_TYPE;
     myMII.dwTypeData = tmpmenutext;
     myMII.cch = 1024;
-    if(GetMenuItemInfo(hMenu,
-                       myItem,
-                       FALSE,
-                       &myMII)) {
-#ifdef WIN32__GUI__DEBUG
-        printf("XS(MenuItem::Change): before parsing myMII.dwTypeData=%s\n", myMII.dwTypeData);
-#endif
+    if(GetMenuItemInfo(hMenu, myItem, FALSE, &myMII)) {
         myMII.fMask = 0;
         ParseMenuItemOptions(NOTXSCALL sp, mark, ax, items, 1, &myMII, &myItem);
-#ifdef WIN32__GUI__DEBUG
-        printf("XS(MenuItem::Change): after parsing myMII.dwTypeData=%s\n", myMII.dwTypeData);
-#endif
         myMII.hbmpChecked = NULL;
         myMII.hbmpUnchecked = NULL;
-        XSRETURN_IV(SetMenuItemInfo(
-            hMenu,
-            myItem,
-            FALSE,
-            &myMII
-        ));
+        XSRETURN_IV(
+			SetMenuItemInfo(hMenu, myItem, FALSE, &myMII)
+		);
     } else
         XSRETURN_NO;
 
@@ -7723,21 +7929,13 @@ PPCODE:
     ZeroMemory(&myMII, sizeof(MENUITEMINFO));
     myMII.cbSize = sizeof(MENUITEMINFO);
     myMII.fMask = MIIM_STATE;
-    if(GetMenuItemInfo(
-        hMenu,
-        myItem,
-        FALSE,
-        &myMII
-    )) {
+    if(GetMenuItemInfo(hMenu, myItem, FALSE, &myMII)) {
         if(items > i) {
             myMII.fMask = MIIM_STATE;
             SwitchFlag(myMII.fState, MFS_CHECKED, SvIV(ST(i)));
-            XSRETURN_IV(SetMenuItemInfo(
-                hMenu,
-                myItem,
-                FALSE,
-                &myMII
-            ));
+            XSRETURN_IV(
+				SetMenuItemInfo(hMenu, myItem, FALSE, &myMII)
+			);
         } else {
             XSRETURN_IV((myMII.fState & MFS_CHECKED) ? 1 : 0);
         }
@@ -7772,18 +7970,14 @@ PPCODE:
     ZeroMemory(&myMII, sizeof(MENUITEMINFO));
     myMII.cbSize = sizeof(MENUITEMINFO);
     myMII.fMask = MIIM_STATE;
-    if(GetMenuItemInfo(hMenu,
-                       myItem,
-                       FALSE,
-                       &myMII)) {
+    if(GetMenuItemInfo(hMenu, myItem, FALSE, &myMII)) {
         if(items > i) {
             myMII.fMask = MIIM_STATE;
             x = (SvIV(ST(i))) ? 0 : 1;
             SwitchFlag(myMII.fState, MFS_DISABLED, x);
-            XSRETURN_IV(SetMenuItemInfo(hMenu,
-                                        myItem,
-                                        FALSE,
-                                        &myMII));
+            XSRETURN_IV(
+				SetMenuItemInfo(hMenu, myItem, FALSE, &myMII)
+			);
         } else {
             XSRETURN_IV((myMII.fState & MFS_DISABLED) ? 0 : 1);
         }
@@ -7962,7 +8156,7 @@ CODE:
 	hwnd = handle_From(NOTXSCALL handle);
 	if(items == 2) {
 		if(SvPOK(line)) {
-			arg = strlwr( SvPV(line, na) );
+			arg = strlwr( SvPV_nolen(line) );
 
 			if(0 == strcmp( arg, "bottom" )) {
 				RETVAL = SendMessage( hwnd, EM_GETLINECOUNT, 0, 0 );
@@ -8040,7 +8234,7 @@ PREINIT:
 	LRESULT res;
 CODE:
 	for(i = 1; i < items; i++) {
-		SendMessage(handle, LB_ADDSTRING, 0, (LPARAM) (LPCTSTR) SvPV(ST(i), na));
+		SendMessage(handle, LB_ADDSTRING, 0, (LPARAM) (LPCTSTR) SvPV_nolen(ST(i)));
 	}
 
     ###########################################################################
@@ -8252,7 +8446,7 @@ PREINIT:
 	LRESULT res;
 CODE:
 	for(i = 1; i < items; i++) {
-		SendMessage(handle, CB_ADDSTRING, 0, (LPARAM) (LPCTSTR) SvPV(ST(i), na));
+		SendMessage(handle, CB_ADDSTRING, 0, (LPARAM) (LPCTSTR) SvPV_nolen(ST(i)));
 	}
 
     ###########################################################################
@@ -8385,16 +8579,16 @@ CODE:
     next_i = -1;
     for(i = 1; i < items; i++) {
         if(next_i == -1) {
-            if(strcmp(SvPV(ST(i), na), "-image") == 0) {
+            if(strcmp(SvPV_nolen(ST(i)), "-image") == 0) {
                 next_i = i + 1;
                 Item.mask = Item.mask | TCIF_IMAGE;
                 Item.iImage = SvIV(ST(next_i));
             }
-            if(strcmp(SvPV(ST(i), na), "-index") == 0) {
+            if(strcmp(SvPV_nolen(ST(i)), "-index") == 0) {
                 next_i = i + 1;
                 iIndex = (int) SvIV(ST(next_i));
             }
-            if(strcmp(SvPV(ST(i), na), "-text") == 0) {
+            if(strcmp(SvPV_nolen(ST(i)), "-text") == 0) {
                 next_i = i + 1;
                 Item.pszText = SvPV(ST(next_i), chText);
                 Item.cchTextMax = (int) chText;
@@ -8431,12 +8625,12 @@ CODE:
     next_i = -1;
     for(i = 2; i < items; i++) {
         if(next_i == -1) {
-            if(strcmp(SvPV(ST(i), na), "-image") == 0) {
+            if(strcmp(SvPV_nolen(ST(i)), "-image") == 0) {
                 next_i = i + 1;
                 Item.mask = Item.mask | TCIF_IMAGE;
                 Item.iImage = SvIV(ST(next_i));
             }
-            if(strcmp(SvPV(ST(i), na), "-text") == 0) {
+            if(strcmp(SvPV_nolen(ST(i)), "-text") == 0) {
                 next_i = i + 1;
                 Item.pszText = SvPV(ST(next_i), chText);
                 Item.cchTextMax = (int) chText;
@@ -8557,11 +8751,11 @@ CODE:
     #
     #    for(i = 1; i < items; i++) {
     #        Strings = SvPV(ST(i), szLen);
-    #        printf("AddString: szLen(%d) = %d\n", i, szLen);
+    #        __DEBUG("AddString: szLen(%d) = %d\n", i, szLen);
     #        totLen += szLen+1;
     #    }
     #    totLen++;
-    #    printf("AddString: totLen = %d\n", totLen);
+    #    __DEBUG("AddString: totLen = %d\n", totLen);
     #    Strings = (char *) safemalloc(totLen);
     #
     #    totLen = 0;
@@ -8577,22 +8771,27 @@ CODE:
     Strings = (char *) safemalloc(szLen+2);
     strcpy(Strings, string);
     Strings[szLen+1] = '\0';
-#ifdef WIN32__GUI__DEBUG
-    printf("XS(Toolbar::AddString): Strings='%s', len=%d\n", Strings, szLen);
-
+#ifdef PERLWIN32GUI_DEBUG
+	    printf("XS(Toolbar::AddString): Strings='%s', len=%d\n", Strings, szLen);
+#endif
+#ifdef PERLWIN32GUI_DEBUG
     for(i=0; i<=szLen+1; i++) {
         printf("XS(Toolbar::AddString): Strings[%d]='%d'\n", i, Strings[i]);
     }
 #endif
     lParam = (LPARAM) MAKELONG(Strings, 0);
-#ifdef WIN32__GUI__DEBUG
-    printf("XS(Toolbar::AddString): handle=%ld\n", handle);
-    printf("XS(Toolbar::AddString): Strings=%ld\n", Strings);
-    printf("XS(Toolbar::AddString): lParam=%ld\n", lParam);
+#ifdef PERLWIN32GUI_DEBUG
+	    printf("XS(Toolbar::AddString): handle=%ld\n", handle);
+#endif
+#ifdef PERLWIN32GUI_DEBUG
+	    printf("XS(Toolbar::AddString): Strings=%ld\n", Strings);
+#endif
+#ifdef PERLWIN32GUI_DEBUG
+	    printf("XS(Toolbar::AddString): lParam=%ld\n", lParam);
 #endif
     RETVAL = SendMessage(handle, TB_ADDSTRING, 0, (LPARAM) Strings);
-#ifdef WIN32__GUI__DEBUG
-    printf("XS(Toolbar::AddString): SendMessage.result = %ld", RETVAL);
+#ifdef PERLWIN32GUI_DEBUG
+	    printf("XS(Toolbar::AddString): SendMessage.result = %ld", RETVAL);
 #endif
     safefree(Strings);
 OUTPUT:
@@ -8661,7 +8860,7 @@ OUTPUT:
     #     next_i = -1;
     #     for(i = 2; i < items; i++) {
     #         if(next_i == -1) {
-    #             option = SvPV(ST(i), na);
+    #             option = SvPV_nolen(ST(i));
     #             if(strcmp(option, "-image") == 0) {
     #                 next_i = i + 1;
     #                 button.iBitmap = SvIV(ST(next_i));
@@ -8669,7 +8868,7 @@ OUTPUT:
     #             if(strcmp(option, "-text") == 0) {
     #                 next_i = i + 1;
     #                 buttoninfo.dwMask |= TBIF_TEXT;
-    #                 buttoninfo.pszText = SvPV(ST(next_i), na);
+    #                 buttoninfo.pszText = SvPV_nolen(ST(next_i));
     #             }
     #             // to implement: -style, -state, -id(?)
     #         } else {
@@ -8717,7 +8916,7 @@ CODE:
     next_i = -1;
     for(i = 1; i < items; i++) {
         if(next_i == -1) {
-            option = SvPV(ST(i), na);
+            option = SvPV_nolen(ST(i));
             if(strcmp(option, "-bold") == 0) {
                 next_i = i + 1;
                 if(SvIV(ST(next_i)) != 0) {
@@ -8766,7 +8965,7 @@ CODE:
             }
             if(strcmp(option, "-name") == 0) {
                 next_i = i + 1;
-                strncpy((char *)cf.szFaceName, SvPV(ST(next_i), na), 32);
+                strncpy((char *)cf.szFaceName, SvPV_nolen(ST(next_i)), 32);
                 cf.dwMask = cf.dwMask | CFM_FACE;
             }
         } else {
@@ -8795,7 +8994,7 @@ CODE:
     next_i = -1;
     for(i = 1; i < items; i++) {
         if(next_i == -1) {
-            option = SvPV(ST(i), na);
+            option = SvPV_nolen(ST(i));
             if(strcmp(option, "-numbering") == 0
             || strcmp(option, "-bullet") == 0) {
                 next_i = i + 1;
@@ -8807,17 +9006,17 @@ CODE:
                 pf.dwMask = pf.dwMask | PFM_NUMBERING;
             } else if(strcmp(option, "-align") == 0) {
                 next_i = i + 1;
-                if(strcmp(SvPV(ST(next_i), na), "left") == 0) {
+                if(strcmp(SvPV_nolen(ST(next_i)), "left") == 0) {
                     pf.wAlignment = PFA_LEFT;
                     pf.dwMask = pf.dwMask | PFM_ALIGNMENT;
-                } else if(strcmp(SvPV(ST(next_i), na), "center") == 0) {
+                } else if(strcmp(SvPV_nolen(ST(next_i)), "center") == 0) {
                     pf.wAlignment = PFA_CENTER;
                     pf.dwMask = pf.dwMask | PFM_ALIGNMENT;
-                } else if(strcmp(SvPV(ST(next_i), na), "right") == 0) {
+                } else if(strcmp(SvPV_nolen(ST(next_i)), "right") == 0) {
                     pf.wAlignment = PFA_RIGHT;
                     pf.dwMask = pf.dwMask | PFM_ALIGNMENT;
                 } else {
-                    if(dowarn) warn("Win32::GUI:: Invalid value for -align!\n");
+                    if(PL_dowarn) warn("Win32::GUI:: Invalid value for -align!\n");
                 }
             } else if(strcmp(option, "-offset") == 0) {
                 next_i = i + 1;
@@ -9128,7 +9327,7 @@ CODE:
     next_i = -1;
     for(i = 1; i < items; i++) {
         if(next_i == -1) {
-            option = SvPV(ST(i), na);
+            option = SvPV_nolen(ST(i));
             if(strcmp(option, "-text") == 0) {
                 next_i = i + 1;
                 Column.pszText = SvPV(ST(next_i), tlen);
@@ -9136,13 +9335,13 @@ CODE:
                 Column.mask |= LVCF_TEXT;
             } else if(strcmp(option, "-align") == 0) {
                 next_i = i + 1;
-                if(strcmp(SvPV(ST(next_i), na), "right") == 0) {
+                if(strcmp(SvPV_nolen(ST(next_i)), "right") == 0) {
                     Column.fmt = LVCFMT_RIGHT;
                     Column.mask |= LVCF_FMT;
-                } else if(strcmp(SvPV(ST(next_i), na), "left") == 0) {
+                } else if(strcmp(SvPV_nolen(ST(next_i)), "left") == 0) {
                     Column.fmt = LVCFMT_LEFT;
                     Column.mask |= LVCF_FMT;
-                } else if(strcmp(SvPV(ST(next_i), na), "center") == 0) {
+                } else if(strcmp(SvPV_nolen(ST(next_i)), "center") == 0) {
                     Column.fmt = LVCFMT_CENTER;
                     Column.mask |= LVCF_FMT;
                 }
@@ -9210,7 +9409,7 @@ CODE:
     next_i = -1;
     for(i = 1; i < items; i++) {
         if(next_i == -1) {
-            option = SvPV(ST(i), na);
+            option = SvPV_nolen(ST(i));
             if(strcmp(option, "-text") == 0) {
 				next_i = i + 1;
                 if(SvROK(ST(next_i)) && SvTYPE(SvRV(ST(next_i))) == SVt_PVAV) {
@@ -9368,7 +9567,7 @@ CODE:
     next_i = -1;
     for(i = 1; i < items; i++) {
         if(next_i == -1) {
-            option = SvPV(ST(i), na);
+            option = SvPV_nolen(ST(i));
             if(strcmp(option, "-text") == 0) {
                 next_i = i + 1;
                 Item.pszText = SvPV(ST(next_i), tlen);
@@ -9838,12 +10037,12 @@ CODE:
     next_i = -1;
     for(i = 1; i < items; i++) {
 		if(next_i == -1) {
-            option = SvPV(ST(i), na);
+            option = SvPV_nolen(ST(i));
 			if(strcmp(option, "-text") == 0) {
                 next_i = i + 1;
                 tlen = SvCUR(ST(next_i));
                 pszText = (LPSTR) safemalloc(tlen);
-                strcpy(pszText, SvPV(ST(next_i), na));
+                strcpy(pszText, SvPV_nolen(ST(next_i)));
                 Item.pszText = pszText;
                 Item.cchTextMax = tlen;
                 SwitchFlag(Item.mask, TVIF_TEXT, 1);
@@ -9917,7 +10116,7 @@ CODE:
     next_i = -1;
     for(i = 2; i < items; i++) {
         if(next_i == -1) {
-			option = SvPV(ST(i), na);
+			option = SvPV_nolen(ST(i));
             if(strcmp(option, "-text") == 0) {
                 next_i = i + 1;
                 Item.pszText = SvPV(ST(next_i), tlen);
@@ -10490,13 +10689,13 @@ CODE:
     next_i = -1;
     for(i = 1; i < items; i++) {
         if(next_i == -1) {
-            option = SvPV(ST(i), na);
-#ifdef WIN32__GUI__STRONG__DEBUG
-            printf("XS(Tooltip::Add): got option '%s'\n", option);
+            option = SvPV_nolen(ST(i));
+#ifdef PERLWIN32GUI_STRONGDEBUG
+	            printf("XS(Tooltip::Add): got option '%s'\n", option);
 #endif
             if(strcmp(option, "-text") == 0) {
                 next_i = i + 1;
-                ti.lpszText = SvPV(ST(next_i), na);
+                ti.lpszText = SvPV_nolen(ST(next_i));
             } else if(strcmp(option, "-window") == 0) {
                 next_i = i + 1;
                 ti.uId = (UINT) handle_From(NOTXSCALL ST(next_i));
@@ -10612,44 +10811,44 @@ CODE:
     next_i = -1;
     for(i = 1; i < items; i++) {
         if(next_i == -1) {
-            if(strcmp(SvPV(ST(i), na), "-image") == 0) {
+            if(strcmp(SvPV_nolen(ST(i)), "-image") == 0) {
                 next_i = i + 1;
                 rbbi.iImage = SvIV(ST(next_i));
                 SwitchFlag(rbbi.fMask, RBBIM_IMAGE, 1);
-            } else if(strcmp(SvPV(ST(i), na), "-index") == 0) {
+            } else if(strcmp(SvPV_nolen(ST(i)), "-index") == 0) {
                 next_i = i + 1;
                 index = (UINT) SvIV(ST(next_i));
-            } else if(strcmp(SvPV(ST(i), na), "-bitmap") == 0) {
+            } else if(strcmp(SvPV_nolen(ST(i)), "-bitmap") == 0) {
                 next_i = i + 1;
                 rbbi.hbmBack = (HBITMAP) handle_From(NOTXSCALL ST(next_i));
                 SwitchFlag(rbbi.fMask, RBBIM_BACKGROUND, 1);
-            } else if(strcmp(SvPV(ST(i), na), "-child") == 0) {
+            } else if(strcmp(SvPV_nolen(ST(i)), "-child") == 0) {
                 next_i = i + 1;
                 rbbi.hwndChild = (HWND) handle_From(NOTXSCALL ST(next_i));
                 SwitchFlag(rbbi.fMask, RBBIM_CHILD, 1);
-            } else if(strcmp(SvPV(ST(i), na), "-foreground") == 0) {
+            } else if(strcmp(SvPV_nolen(ST(i)), "-foreground") == 0) {
                 next_i = i + 1;
                 rbbi.clrFore = SvCOLORREF(NOTXSCALL ST(next_i));
                 SwitchFlag(rbbi.fMask, RBBIM_COLORS, 1);
-            } else if(strcmp(SvPV(ST(i), na), "-background") == 0) {
+            } else if(strcmp(SvPV_nolen(ST(i)), "-background") == 0) {
                 next_i = i + 1;
                 rbbi.clrBack = SvCOLORREF(NOTXSCALL ST(next_i));
                 SwitchFlag(rbbi.fMask, RBBIM_COLORS, 1);
-            } else if(strcmp(SvPV(ST(i), na), "-width") == 0) {
+            } else if(strcmp(SvPV_nolen(ST(i)), "-width") == 0) {
                 next_i = i + 1;
                 rbbi.cx = SvIV(ST(next_i));
                 SwitchFlag(rbbi.fMask, RBBIM_SIZE, 1);
-            } else if(strcmp(SvPV(ST(i), na), "-minwidth") == 0) {
+            } else if(strcmp(SvPV_nolen(ST(i)), "-minwidth") == 0) {
                 next_i = i + 1;
                 rbbi.cxMinChild = SvIV(ST(next_i));
                 SwitchFlag(rbbi.fMask, RBBIM_CHILDSIZE, 1);
-            } else if(strcmp(SvPV(ST(i), na), "-minheight") == 0) {
+            } else if(strcmp(SvPV_nolen(ST(i)), "-minheight") == 0) {
                 next_i = i + 1;
                 rbbi.cyMinChild = SvIV(ST(next_i));
                 SwitchFlag(rbbi.fMask, RBBIM_CHILDSIZE, 1);
-            } else if(strcmp(SvPV(ST(i), na), "-text") == 0) {
+            } else if(strcmp(SvPV_nolen(ST(i)), "-text") == 0) {
                 next_i = i + 1;
-                rbbi.lpText = SvPV(ST(next_i), na);
+                rbbi.lpText = SvPV_nolen(ST(next_i));
                 SwitchFlag(rbbi.fMask, RBBIM_TEXT, 1);
             }
         } else {
@@ -11216,7 +11415,7 @@ PPCODE:
         bInfo.bmiHeader.biPlanes      = bitmap.bmPlanes;
         bInfo.bmiHeader.biBitCount    = bitmap.bmBitsPixel;
         bInfo.bmiHeader.biCompression = BI_RGB;
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
         printf("XS(Bitmap::GetDIBits): getting %ld bytes...\n", bufferlen);
 #endif
         if(GetDIBits(
@@ -11237,14 +11436,14 @@ PPCODE:
             safefree(buffer);
             XSRETURN(5);
         } else {
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
             printf("XS(Bitmap::GetDIBits): GetDIBits failed (%d)\n", GetLastError());
 #endif
             safefree(buffer);
             XSRETURN_NO;
         }
     } else {
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
         printf("XS(Bitmap::GetDIBits): GetObject failed (%d)\n", GetLastError());
 #endif
         XSRETURN_NO;
@@ -11274,8 +11473,8 @@ PREINIT:
     BITMAPINFO bInfo;
 PPCODE:
     ZeroMemory(&bInfo, sizeof(BITMAPINFO));
-#ifdef WIN32__GUI__DEBUG
-    printf("XS(Bitmap::OldInfo): handle=%ld\n", handle);
+#ifdef PERLWIN32GUI_DEBUG
+	    printf("XS(Bitmap::OldInfo): handle=%ld\n", handle);
 #endif
     bInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
     bInfo.bmiHeader.biBitCount = 0; // don't care about colors, just general infos
@@ -11299,7 +11498,7 @@ PPCODE:
         XST_mIV(8, bInfo.bmiHeader.biClrImportant);
         XSRETURN(9);
     } else {
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
         printf("XS(Bitmap::OldInfo): GetDIBits failed...\n");
         printf("XS(Bitmap::OldInfo): LastError is %d\n", GetLastError());
         printf("XS(Bitmap::OldInfo): bInfo.bmiHeader.biWidth=%d\n", bInfo.bmiHeader.biWidth);
@@ -11316,8 +11515,8 @@ PREINIT:
     BITMAPCOREINFO bInfo;
 PPCODE:
     ZeroMemory(&bInfo, sizeof(BITMAPCOREINFO));
-#ifdef WIN32__GUI__DEBUG
-    printf("XS(Bitmap::OldInfoC): handle=%ld\n", handle);
+#ifdef PERLWIN32GUI_DEBUG
+	    printf("XS(Bitmap::OldInfoC): handle=%ld\n", handle);
 #endif
     bInfo.bmciHeader.bcSize = sizeof(BITMAPCOREHEADER);
     bInfo.bmciHeader.bcBitCount = 0; // don't care about colors, just general infos
@@ -11335,7 +11534,7 @@ PPCODE:
         XST_mIV(2, bInfo.bmciHeader.bcBitCount);
         XSRETURN(3);
     } else {
-#ifdef WIN32__GUI__DEBUG
+#ifdef PERLWIN32GUI_DEBUG
         printf("XS(Bitmap::OldInfoC): GetDIBits failed...\n");
         printf("XS(Bitmap::OldInfoC): LastError is %d\n", GetLastError());
         printf("XS(Bitmap::OldInfoC): bInfo.bmciHeader.bcWidth=%d\n", bInfo.bmciHeader.bcWidth);
@@ -11401,7 +11600,7 @@ PPCODE:
     next_i = -1;
     for(i = 0; i < items; i++) {
         if(next_i == -1) {
-            option = SvPV(ST(i), na);
+            option = SvPV_nolen(ST(i));
             if(strcmp(option, "-height") == 0
             || strcmp(option, "-size") == 0) {
                 next_i = i + 1;
@@ -11462,7 +11661,7 @@ PPCODE:
             if(strcmp(option, "-name") == 0
             || strcmp(option, "-face") == 0) {
                 next_i = i + 1;
-                strncpy(lpszFace, SvPV(ST(next_i), na), 32);
+                strncpy(lpszFace, SvPV_nolen(ST(next_i)), 32);
             }
 
         } else {
@@ -12233,7 +12432,7 @@ PPCODE:
         next_i = -1;
         for(i = 0; i < items; i++) {
             if(next_i == -1) {
-                option = SvPV(ST(i), na);
+                option = SvPV_nolen(ST(i));
                 if(strcmp(option, "-pattern") == 0) {
                     next_i = i + 1;
                     lb.lbStyle = BS_PATTERN;
@@ -12333,7 +12532,7 @@ PPCODE:
         next_i = -1;
         for(i = 0; i < items; i++) {
             if(next_i == -1) {
-                option = SvPV(ST(i), na);
+                option = SvPV_nolen(ST(i));
                 if(strcmp(option, "-style") == 0) {
                     next_i = i + 1;
                     penstyle = (int) SvIV(ST(next_i));
@@ -12413,7 +12612,7 @@ CODE:
     next_i = -1;
     for(i = 1; i < items; i++) {
         if(next_i == -1) {
-            option = SvPV(ST(i), na);
+            option = SvPV_nolen(ST(i));
             if(strcmp(option, "-id") == 0) {
                 next_i = i + 1;
                 nid.uID = (UINT) SvIV(ST(next_i));
@@ -12423,7 +12622,7 @@ CODE:
                 SwitchFlag(nid.uFlags, NIF_ICON, 1);
             } else if(strcmp(option, "-tip") == 0) {
                 next_i = i + 1;
-                strcpy(nid.szTip, SvPV(ST(next_i), na));
+                strcpy(nid.szTip, SvPV_nolen(ST(next_i)));
                 SwitchFlag(nid.uFlags, NIF_TIP, 1);
             }
         } else {
@@ -12451,7 +12650,7 @@ CODE:
     next_i = -1;
     for(i = 1; i < items; i++) {
         if(next_i == -1) {
-            option = SvPV(ST(i), na);
+            option = SvPV_nolen(ST(i));
             if(strcmp(option, "-id") == 0) {
                 next_i = i + 1;
                 nid.uID = (UINT) SvIV(ST(next_i));
@@ -12461,7 +12660,7 @@ CODE:
                 SwitchFlag(nid.uFlags, NIF_ICON, 1);
             } else if(strcmp(option, "-tip") == 0) {
                 next_i = i + 1;
-                strcpy(nid.szTip, SvPV(ST(next_i), na));
+                strcpy(nid.szTip, SvPV_nolen(ST(next_i)));
                 SwitchFlag(nid.uFlags, NIF_TIP, 1);
             }
         } else {
@@ -12489,7 +12688,7 @@ CODE:
     next_i = -1;
     for(i = 1; i < items; i++) {
         if(next_i == -1) {
-            option = SvPV(ST(i), na);
+            option = SvPV_nolen(ST(i));
             if(strcmp(option, "-id") == 0) {
                 next_i = i + 1;
                 nid.uID = (UINT) SvIV(ST(next_i));
@@ -12499,7 +12698,7 @@ CODE:
                 SwitchFlag(nid.uFlags, NIF_ICON, 1);
             } else if(strcmp(option, "-tip") == 0) {
                 next_i = i + 1;
-                strcpy(nid.szTip, SvPV(ST(next_i), na));
+                strcpy(nid.szTip, SvPV_nolen(ST(next_i)));
                 SwitchFlag(nid.uFlags, NIF_TIP, 1);
             }
         } else {

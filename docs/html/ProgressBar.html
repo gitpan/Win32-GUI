@@ -1,0 +1,145 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::ProgressBar</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_ProgressBar">Package Win32::GUI::ProgressBar</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Methods">Methods</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_ProgressBar">Package Win32::GUI::ProgressBar</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_ProgressBar_PARE">new Win32::GUI::ProgressBar(PARENT, %OPTIONS)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Methods">Methods</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#SetPos_VALUE_">SetPos(VALUE)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SetRange_MIN_MAX_">SetRange([MIN], MAX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SetStep_VALUE_">SetStep([VALUE])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#StepIt_">StepIt()</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_ProgressBar_PARE">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::ProgressBar(PARENT, %OPTIONS)</A></STRONG><DD>
+<P>
+Creates a new ProgressBar object; can also be called as
+PARENT-&gt;AddProgressBar(%OPTIONS). Class specific <CODE>%OPTIONS</CODE>
+are:
+
+<P>
+<PRE>    -smooth   =&gt; 0/1 (default 0)
+        uses a smooth bar instead of the default segmented bar.
+    -vertical =&gt; 0/1 (default 0)
+        display progress status vertically (from bottom to top).
+</PRE>
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Methods">Methods</A></H3>
+<A NAME="SetPos_VALUE_">
+
+<DL>
+<DT><STRONG><A NAME="item_SetPos">SetPos(VALUE)</A></STRONG><DD>
+<P>
+Sets the position of the ProgressBar to the specified VALUE.
+
+<P>
+
+<A NAME="SetRange_MIN_MAX_">
+
+<DT><STRONG><A NAME="item_SetRange">SetRange([MIN], MAX)</A></STRONG><DD>
+<P>
+Sets the range of values (from MIN to MAX) for the ProgressBar; if MIN is
+not specified, it defaults to 0.
+
+<P>
+
+<A NAME="SetStep_VALUE_">
+
+<DT><STRONG><A NAME="item_SetStep">SetStep([VALUE])</A></STRONG><DD>
+<P>
+Sets the increment value for the ProgressBar; see  <A HREF="#StepIt_">StepIt()</A>.
+
+<P>
+
+<A NAME="StepIt_">
+
+<DT><STRONG><A NAME="item_StepIt">StepIt()</A></STRONG><DD>
+<P>
+Increments the position of the ProgressBar of the defined step value; see  <A HREF="#SetStep_VALUE_">SetStep()</A>.
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

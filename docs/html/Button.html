@@ -1,0 +1,205 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::Button</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_Button">Package Win32::GUI::Button</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Methods">Methods</A>
+			<LI><A HREF="#Events">Events</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_Button">Package Win32::GUI::Button</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_Button_PARENT_">new Win32::GUI::Button(PARENT, %OPTIONS)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Methods">Methods</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#SetImage_BITMAP_">SetImage(BITMAP)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Events">Events</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Click_">Click()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#DblClick_">DblClick()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GotFocus_">GotFocus()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#LostFocus_">LostFocus()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#MouseDown_">MouseDown()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#MouseUp_">MouseUp()</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_Button_PARENT_">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::Button(PARENT, %OPTIONS)</A></STRONG><DD>
+<P>
+Creates a new Button object; can also be called as
+PARENT-&gt;AddButton(%OPTIONS). Class specific <CODE>%OPTIONS</CODE> are:
+
+<P>
+<PRE>    -align   =&gt; left/center/right (default left)
+    -valign  =&gt; top/center/bottom
+    -default =&gt; 0/1 (default 0)
+    -ok      =&gt; 0/1 (default 0)
+    -cancel  =&gt; 0/1 (default 0)
+    -bitmap  =&gt; Win32::GUI::Bitmap object
+    -picture =&gt; see -bitmap
+    -icon    =&gt; Win32::GUI::Icon object
+</PRE>
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Methods">Methods</A></H3>
+<A NAME="SetImage_BITMAP_">
+
+<DL>
+<DT><STRONG><A NAME="item_SetImage">SetImage(BITMAP)</A></STRONG><DD>
+<P>
+Draws the specified BITMAP, a Win32::GUI::Bitmap or Win32::GUI::Icon
+object, in the Button.
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Events">Events</A></H3>
+<A NAME="Click_">
+
+<DL>
+<DT><STRONG><A NAME="item_Click">Click()</A></STRONG><DD>
+<P>
+Sent when the control is selected (eg. the button pushed, the checkbox
+checked, etc.).
+
+<P>
+
+<A NAME="DblClick_">
+
+<DT><STRONG><A NAME="item_DblClick">DblClick()</A></STRONG><DD>
+<P>
+Sent when the user double clicks on the control.
+
+<P>
+
+<A NAME="GotFocus_">
+
+<DT><STRONG><A NAME="item_GotFocus">GotFocus()</A></STRONG><DD>
+<P>
+Sent when the control is activated.
+
+<P>
+
+<A NAME="LostFocus_">
+
+<DT><STRONG><A NAME="item_LostFocus">LostFocus()</A></STRONG><DD>
+<P>
+Sent when the control is deactivated.
+
+<P>
+
+<A NAME="MouseDown_">
+
+<DT><STRONG><A NAME="item_MouseDown">MouseDown()</A></STRONG><DD>
+<P>
+Sent when the user down clicks on the control.
+
+<P>
+
+<A NAME="MouseUp_">
+
+<DT><STRONG><A NAME="item_MouseUp">MouseUp()</A></STRONG><DD>
+<P>
+Sent when the user releases a down click on the control.
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

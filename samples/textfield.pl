@@ -22,25 +22,26 @@ $Textfield = $Window->AddTextfield(
     -text     => "sample text",
     -width    => 180,
     -height   => 22,
-    -foreground => [0,255,0],
-    -background => [0,0,0],
+    -foreground => "#000000",
+    -background => "#E3E2CC",
 );
 
-# print $Window->Textfield->SendMessage(213, 0, 0);
 
-# $Window->{Textfield}->{-background} = $B->{-handle};
+
+# print $Window->Textfield->SendMessage(213, 0, 0);
 
 print "Textfield=", $Textfield, "\n";
 print "Textfield.handle=$Textfield->{'-handle'}\n";
 print "Textfield.keys = ", join(" ", keys(%{$Textfield})), "\n";
+
+printf "Textfield.foreground = %06x\n", $Textfield->{-foreground};
+
 
 $Window->AddCheckbox(
     -name   => "Password",
     -text   => "Password",
     -left   => 10,
     -top    => 40,
-    -foreground => [128, 255, 128],
-    -background => [0, 0, 255],
 );
 
 # $Window->{Password}->{-background} = $B->{-handle};
@@ -56,16 +57,12 @@ $Window->AddButton(
     -name   => "Reset",
     -text   => "Reset",
     -pos    => [  10, 100 ],
-    -foreground => [255, 0, 0],
-    -background => [  0, 0, 0],
 );
 
 $Window->AddButton(
     -name   => "ScrollUp",
     -text   => "UP",
     -pos    => [  80, 100 ],
-    -foreground => [255, 0, 0],
-    -background => [  0, 0, 0],
 );
 
 $Window->AddButton(
@@ -121,7 +118,7 @@ sub Password_Click {
         $Window->Textfield->PasswordChar(0);
 
     }
-    printf "Style after: %8X\n", $Window->Textfield->GetWindowLong(-16);
+    printf "Style after: %8X\n", $Window->Textfield->GetWindowLong(-16);     
 }
 
 sub Readonly_Click {
@@ -134,12 +131,15 @@ sub Readonly_Click {
         $Window->Textfield->Change(-readonly => 0);
 
     }
+
+    $Window->Textfield->Change( -background => [255,0,0] );
+
     $style = $Window->Textfield->GetWindowLong(-16);
     $style ^= hex('0800');
     $Window->Textfield->SetWindowLong(-16, $style);
     printf "Style after: %8X\n", $Window->Textfield->GetWindowLong(-16);
-    $Window->Textfield->InvalidateRect();
-    $Window->Textfield->UpdateWindow();
+    $Window->Textfield->InvalidateRect(1);
+    $Window->Textfield->Update();
 }
 
 sub Reset_Click {

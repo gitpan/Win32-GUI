@@ -1,0 +1,133 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::Bitmap</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_Bitmap">Package Win32::GUI::Bitmap</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Methods">Methods</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_Bitmap">Package Win32::GUI::Bitmap</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_Bitmap_FILENAME_">new Win32::GUI::Bitmap(FILENAME, [TYPE, X, Y, FLAGS])</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Methods">Methods</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Create_WIDTH_HEIGHT_PLANES_BP">Create(WIDTH, HEIGHT, PLANES, BPP, DATA)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetDIBits_">GetDIBits()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Info_">Info()</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_Bitmap_FILENAME_">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::Bitmap(FILENAME, [TYPE, X, Y, FLAGS])</A></STRONG><DD>
+<P>
+Creates a new Bitmap object reading from FILENAME; all other arguments are
+optional. TYPE can be:
+
+<P>
+<PRE>  0  bitmap (this is the default)
+  1  icon
+  2  cursor
+</PRE>
+<P>
+You can eventually specify your desired size for the image with X and Y and
+pass some FLAGS to the underlying LoadImage API (at your own risk)
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Methods">Methods</A></H3>
+<A NAME="Create_WIDTH_HEIGHT_PLANES_BP">
+
+<DL>
+<DT><STRONG><A NAME="item_Create">Create(WIDTH, HEIGHT, PLANES, BPP, DATA)</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="GetDIBits_">
+
+<DT><STRONG><A NAME="item_GetDIBits">GetDIBits()</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="Info_">
+
+<DT><STRONG><A NAME="item_Info">Info()</A></STRONG><DD>
+<P>
+returns a four elements array containing the following information about
+the bitmap: width, height, color planes, bits per pixel or undef on errors
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

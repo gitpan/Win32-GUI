@@ -1,0 +1,124 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::AcceleratorTable</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_AcceleratorT">Package Win32::GUI::AcceleratorTable</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Events">Events</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_AcceleratorT">Package Win32::GUI::AcceleratorTable</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_AcceleratorTable">new Win32::GUI::AcceleratorTable(%ACCELERATORS)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Events">Events</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Click_">Click()</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_AcceleratorTable">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::AcceleratorTable(%ACCELERATORS)</A></STRONG><DD>
+<P>
+Creates an AcceleratorTable object. <CODE>%ACCELERATORS</CODE> is an
+associative array of key combinations and accelerator names, in pair:
+Example:
+
+<P>
+<PRE>    $A = new Win32::GUI::AcceleratorTable(
+        &quot;Ctrl-X&quot;       =&gt; &quot;Close&quot;,
+        &quot;Shift-N&quot;      =&gt; &quot;New&quot;,
+        &quot;Ctrl-Alt-Del&quot; =&gt; &quot;Reboot&quot;,
+    );
+</PRE>
+<P>
+The AcceleratorTable object can be associated to a window with the -accel
+option; then, when an accelerator is used, a corresponding
+&lt;name&gt;_Click event is fired. Keyboard combinations currently support
+the following modifier :
+
+<P>
+<PRE>    Shift
+    Ctrl  (or Control)
+    Alt
+</PRE>
+<P>
+and the following keys:
+
+<P>
+<PRE>    A..Z, 0..9
+    Left, Right, Up, Down
+    Home, End, PageUp, PageDown (or PgUp/PgDn)
+    Space, Ins, Del, Esc, Backspace, Tab, Return
+    F1..F12
+</PRE>
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Events">Events</A></H3>
+<A NAME="Click_">
+
+<DL>
+<DT><STRONG><A NAME="item_Click">Click()</A></STRONG><DD>
+<P>
+Sent when the users triggers an Accelerator object.
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

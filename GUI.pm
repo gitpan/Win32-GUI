@@ -4,9 +4,9 @@
 #
 # 29 Jan 1997 by Aldo Calpini <dada@perl.it>
 #
-# Version: 0.0.502 (13 Dec 2000)
+# Version: 0.0.558 (15 Jan 2001)
 #
-# Copyright (c) 1997..2000 Aldo Calpini. All rights reserved.
+# Copyright (c) 1997..2001 Aldo Calpini. All rights reserved.
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
@@ -22,7 +22,7 @@ require DynaLoader;     # to dynuhlode the module.
 ###############################################################################
 # STATIC OBJECT PROPERTIES
 #
-$VERSION             = "0.0.502";
+$VERSION             = "0.0.558";
 $MenuIdCounter       = 1;
 $TimerIdCounter      = 1;
 $NotifyIconIdCounter = 1;
@@ -319,14 +319,14 @@ sub AUTOLOAD {
     $! = 0;
     my $val = constant($constname, @_ ? $_[0] : 0);
     if ($! != 0) {
-		if ($! =~ /Invalid/) {
-			$AutoLoader::AUTOLOAD = $AUTOLOAD;
-			goto &AutoLoader::AUTOLOAD;
-		} else {
-			my($pack,$file,$line) = caller; # undef $pack;
-			die "Can't find '$constname' in package '$pack' ".
-				"used at $file line $line.";
-		}
+        if ($! =~ /Invalid/) {
+            $AutoLoader::AUTOLOAD = $AUTOLOAD;
+            goto &AutoLoader::AUTOLOAD;
+        } else {
+            my($pack,$file,$line) = caller; # undef $pack;
+            die "Can't find '$constname' in package '$pack' ".
+                "used at $file line $line.";
+        }
     }
     eval "sub $AUTOLOAD { $val }";
     goto &$AUTOLOAD;
@@ -356,9 +356,9 @@ sub SetFont {
     ###########################################################################
     # (@)METHOD:GetFont(FONT)
     # Gets the font of the window (returns an handle; use
-	#   $Font = $W->GetFont();
-	#   %details = Win32::GUI::Font::Info( $Font );
-	# to get font details).
+    #   $Font = $W->GetFont();
+    #   %details = Win32::GUI::Font::Info( $Font );
+    # to get font details).
 sub GetFont {
     my($self) = shift;
     # 49 == WM_GETFONT
@@ -368,7 +368,7 @@ sub GetFont {
     ###########################################################################
     # (@)METHOD:SetIcon(ICON, [TYPE])
     # Sets the icon of the window; TYPE can be 0 for the small icon, 1 for
-	# the big icon. Default is the same icon for small and big.
+    # the big icon. Default is the same icon for small and big.
 sub SetIcon {
     my($self, $icon, $type) = @_;
     $icon = $icon->{-handle} if ref($icon);
@@ -499,35 +499,21 @@ sub _new {
 
     my %tier = ();
     tie %tier, $class, $oself;
-	my $self = bless \%tier, $class;
+    my $self = bless \%tier, $class;
 
     my (@input) = @_;
     my $handle = Win32::GUI::Create($self, $type, @input);
 
-	# print "[_new] self='$self' oself='$oself'\n";
+    # print "[_new] self='$self' oself='$oself'\n";
 
-	# print "[_new] handle = $handle\n";
-#	$self->{-handle} = $handle;
+    # print "[_new] handle = $handle\n";
+#   $self->{-handle} = $handle;
 
- 	# print "[_new] enumerating self.keys\n";
+    # print "[_new] enumerating self.keys\n";
     # foreach my $k (keys %$self) {
- 	# 	print "[_new] '$k' = '$self->{$k}'\n";
+    #   print "[_new] '$k' = '$self->{$k}'\n";
     # }
     if($handle) {
-#        $Win32::GUI::Windows{$handle} = $self;
-
-        if(exists($self->{-background})) {
-
-            # this is a little tricky; we must create a brush (and save
-            # a reference to it in the window, so that it's not destroyed)
-            # that will be used by the WM_CTLCOLOR message in GUI.xs to
-            # paint the window background
-            #
-            # print "PM(_new): Window has a background!\n";
-            $self->{-backgroundbrush} = new Win32::GUI::Brush($self->{-background});
-            # print "PM(_new): -backgroundbrush = $self->{-backgroundbrush}->{-handle}\n";
-            $self->{-background} = $self->{-backgroundbrush}->{-handle};
-        }
         return $self;
     } else {
         return undef;
@@ -548,23 +534,23 @@ package Win32::GUI::Font;
     ###########################################################################
     # (@)METHOD:new Win32::GUI::Font(%OPTIONS)
     # Creates a new Font object. %OPTIONS are:
-	#   -size
-	#   -height
-	#   -width
-	#   -escapement
-	#   -orientation
-	#   -weight
-	#   -bold => 0/1
-	#   -italic => 0/1
-	#   -underline => 0/1
-	#   -strikeout => 0/1
-	#   -charset
-	#   -outputprecision
-	#   -clipprecision
-	#   -family
-	#   -quality
-	#   -name
-	#   -face
+    #   -size
+    #   -height
+    #   -width
+    #   -escapement
+    #   -orientation
+    #   -weight
+    #   -bold => 0/1
+    #   -italic => 0/1
+    #   -underline => 0/1
+    #   -strikeout => 0/1
+    #   -charset
+    #   -outputprecision
+    #   -clipprecision
+    #   -family
+    #   -quality
+    #   -name
+    #   -face
 sub new {
     my $class = shift;
     my $self = {};
@@ -641,8 +627,8 @@ sub new {
     ###########################################################################
     # (@)INTERNAL:DESTROY()
 sub DESTROY {
-	my $self = shift;
-	Win32::GUI::DestroyIcon($self);
+    my $self = shift;
+    Win32::GUI::DestroyIcon($self);
 }
 
 
@@ -677,8 +663,8 @@ sub new {
     ###########################################################################
     # (@)INTERNAL:DESTROY()
 sub DESTROY {
-	my $self = shift;
-	Win32::GUI::DestroyCursor($self);
+    my $self = shift;
+    Win32::GUI::DestroyCursor($self);
 }
 
 ###############################################################################
@@ -733,8 +719,8 @@ sub new {
 #
 package Win32::GUI::Window;
 @ISA = qw( 
-	Win32::GUI 
-	Win32::GUI::WindowProps 
+    Win32::GUI 
+    Win32::GUI::WindowProps 
 );
 
     ###########################################################################
@@ -758,7 +744,6 @@ package Win32::GUI::Window;
 sub new {
     my $self = Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__WINDOW", 0), @_);
     if($self) {
-        $self->{-dialogui} = 0;
         return $self;
     } else {
         return undef;
@@ -915,10 +900,12 @@ sub GetDC {
     # (@)INTERNAL:DESTROY(HANDLE)
 sub DESTROY {
     my $self = shift;
-    my $timer;
-    if( exists $self->{-timers} ) {
-        foreach $timer ($self->{-timers}) {
-            undef $self->{-timers}->{$timer};
+    if(tied($self)) {
+        my $timer;
+        if( exists $self->{-timers} ) {
+            foreach $timer ($self->{-timers}) {
+                undef $self->{-timers}->{$timer};
+            }
         }
     }
     # Win32::GUI::DestroyWindow($self);
@@ -933,9 +920,9 @@ sub AUTOLOAD {
     if( exists $self->{$AUTOLOAD}) {
         return $self->{$AUTOLOAD};
     } else {
-		$AutoLoader::AUTOLOAD = $AUTOLOAD;
-		goto &AutoLoader::AUTOLOAD;
-	}
+        $AutoLoader::AUTOLOAD = $AUTOLOAD;
+        goto &AutoLoader::AUTOLOAD;
+    }
 }
 
 
@@ -951,7 +938,7 @@ package Win32::GUI::DialogBox;
 sub new {
     my $self = Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__DIALOG", 0), @_);
     if($self) {
-        $self->{-dialogui} = 1;
+        $self->DialogUI(1);
         return $self;
     } else {
         return undef;
@@ -964,8 +951,8 @@ sub new {
 #
 package Win32::GUI::MDI;
 @ISA = qw( 
-	Win32::GUI::Window
-	Win32::GUI::WindowProps 
+    Win32::GUI::Window
+    Win32::GUI::WindowProps 
 );
 
     ###########################################################################
@@ -989,7 +976,6 @@ package Win32::GUI::MDI;
 sub new {
     my $self = Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__MDICLIENT", 0), @_);
     if($self) {
-        $self->{-dialogui} = 0;
         return $self;
     } else {
         return undef;
@@ -1002,8 +988,8 @@ sub new {
 #
 package Win32::GUI::Button;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -1017,9 +1003,9 @@ package Win32::GUI::Button;
     #     -default => 0/1 (default 0)
     #     -ok      => 0/1 (default 0)
     #     -cancel  => 0/1 (default 0)
-	#     -bitmap  => Win32::GUI::Bitmap object
-	#     -picture => see -bitmap
-	#     -icon    => Win32::GUI::Icon object
+    #     -bitmap  => Win32::GUI::Bitmap object
+    #     -picture => see -bitmap
+    #     -icon    => Win32::GUI::Icon object
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__BUTTON", 0), @_);
 }
@@ -1027,12 +1013,12 @@ sub new {
     ###########################################################################
     # (@)METHOD:SetImage(BITMAP)
     # Draws the specified BITMAP, a Win32::GUI::Bitmap or Win32::GUI::Icon
-	# object, in the Button.
+    # object, in the Button.
 sub SetImage {
     my $self = shift;
     my $image = shift;
     my $type = Win32::GUI::constant("IMAGE_BITMAP", 0);
-	$type = Win32::GUI::constant("IMAGE_ICON", 0) if ref($image) =~ /Icon/;
+    $type = Win32::GUI::constant("IMAGE_ICON", 0) if ref($image) =~ /Icon/;
     $image = $image->{-handle} if ref($image);
     # 247 == BM_SETIMAGE
     return Win32::GUI::SendMessage($self, 247, $type, $image);
@@ -1043,8 +1029,8 @@ sub SetImage {
 #
 package Win32::GUI::RadioButton;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -1059,7 +1045,7 @@ sub new {
     ###########################################################################
     # (@)METHOD:Checked([VALUE])
     # Gets or sets the checked state of the RadioButton; if called without
-	# arguments, returns the current state:
+    # arguments, returns the current state:
     #   0 not checked
     #   1 checked
     # If a VALUE is specified, it can be one of these (eg. 0 to uncheck the
@@ -1081,8 +1067,8 @@ sub Checked {
 #
 package Win32::GUI::Checkbox;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -1146,8 +1132,8 @@ sub Checked {
 #
 package Win32::GUI::Groupbox;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -1164,8 +1150,8 @@ sub new {
 #
 package Win32::GUI::Label;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -1174,7 +1160,7 @@ package Win32::GUI::Label;
     # can also be called as PARENT->AddLabel(%OPTIONS).
     # Class specific %OPTIONS are:
     #    -align    => left/center/right (default left)
-	#    -bitmap   => Win32::GUI::Bitmap object
+    #    -bitmap   => Win32::GUI::Bitmap object
     #    -fill     => black/gray/white/none (default none)
     #        fills the control rectangle ("black", "gray" and "white" are
     #        the window frame color, the desktop color and the window
@@ -1182,12 +1168,12 @@ package Win32::GUI::Label;
     #    -frame    => black/gray/white/etched/none (default none)
     #        draws a border around the control. colors are the same
     #        of -fill, with the addition of "etched" (a raised border).
-	#    -icon     => Win32::GUI::Icon object
+    #    -icon     => Win32::GUI::Icon object
     #    -noprefix => 0/1 (default 0)
     #        disables the interpretation of "&" as accelerator prefix.
     #    -notify   => 0/1 (default 0)
     #        enables the Click(), DblClick, etc. events.
-	#    -picture  => see -bitmap
+    #    -picture  => see -bitmap
     #    -sunken   => 0/1 (default 0)
     #        draws a half-sunken border around the control.
     #    -truncate => 0/1/word/path (default 0)
@@ -1220,8 +1206,8 @@ sub SetImage {
 #
 package Win32::GUI::Textfield;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -1295,7 +1281,7 @@ sub new {
             $height = 0;
         }
         if(exists $options{-visible}) {
-        	$visible = $options{-visible};
+            $visible = $options{-visible};
         }
         my $prompt = new Win32::GUI::Label(
             $parent,
@@ -1332,22 +1318,22 @@ sub SelectAll {
     # 177 == EM_SETSEL
     #  14 == WM_GETTEXTLENGTH
     return Win32::GUI::SendMessage(
-		$self, 177,
-		0, Win32::GUI::SendMessage($self, 14, 0, 0),
-	);
+        $self, 177,
+        0, Win32::GUI::SendMessage($self, 14, 0, 0),
+    );
 }
 
     ###########################################################################
     # (@)METHOD:MaxLength([CHARS])
 sub MaxLength {
     my($self, $chars) = @_;
-	if(defined $chars) {
-		# 197 == EM_SETLIMITTEXT
-	    return Win32::GUI::SendMessage($self, 197, $chars, 0);
-	} else {
-		# 213 == EM_GETLIMITTEXT
-	    return Win32::GUI::SendMessage($self, 213, 0, 0);
-	}
+    if(defined $chars) {
+        # 197 == EM_SETLIMITTEXT
+        return Win32::GUI::SendMessage($self, 197, $chars, 0);
+    } else {
+        # 213 == EM_GETLIMITTEXT
+        return Win32::GUI::SendMessage($self, 213, 0, 0);
+    }
 }
 
 ###############################################################################
@@ -1355,8 +1341,8 @@ sub MaxLength {
 #
 package Win32::GUI::Listbox;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -1433,17 +1419,17 @@ sub Count {
 }
 
 sub List {
-	my $self = shift;
-	my $index = shift;
-	if(not defined $index) {
-		my @list = ();
-		for my $i (0..($self->Count-1)) {
-			push @list, Win32::GUI::Listbox::Item->new($self, $i);
-		}
-		return @list;
-	} else {
-		return Win32::GUI::Listbox::Item->new($self, $index);
-	}
+    my $self = shift;
+    my $index = shift;
+    if(not defined $index) {
+        my @list = ();
+        for my $i (0..($self->Count-1)) {
+            push @list, Win32::GUI::Listbox::Item->new($self, $i);
+        }
+        return @list;
+    } else {
+        return Win32::GUI::Listbox::Item->new($self, $index);
+    }
 }
 sub Item { &List; }
 
@@ -1453,24 +1439,24 @@ sub Item { &List; }
 package Win32::GUI::Listbox::Item;
 
 sub new {
-	my($class, $listbox, $index) = @_;
-	$self = {
-		-parent => $listbox,
-		-index  => $index,
-		-string => $listbox->GetString($index),
-	};
-	return bless $self, $class;
+    my($class, $listbox, $index) = @_;
+    $self = {
+        -parent => $listbox,
+        -index  => $index,
+        -string => $listbox->GetString($index),
+    };
+    return bless $self, $class;
 }
 
 sub Remove {
-	my($self) = @_;
-	$self->{-parent}->RemoveItem($self->{-index});
-	undef $_[0];
+    my($self) = @_;
+    $self->{-parent}->RemoveItem($self->{-index});
+    undef $_[0];
 }
 
 sub Select {
-	my($self) = @_;
-	$self->{-parent}->Select($self->{-index});
+    my($self) = @_;
+    $self->{-parent}->Select($self->{-index});
 }
 
 
@@ -1479,8 +1465,8 @@ sub Select {
 #
 package Win32::GUI::Combobox;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -1555,8 +1541,8 @@ sub Count {
 #
 package Win32::GUI::ProgressBar;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -1621,8 +1607,8 @@ sub SetStep {
 #
 package Win32::GUI::StatusBar;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -1639,8 +1625,8 @@ sub new {
 #
 package Win32::GUI::TabStrip;
 @ISA = qw(
-	Win32::GUI::Window 
-	Win32::GUI::WindowProps 
+    Win32::GUI::Window 
+    Win32::GUI::WindowProps 
 );
 
     ###########################################################################
@@ -1684,8 +1670,8 @@ sub Select {
 #
 package Win32::GUI::Toolbar;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -1718,8 +1704,8 @@ sub SetBitmapSize {
 #
 package Win32::GUI::RichEdit;
 @ISA = qw(
-	Win32::GUI
-	Win32::GUI::WindowProps
+    Win32::GUI
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -1736,8 +1722,8 @@ sub new {
 #
 package Win32::GUI::ListView;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -1749,8 +1735,8 @@ sub new {
 }
 
 sub Item {
-	my($self, $index) = @_;
-	return Win32::GUI::ListView::Item->new($self, $index);
+    my($self, $index) = @_;
+    return Win32::GUI::ListView::Item->new($self, $index);
 }
 
 ###############################################################################
@@ -1759,41 +1745,41 @@ sub Item {
 package Win32::GUI::ListView::Item;
 
 sub new {
-	my($class, $listview, $index) = @_;
-	my $self = {
-		-parent => $listview,
-		-index  => $index,
-	};
-	return bless $self, $class;
+    my($class, $listview, $index) = @_;
+    my $self = {
+        -parent => $listview,
+        -index  => $index,
+    };
+    return bless $self, $class;
 }
 
 sub SubItem {
-	my($self, $index) = @_;
-	return Win32::GUI::ListView::SubItem->new($self, $index);
+    my($self, $index) = @_;
+    return Win32::GUI::ListView::SubItem->new($self, $index);
 }
 
 sub Remove {
-	my($self) = @_;
-	$self->{-parent}->DeleteItem($self->{-index});
-	undef $_[0];
+    my($self) = @_;
+    $self->{-parent}->DeleteItem($self->{-index});
+    undef $_[0];
 }
 
 sub Select {
-	my($self) = @_;
-	$self->{-parent}->Select($self->{-index});
+    my($self) = @_;
+    $self->{-parent}->Select($self->{-index});
 }
 
 sub Text {
-	my($self, $text) = @_;
-	if(not defined $text) {
-		my %data = $self->{-parent}->ItemInfo($self->{-index});
-		return $data{-text};
-	} else {
-		return $self->{-parent}->ChangeItem(
-			-item => $self->{-index}, 
-			-text => $text,
-		);
-	}
+    my($self, $text) = @_;
+    if(not defined $text) {
+        my %data = $self->{-parent}->ItemInfo($self->{-index});
+        return $data{-text};
+    } else {
+        return $self->{-parent}->ChangeItem(
+            -item => $self->{-index}, 
+            -text => $text,
+        );
+    }
 }
 
 ###############################################################################
@@ -1802,30 +1788,30 @@ sub Text {
 package Win32::GUI::ListView::SubItem;
 
 sub new {
-	my($class, $parent, $index) = @_;
-	my $self = {
-		-parent    => $parent->{-parent},
-		-index     => $parent->{-index},
-		-subindex  => $index,
-	};
-	return bless $self, $class;
+    my($class, $parent, $index) = @_;
+    my $self = {
+        -parent    => $parent->{-parent},
+        -index     => $parent->{-index},
+        -subindex  => $index,
+    };
+    return bless $self, $class;
 }
 
 sub Text {
-	my($self, $text) = @_;
-	if(not defined $text) {
-		my %data = $self->{-parent}->ItemInfo(
-			$self->{-index}, 
-			$self->{-subindex},
-		);
-		return $data{-text};
-	} else {
-		return $self->{-parent}->ChangeItem(
-			-item => $self->{-index}, 
-			-subitem => $self->{-subindex},
-			-text => $text,
-		);
-	}
+    my($self, $text) = @_;
+    if(not defined $text) {
+        my %data = $self->{-parent}->ItemInfo(
+            $self->{-index}, 
+            $self->{-subindex},
+        );
+        return $data{-text};
+    } else {
+        return $self->{-parent}->ChangeItem(
+            -item => $self->{-index}, 
+            -subitem => $self->{-subindex},
+            -text => $text,
+        );
+    }
 }
 
 ###############################################################################
@@ -1833,8 +1819,8 @@ sub Text {
 #
 package Win32::GUI::TreeView;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -1851,8 +1837,8 @@ sub new {
 #
 package Win32::GUI::Trackbar;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -1928,8 +1914,8 @@ package Win32::GUI::Slider;
 #
 package Win32::GUI::UpDown;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -1945,8 +1931,8 @@ sub new {
 #
 package Win32::GUI::Tooltip;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -1970,8 +1956,8 @@ sub new {
 #
 package Win32::GUI::Animation;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -1994,8 +1980,8 @@ sub new {
 #
 package Win32::GUI::Rebar;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -2019,8 +2005,8 @@ sub new {
 #
 package Win32::GUI::Header;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -2041,8 +2027,8 @@ sub new {
 #
 package Win32::GUI::Splitter;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -2055,13 +2041,13 @@ package Win32::GUI::Splitter;
     #   -hottrack => 0/1 (default 0)
     #   -imagelist => Win32::GUI::ImageList object
 sub new {
-	my $new = Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__SPLITTER", 0), @_);
+    my $new = Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__SPLITTER", 0), @_);
     if($new) {
-	    $new->{-tracking} = 0;
-		return $new;
-	} else {
-		return undef;
-	}
+        $new->{-tracking} = 0;
+        return $new;
+    } else {
+        return undef;
+    }
 }
 
 
@@ -2070,7 +2056,7 @@ sub new {
 #
 package Win32::GUI::ComboboxEx;
 @ISA = qw(
-	Win32::GUI::Combobox 
+    Win32::GUI::Combobox 
 );
 
     ###########################################################################
@@ -2079,8 +2065,8 @@ package Win32::GUI::ComboboxEx;
     # can also be called as PARENT->AddComboboxEx(%OPTIONS).
     # Class specific %OPTIONS are:
     #   -imagelist => Win32::GUI::ImageList object
-	# Except for images, a ComboboxEx object acts like a Win32::GUI::Combobox
-	# object. See also new Win32::GUI::Combobox().
+    # Except for images, a ComboboxEx object acts like a Win32::GUI::Combobox
+    # object. See also new Win32::GUI::Combobox().
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__COMBOBOXEX", 0), @_);
 }
@@ -2090,8 +2076,8 @@ sub new {
 #
 package Win32::GUI::DateTime;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -2109,8 +2095,8 @@ sub new {
 #
 package Win32::GUI::Graphic;
 @ISA = qw(
-	Win32::GUI 
-	Win32::GUI::WindowProps
+    Win32::GUI 
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
@@ -2148,10 +2134,10 @@ package Win32::GUI::ImageList;
 
     ###########################################################################
     # (@)METHOD:new Win32::GUI::ImageList(X, Y, FLAGS, INITAL, GROW)
-	# Creates an ImageList object; X and Y specify the size of the images,
-	# FLAGS [TBD]. INITIAL and GROW specify the number of images the ImageList
-	# actually contains (INITIAL) and the number of images for which memory
-	# is allocated (GROW).
+    # Creates an ImageList object; X and Y specify the size of the images,
+    # FLAGS [TBD]. INITIAL and GROW specify the number of images the ImageList
+    # actually contains (INITIAL) and the number of images for which memory
+    # is allocated (GROW).
 sub new {
     my $class = shift;
     my $handle = Win32::GUI::ImageList::Create(@_);
@@ -2369,15 +2355,15 @@ package Win32::GUI::NotifyIcon;
     # (@)METHOD:new Win32::GUI::NotifyIcon(PARENT, %OPTIONS)
     # Creates a new NotifyIcon (also known as system tray icon) object;
     # can also be called as PARENT->AddNotifyIcon(%OPTIONS).
-	# %OPTIONS are:
-	#     -icon => Win32::GUI::Icon object
-	#     -id => NUMBER
-	#         a unique identifier for the NotifyIcon object
-	#     -name => STRING
-	#         the name for the object
-	#     -tip => STRING
-	#         the text that will appear as tooltip when the mouse is
-	#         on the NotifyIcon
+    # %OPTIONS are:
+    #     -icon => Win32::GUI::Icon object
+    #     -id => NUMBER
+    #         a unique identifier for the NotifyIcon object
+    #     -name => STRING
+    #         the name for the object
+    #     -tip => STRING
+    #         the text that will appear as tooltip when the mouse is
+    #         on the NotifyIcon
 sub new {
     my $class = shift;
     $class = "Win32::" . $class if $class =~ /^GUI::/;
@@ -2537,88 +2523,88 @@ package Win32::GUI::AcceleratorTable;
     # (@)METHOD:new Win32::GUI::AcceleratorTable(%ACCELERATORS)
     # Creates an AcceleratorTable object.
     # %ACCELERATORS is an associative array of key combinations and
-	# accelerator names, in pair:
-	# Example:
-	#     $A = new Win32::GUI::AcceleratorTable(
+    # accelerator names, in pair:
+    # Example:
+    #     $A = new Win32::GUI::AcceleratorTable(
     #         "Ctrl-X"       => "Close",
     #         "Shift-N"      => "New",
-	#         "Ctrl-Alt-Del" => "Reboot",
-	#     );
-	# The AcceleratorTable object can be associated to a window
-	# with the -accel option; then, when an accelerator is used, a 
-	# corresponding <name>_Click event is fired. 
-	# Keyboard combinations currently support the following modifier :
-	#     Shift
+    #         "Ctrl-Alt-Del" => "Reboot",
+    #     );
+    # The AcceleratorTable object can be associated to a window
+    # with the -accel option; then, when an accelerator is used, a 
+    # corresponding <name>_Click event is fired. 
+    # Keyboard combinations currently support the following modifier :
+    #     Shift
     #     Ctrl  (or Control)
-	#     Alt
-	# and the following keys:
-	#     A..Z, 0..9
-	#     Left, Right, Up, Down
-	#     Home, End, PageUp, PageDown (or PgUp/PgDn)
-	#     Space, Ins, Del, Esc, Backspace, Tab, Return
-	#     F1..F12
+    #     Alt
+    # and the following keys:
+    #     A..Z, 0..9
+    #     Left, Right, Up, Down
+    #     Home, End, PageUp, PageDown (or PgUp/PgDn)
+    #     Space, Ins, Del, Esc, Backspace, Tab, Return
+    #     F1..F12
 sub new {
-	shift;
-	my($k, $v);
-	my $flag = 0;
-	my $key = 0;
-	my %accels = @_;
-	while( ($k, $v) = each %accels) {
-		$flag = 0;
-		if($k =~ s/shift[-\+]//i)                { $flag |= 0x0004; }
-		if($k =~ s/(ctrl|control)[-\+]//i)       { $flag |= 0x0008; }
-		if($k =~ s/alt[-\+]//i)                  { $flag |= 0x0010; }
+    shift;
+    my($k, $v);
+    my $flag = 0;
+    my $key = 0;
+    my %accels = @_;
+    while( ($k, $v) = each %accels) {
+        $flag = 0;
+        if($k =~ s/shift[-\+]//i)                { $flag |= 0x0004; }
+        if($k =~ s/(ctrl|control)[-\+]//i)       { $flag |= 0x0008; }
+        if($k =~ s/alt[-\+]//i)                  { $flag |= 0x0010; }
 
-		   if($k =~ /^space$/i)                  { $flag |= 0x0001; $key = 0x20; } # VK_SPACE
-		elsif($k =~ /^left$/i)                   { $flag |= 0x0001; $key = 0x25; } # VK_LEFT
-		elsif($k =~ /^right$/i)                  { $flag |= 0x0001; $key = 0x27; } # VK_RIGHT
-		elsif($k =~ /^up$/i)                     { $flag |= 0x0001; $key = 0x26; } # VK_UP
-		elsif($k =~ /^down$/i)                   { $flag |= 0x0001; $key = 0x28; } # VK_DOWN
-		elsif($k =~ /^ins$/i)                    { $flag |= 0x0001; $key = 0x2D; } # VK_INSERT
-		elsif($k =~ /^del$/i)                    { $flag |= 0x0001; $key = 0x2E; } # VK_DELETE		
-		elsif($k =~ /^f1$/i)                     { $flag |= 0x0001; $key = 0x70; } # VK_F1
-		elsif($k =~ /^f2$/i)                     { $flag |= 0x0001; $key = 0x71; } # VK_F2
-		elsif($k =~ /^f3$/i)                     { $flag |= 0x0001; $key = 0x72; } # VK_F3
-		elsif($k =~ /^f4$/i)                     { $flag |= 0x0001; $key = 0x73; } # VK_F4
-		elsif($k =~ /^f5$/i)                     { $flag |= 0x0001; $key = 0x74; } # VK_F5
-		elsif($k =~ /^f6$/i)                     { $flag |= 0x0001; $key = 0x75; } # VK_F6
-		elsif($k =~ /^f7$/i)                     { $flag |= 0x0001; $key = 0x76; } # VK_F7
-		elsif($k =~ /^f8$/i)                     { $flag |= 0x0001; $key = 0x77; } # VK_F8
-		elsif($k =~ /^f9$/i)                     { $flag |= 0x0001; $key = 0x78; } # VK_F9
-		elsif($k =~ /^f10$/i)                    { $flag |= 0x0001; $key = 0x79; } # VK_F10
-		elsif($k =~ /^f11$/i)                    { $flag |= 0x0001; $key = 0x7A; } # VK_F11
-		elsif($k =~ /^f12$/i)                    { $flag |= 0x0001; $key = 0x7B; } # VK_F12
-		elsif($k =~ /^esc$/i)                    { $flag |= 0x0001; $key = 0x1B; } # VK_ESCAPE
-		elsif($k =~ /^backspace$/i)              { $flag |= 0x0001; $key = 0x08; } # VK_BACK
-		elsif($k =~ /^tab$/i)                    { $flag |= 0x0001; $key = 0x09; } # VK_TAB
-		elsif($k =~ /^return$/i)                 { $flag |= 0x0001; $key = 0x0D; } # VK_RETURN
-		elsif($k =~ /^end$/i)                    { $flag |= 0x0001; $key = 0x23; } # VK_END
-		elsif($k =~ /^home$/i)                   { $flag |= 0x0001; $key = 0x24; } # VK_HOME
-		elsif($k =~ /^(pgup|pageup)$/i)          { $flag |= 0x0001; $key = 0x21; } # VK_PRIOR
-		elsif($k =~ /^(pgdn|pagedn|pagedown)$/i) { $flag |= 0x0001; $key = 0x22; } # VK_NEXT
-		elsif($k =~ /^[0-9a-zA-Z]$/)             { $flag |= 0x0001; $key = ord(uc($k)); } # ASCII
+           if($k =~ /^space$/i)                  { $flag |= 0x0001; $key = 0x20; } # VK_SPACE
+        elsif($k =~ /^left$/i)                   { $flag |= 0x0001; $key = 0x25; } # VK_LEFT
+        elsif($k =~ /^right$/i)                  { $flag |= 0x0001; $key = 0x27; } # VK_RIGHT
+        elsif($k =~ /^up$/i)                     { $flag |= 0x0001; $key = 0x26; } # VK_UP
+        elsif($k =~ /^down$/i)                   { $flag |= 0x0001; $key = 0x28; } # VK_DOWN
+        elsif($k =~ /^ins$/i)                    { $flag |= 0x0001; $key = 0x2D; } # VK_INSERT
+        elsif($k =~ /^del$/i)                    { $flag |= 0x0001; $key = 0x2E; } # VK_DELETE      
+        elsif($k =~ /^f1$/i)                     { $flag |= 0x0001; $key = 0x70; } # VK_F1
+        elsif($k =~ /^f2$/i)                     { $flag |= 0x0001; $key = 0x71; } # VK_F2
+        elsif($k =~ /^f3$/i)                     { $flag |= 0x0001; $key = 0x72; } # VK_F3
+        elsif($k =~ /^f4$/i)                     { $flag |= 0x0001; $key = 0x73; } # VK_F4
+        elsif($k =~ /^f5$/i)                     { $flag |= 0x0001; $key = 0x74; } # VK_F5
+        elsif($k =~ /^f6$/i)                     { $flag |= 0x0001; $key = 0x75; } # VK_F6
+        elsif($k =~ /^f7$/i)                     { $flag |= 0x0001; $key = 0x76; } # VK_F7
+        elsif($k =~ /^f8$/i)                     { $flag |= 0x0001; $key = 0x77; } # VK_F8
+        elsif($k =~ /^f9$/i)                     { $flag |= 0x0001; $key = 0x78; } # VK_F9
+        elsif($k =~ /^f10$/i)                    { $flag |= 0x0001; $key = 0x79; } # VK_F10
+        elsif($k =~ /^f11$/i)                    { $flag |= 0x0001; $key = 0x7A; } # VK_F11
+        elsif($k =~ /^f12$/i)                    { $flag |= 0x0001; $key = 0x7B; } # VK_F12
+        elsif($k =~ /^esc$/i)                    { $flag |= 0x0001; $key = 0x1B; } # VK_ESCAPE
+        elsif($k =~ /^backspace$/i)              { $flag |= 0x0001; $key = 0x08; } # VK_BACK
+        elsif($k =~ /^tab$/i)                    { $flag |= 0x0001; $key = 0x09; } # VK_TAB
+        elsif($k =~ /^return$/i)                 { $flag |= 0x0001; $key = 0x0D; } # VK_RETURN
+        elsif($k =~ /^end$/i)                    { $flag |= 0x0001; $key = 0x23; } # VK_END
+        elsif($k =~ /^home$/i)                   { $flag |= 0x0001; $key = 0x24; } # VK_HOME
+        elsif($k =~ /^(pgup|pageup)$/i)          { $flag |= 0x0001; $key = 0x21; } # VK_PRIOR
+        elsif($k =~ /^(pgdn|pagedn|pagedown)$/i) { $flag |= 0x0001; $key = 0x22; } # VK_NEXT
+        elsif($k =~ /^[0-9a-zA-Z]$/)             { $flag |= 0x0001; $key = ord(uc($k)); } # ASCII
 
-		push(@acc, $id);
-		push(@acc, $key);
-		push(@acc, $flag);
+        push(@acc, $id);
+        push(@acc, $key);
+        push(@acc, $flag);
 
-		$self->{$Win32::GUI::AcceleratorCounter++} = $v;
-	}
-	if($Win32::GUI::AcceleratorTable) {
-		Win32::GUI::DestroyAcceleratorTable($Win32::GUI::AcceleratorTable);
-	}
-	my $handle = Win32::GUI::CreateAcceleratorTable( @acc );
-	if($handle) {
-		$self->{-handle} = $handle;
-		return 1;
-	} else {
-		return 0;
-	}
+        $self->{$Win32::GUI::AcceleratorCounter++} = $v;
+    }
+    if($Win32::GUI::AcceleratorTable) {
+        Win32::GUI::DestroyAcceleratorTable($Win32::GUI::AcceleratorTable);
+    }
+    my $handle = Win32::GUI::CreateAcceleratorTable( @acc );
+    if($handle) {
+        $self->{-handle} = $handle;
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 sub DESTROY {
-	print "DESTROYING AcceleratorTable $self->{-handle}\n";
-	Win32::GUI::DestroyAcceleratorTable($self->{-handle});
+    print "DESTROYING AcceleratorTable $self->{-handle}\n";
+    Win32::GUI::DestroyAcceleratorTable($self->{-handle});
 }
 
 ###############################################################################
@@ -2629,90 +2615,91 @@ sub DESTROY {
 package Win32::GUI::WindowProps;
 
 my %TwoWayMethodMap = (
-	-text   => "Text",
-	-left   => "Left",
-	-top    => "Top",
-	-width  => "Width",
-	-height => "Height",
+    -text   => "Text",
+    -left   => "Left",
+    -top    => "Top",
+    -width  => "Width",
+    -height => "Height",
+    -dialogui => "DialogUI",
 );
 
 my %OneWayMethodMap = (
-	-scalewidth   => "ScaleHeight",
-	-scaleheight  => "ScaleWidth",
+    -scalewidth   => "ScaleHeight",
+    -scaleheight  => "ScaleWidth",
 );
 
     ###########################################################################
     # (@)INTERNAL:TIEHASH
 sub TIEHASH {
-	my($class, $object) = @_;
-	# my $tied = { UNDERLYING => $object };
-	# print "[TIEHASH] called for '$class' '$object'\n";
-	# return bless $tied, $class;
-	return bless $object, $class;
+    my($class, $object) = @_;
+    # my $tied = { UNDERLYING => $object };
+    # print "[TIEHASH] called for '$class' '$object'\n";
+    # return bless $tied, $class;
+    return bless $object, $class;
 }
 
     ###########################################################################
     # (@)INTERNAL:STORE
 sub STORE {
-	my($self, $key, $value) = @_;
-	# print "[STORE] called for '$self' {$key}='$value'\n";
+    my($self, $key, $value) = @_;
+    # print "[STORE] called for '$self' {$key}='$value'\n";
 
-	if(exists $TwoWayMethodMap{$key}) {
-		if(my $method = $self->can($TwoWayMethodMap{$key})) {
-			# print "[STORE] calling method '$TwoWayMethodMap{$key}' on '$self'\n";
-			return &{$method}($self, $value);
-		} else {
-			# print "[STORE] PROBLEM: method '$TwoWayMethodMap{$key}' not found on '$self'\n";
-		}
-	} elsif($key eq "-style") {
-		# print "[STORE] calling GetWindowLong\n";
-		return Win32::GUI::GetWindowLong($self, -16, $value);
+    if(exists $TwoWayMethodMap{$key}) {
+        if(my $method = $self->can($TwoWayMethodMap{$key})) {
+            # print "[STORE] calling method '$TwoWayMethodMap{$key}' on '$self'\n";
+            return &{$method}($self, $value);
+        } else {
+            # print "[STORE] PROBLEM: method '$TwoWayMethodMap{$key}' not found on '$self'\n";
+        }
+    } elsif($key eq "-style") {
+        # print "[STORE] calling GetWindowLong\n";
+        return Win32::GUI::GetWindowLong($self, -16, $value);
 
-	} else {
-		# print "[STORE] storing key '$key' in '$self'\n";
-		# return $self->{UNDERLYING}->{$key} = $value;
-		return $self->{$key} = $value;
-	}
+    } else {
+        # print "[STORE] storing key '$key' in '$self'\n";
+        # return $self->{UNDERLYING}->{$key} = $value;
+        return $self->{$key} = $value;
+    }
 }
 
     ###########################################################################
     # (@)INTERNAL:FETCH
 sub FETCH {
-	my($self, $key) = @_;
+    my($self, $key) = @_;
 
-	if($key eq "UNDERLYING") {
-		# print "[FETCH] returning UNDERLYING for '$self'\n";
-		return $self->{UNDERLYING};
+    if($key eq "UNDERLYING") {
+        # print "[FETCH] returning UNDERLYING for '$self'\n";
+        return $self->{UNDERLYING};
 
-	} elsif(exists $TwoWayMethodMap{$key}) {
-		# if(my $method = $self->{UNDERLYING}->can($TwoWayMethodMap{$key})) {
-		if(my $method = $self->can($TwoWayMethodMap{$key})) {
-			# print "[FETCH] calling method $TwoWayMethodMap{$key} on $self->{UNDERLYING}\n";
-			# print "[FETCH] calling method '$TwoWayMethodMap{$key}' on '$self'\n";
-			# return &{$method}($self->{UNDERLYING});
-			return &{$method}($self);
-		} else {
-			# print "[FETCH] method not found '$TwoWayMethodMap{$key}'\n";
-			return undef;
-		}
+    } elsif(exists $TwoWayMethodMap{$key}) {
+        # if(my $method = $self->{UNDERLYING}->can($TwoWayMethodMap{$key})) {
+        if(my $method = $self->can($TwoWayMethodMap{$key})) {
+            # print "[FETCH] calling method $TwoWayMethodMap{$key} on $self->{UNDERLYING}\n";
+            # print "[FETCH] calling method '$TwoWayMethodMap{$key}' on '$self'\n";
+            # return &{$method}($self->{UNDERLYING});
+            return &{$method}($self);
+        } else {
+            # print "[FETCH] method not found '$TwoWayMethodMap{$key}'\n";
+            return undef;
+        }
 
-	} elsif($key eq "-style") {
-		return Win32::GUI::GetWindowLong($self->{UNDERLYING}, -16);
+    } elsif($key eq "-style") {
+        return Win32::GUI::GetWindowLong($self->{UNDERLYING}, -16);
 
-	#} elsif(exists $self->{UNDERLYING}->{$key}) {
-	#	print "[FETCH] fetching key $key from $self->{UNDERLYING}\n";
-	#	return $self->{UNDERLYING}->{$key};
+    #} elsif(exists $self->{UNDERLYING}->{$key}) {
+    #   print "[FETCH] fetching key $key from $self->{UNDERLYING}\n";
+    #   return $self->{UNDERLYING}->{$key};
 
-	} elsif(exists $self->{$key}) {
-		# print "[FETCH] fetching key '$key' from '$self'\n";
-		return $self->{$key};
+    } elsif(exists $self->{$key}) {
+        # print "[FETCH] fetching key '$key' from '$self'\n";
+        return $self->{$key};
 
-	} else {
-		# print "Win32::GUI::WindowProps::FETCH returning nothing for '$key' on $self->{UNDERLYING}\n";
-		# print "[FETCH] returning nothing for '$key' on '$self'\n";
-		return undef;
-		# return 0;
-	}
+    } else {
+        # print "Win32::GUI::WindowProps::FETCH returning nothing for '$key' on $self->{UNDERLYING}\n";
+        # print "[FETCH] returning nothing for '$key' on '$self'\n";
+        return undef;
+        # return 0;
+    }
 }
 
 sub FIRSTKEY {
@@ -2731,9 +2718,9 @@ sub NEXTKEY {
 }
 
 sub EXISTS {
-	my($self, $key) = @_;
-	# return exists $self->{UNDERLYING}->{$key};
-	return exists $self->{$key};
+    my($self, $key) = @_;
+    # return exists $self->{UNDERLYING}->{$key};
+    return exists $self->{$key};
 }
 
 

@@ -1,0 +1,92 @@
+=head2 Package Win32::GUI::DateTime
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::DateTime(PARENT, %OPTIONS)|/new_Win32_GUI_DateTime_PARENT_>
+
+=back
+
+=item *
+
+L<Methods>
+
+=over
+
+=item *
+
+L<Format(FORMAT)|/Format_FORMAT_>
+
+=item *
+
+L<GetDate()|/GetDate_>
+
+=item *
+
+L<SetDate(DAY, MONTH, YEAR)|/SetDate_DAY_MONTH_YEAR_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_DateTime_PARENT_">
+
+=item new Win32::GUI::DateTime(PARENT, %OPTIONS)
+
+Creates a new DateTime object;
+can also be called as PARENT->AddDateTime(%OPTIONS).
+Class specific %OPTIONS are:
+
+  [TBD]
+
+=for html <P>
+
+=back
+
+=head3 Methods
+
+=over 4
+
+=for html <A NAME="Format_FORMAT_">
+
+=item Format(FORMAT)
+
+(preliminary) Sets the format for the DateTime control to the specified
+string. More info [TBD].
+
+=for html <P>
+
+=for html <A NAME="GetDate_">
+
+=item GetDate()
+
+(preliminary) Returns the date in the DateTime control in a three
+elements array (day, month, year).
+
+=for html <P>
+
+=for html <A NAME="SetDate_DAY_MONTH_YEAR_">
+
+=item SetDate(DAY, MONTH, YEAR)
+
+(preliminary) Sets the date in the DateTime control in a three
+elements array (day, month, year).
+
+=for html <P>
+
+=back
+
+=cut

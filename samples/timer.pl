@@ -11,14 +11,13 @@ my $Window = new Win32::GUI::Window(
     -title  => "Win32::GUI::Timer test",
 );
 
-$Window->{-accel} = 0;
-
 $Window->AddLabel(
     -name   => "CurrentTime",
     -text   => scalar(localtime),
     -left   => 10,
     -top    => 10,
-	-notify => 1,
+    -notify => 1,
+    -align  => 'left',
 );
 
 my $BigFont = new Win32::GUI::Font(
@@ -54,7 +53,7 @@ my $Timer2 = $Window->AddTimer("Timer2", 10);
 my $incr = 5;
 my $x = 0;
 $Window->Show();
-my $rc = Win32::GUI::Dialog();
+Win32::GUI::Dialog();
 
 sub Window_Terminate {
     return -1;
@@ -72,36 +71,32 @@ sub Timer2_Timer {
 
 sub ToggleDot_Click {
     if($Timer2->Interval == 10) {
-	$Timer2->Interval(100);
-	$incr = 1;
-	$Window->ToggleDot->Text("LO");
+    $Timer2->Interval(100);
+    $incr = 1;
+    $Window->ToggleDot->Text("LO");
     } else {
-	$Timer2->Interval(10);
-	$incr = 5;
-	$Window->ToggleDot->Text("HI");
+    $Timer2->Interval(10);
+    $incr = 5;
+    $Window->ToggleDot->Text("HI");
     }
 }
 
 sub KillDot_Click {
     if($Window->KillDot->Text eq "Stop") {
-	$Timer2->Kill();
-	$Window->ToggleDot->Disable();
-	$Window->KillDot->Text("Go");
+    $Timer2->Kill();
+    $Window->ToggleDot->Disable();
+    $Window->KillDot->Text("Go");
     } else {
-	if($incr == 5) {
-	    $Timer2->Interval(10);
-	} else {
-	    $Timer2->Interval(100);
-	}
-	$Window->ToggleDot->Enable();
-	$Window->KillDot->Text("Stop");
+    if($incr == 5) {
+        $Timer2->Interval(10);
+    } else {
+        $Timer2->Interval(100);
+    }
+    $Window->ToggleDot->Enable();
+    $Window->KillDot->Text("Stop");
     }
 }
 
 sub CurrentTime_Click {
-	print "got!\n";
+    print "got!\n";
 }
-
-sub Window_Activate { 1; }
-
-

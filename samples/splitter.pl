@@ -31,7 +31,7 @@ $W->AddLabel(
 	-pos  => [0, 0],
 	-size => [ $W->ScaleWidth/2-2, $W->ScaleHeight ],
 	-text => "LEFT",
-	-background => [ 255, 0, 0],
+        -background => "#FF5201",
 );
 
 $W->AddLabel(
@@ -39,7 +39,7 @@ $W->AddLabel(
 	-pos  => [ $W->ScaleWidth/2+2, 0 ],
 	-size => [ $W->ScaleWidth/2-2, $W->ScaleHeight ],
 	-text => "RIGHT",
-	-background => [ 0, 0, 255],
+        -background => "#78FFFF",
 );
 
 $W->Show();

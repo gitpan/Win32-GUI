@@ -1,0 +1,39 @@
+=head2 Package Win32::GUI::Accelerator
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=back
+
+=item *
+
+L<Events>
+
+=over
+
+=item *
+
+L<Click()|/Click_>
+
+=back
+
+=back
+
+=back
+
+=head3 Events
+
+=over 4
+
+=for html <A NAME="Click_">
+
+=item Click()
+
+Sent when the users triggers an Accelerator object.
+
+=for html <P>
+
+=back
+
+=cut

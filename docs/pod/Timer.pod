@@ -1,0 +1,105 @@
+=head2 Package Win32::GUI::Timer
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::Timer(PARENT, NAME, ELAPSE)|/new_Win32_GUI_Timer_PARENT_NA>
+
+=back
+
+=item *
+
+L<Methods>
+
+=over
+
+=item *
+
+L<Interval(ELAPSE)|/Interval_ELAPSE_>
+
+=item *
+
+L<Kill()|/Kill_>
+
+=back
+
+=item *
+
+L<Events>
+
+=over
+
+=item *
+
+L<Timer()|/Timer_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_Timer_PARENT_NA">
+
+=item new Win32::GUI::Timer(PARENT, NAME, ELAPSE)
+
+Creates a new timer in the PARENT window named NAME that will
+trigger its Timer() event after ELAPSE milliseconds.
+Can also be called as PARENT->AddTimer(NAME, ELAPSE).
+
+=for html <P>
+
+=back
+
+=head3 Methods
+
+=over 4
+
+=for html <A NAME="Interval_ELAPSE_">
+
+=item Interval(ELAPSE)
+
+Changes the timeout value of the Timer to ELAPSE milliseconds.
+If ELAPSE is 0, the Timer is disabled;
+can also be used to resume a Timer after a Kill().
+
+=for html <P>
+
+=for html <A NAME="Kill_">
+
+=item Kill()
+
+Disables the Timer.
+
+=for html <P>
+
+=back
+
+=head3 Events
+
+=over 4
+
+=for html <A NAME="Timer_">
+
+=item Timer()
+
+Sent when the Timer reaches its timeout value,
+eg. after the number of milliseconds specified
+when creating the Timer.
+
+=for html <P>
+
+=back
+
+=cut

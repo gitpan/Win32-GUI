@@ -1,0 +1,163 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::Animation</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_Animation">Package Win32::GUI::Animation</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Methods">Methods</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_Animation">Package Win32::GUI::Animation</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_Animation_PARENT">new Win32::GUI::Animation(PARENT, %OPTIONS)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Methods">Methods</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Close_">Close()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Open_FILE_">Open(FILE)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Play_FROM_TO_REPEAT_">Play([FROM], [TO], [REPEAT])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Seek_FRAME_">Seek(FRAME)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Stop_">Stop()</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_Animation_PARENT">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::Animation(PARENT, %OPTIONS)</A></STRONG><DD>
+<P>
+Creates a new Animation object; can also be called as
+PARENT-&gt;AddAnimation(%OPTIONS). Class specific <CODE>%OPTIONS</CODE>
+are:
+
+<P>
+<PRE>  -autoplay    =&gt; 0/1 (default 0)
+    starts playing the animation as soon as an AVI clip is loaded
+  -center      =&gt; 0/1 (default 0)
+    centers the animation in the control window
+  -transparent =&gt; 0/1 (default 0)
+    draws the animation using a transparent background
+</PRE>
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Methods">Methods</A></H3>
+<A NAME="Close_">
+
+<DL>
+<DT><STRONG><A NAME="item_Close">Close()</A></STRONG><DD>
+<P>
+Closes the <CODE>Open()ed</CODE> AVI file.
+
+<P>
+
+<A NAME="Open_FILE_">
+
+<DT><STRONG><A NAME="item_Open">Open(FILE)</A></STRONG><DD>
+<P>
+Opens the specified AVI file in the Animation control; note that the AVI
+file must not contain sound data.
+
+<P>
+
+<A NAME="Play_FROM_TO_REPEAT_">
+
+<DT><STRONG><A NAME="item_Play">Play([FROM], [TO], [REPEAT])</A></STRONG><DD>
+<P>
+Plays the animation (eventually from the FROM frame to the TO frame)
+looping it REPEAT times. Defaults are FROM 0 (the first frame) to -1 (the
+last frame) and REPEAT -1 (loop forever)
+
+<P>
+
+<A NAME="Seek_FRAME_">
+
+<DT><STRONG><A NAME="item_Seek">Seek(FRAME)</A></STRONG><DD>
+<P>
+Positions the AVI file to the specified FRAME.
+
+<P>
+
+<A NAME="Stop_">
+
+<DT><STRONG><A NAME="item_Stop">Stop()</A></STRONG><DD>
+<P>
+Stops the animation currently playing.
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

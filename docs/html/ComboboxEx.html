@@ -1,0 +1,167 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::ComboboxEx</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_ComboboxEx">Package Win32::GUI::ComboboxEx</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Methods">Methods</A>
+			<LI><A HREF="#Events">Events</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_ComboboxEx">Package Win32::GUI::ComboboxEx</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_ComboboxEx_PAREN">new Win32::GUI::ComboboxEx(PARENT, %OPTIONS)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Methods">Methods</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#InsertItem_OPTIONS_">InsertItem(%OPTIONS)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Events">Events</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Change_">Change()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GotFocus_">GotFocus()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#LostFocus_">LostFocus()</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_ComboboxEx_PAREN">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::ComboboxEx(PARENT, %OPTIONS)</A></STRONG><DD>
+<P>
+Creates a new ComboboxEx object; can also be called as
+PARENT-&gt;AddComboboxEx(%OPTIONS). Class specific <CODE>%OPTIONS</CODE>
+are:
+
+<P>
+<PRE>  -imagelist =&gt; Win32::GUI::ImageList object
+</PRE>
+<P>
+Except for images, a ComboboxEx object acts like a Win32::GUI::Combobox
+object. See also  <A HREF="././Combobox.html#new_Win32_GUI_Combobox_PARENT_">new Win32::GUI::Combobox()</A>.
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Methods">Methods</A></H3>
+<A NAME="InsertItem_OPTIONS_">
+
+<DL>
+<DT><STRONG><A NAME="item_InsertItem">InsertItem(%OPTIONS)</A></STRONG><DD>
+<P>
+Inserts a new item in the ComboboxEx control. Returns the newly created
+item zero-based index or -1 on errors. <CODE>%OPTIONS</CODE> can be:
+
+<P>
+<PRE>  -index =&gt; position (-1 for the end of the list)
+  -image =&gt; index of an image from the associated ImageList
+  -selectedimage =&gt; index of an image from the associated ImageList
+  -text =&gt; string
+  -indent =&gt; indentation spaces (1 space == 10 pixels)
+</PRE>
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Events">Events</A></H3>
+<A NAME="Change_">
+
+<DL>
+<DT><STRONG><A NAME="item_Change">Change()</A></STRONG><DD>
+<P>
+Sent when the user selects an item from the Combobox
+
+<P>
+
+<A NAME="GotFocus_">
+
+<DT><STRONG><A NAME="item_GotFocus">GotFocus()</A></STRONG><DD>
+<P>
+Sent when the control is activated.
+
+<P>
+
+<A NAME="LostFocus_">
+
+<DT><STRONG><A NAME="item_LostFocus">LostFocus()</A></STRONG><DD>
+<P>
+Sent when the control is deactivated.
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

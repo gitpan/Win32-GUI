@@ -1,3 +1,4 @@
+# Win32::GUI::RichEdit test
 
 use Win32::GUI;
 
@@ -36,7 +37,7 @@ $Textbox = $Window->AddRichEdit(
     -exstyle => WS_EX_CLIENTEDGE,
 );
 
-$file = ($ARGV[0] or "richedit.t");
+$file = ($ARGV[0] or $0);
 open(FILE, $file) or die "No file found $file\n";
 
 while(<FILE>) {

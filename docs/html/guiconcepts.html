@@ -1,0 +1,645 @@
+<HTML>
+<HEAD>
+<TITLE>Win32::GUI General Concepts</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Win32_GUI_General_Concepts">Win32::GUI General Concepts</A>
+		<UL>
+
+			<LI><A HREF="#Packages">Packages</A>
+			<LI><A HREF="#Objects">Objects</A>
+			<LI><A HREF="#Options">Options</A>
+			<LI><A HREF="#The_dialog_phase">The dialog phase</A>
+			<LI><A HREF="#Events">Events</A>
+			<LI><A HREF="#Windows">Windows</A>
+			<LI><A HREF="#Controls">Controls</A>
+			<LI><A HREF="#Resources">Resources</A>
+			<LI><A HREF="#Others">Others</A>
+			<LI><A HREF="#Non_owned_windows">Non-owned windows</A>
+			<LI><A HREF="#Colors">Colors</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Win32_GUI_General_Concepts">Win32::GUI General Concepts</A></H2>
+<P>
+<A HREF="././gui.html#">Back to the index</A>
+
+
+<UL>
+
+			<LI><A HREF="#Packages">Packages</A>
+			<LI><A HREF="#Objects">Objects</A>
+			<LI><A HREF="#Options">Options</A>
+			<LI><A HREF="#The_dialog_phase">The dialog phase</A>
+			<LI><A HREF="#Events">Events</A>
+			<LI><A HREF="#Windows">Windows</A>
+			<LI><A HREF="#Controls">Controls</A>
+			<LI><A HREF="#Resources">Resources</A>
+			<LI><A HREF="#Others">Others</A>
+			<LI><A HREF="#Non_owned_windows">Non-owned windows</A>
+			<LI><A HREF="#Colors">Colors</A>
+		</UL>
+</UL><HR>
+<H3><A NAME="Packages">Packages</A></H3>
+<P>
+Packages in Win32::GUI can be divided into three main categories: <STRONG>Windows</STRONG>, <STRONG>Controls</STRONG> and <STRONG>Resources</STRONG>; but a big part of the core of this module is in the
+<A HREF="././Win32_GUI.html#">Win32::GUI</A> package. All the generic functions are defined there, and all the
+components of the user interface inherit from it, so that most of the
+functions that refer to windows (eg. Show, Hide, Height, Enable, and so on)
+apply to every object and can be used as their methods:
+
+<P>
+<PRE>    $Window-&gt;Show();
+    $Window-&gt;Button1-&gt;Show();
+</PRE>
+<P>
+Some other functions (like for example GetCursorPos) aren't applicable to
+an object, and they require a fully qualified call including the package
+name:
+
+<P>
+<PRE>    ($x, $y) = Win32::GUI::GetCursorPos();
+</PRE>
+<P>
+<A HREF="#Windows">Windows</A> are the well known windows that you see on your screen; your script will
+probably generate one or more window that contain your user interface; this
+content is usually made up of <A HREF="#Controls">Controls</A> (eg. labels, buttons, input fields and so on). They can also be considered
+as child windows, and, as said, they are all inherited from the Win32::GUI
+package.
+
+<P>
+<A HREF="#Resources">Resources</A> are of a different category: they build up, so to say, the graphical
+Windows toolkit (usually referred to as GDI, Graphics Device Interface);
+you'll find there fonts, brushes, bitmaps, icons, cursors and so on. These
+objects are generally associated with your windows and controls (eg. you
+can set a windows or controls font); some of them, like pens and brushes,
+are used instead with the <A HREF="././DC.html#">Win32::GUI::DC</A> package, which implement the drawing primitives.
+
+<P>
+There are then some packages that simply don't fit into the three
+categories above, because their use goes beyond the simple user interface:
+this is the case with <A HREF="././Class.html#">Win32::GUI::Class</A>
+and the mentioned <A HREF="././DC.html#">Win32::GUI::DC</A>.
+
+<P>
+<HR>
+<H3><A NAME="Objects">Objects</A></H3>
+<P>
+You create an object using its <STRONG>constructor</STRONG>, which is usally of the form:
+
+<P>
+<PRE>    $Object = new Win32::GUI::&lt;something&gt;( &lt;options&gt; );
+</PRE>
+<P>
+where &lt;something&gt; is the class of the object you want to create (eg.
+Window, Menu, Font, etc.) and &lt;options&gt; are the characteristics of
+your object. Once you have the <CODE>$Object</CODE> variable, you can
+invoke methods on it:
+
+<P>
+<PRE>    $Object-&gt;Show();
+</PRE>
+<P>
+A different approach is possible with <STRONG>Controls</STRONG>. Usually, once you created your <CODE>$Window</CODE> object, you will add
+controls in it with this construct:
+
+<P>
+<PRE>    $Window-&gt;AddButton( &lt;options&gt; );
+</PRE>
+<P>
+This function will return a <CODE>$Button</CODE> object as you may expect,
+but you don't need to store it in a variable: Win32::GUI will use the very
+special
+<CODE>-name</CODE> option to store the object reference in the window as a named key (or
+sub-object):
+
+<P>
+<PRE>    $Window-&gt;AddButton( -name =&gt; &quot;Button1&quot; );
+    $Window-&gt;Button1-&gt;Show();
+    # or
+    $Window-&gt;{'Button1'}-&gt;Show();
+</PRE>
+<P>
+These sub-objects are really hash keys, but for your convenience are also
+AUTOLOAD'ed as if they were subroutines (see AutoLoader.pm for details);
+this can introduce some confusion if you name an object with the same name
+as a Win32::GUI function.
+
+<P>
+<PRE>    $Window-&gt;AddButton( -name =&gt; &quot;Show&quot; );
+    $Window-&gt;Show-&gt;Show();
+</PRE>
+<P>
+This syntax will not work because ``Show'' is already defined as a method
+of your <CODE>$Window</CODE> object. The advice is to use a different name
+for your object, but if you <STRONG>really</STRONG>
+can't renounce to it, you can still use the safer syntax:
+
+<P>
+<PRE>    $Window-&gt;{'Show'}-&gt;Show();
+</PRE>
+<P>
+It is of course always possible, if you don't mind using too much
+variables, to use the less elegant form:
+
+<P>
+<PRE>    $Button1 = $Window-&gt;AddButton( ... );
+    $Button1-&gt;Show();
+</PRE>
+<P>
+<HR>
+<H3><A NAME="Options">Options</A></H3>
+<P>
+The definition of an object is made up of
+<STRONG>options</STRONG>, which are pretty much like an associative array; option names are always
+lowercase and preceded by a dash (-), while their value vary (can be
+strings, numbers, objects or array references).
+
+<P>
+A number of options is common to any window (and control), and they're
+documented in 
+<A HREF="././guioptions.html#">Common options</A>; furthermore, different objects have different specific options,
+documented in the single packages reference.
+
+<P>
+The most important option for a window is
+<CODE>-name</CODE>; this defines the name of the object in its container (as explained above)
+and the name used in the <A HREF="#Events">Events</A> naming convention:
+
+<P>
+<PRE>    $Window-&gt;AddButton( -name =&gt; &quot;Button1&quot; );
+    
+    $Window-&gt;Button1-&gt;Show();
+    
+    sub Button1_Click { print &quot;ouch!\n&quot;; }
+</PRE>
+<P>
+An example of using a complete set of options:
+
+<P>
+<PRE>    $Window = new Win32::GUI::Window(
+        -name   =&gt; &quot;Window&quot;,
+        -title  =&gt; &quot;Perl Window Example&quot;,
+        -left   =&gt; 100,  
+        -top    =&gt; 100,
+        -width  =&gt; 500, 
+        -height =&gt; 400,         
+        -menu   =&gt; $Menu,
+    );
+</PRE>
+<P>
+<HR>
+<H3><A NAME="The_dialog_phase">The dialog phase</A></H3>
+<P>
+After creating your windows and done all the needed initialization
+processes, you may probably want your script to present the user with a
+window and await for his actions; in other words, you want to interact with
+the user. This is done in the dialog phase.
+
+<P>
+To enter the dialog phase simply call this instruction:
+
+<P>
+<PRE>    Win32::GUI::Dialog();
+</PRE>
+<P>
+or better yet, if you want to check the exit code of your GUI program:
+
+<P>
+<PRE>    $exitcode = Win32::GUI::Dialog();
+</PRE>
+<P>
+When the script encounter this instruction, its execution halts and the
+user has the ability to interact with what's on the screen. Since windows
+are by default created in an invisible state, you may probably call before
+something like:
+
+<P>
+<PRE>    $Window-&gt;Show();
+</PRE>
+<P>
+if your program is supposed to start with <CODE>$Window</CODE> as its entry
+point.
+
+<P>
+While in the dialog phase, user's actions will generate <STRONG>Events</STRONG> as needed. This phase ends when an event returns -1 or you press Cancel in
+response to a program error (see below for more details); when it ends, the
+control returns to the main body of your script (at the line after the one
+with the Win32::GUI::Dialog call) and it can go on normally.
+
+<P>
+<HR>
+<H3><A NAME="Events">Events</A></H3>
+<P>
+Events are Perl subs that are called in response to an event occurred in
+the user interface, usually generated by an action of the user. For
+example, a button has a Click event that is called when the user pushes it.
+The naming convention for events follows the Microsoft Visual Basic's one;
+its form is:
+
+<P>
+<PRE>    OBJECTNAME_Eventname
+</PRE>
+<P>
+(note there's an underscore in between), where <STRONG>OBJECTNAME</STRONG> is the value of the <CODE>-name</CODE>
+option used when creating the object, and 
+<STRONG>Eventname</STRONG> is the event name, eg. Click. So if you have a button named <CODE>Button1</CODE>, your Click event will be defined as follows:
+
+<P>
+<PRE>    sub Button1_Click {
+        # ...do something...
+    }
+</PRE>
+<P>
+The code inside will be executed when <CODE>Button1</CODE>
+gets pressed.
+
+<P>
+Win32::GUI also interprets the value returned by the sub; unless otherwise
+documented in the event description, the meaning of the return value is:
+
+<UL>
+<LI><STRONG><A NAME="item_1">1 (one, or a true value)</A></STRONG>
+<P>
+the script proceeds normally and the event is passed to the underlying
+default event processor.
+
+<LI><STRONG><A NAME="item_0">0 (zero)</A></STRONG>
+<P>
+the dialog phase continues but the event is not passed to the default event
+processor (what this means effectively depends on the event).
+
+<LI><STRONG><A NAME="item__1_minus_one_">-1 (minus one)</A></STRONG>
+<P>
+the dialog phase ends, and control returns to the main body of your script.
+You will much probably use this to end your program:
+
+<P>
+<PRE>    sub Window_Terminate {
+        return -1;
+    }
+</PRE>
+</UL>
+<P>
+The behaviour of the default event processor depends on the control and the
+event; in case of doubt, is always a good idea to end your event with an
+explicit:
+
+<P>
+<PRE>    return 1;
+</PRE>
+<P>
+Finally, you should note that events are really
+<STRONG>evaluated</STRONG> (as if they were called with <CODE>eval()</CODE>), so that errors are trapped, and a message box is shown. This box reports
+the offending event name on the title bar, the error message in its body
+and has OK and Cancel buttons. If you press OK, Win32::GUI will ignore the
+error and go on with the dialog (the event, of course, doesn't take place);
+if you press Cancel instead the dialog will end (with return code -1). This
+means that for example if you define an event like:
+
+<P>
+<PRE>    sub Button1_Click {
+        die();
+    }
+</PRE>
+<P>
+your script will not die immediately at the click of a button, but the
+message box will appear, reporting for example ``Died at script.pl line
+73''.
+
+<P>
+<HR>
+<H3><A NAME="Windows">Windows</A></H3>
+<P>
+In its widest acception, windows include what you normally call a window
+(sometimes referred to as a ``top level window''), controls (sometimes
+referred to as ``child windows'') and even 
+<A HREF="#Non_owned_windows">Non-owned windows</A> (not created by Win32::GUI).
+
+<P>
+Real (top level) windows are the container of your user interface;
+Win32::GUI defines two packages, <A HREF="././Window.html#">Window</A>
+and <A HREF="././DialogBox.html#">DialogBox</A>. By default, a Window has a title bar, the usual minimize/maximize/close
+buttons, a system menu (the button on the top left corner) and resizable
+borders. A DialogBox is very similar, except that by default it cannot be
+resized and it doesn't have the minimize and maximize buttons. The main
+difference between the two packages is in the dialog phase; DialogBox
+intercepts the tab and arrow keys to switch between controls, the use of
+Return and Esc for the Ok and Cancel button and accelerators, while Window
+not.
+
+<P>
+<HR>
+<H3><A NAME="Controls">Controls</A></H3>
+<P>
+Also known as ``widgets'' , these represent the content of your windows,
+and includes almost all the controls provided by Windows:
+
+<UL>
+<LI>
+<P>
+<A HREF="././Animation.html#">Animation</A>
+
+
+
+<LI>
+<P>
+<A HREF="././Button.html#">Button</A>
+
+
+
+<LI>
+<P>
+<A HREF="././Checkbox.html#">Checkbox</A>
+
+
+
+<LI>
+<P>
+<A HREF="././Combobox.html#">Combobox</A>
+
+
+
+<LI>
+<P>
+<A HREF="././Label.html#">Label</A>
+
+
+
+<LI>
+<P>
+<A HREF="././ListView.html#">ListView</A>
+
+
+
+<LI>
+<P>
+<A HREF="././Listbox.html#">Listbox</A>
+
+
+
+<LI>
+<P>
+<A HREF="././NotifyIcon.html#">NotifyIcon</A>
+
+
+
+<LI>
+<P>
+<A HREF="././ProgressBar.html#">ProgressBar</A>
+
+
+
+<LI>
+<P>
+<A HREF="././RadioButton.html#">RadioButton</A>
+
+
+
+<LI>
+<P>
+<A HREF="././Rebar.html#">Rebar</A>
+
+
+
+<LI>
+<P>
+<A HREF="././RichEdit.html#">RichEdit</A>
+
+
+
+<LI>
+<P>
+<A HREF="././Slider.html#">Slider</A>
+
+
+
+<LI>
+<P>
+<A HREF="././StatusBar.html#">StatusBar</A>
+
+
+
+<LI>
+<P>
+<A HREF="././TabStrip.html#">TabStrip</A>
+
+
+
+<LI>
+<P>
+<A HREF="././Textfield.html#">Textfield</A>
+
+
+
+<LI>
+<P>
+<A HREF="././Timer.html#">Timer</A>
+
+
+
+<LI>
+<P>
+<A HREF="././Toolbar.html#">Toolbar</A>
+
+
+
+<LI>
+<P>
+<A HREF="././Tooltip.html#">Tooltip</A>
+
+
+
+<LI>
+<P>
+<A HREF="././TreeView.html#">TreeView</A>
+
+
+
+<LI>
+<P>
+<A HREF="././UpDown.html#">UpDown</A>
+
+
+
+</UL>
+<P>
+<HR>
+<H3><A NAME="Resources">Resources</A></H3>
+<UL>
+<LI>
+<P>
+<A HREF="././Bitmap.html#">Bitmap</A>
+
+
+
+<LI>
+<P>
+<A HREF="././Brush.html#">Brush</A>
+
+
+
+<LI>
+<P>
+<A HREF="././Cursor.html#">Cursor</A>
+
+
+
+<LI>
+<P>
+<A HREF="././Font.html#">Font</A>
+
+
+
+<LI>
+<P>
+<A HREF="././Icon.html#">Icon</A>
+
+
+
+<LI>
+<P>
+<A HREF="././ImageList.html#">ImageList</A>
+
+
+
+<LI>
+<P>
+<A HREF="././Menu.html#">Menu</A>
+
+
+
+<LI>
+<P>
+<A HREF="././MenuButton.html#">MenuButton</A>
+
+
+
+<LI>
+<P>
+<A HREF="././MenuItem.html#">MenuItem</A>
+
+
+
+<LI>
+<P>
+<A HREF="././Pen.html#">Pen</A>
+
+
+
+</UL>
+<P>
+<HR>
+<H3><A NAME="Others">Others</A></H3>
+<UL>
+<LI>
+<P>
+<A HREF="././Class.html#">Class</A>
+
+
+
+<LI>
+<P>
+<A HREF="././DC.html#">DC</A>
+
+
+
+</UL>
+<P>
+<HR>
+<H3><A NAME="Non_owned_windows">Non-owned windows</A></H3>
+<P>
+Every window, even windows not created by your Perl script, can be
+referenced by Win32::GUI; all you need to know is its ``handle'', a
+numerical value that identifies that window. Many functions in the
+Win32::GUI package return such handles, as for example:
+
+<P>
+<PRE>    $First = Win32::GUI::GetForegroundWindow();
+</PRE>
+<P>
+This value can then be passed to any function that requires a window
+object; but of course, not being an object, you can't call it as a method:
+
+<P>
+<PRE>    Win32::GUI::Hide($First); # correct
+    $First-&gt;Hide();           # wrong
+</PRE>
+<P>
+Should you need to know the numerical handle of a window created by
+Win32::GUI, it is stored in its <CODE>-handle</CODE> key (this is the value that almost all function really use):
+
+<P>
+<PRE>    print &quot;Window handle is $Window-&gt;{-handle} \n&quot;;
+</PRE>
+<P>
+<HR>
+<H3><A NAME="Colors">Colors</A></H3>
+<P>
+Wherever you need to express a color, there are two possibilities: 
+
+<DL>
+<DT><STRONG><A NAME="item_first">first:</A></STRONG><DD>
+<P>
+Use a numeric value that contains red, green and blue components (that's
+the form Windows uses); expressing this form in hexadecimal, components are
+reversed with respect to the traditional (RGB) order:
+
+<P>
+<PRE>    0xBBGGRR
+</PRE>
+<P>
+Each components range is 0 to 0xFF, or 255; a value of 0, 0, 0 (0x000000)
+represents black, while a value of 255, 255, 255 (0xFFFFFF) represents
+white. The following are all valid color definitions in hexadecimal and
+decimal format (for practical reasons, you would probably prefer the
+hexadecimal notation):
+
+<P>
+<PRE>    $color = 0xFF0000;  # blue
+    $color = 16711680;  # blue
+    $color = 255 &lt;&lt; 16; # blue
+    $color = 0x00FF00;  # green
+    $color = 65280;     # green
+    $color = 0x80FFFF;  # pale yellow
+    $color = 8454143;   # pale yellow
+</PRE>
+<DT><STRONG><A NAME="item_second">second:</A></STRONG><DD>
+<P>
+Use a reference to a list with 3 values that express the red, green and
+blue components as above:
+
+<P>
+<PRE>    [ R, G, B ]
+</PRE>
+<P>
+Note that this is NOT a plain list (since a color is usually one parameter
+in a list of parameters to a function, it wouldn't make much sense); so the
+following forms are valid:
+
+<P>
+<PRE>    [ 0, 0, 0 ]
+    [ 255, 255, 255]
+    [ 0x80, 0xFF, 0xFF ]
+    \@color
+</PRE>
+</DL>
+</BODY>
+
+</HTML>

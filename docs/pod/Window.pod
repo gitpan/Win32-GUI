@@ -1,0 +1,441 @@
+=head2 Package Win32::GUI::Window
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::Window(%OPTIONS)|/new_Win32_GUI_Window_OPTIONS_>
+
+=back
+
+=item *
+
+L<Methods>
+
+=over
+
+=item *
+
+L<AddAnimation(%OPTIONS)|/AddAnimation_OPTIONS_>
+
+=item *
+
+L<AddButton(%OPTIONS)|/AddButton_OPTIONS_>
+
+=item *
+
+L<AddCheckbox(%OPTIONS)|/AddCheckbox_OPTIONS_>
+
+=item *
+
+L<AddCombobox(%OPTIONS)|/AddCombobox_OPTIONS_>
+
+=item *
+
+L<AddGroupbox(%OPTIONS)|/AddGroupbox_OPTIONS_>
+
+=item *
+
+L<AddHeader(%OPTIONS)|/AddHeader_OPTIONS_>
+
+=item *
+
+L<AddLabel(%OPTIONS)|/AddLabel_OPTIONS_>
+
+=item *
+
+L<AddListbox(%OPTIONS)|/AddListbox_OPTIONS_>
+
+=item *
+
+L<AddListView(%OPTIONS)|/AddListView_OPTIONS_>
+
+=item *
+
+L<AddMenu()|/AddMenu_>
+
+=item *
+
+L<AddNotifyIcon(%OPTIONS)|/AddNotifyIcon_OPTIONS_>
+
+=item *
+
+L<AddProgressBar(%OPTIONS)|/AddProgressBar_OPTIONS_>
+
+=item *
+
+L<AddRadioButton(%OPTIONS)|/AddRadioButton_OPTIONS_>
+
+=item *
+
+L<AddRebar(%OPTIONS)|/AddRebar_OPTIONS_>
+
+=item *
+
+L<AddRichEdit(%OPTIONS)|/AddRichEdit_OPTIONS_>
+
+=item *
+
+L<AddSlider(%OPTIONS)|/AddSlider_OPTIONS_>
+
+=item *
+
+L<AddStatusBar(%OPTIONS)|/AddStatusBar_OPTIONS_>
+
+=item *
+
+L<AddTabStrip(%OPTIONS)|/AddTabStrip_OPTIONS_>
+
+=item *
+
+L<AddTextfield(%OPTIONS)|/AddTextfield_OPTIONS_>
+
+=item *
+
+L<AddTimer(NAME, ELAPSE)|/AddTimer_NAME_ELAPSE_>
+
+=item *
+
+L<AddToolbar(%OPTIONS)|/AddToolbar_OPTIONS_>
+
+=item *
+
+L<AddTreeView(%OPTIONS)|/AddTreeView_OPTIONS_>
+
+=item *
+
+L<AddUpDown(%OPTIONS)|/AddUpDown_OPTIONS_>
+
+=item *
+
+L<GetDC()|/GetDC_>
+
+=back
+
+=item *
+
+L<Events>
+
+=over
+
+=item *
+
+L<Activate()|/Activate_>
+
+=item *
+
+L<Deactivate()|/Deactivate_>
+
+=item *
+
+L<Maximize()|/Maximize_>
+
+=item *
+
+L<Minimize()|/Minimize_>
+
+=item *
+
+L<Resize()|/Resize_>
+
+=item *
+
+L<Terminate()|/Terminate_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_Window_OPTIONS_">
+
+=item new Win32::GUI::Window(%OPTIONS)
+
+Creates a new Window object.
+Class specific %OPTIONS are:
+
+  -minsize => [X, Y]
+    specifies the minimum size (width and height) in pixels;
+    X and Y must be passed in an array reference
+  -maxsize => [X, Y]
+    specifies the maximum size (width and height) in pixels;
+    X and Y must be passed in an array reference
+  -minwidth  => N
+  -minheight => N
+  -maxwidht  => N
+  -maxheight => N
+    specify the minimum and maximum size width
+    and height, in pixels
+  -topmost => 0/1 (default 0)
+    the window "stays on top" even when deactivated
+
+=for html <P>
+
+=back
+
+=head3 Methods
+
+=over 4
+
+=for html <A NAME="AddAnimation_OPTIONS_">
+
+=item AddAnimation(%OPTIONS)
+
+See  L<new Win32::GUI::Animation()|Animation/new_Win32_GUI_Animation_PARENT>.
+
+=for html <P>
+
+=for html <A NAME="AddButton_OPTIONS_">
+
+=item AddButton(%OPTIONS)
+
+See  L<new Win32::GUI::Button()|Button/new_Win32_GUI_Button_PARENT_>.
+
+=for html <P>
+
+=for html <A NAME="AddCheckbox_OPTIONS_">
+
+=item AddCheckbox(%OPTIONS)
+
+See  L<new Win32::GUI::Checkbox()|Checkbox/new_Win32_GUI_Checkbox_PARENT_>.
+
+=for html <P>
+
+=for html <A NAME="AddCombobox_OPTIONS_">
+
+=item AddCombobox(%OPTIONS)
+
+See  L<new Win32::GUI::Combobox()|Combobox/new_Win32_GUI_Combobox_PARENT_>.
+
+=for html <P>
+
+=for html <A NAME="AddGroupbox_OPTIONS_">
+
+=item AddGroupbox(%OPTIONS)
+
+See  L<new Win32::GUI::Groupbox()|Groupbox/new_Win32_GUI_Groupbox_PARENT_>.
+
+=for html <P>
+
+=for html <A NAME="AddHeader_OPTIONS_">
+
+=item AddHeader(%OPTIONS)
+
+See  L<new Win32::GUI::Header()|Header/new_Win32_GUI_Header_PARENT_>.
+
+=for html <P>
+
+=for html <A NAME="AddLabel_OPTIONS_">
+
+=item AddLabel(%OPTIONS)
+
+See  L<new Win32::GUI::Label()|Label/new_Win32_GUI_Label_PARENT_O>.
+
+=for html <P>
+
+=for html <A NAME="AddListbox_OPTIONS_">
+
+=item AddListbox(%OPTIONS)
+
+See  L<new Win32::GUI::Listbox()|Listbox/new_Win32_GUI_Listbox_PARENT_>.
+
+=for html <P>
+
+=for html <A NAME="AddListView_OPTIONS_">
+
+=item AddListView(%OPTIONS)
+
+See  L<new Win32::GUI::ListView()|ListView/new_Win32_GUI_ListView_PARENT_>.
+
+=for html <P>
+
+=for html <A NAME="AddMenu_">
+
+=item AddMenu()
+
+See  L<new Win32::GUI::Menu()|Menu/new_Win32_GUI_Menu_>.
+
+=for html <P>
+
+=for html <A NAME="AddNotifyIcon_OPTIONS_">
+
+=item AddNotifyIcon(%OPTIONS)
+
+See  L<new Win32::GUI::NotifyIcon()|NotifyIcon/new_Win32_GUI_NotifyIcon_PAREN>.
+
+=for html <P>
+
+=for html <A NAME="AddProgressBar_OPTIONS_">
+
+=item AddProgressBar(%OPTIONS)
+
+See  L<new Win32::GUI::ProgressBar()|ProgressBar/new_Win32_GUI_ProgressBar_PARE>.
+
+=for html <P>
+
+=for html <A NAME="AddRadioButton_OPTIONS_">
+
+=item AddRadioButton(%OPTIONS)
+
+See  L<new Win32::GUI::RadioButton()|RadioButton/new_Win32_GUI_RadioButton_PARE>.
+
+=for html <P>
+
+=for html <A NAME="AddRebar_OPTIONS_">
+
+=item AddRebar(%OPTIONS)
+
+See  L<new Win32::GUI::Rebar()|Rebar/new_Win32_GUI_Rebar_PARENT_O>.
+
+=for html <P>
+
+=for html <A NAME="AddRichEdit_OPTIONS_">
+
+=item AddRichEdit(%OPTIONS)
+
+See  L<new Win32::GUI::RichEdit()|RichEdit/new_Win32_GUI_RichEdit_PARENT_>.
+
+=for html <P>
+
+=for html <A NAME="AddSlider_OPTIONS_">
+
+=item AddSlider(%OPTIONS)
+
+See  L<new Win32::GUI::Slider()|Slider/new_Win32_GUI_Slider_PARENT_>.
+
+=for html <P>
+
+=for html <A NAME="AddStatusBar_OPTIONS_">
+
+=item AddStatusBar(%OPTIONS)
+
+See  L<new Win32::GUI::StatusBar()|StatusBar/new_Win32_GUI_StatusBar_PARENT>.
+
+=for html <P>
+
+=for html <A NAME="AddTabStrip_OPTIONS_">
+
+=item AddTabStrip(%OPTIONS)
+
+See  L<new Win32::GUI::TabStrip()|TabStrip/new_Win32_GUI_TabStrip_PARENT_>.
+
+=for html <P>
+
+=for html <A NAME="AddTextfield_OPTIONS_">
+
+=item AddTextfield(%OPTIONS)
+
+See  L<new Win32::GUI::Textfield()|Textfield/new_Win32_GUI_Textfield_PARENT>.
+
+=for html <P>
+
+=for html <A NAME="AddTimer_NAME_ELAPSE_">
+
+=item AddTimer(NAME, ELAPSE)
+
+See  L<new Win32::GUI::Timer()|Timer/new_Win32_GUI_Timer_PARENT_NA>.
+
+=for html <P>
+
+=for html <A NAME="AddToolbar_OPTIONS_">
+
+=item AddToolbar(%OPTIONS)
+
+See  L<new Win32::GUI::Toolbar()|Toolbar/new_Win32_GUI_Toolbar_PARENT_>.
+
+=for html <P>
+
+=for html <A NAME="AddTreeView_OPTIONS_">
+
+=item AddTreeView(%OPTIONS)
+
+See  L<new Win32::GUI::TreeView()|TreeView/new_Win32_GUI_TreeView_PARENT_>.
+
+=for html <P>
+
+=for html <A NAME="AddUpDown_OPTIONS_">
+
+=item AddUpDown(%OPTIONS)
+
+See  L<new Win32::GUI::UpDown()|UpDown/new_Win32_GUI_UpDown_PARENT_>.
+
+=for html <P>
+
+=for html <A NAME="GetDC_">
+
+=item GetDC()
+
+Returns the DC object associated with the window.
+
+=for html <P>
+
+=back
+
+=head3 Events
+
+=over 4
+
+=for html <A NAME="Activate_">
+
+=item Activate()
+
+Sent when the window is activated.
+
+=for html <P>
+
+=for html <A NAME="Deactivate_">
+
+=item Deactivate()
+
+Sent when the window is deactivated.
+
+=for html <P>
+
+=for html <A NAME="Maximize_">
+
+=item Maximize()
+
+Sent when the window is maximized.
+
+=for html <P>
+
+=for html <A NAME="Minimize_">
+
+=item Minimize()
+
+Sent when the window is minimized.
+
+=for html <P>
+
+=for html <A NAME="Resize_">
+
+=item Resize()
+
+Sent when the window is resized.
+
+=for html <P>
+
+=for html <A NAME="Terminate_">
+
+=item Terminate()
+
+Sent when the window is closed.
+The event should return -1 to terminate the interaction
+and return control to the perl script; see  L<Dialog()|Win32_GUI/Dialog_>.
+
+=for html <P>
+
+=back
+
+=cut

@@ -1,0 +1,99 @@
+=head2 Package Win32::GUI::NotifyIcon
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::NotifyIcon(PARENT, %OPTIONS)|/new_Win32_GUI_NotifyIcon_PAREN>
+
+=back
+
+=item *
+
+L<Events>
+
+=over
+
+=item *
+
+L<Click()|/Click_>
+
+=item *
+
+L<MouseEvent(MSG)|/MouseEvent_MSG_>
+
+=item *
+
+L<RightClick()|/RightClick_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_NotifyIcon_PAREN">
+
+=item new Win32::GUI::NotifyIcon(PARENT, %OPTIONS)
+
+Creates a new NotifyIcon (also known as system tray icon) object;
+can also be called as PARENT->AddNotifyIcon(%OPTIONS).
+%OPTIONS are:
+
+    -icon => Win32::GUI::Icon object
+    -id => NUMBER
+        a unique identifier for the NotifyIcon object
+    -name => STRING
+        the name for the object
+    -tip => STRING
+        the text that will appear as tooltip when the mouse is
+        on the NotifyIcon
+
+=for html <P>
+
+=back
+
+=head3 Events
+
+=over 4
+
+=for html <A NAME="Click_">
+
+=item Click()
+
+Sent when the user clicks the left mouse button on
+a NotifyIcon.
+
+=for html <P>
+
+=for html <A NAME="MouseEvent_MSG_">
+
+=item MouseEvent(MSG)
+
+Sent when the user performs a mouse event on
+a NotifyIcon; MSG is the message code.
+
+=for html <P>
+
+=for html <A NAME="RightClick_">
+
+=item RightClick()
+
+Sent when the user clicks the right mouse button on
+a NotifyIcon.
+
+=for html <P>
+
+=back
+
+=cut

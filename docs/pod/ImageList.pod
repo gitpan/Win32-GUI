@@ -1,0 +1,153 @@
+=head2 Package Win32::GUI::ImageList
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::ImageList(X, Y, FLAGS, INITAL, GROW)|/new_Win32_GUI_ImageList_X_Y_>
+
+=back
+
+=item *
+
+L<Methods>
+
+=over
+
+=item *
+
+L<Add(BITMAP, [BITMAPMASK])|/Add_BITMAP_BITMAPMASK_>
+
+=item *
+
+L<AddBitmap(BITMAP, [BITMAPMASK])|/AddBitmap_BITMAP_BITMAPMASK_>
+
+=item *
+
+L<BackColor([COLOR])|/BackColor_COLOR_>
+
+=item *
+
+L<Clear()|/Clear_>
+
+=item *
+
+L<Count()|/Count_>
+
+=item *
+
+L<Remove(INDEX)|/Remove_INDEX_>
+
+=item *
+
+L<Replace(INDEX, BITMAP, [BITMAPMASK])|/Replace_INDEX_BITMAP_BITMAPMA>
+
+=item *
+
+L<Size([X, Y])|/Size_X_Y_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_ImageList_X_Y_">
+
+=item new Win32::GUI::ImageList(X, Y, FLAGS, INITAL, GROW)
+
+Creates an ImageList object; X and Y specify the size of the images,
+FLAGS [TBD]. INITIAL and GROW specify the number of images the ImageList
+actually contains (INITIAL) and the number of images for which memory
+is allocated (GROW).
+
+=for html <P>
+
+=back
+
+=head3 Methods
+
+=over 4
+
+=for html <A NAME="Add_BITMAP_BITMAPMASK_">
+
+=item Add(BITMAP, [BITMAPMASK])
+
+Adds a bitmap to the ImageList; both BITMAP and BITMAPMASK can be either
+Win32::GUI::Bitmap objects or filenames.
+
+=for html <P>
+
+=for html <A NAME="AddBitmap_BITMAP_BITMAPMASK_">
+
+=item AddBitmap(BITMAP, [BITMAPMASK])
+
+Adds a Win32::GUI::Bitmap object to the ImageList. BITMAPMASK is
+optional. See also  L<Add()|/Add_BITMAP_BITMAPMASK_>.
+
+=for html <P>
+
+=for html <A NAME="BackColor_COLOR_">
+
+=item BackColor([COLOR])
+
+Gets or sets the background color for the ImageList.
+
+=for html <P>
+
+=for html <A NAME="Clear_">
+
+=item Clear()
+
+Removes all the images from the ImageList.
+
+=for html <P>
+
+=for html <A NAME="Count_">
+
+=item Count()
+
+Returns the number of images in the ImageList.
+
+=for html <P>
+
+=for html <A NAME="Remove_INDEX_">
+
+=item Remove(INDEX)
+
+Removes the specified zero-based INDEX image from the ImageList.
+
+=for html <P>
+
+=for html <A NAME="Replace_INDEX_BITMAP_BITMAPMA">
+
+=item Replace(INDEX, BITMAP, [BITMAPMASK])
+
+Replaces the specified zero-based INDEX image with the image specified
+by BITMAP (must be a Win32::GUI::Bitmap object). BITMAPMASK is optional.
+
+=for html <P>
+
+=for html <A NAME="Size_X_Y_">
+
+=item Size([X, Y])
+
+Gets or sets the size of the images in the ImageList;
+if no parameter is given, returns a 2 element array (X, Y),
+otherwise sets the size to the given parameters.
+
+=for html <P>
+
+=back
+
+=cut

@@ -1,0 +1,443 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::Listbox</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_Listbox">Package Win32::GUI::Listbox</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Methods">Methods</A>
+			<LI><A HREF="#Events">Events</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_Listbox">Package Win32::GUI::Listbox</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_Listbox_PARENT_">new Win32::GUI::Listbox(PARENT, %OPTIONS)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Methods">Methods</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Add_STRING_STRING_STRING_">Add(STRING, STRING .. STRING)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddString_STRING_">AddString(STRING)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Clear_">Clear()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Count_">Count()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#FindString_STRING_INDEX_">FindString(STRING, [INDEX])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#FindStringExact_STRING_INDEX_">FindStringExact(STRING, [INDEX])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#FirstVisibleItem_INDEX_">FirstVisibleItem([INDEX])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetString_INDEX_">GetString(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#InsertItem_STRING_INDEX_">InsertItem(STRING, [INDEX])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ItemFromPoint_X_Y_">ItemFromPoint(X, Y)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ItemHeight_HEIGHT_">ItemHeight([HEIGHT])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ListIndex_">ListIndex()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#RemoveItem_INDEX_">RemoveItem(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Reset_">Reset()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Select_INDEX_">Select(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SelectCount_">SelectCount()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SelectedItem_">SelectedItem()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SelectedItems_">SelectedItems()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SelectString_STRING_INDEX_">SelectString(STRING, [INDEX])</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Events">Events</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Click_">Click()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#DblClick_">DblClick()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GotFocus_">GotFocus()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#LostFocus_">LostFocus()</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_Listbox_PARENT_">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::Listbox(PARENT, %OPTIONS)</A></STRONG><DD>
+<P>
+Creates a new Listbox object; can also be called as
+PARENT-&gt;AddListbox(%OPTIONS). Class specific <CODE>%OPTIONS</CODE> are:
+
+<P>
+<PRE>   -multisel =&gt; 0/1/2 (default 0)
+       specifies the selection type:
+           0 single selection
+           1 multiple selection
+           2 multiple selection ehnanced (with Shift, Control, etc.)
+   -sort     =&gt; 0/1 (default 0)
+       items are sorted alphabetically.
+</PRE>
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Methods">Methods</A></H3>
+<A NAME="Add_STRING_STRING_STRING_">
+
+<DL>
+<DT><STRONG><A NAME="item_Add">Add(STRING, STRING .. STRING)</A></STRONG><DD>
+<P>
+Adds one or more items at the end of the control's list.
+
+<P>
+
+<A NAME="AddString_STRING_">
+
+<DT><STRONG><A NAME="item_AddString">AddString(STRING)</A></STRONG><DD>
+<P>
+Adds an item at the end of the Listbox.
+
+<P>
+
+<A NAME="Clear_">
+
+<DT><STRONG><A NAME="item_Clear">Clear()</A></STRONG><DD>
+<P>
+See  <A HREF="#Reset_">Reset()</A>.
+
+<P>
+
+<A NAME="Count_">
+
+<DT><STRONG><A NAME="item_Count">Count()</A></STRONG><DD>
+<P>
+Returns the number of items in the Listbox.
+
+<P>
+
+<A NAME="FindString_STRING_INDEX_">
+
+<DT><STRONG><A NAME="item_FindString">FindString(STRING, [INDEX])</A></STRONG><DD>
+<P>
+Searches the Listbox for an item that begins with the specified STRING. The
+optional INDEX parameter tells to start the search from the specified
+position; if no parameter is given, the whole list is searched. Returns the
+zero-based index of the found item or -1 if no matching item was found.
+
+<P>
+
+<A NAME="FindStringExact_STRING_INDEX_">
+
+<DT><STRONG><A NAME="item_FindStringExact">FindStringExact(STRING, [INDEX])</A></STRONG><DD>
+<P>
+Searches the Listbox for an item that exactly matches the specified STRING
+(case insensitively). The optional INDEX parameter tells to start the
+search from the specified position; if no parameter is given, the whole
+list is searched. Returns the zero-based index of the found item or -1 if
+no matching item was found.
+
+<P>
+
+<A NAME="FirstVisibleItem_INDEX_">
+
+<DT><STRONG><A NAME="item_FirstVisibleItem">FirstVisibleItem([INDEX])</A></STRONG><DD>
+<P>
+Gets the zero-based index of the first visible item in the Listbox, or sets
+it to the specified INDEX.
+
+<P>
+
+<A NAME="GetString_INDEX_">
+
+<DT><STRONG><A NAME="item_GetString">GetString(INDEX)</A></STRONG><DD>
+<P>
+Returns the string at the specified zero-based INDEX in the Listbox.
+
+<P>
+
+<A NAME="InsertItem_STRING_INDEX_">
+
+<DT><STRONG><A NAME="item_InsertItem">InsertItem(STRING, [INDEX])</A></STRONG><DD>
+<P>
+Inserts an item at the specified zero-based INDEX in the Listbox, or adds
+it at the end if INDEX is not specified.
+
+<P>
+
+<A NAME="ItemFromPoint_X_Y_">
+
+<DT><STRONG><A NAME="item_ItemFromPoint">ItemFromPoint(X, Y)</A></STRONG><DD>
+<P>
+Returns the zero-based index of the item nearest to the specified point; if
+called in a list context, returns an additional element which is TRUE if
+the point is inside the Listbox area, FALSE if it's outside.
+
+<P>
+
+<A NAME="ItemHeight_HEIGHT_">
+
+<DT><STRONG><A NAME="item_ItemHeight">ItemHeight([HEIGHT])</A></STRONG><DD>
+<P>
+Gets or sets the items height in a Listbox.
+
+<P>
+
+<A NAME="ListIndex_">
+
+<DT><STRONG><A NAME="item_ListIndex">ListIndex()</A></STRONG><DD>
+<P>
+See  <A HREF="#SelectedItem_">SelectedItem()</A>.
+
+<P>
+
+<A NAME="RemoveItem_INDEX_">
+
+<DT><STRONG><A NAME="item_RemoveItem">RemoveItem(INDEX)</A></STRONG><DD>
+<P>
+Removes the zero-based INDEX item from the Listbox.
+
+<P>
+
+<A NAME="Reset_">
+
+<DT><STRONG><A NAME="item_Reset">Reset()</A></STRONG><DD>
+<P>
+Deletes the content of the Listbox.
+
+<P>
+
+<A NAME="Select_INDEX_">
+
+<DT><STRONG><A NAME="item_Select">Select(INDEX)</A></STRONG><DD>
+<P>
+Selects the zero-based INDEX item in the Listbox.
+
+<P>
+
+<A NAME="SelectCount_">
+
+<DT><STRONG><A NAME="item_SelectCount">SelectCount()</A></STRONG><DD>
+<P>
+Returns the number of selected items in a multiple selection Listbox.
+
+<P>
+
+<A NAME="SelectedItem_">
+
+<DT><STRONG><A NAME="item_SelectedItem">SelectedItem()</A></STRONG><DD>
+<P>
+Returns the zero-based index of the currently selected item, or -1 if no
+item is selected.
+
+<P>
+
+<A NAME="SelectedItems_">
+
+<DT><STRONG><A NAME="item_SelectedItems">SelectedItems()</A></STRONG><DD>
+<P>
+Returns an array containing the zero-based indexes of the selected items in
+a multiple selection Listbox.
+
+<P>
+
+<A NAME="SelectString_STRING_INDEX_">
+
+<DT><STRONG><A NAME="item_SelectString">SelectString(STRING, [INDEX])</A></STRONG><DD>
+<P>
+Searches the Listbox for an item that begins with the specified STRING and,
+if found, selects that item. The optional INDEX parameter tells to start
+the search from the specified position; if no parameter is given, the whole
+list is searched. Returns the zero-based index of the selected item or -1
+if no matching item was found.
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Events">Events</A></H3>
+<A NAME="Click_">
+
+<DL>
+<DT><STRONG><A NAME="item_Click">Click()</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="DblClick_">
+
+<DT><STRONG><A NAME="item_DblClick">DblClick()</A></STRONG><DD>
+<P>
+Sent when the user double clicks on the control.
+
+<P>
+
+<A NAME="GotFocus_">
+
+<DT><STRONG><A NAME="item_GotFocus">GotFocus()</A></STRONG><DD>
+<P>
+Sent when the control is activated.
+
+<P>
+
+<A NAME="LostFocus_">
+
+<DT><STRONG><A NAME="item_LostFocus">LostFocus()</A></STRONG><DD>
+<P>
+Sent when the control is deactivated.
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

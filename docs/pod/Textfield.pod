@@ -1,0 +1,272 @@
+=head2 Package Win32::GUI::Textfield
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::Textfield(PARENT, %OPTIONS)|/new_Win32_GUI_Textfield_PARENT>
+
+=back
+
+=item *
+
+L<Methods>
+
+=over
+
+=item *
+
+L<LineFromChar(INDEX)|/LineFromChar_INDEX_>
+
+=item *
+
+L<MaxLength([CHARS])|/MaxLength_CHARS_>
+
+=item *
+
+L<Modified([FLAG])|/Modified_FLAG_>
+
+=item *
+
+L<PasswordChar([CHAR])|/PasswordChar_CHAR_>
+
+=item *
+
+L<ReadOnly([FLAG])|/ReadOnly_FLAG_>
+
+=item *
+
+L<ReplaceSel(STRING, [FLAG])|/ReplaceSel_STRING_FLAG_>
+
+=item *
+
+L<Select(START, END)|/Select_START_END_>
+
+=item *
+
+L<SelectAll()|/SelectAll_>
+
+=item *
+
+L<Selection()|/Selection_>
+
+=item *
+
+L<Undo()|/Undo_>
+
+=back
+
+=item *
+
+L<Events>
+
+=over
+
+=item *
+
+L<Change()|/Change_>
+
+=item *
+
+L<GotFocus()|/GotFocus_>
+
+=item *
+
+L<LostFocus()|/LostFocus_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_Textfield_PARENT">
+
+=item new Win32::GUI::Textfield(PARENT, %OPTIONS)
+
+Creates a new Textfield object;
+can also be called as PARENT->AddTextfield(%OPTIONS).
+Class specific %OPTIONS are:
+
+  -align         => left/center/right (default left)
+      aligns the text in the control accordingly.
+  -keepselection => 0/1 (default 0)
+      the selection is not hidden when the control loses focus.
+  -multiline     => 0/1 (default 0)
+      the control can have more than one line (note that newline
+      is "\r\n", not "\n"!).
+  -password      => 0/1 (default 0)
+      masks the user input (like password prompts).
+  -passwordchar  => char (default '*')
+      the char that is shown instead of the text with -password => 1.
+  -prompt        => (see below)
+  -readonly      => 0/1 (default 0)
+      text can't be changed.
+
+The -prompt option is very special; if a string is passed, a
+Win32::GUI::Label object (with text set to the string passed) is created
+to the left of the Textfield.
+Example:
+
+    $Window->AddTextfield(
+        -name   => "Username",
+        -left   => 75,
+        -top    => 150,
+        -prompt => "Your name:",
+    );
+
+Furthermore, the value to -prompt can be a reference to a list containing
+the string and an additional parameter, which sets the width for
+the Label (eg. [ STRING, WIDTH ] ). If WIDTH is negative, it is calculated
+relative to the Textfield left coordinate. Example:
+
+    -left => 75,                          (Label left) (Textfield left)
+    -prompt => [ "Your name:", 30 ],       75           105 (75+30)
+    -left => 75,
+    -prompt => [ "Your name:", -30 ],      45 (75-30)   75
+
+Note that the Win32::GUI::Label object is named like the Textfield, with
+a "_Prompt" suffix (in the example above, the Label is named
+"Username_Prompt").
+
+=for html <P>
+
+=back
+
+=head3 Methods
+
+=over 4
+
+=for html <A NAME="LineFromChar_INDEX_">
+
+=item LineFromChar(INDEX)
+
+Returns the line where the zero-based INDEX char appears.
+
+=for html <P>
+
+=for html <A NAME="MaxLength_CHARS_">
+
+=item MaxLength([CHARS])
+
+Limits the number of characters that the Textfield accept to CHARS,
+or returns the current limit if no argument is given.
+To remove the limit (eg. set it to the maximum allowed which is 32k
+for a single-line Textfield and 64k for a multiline one) set CHARS
+to 0.
+
+=for html <P>
+
+=for html <A NAME="Modified_FLAG_">
+
+=item Modified([FLAG])
+
+Gets or sets the modified flag on the textfield.
+
+=for html <P>
+
+=for html <A NAME="PasswordChar_CHAR_">
+
+=item PasswordChar([CHAR])
+
+Gets or sets the character displayed in place of normal text; if the
+Textfield has been created with the -password option, the default
+character is an asterisk (*).
+Note that by setting this value the text in the textfield will be
+redrawn using the specified character; if the character is set to
+zero instead, text will be redrawn as normal
+
+=for html <P>
+
+=for html <A NAME="ReadOnly_FLAG_">
+
+=item ReadOnly([FLAG])
+
+Gets or sets the readonly flag on the textfield.
+
+=for html <P>
+
+=for html <A NAME="ReplaceSel_STRING_FLAG_">
+
+=item ReplaceSel(STRING, [FLAG])
+
+Replaces the current selection in the Textfield with STRING.
+
+=for html <P>
+
+=for html <A NAME="Select_START_END_">
+
+=item Select(START, END)
+
+Selects the specified range of characters.
+
+=for html <P>
+
+=for html <A NAME="SelectAll_">
+
+=item SelectAll()
+
+Selects all the text.
+
+=for html <P>
+
+=for html <A NAME="Selection_">
+
+=item Selection()
+
+Returns a two elements array containing the current selection start
+and end.
+
+=for html <P>
+
+=for html <A NAME="Undo_">
+
+=item Undo()
+
+Undoes the last change in the textfield.
+
+=for html <P>
+
+=back
+
+=head3 Events
+
+=over 4
+
+=for html <A NAME="Change_">
+
+=item Change()
+
+Sent when the text in the field is changed by the user.
+
+=for html <P>
+
+=for html <A NAME="GotFocus_">
+
+=item GotFocus()
+
+Sent when the control is activated.
+
+=for html <P>
+
+=for html <A NAME="LostFocus_">
+
+=item LostFocus()
+
+Sent when the control is deactivated.
+
+=for html <P>
+
+=back
+
+=cut

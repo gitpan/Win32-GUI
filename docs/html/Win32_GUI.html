@@ -1,0 +1,1596 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI">Package Win32::GUI</A>
+		<UL>
+
+			<LI><A HREF="#Methods">Methods</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI">Package Win32::GUI</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Methods">Methods</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#ArrangeIconicWindows_">ArrangeIconicWindows()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AttachThreadInput_FROM_TO_FLA">AttachThreadInput(FROM, TO, [FLAG])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#BringWindowToTop_">BringWindowToTop()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#BrowseForFolder_OPTIONS_">BrowseForFolder(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Caption_TEXT_">Caption([TEXT])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Change_HANDLE_OPTIONS_">Change(HANDLE, %OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ChangeCursor_CURSOR_">ChangeCursor(CURSOR)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ChangeIcon_ICON_">ChangeIcon(ICON)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ChangeSmallIcon_ICON_">ChangeSmallIcon(ICON)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ChooseColor_OPTIONS_">ChooseColor(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ChooseFont_OPTIONS_">ChooseFont(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ClipCursor_LEFT_TOP_RIGHT_BO">ClipCursor([LEFT, TOP, RIGHT, BOTTOM])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#CloseEnhMetaFile_">CloseEnhMetaFile()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#CloseWindow_">CloseWindow()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#CommDlgExtendedError_">CommDlgExtendedError()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#CreateEnhMetaFile_FILENAME_DES">CreateEnhMetaFile(FILENAME, [DESCRIPTION])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#DeleteEnhMetaFile_HANDLE_">DeleteEnhMetaFile(HANDLE)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Dialog_">Dialog()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Disable_">Disable()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#DoEvents_">DoEvents()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#DrawMenuBar_">DrawMenuBar()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Enable_FLAG_">Enable([FLAG])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#FindWindow_CLASSNAME_WINDOWNAME">FindWindow(CLASSNAME, WINDOWNAME)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetActiveWindow_">GetActiveWindow()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetClassName_">GetClassName()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetClientRect_">GetClientRect()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetCursor_">GetCursor()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetCursorPos_">GetCursorPos()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetDesktopWindow_">GetDesktopWindow()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetDlgItem_ID_">GetDlgItem(ID)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetEffectiveClientRect_HANDLE_I">GetEffectiveClientRect(HANDLE, ID)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetFocus_">GetFocus()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetFont_FONT_">GetFont(FONT)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetFontName_">GetFontName()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetForegroundWindow_">GetForegroundWindow()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetMenu_">GetMenu()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetMessage_MIN_MAX_">GetMessage([MIN, MAX])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetOpenFileName_OPTIONS_">GetOpenFileName(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetPerlWindow_">GetPerlWindow()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetStockObject_OBJECT_">GetStockObject(OBJECT)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetSystemMetrics_INDEX_">GetSystemMetrics(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetTextExtentPoint32_FONT_STR">GetTextExtentPoint32([FONT], STRING)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetTopWindow_">GetTopWindow()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetWindow_COMMAND_">GetWindow(COMMAND)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetWindowLong_INDEX_">GetWindowLong(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetWindowRect_">GetWindowRect()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetWindowThreadProcessId_">GetWindowThreadProcessId()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Height_HEIGHT_">Height([HEIGHT])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Hide_">Hide()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#InvalidateRect_">InvalidateRect(...)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#IsEnabled_">IsEnabled()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#IsIconic_">IsIconic()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#IsVisible_">IsVisible()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#IsWindow_">IsWindow()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#IsZoomed_">IsZoomed()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Left_LEFT_">Left([LEFT])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Maximize_">Maximize()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#MessageBox_HANDLE_TEXT_CAPT">MessageBox([HANDLE], TEXT, [CAPTION], [TYPE])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Minimize_">Minimize()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Move_X_Y_">Move(X, Y)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#OpenIcon_">OpenIcon()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#PeekMessage_MIN_MAX_MESSAGE_">PeekMessage([MIN, MAX, MESSAGE])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#PlayEnhMetaFile_FILENAME_">PlayEnhMetaFile(FILENAME)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#PlayWinMetaFile_FILENAME_">PlayWinMetaFile(FILENAME)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#PostMessage_MSG_WPARAM_LPARAM_">PostMessage(MSG, WPARAM, LPARAM)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#PostQuitMessage_EXITCODE_">PostQuitMessage([EXITCODE])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ReleaseCapture_">ReleaseCapture()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Resize_X_Y_">Resize(X, Y)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Restore_">Restore()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SaveBMP_handle_">SaveBMP(handle)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ScaleHeight_">ScaleHeight()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ScaleWidth_">ScaleWidth()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SendMessage_MSG_WPARAM_LPARAM_">SendMessage(MSG, WPARAM, LPARAM)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SendMessageTimeout_MSG_WPARAM_">SendMessageTimeout(MSG, WPARAM, LPARAM, [FLAGS], TIMEOUT)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SetCapture_">SetCapture()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SetCursor_CURSOR_">SetCursor(CURSOR)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SetCursorPos_X_Y_">SetCursorPos(X, Y)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SetFocus_">SetFocus()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SetFont_FONT_">SetFont(FONT)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SetForegroundWindow_">SetForegroundWindow()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SetIcon_ICON_TYPE_">SetIcon(ICON, [TYPE])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SetMenu_MENU_">SetMenu(MENU)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SetRedraw_FLAG_">SetRedraw(FLAG)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SetWindowLong_INDEX_VALUE_">SetWindowLong(INDEX, VALUE)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Show_COMMAND_">Show([COMMAND])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Text_TEXT_">Text([TEXT])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Top_TOP_">Top([TOP])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#TrackPopupMenu_MENU_X_Y_FLAG">TrackPopupMenu(MENU, X, Y, [FLAGS])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Update_">Update()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Version_">Version()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Width_WIDTH_">Width([WIDTH])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#WindowFromPoint_X_Y_">WindowFromPoint(X, Y)</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Methods">Methods</A></H3>
+<A NAME="ArrangeIconicWindows_">
+
+<DL>
+<DT><STRONG><A NAME="item_ArrangeIconicWindows">ArrangeIconicWindows()</A></STRONG><DD>
+<P>
+Arranges all the minimized child windows of the specified parent window.
+
+<P>
+
+<A NAME="AttachThreadInput_FROM_TO_FLA">
+
+<DT><STRONG><A NAME="item_AttachThreadInput">AttachThreadInput(FROM, TO, [FLAG])</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="BringWindowToTop_">
+
+<DT><STRONG><A NAME="item_BringWindowToTop">BringWindowToTop()</A></STRONG><DD>
+<P>
+Brings the window to the foreground.
+
+<P>
+
+<A NAME="BrowseForFolder_OPTIONS_">
+
+<DT><STRONG><A NAME="item_BrowseForFolder">BrowseForFolder(%OPTIONS)</A></STRONG><DD>
+<P>
+Displays the standard ``Browse For Folder'' dialog box. Returns the
+selected item's name, or undef if no item was selected or an error
+occurred. Allowed <CODE>%OPTIONS</CODE> are: -computeronly =&gt; 0/1
+(default 0)
+
+<P>
+<PRE>        only enable computers to be selected
+</PRE>
+<P>
+-domainonly =&gt; 0/1 (default 0)
+
+<P>
+<PRE>        only enable computers in the current domain or workgroup
+</PRE>
+<P>
+-driveonly =&gt; 0/1 (default 0)
+
+<P>
+<PRE>        only enable drives to be selected
+</PRE>
+<P>
+-editbox =&gt; 0/1 (default 0)
+
+<P>
+<PRE>        if 1, the dialog will include an edit field in which
+        the user can type the name of an item
+</PRE>
+<P>
+-folderonly =&gt; 0/1 (default 0)
+
+<P>
+<PRE>        only enable folders to be selected
+</PRE>
+<P>
+-includefiles =&gt; 0/1 (default 0)
+
+<P>
+<PRE>        the list will include files as well folders
+</PRE>
+<P>
+-owner =&gt; WINDOW
+
+<P>
+<PRE>        [TBD]
+</PRE>
+<P>
+-printeronly =&gt; 0/1 (default 0)
+
+<P>
+<PRE>        only enable printers to be selected
+</PRE>
+<P>
+-root =&gt; PATH or CONSTANT
+
+<P>
+<PRE>        the root directory for browsing; this can be either a
+      path or one of the CSIDL_* constants for special folders
+        (see the Win32::FileOp module by Jenda for a list of
+        such constants)
+</PRE>
+<P>
+-title =&gt; STRING
+
+<P>
+<PRE>        the title for the dialog
+</PRE>
+<P>
+
+<A NAME="Caption_TEXT_">
+
+<DT><STRONG><A NAME="item_Caption">Caption([TEXT])</A></STRONG><DD>
+<P>
+See  <A HREF="#Text_TEXT_">Text()</A>.
+
+<P>
+
+<A NAME="Change_HANDLE_OPTIONS_">
+
+<DT><STRONG><A NAME="item_Change">Change(HANDLE, %OPTIONS)</A></STRONG><DD>
+<P>
+Change most of the options used when the object was created.
+
+<P>
+
+<A NAME="ChangeCursor_CURSOR_">
+
+<DT><STRONG><A NAME="item_ChangeCursor">ChangeCursor(CURSOR)</A></STRONG><DD>
+<P>
+Changes the default cursor for a window to CURSOR (a Win32::GUI::Cursor
+object). Returns the handle of the previous default cursor.
+
+<P>
+
+<A NAME="ChangeIcon_ICON_">
+
+<DT><STRONG><A NAME="item_ChangeIcon">ChangeIcon(ICON)</A></STRONG><DD>
+<P>
+Changes the default icon for a window to ICON (a Win32::GUI::Icon object).
+Returns the handle of the previous default icon.
+
+<P>
+
+<A NAME="ChangeSmallIcon_ICON_">
+
+<DT><STRONG><A NAME="item_ChangeSmallIcon">ChangeSmallIcon(ICON)</A></STRONG><DD>
+<P>
+Changes the default small icon for a window to ICON (a Win32::GUI::Icon
+object). Returns the handle of the previous default small icon.
+
+<P>
+
+<A NAME="ChooseColor_OPTIONS_">
+
+<DT><STRONG><A NAME="item_ChooseColor">ChooseColor(%OPTIONS)</A></STRONG><DD>
+<P>
+Allowed <CODE>%OPTIONS</CODE> are:
+
+<P>
+<PRE> -owner
+ -color
+</PRE>
+<P>
+
+<A NAME="ChooseFont_OPTIONS_">
+
+<DT><STRONG><A NAME="item_ChooseFont">ChooseFont(%OPTIONS)</A></STRONG><DD>
+<P>
+Allowed <CODE>%OPTIONS</CODE> are:
+
+<P>
+<PRE> -owner
+ -size
+ -height
+ -width
+ -escapement
+ -orientation
+ -weight
+ -bold
+ -italic
+ -underline
+ -strikeout
+ -charset
+ -outputprecision
+ -clipprecision
+ -quality
+ -family
+ -name
+ -face (== -name)
+ -color
+ -ttonly
+ -fixedonly
+ -effects
+ -script
+ -minsize
+ -maxsize
+</PRE>
+<P>
+
+<A NAME="ClipCursor_LEFT_TOP_RIGHT_BO">
+
+<DT><STRONG><A NAME="item_ClipCursor">ClipCursor([LEFT, TOP, RIGHT, BOTTOM])</A></STRONG><DD>
+<P>
+Confines the cursor to the specified screen rectangle. Call it without
+parameters to release the cursor. Returns nonzero on success,
+
+<P>
+
+<A NAME="CloseEnhMetaFile_">
+
+<DT><STRONG><A NAME="item_CloseEnhMetaFile">CloseEnhMetaFile()</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="CloseWindow_">
+
+<DT><STRONG><A NAME="item_CloseWindow">CloseWindow()</A></STRONG><DD>
+<P>
+Minimizes a window.
+
+<P>
+
+<A NAME="CommDlgExtendedError_">
+
+<DT><STRONG><A NAME="item_CommDlgExtendedError">CommDlgExtendedError()</A></STRONG><DD>
+<P>
+Returns the common dialog library error code.
+
+<P>
+
+<A NAME="CreateEnhMetaFile_FILENAME_DES">
+
+<DT><STRONG><A NAME="item_CreateEnhMetaFile">CreateEnhMetaFile(FILENAME, [DESCRIPTION])</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="DeleteEnhMetaFile_HANDLE_">
+
+<DT><STRONG><A NAME="item_DeleteEnhMetaFile">DeleteEnhMetaFile(HANDLE)</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="Dialog_">
+
+<DT><STRONG><A NAME="item_Dialog">Dialog()</A></STRONG><DD>
+<P>
+Enter the GUI dialog phase: the script halts, the user can interact with
+the created windows and events subroutines are triggered as necessary; note
+that this function must be called without ANY parameter or instantiation
+(eg. don't call it as method of a created object):
+
+<P>
+<PRE>    Win32::GUI::Dialog(); # correct
+    $Window-&gt;Dialog();    # !!!WRONG!!!
+</PRE>
+<P>
+
+<A NAME="Disable_">
+
+<DT><STRONG><A NAME="item_Disable">Disable()</A></STRONG><DD>
+<P>
+Disables a window.
+
+<P>
+
+<A NAME="DoEvents_">
+
+<DT><STRONG><A NAME="item_DoEvents">DoEvents()</A></STRONG><DD>
+<P>
+Just like <CODE>Dialog(),</CODE> but returns when there are no more events
+to process
+
+<P>
+
+<A NAME="DrawMenuBar_">
+
+<DT><STRONG><A NAME="item_DrawMenuBar">DrawMenuBar()</A></STRONG><DD>
+<P>
+Forces redrawing of the menu bar.
+
+<P>
+
+<A NAME="Enable_FLAG_">
+
+<DT><STRONG><A NAME="item_Enable">Enable([FLAG])</A></STRONG><DD>
+<P>
+Enables a window (or disables it if FLAG is FALSE).
+
+<P>
+
+<A NAME="FindWindow_CLASSNAME_WINDOWNAME">
+
+<DT><STRONG><A NAME="item_FindWindow">FindWindow(CLASSNAME, WINDOWNAME)</A></STRONG><DD>
+<P>
+Returns the handle of the window whose class name and window name match the
+specified strings; both strings can be empty. Note that the function does
+not search child windows, only top level windows. If no matching windows is
+found, the return value is zero.
+
+<P>
+
+<A NAME="GetActiveWindow_">
+
+<DT><STRONG><A NAME="item_GetActiveWindow">GetActiveWindow()</A></STRONG><DD>
+<P>
+Returns the handle of the active window.
+
+<P>
+
+<A NAME="GetClassName_">
+
+<DT><STRONG><A NAME="item_GetClassName">GetClassName()</A></STRONG><DD>
+<P>
+Returns the classname of the specified window (undef on errors). See new
+Win32::GUI::Class.
+
+<P>
+
+<A NAME="GetClientRect_">
+
+<DT><STRONG><A NAME="item_GetClientRect">GetClientRect()</A></STRONG><DD>
+<P>
+Returns a four elements array defining the windows client area rectangle
+(left, top, right, bottom) or undef on errors.
+
+<P>
+
+<A NAME="GetCursor_">
+
+<DT><STRONG><A NAME="item_GetCursor">GetCursor()</A></STRONG><DD>
+<P>
+Returns the handle of the current cursor.
+
+<P>
+
+<A NAME="GetCursorPos_">
+
+<DT><STRONG><A NAME="item_GetCursorPos">GetCursorPos()</A></STRONG><DD>
+<P>
+Returns a two elements array containing the x and y position of the cursor,
+or undef on errors.
+
+<P>
+
+<A NAME="GetDesktopWindow_">
+
+<DT><STRONG><A NAME="item_GetDesktopWindow">GetDesktopWindow()</A></STRONG><DD>
+<P>
+Returns the handle of the desktop window.
+
+<P>
+
+<A NAME="GetDlgItem_ID_">
+
+<DT><STRONG><A NAME="item_GetDlgItem">GetDlgItem(ID)</A></STRONG><DD>
+<P>
+Returns the handle of a control in the dialog box given its ID.
+
+<P>
+
+<A NAME="GetEffectiveClientRect_HANDLE_I">
+
+<DT><STRONG><A NAME="item_GetEffectiveClientRect">GetEffectiveClientRect(HANDLE, ID)</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="GetFocus_">
+
+<DT><STRONG><A NAME="item_GetFocus">GetFocus()</A></STRONG><DD>
+<P>
+Returns the handle of the window that has the keyboard focus.
+
+<P>
+
+<A NAME="GetFont_FONT_">
+
+<DT><STRONG><A NAME="item_GetFont">GetFont(FONT)</A></STRONG><DD>
+<P>
+Gets the font of the window (returns an handle; use
+
+<P>
+<PRE>  $Font = $W-&gt;GetFont();
+  %details = Win32::GUI::Font::Info( $Font );
+</PRE>
+<P>
+to get font details).
+
+<P>
+
+<A NAME="GetFontName_">
+
+<DT><STRONG><A NAME="item_GetFontName">GetFontName()</A></STRONG><DD>
+<P>
+Returns the name of the font used in the window.
+
+<P>
+
+<A NAME="GetForegroundWindow_">
+
+<DT><STRONG><A NAME="item_GetForegroundWindow">GetForegroundWindow()</A></STRONG><DD>
+<P>
+Returns the handle of the foreground window.
+
+<P>
+
+<A NAME="GetMenu_">
+
+<DT><STRONG><A NAME="item_GetMenu">GetMenu()</A></STRONG><DD>
+<P>
+Returns the handle of the menu associated with the window.
+
+<P>
+
+<A NAME="GetMessage_MIN_MAX_">
+
+<DT><STRONG><A NAME="item_GetMessage">GetMessage([MIN, MAX])</A></STRONG><DD>
+<P>
+Retrieves a message sent to the window, optionally considering only
+messages identifiers in the range MIN..MAX; if a message is found, the
+function returns a 7 elements array containing:
+
+<P>
+<PRE>  - the result code of the message
+  - the message identifier
+  - the wParam argument
+  - the lParam argument
+  - the time when message occurred
+  - the x coordinate at which message occurred
+  - the y coordinate at which message occurred
+</PRE>
+<P>
+If the result code of the message was -1 the function returns undef. Note
+that this function should not be normally used unless you know very well
+what you're doing.
+
+<P>
+
+<A NAME="GetOpenFileName_OPTIONS_">
+
+<DT><STRONG><A NAME="item_GetOpenFileName">GetOpenFileName(%OPTIONS)</A></STRONG><DD>
+<P>
+Allowed <CODE>%OPTIONS</CODE> are:
+
+<P>
+<PRE> -owner =&gt; WINDOW
+     [TBD]
+ -title =&gt; STRING
+     the title for the dialog
+ -directory =&gt; STRING
+     specifies the initial directory
+ -file =&gt; STRING
+     specifies a name that will appear on the dialog's edit field
+ -filter =&gt; ARRAY REFERENCE
+     [TBD]
+</PRE>
+<P>
+
+<A NAME="GetPerlWindow_">
+
+<DT><STRONG><A NAME="item_GetPerlWindow">GetPerlWindow()</A></STRONG><DD>
+<P>
+Returns the handle of the DOS Prompt window your perl script is running in;
+if called in an array context, returns the handle and the HINSTANCE of your
+perl process.
+
+<P>
+
+<A NAME="GetStockObject_OBJECT_">
+
+<DT><STRONG><A NAME="item_GetStockObject">GetStockObject(OBJECT)</A></STRONG><DD>
+<P>
+Returns the handle of the specified predefined system object (pen, brush or
+font). OBJECT can have one of the following values:
+
+<P>
+<PRE>   0 WHITE_BRUSH
+   1 GRAY_BRUSH
+   2 LTGRAY_BRUSH
+   3 DKGRAY_BRUSH
+   4 BLACK_BRUSH
+   5 NULL_BRUSH (also HOLLOW_BRUSH)
+   6 WHITE_PEN
+   7 BLACK_PEN
+   8 NULL_PEN
+  10 OEM_FIXED_FONT
+  11 ANSI_FIXED_FONT
+  12 ANSI_VAR_FONT
+  13 SYSTEM_FONT
+  14 DEVICE_DEFAULT_FONT
+  15 DEFAULT_PALETTE
+  16 SYSTEM_FIXED_FONT
+  17 DEFAULT_GUI_FONT
+</PRE>
+<P>
+The returned handle can be referenced as if it was a Win32::GUI object (eg.
+a Win32::GUI::Brush or Win32::GUI::Font), but note that it is not blessed,
+so you can't directly invoke methods on it:
+
+<P>
+<PRE>    $Font = Win32::GUI::GetStockObject(17);    # DEFAULT_GUI_FONT
+    print $Font-&gt;GetMetrics();                 # !!!WRONG!!!
+    print Win32::GUI::Font::GetMetrics($Font); # correct
+    $Window-&gt;SetFont($Font);                   # correct
+</PRE>
+<P>
+
+<A NAME="GetSystemMetrics_INDEX_">
+
+<DT><STRONG><A NAME="item_GetSystemMetrics">GetSystemMetrics(INDEX)</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="GetTextExtentPoint32_FONT_STR">
+
+<DT><STRONG><A NAME="item_GetTextExtentPoint32">GetTextExtentPoint32([FONT], STRING)</A></STRONG><DD>
+<P>
+Returns a two elements array containing the x and y size of the specified
+text in the window (eventually with the speficied FONT), or undef on
+errors.
+
+<P>
+
+<A NAME="GetTopWindow_">
+
+<DT><STRONG><A NAME="item_GetTopWindow">GetTopWindow()</A></STRONG><DD>
+<P>
+Returns the handle of the foreground window.
+
+<P>
+
+<A NAME="GetWindow_COMMAND_">
+
+<DT><STRONG><A NAME="item_GetWindow">GetWindow(COMMAND)</A></STRONG><DD>
+<P>
+Returns handle of the window that has the specified relationship (given by
+COMMAND) with the specified window. Available COMMANDs are:
+
+<P>
+<PRE>  GW_CHILD
+  GW_HWNDFIRST
+  GW_HWNDLAST
+  GW_HWNDNEXT
+  GW_HWNDPREV
+  GW_OWNER
+</PRE>
+<P>
+Example:
+
+<P>
+<PRE>    $Button-&gt;GetWindow(GW_OWNER);
+</PRE>
+<P>
+
+<A NAME="GetWindowLong_INDEX_">
+
+<DT><STRONG><A NAME="item_GetWindowLong">GetWindowLong(INDEX)</A></STRONG><DD>
+<P>
+Retrieves a windows property; for more info consult the original API
+documentation.
+
+<P>
+
+<A NAME="GetWindowRect_">
+
+<DT><STRONG><A NAME="item_GetWindowRect">GetWindowRect()</A></STRONG><DD>
+<P>
+Returns a four elements array defining the windows rectangle (left, top,
+right, bottom) or undef on errors.
+
+<P>
+
+<A NAME="GetWindowThreadProcessId_">
+
+<DT><STRONG><A NAME="item_GetWindowThreadProcessId">GetWindowThreadProcessId()</A></STRONG><DD>
+<P>
+Returns a two elements array containing the thread and the process
+identifier for the specified window.
+
+<P>
+
+<A NAME="Height_HEIGHT_">
+
+<DT><STRONG><A NAME="item_Height">Height([HEIGHT])</A></STRONG><DD>
+<P>
+Gets or sets the window height.
+
+<P>
+
+<A NAME="Hide_">
+
+<DT><STRONG><A NAME="item_Hide">Hide()</A></STRONG><DD>
+<P>
+Hides a window.
+
+<P>
+
+<A NAME="InvalidateRect_">
+
+<DT><STRONG><A NAME="item_InvalidateRect">InvalidateRect(...)</A></STRONG><DD>
+<P>
+Forces a refresh of a window, or a rectangle of it. The parameters can be
+(FLAG) for the whole area of the window, or (LEFT, TOP, RIGHT, BOTTOM,
+[FLAG]) to specify a rectangle. If the FLAG parameter is set to TRUE, the
+background is erased before the window is refreshed (this is the default).
+
+<P>
+
+<A NAME="IsEnabled_">
+
+<DT><STRONG><A NAME="item_IsEnabled">IsEnabled()</A></STRONG><DD>
+<P>
+Returns TRUE if the window is enabled, FALSE otherwise.
+
+<P>
+
+<A NAME="IsIconic_">
+
+<DT><STRONG><A NAME="item_IsIconic">IsIconic()</A></STRONG><DD>
+<P>
+Returns TRUE if the window is minimized, FALSE otherwise.
+
+<P>
+
+<A NAME="IsVisible_">
+
+<DT><STRONG><A NAME="item_IsVisible">IsVisible()</A></STRONG><DD>
+<P>
+Returns TRUE if the window is visible, FALSE otherwise.
+
+<P>
+
+<A NAME="IsWindow_">
+
+<DT><STRONG><A NAME="item_IsWindow">IsWindow()</A></STRONG><DD>
+<P>
+Returns TRUE if the window is a window, FALSE otherwise.
+
+<P>
+
+<A NAME="IsZoomed_">
+
+<DT><STRONG><A NAME="item_IsZoomed">IsZoomed()</A></STRONG><DD>
+<P>
+Returns TRUE if the window is maximized, FALSE otherwise.
+
+<P>
+
+<A NAME="Left_LEFT_">
+
+<DT><STRONG><A NAME="item_Left">Left([LEFT])</A></STRONG><DD>
+<P>
+Gets or sets the window x coordinate.
+
+<P>
+
+<A NAME="Maximize_">
+
+<DT><STRONG><A NAME="item_Maximize">Maximize()</A></STRONG><DD>
+<P>
+Maximizes a window.
+
+<P>
+
+<A NAME="MessageBox_HANDLE_TEXT_CAPT">
+
+<DT><STRONG><A NAME="item_MessageBox">MessageBox([HANDLE], TEXT, [CAPTION], [TYPE])</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="Minimize_">
+
+<DT><STRONG><A NAME="item_Minimize">Minimize()</A></STRONG><DD>
+<P>
+See  <A HREF="#CloseWindow_">CloseWindow()</A>.
+
+<P>
+
+<A NAME="Move_X_Y_">
+
+<DT><STRONG><A NAME="item_Move">Move(X, Y)</A></STRONG><DD>
+<P>
+Moves the window to the specified position.
+
+<P>
+
+<A NAME="OpenIcon_">
+
+<DT><STRONG><A NAME="item_OpenIcon">OpenIcon()</A></STRONG><DD>
+<P>
+Restores a minimized window.
+
+<P>
+
+<A NAME="PeekMessage_MIN_MAX_MESSAGE_">
+
+<DT><STRONG><A NAME="item_PeekMessage">PeekMessage([MIN, MAX, MESSAGE])</A></STRONG><DD>
+<P>
+Inspects the window's message queue and eventually returns data about the
+message it contains; it can optionally check only for message identifiers
+in the range MIN..MAX; the last MESSAGE parameter, if specified, must be an
+array reference. If a message is found, the function puts in that array 7
+elements containing:
+
+<P>
+<PRE>  - the handle of the window to which the message is addressed
+  - the message identifier
+  - the wParam argument
+  - the lParam argument
+  - the time when message occurs
+  - the x coordinate at which message occurs
+  - the y coordinate at which message occurs
+</PRE>
+<P>
+
+<A NAME="PlayEnhMetaFile_FILENAME_">
+
+<DT><STRONG><A NAME="item_PlayEnhMetaFile">PlayEnhMetaFile(FILENAME)</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="PlayWinMetaFile_FILENAME_">
+
+<DT><STRONG><A NAME="item_PlayWinMetaFile">PlayWinMetaFile(FILENAME)</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="PostMessage_MSG_WPARAM_LPARAM_">
+
+<DT><STRONG><A NAME="item_PostMessage">PostMessage(MSG, WPARAM, LPARAM)</A></STRONG><DD>
+<P>
+Posts a message to a window.
+
+<P>
+
+<A NAME="PostQuitMessage_EXITCODE_">
+
+<DT><STRONG><A NAME="item_PostQuitMessage">PostQuitMessage([EXITCODE])</A></STRONG><DD>
+<P>
+Sends a quit message to a window, optionally with an EXITCODE; if no
+EXITCODE is given, it defaults to 0.
+
+<P>
+
+<A NAME="ReleaseCapture_">
+
+<DT><STRONG><A NAME="item_ReleaseCapture">ReleaseCapture()</A></STRONG><DD>
+<P>
+Releases the mouse capture.
+
+<P>
+
+<A NAME="Resize_X_Y_">
+
+<DT><STRONG><A NAME="item_Resize">Resize(X, Y)</A></STRONG><DD>
+<P>
+Resizes the window to the specified dimension.
+
+<P>
+
+<A NAME="Restore_">
+
+<DT><STRONG><A NAME="item_Restore">Restore()</A></STRONG><DD>
+<P>
+See  <A HREF="#OpenIcon_">OpenIcon()</A>.
+
+<P>
+
+<A NAME="SaveBMP_handle_">
+
+<DT><STRONG><A NAME="item_SaveBMP">SaveBMP(handle)</A></STRONG><DD>
+<P>
+(preliminary) Saves the window content to a BMP file.
+
+<P>
+
+<A NAME="ScaleHeight_">
+
+<DT><STRONG><A NAME="item_ScaleHeight">ScaleHeight()</A></STRONG><DD>
+<P>
+Returns the windows client area height.
+
+<P>
+
+<A NAME="ScaleWidth_">
+
+<DT><STRONG><A NAME="item_ScaleWidth">ScaleWidth()</A></STRONG><DD>
+<P>
+Returns the windows client area width.
+
+<P>
+
+<A NAME="SendMessage_MSG_WPARAM_LPARAM_">
+
+<DT><STRONG><A NAME="item_SendMessage">SendMessage(MSG, WPARAM, LPARAM)</A></STRONG><DD>
+<P>
+Sends a message to a window.
+
+<P>
+
+<A NAME="SendMessageTimeout_MSG_WPARAM_">
+
+<DT><STRONG><A NAME="item_SendMessageTimeout">SendMessageTimeout(MSG, WPARAM, LPARAM, [FLAGS], TIMEOUT)</A></STRONG><DD>
+<P>
+Sends a message to a window and wait for it to be processed or until the
+specified TIMEOUT (number of milliseconds) elapses; returns the result code
+of the processed message or undef on errors. If undef is returned and a
+call to Win32::GetLastError() returns 0, then the window timed out
+processing the message. The FLAGS parameter is optional, possible values
+are:
+
+<P>
+<PRE> 0 SMTO_NORMAL
+   (the calling thread can process other requests while waiting;
+   this is the default setting)
+ 1 SMTO_BLOCK
+   (the calling thread does not process other requests)
+ 2 SMTO_ABORTIFHUNG
+   (returns without waiting if the receiving process seems to be &quot;hung&quot;)
+</PRE>
+<P>
+
+<A NAME="SetCapture_">
+
+<DT><STRONG><A NAME="item_SetCapture">SetCapture()</A></STRONG><DD>
+<P>
+Assigns the mouse capture to a window.
+
+<P>
+
+<A NAME="SetCursor_CURSOR_">
+
+<DT><STRONG><A NAME="item_SetCursor">SetCursor(CURSOR)</A></STRONG><DD>
+<P>
+Draws the specified CURSOR (a Win32::GUI::Cursor object). Returns the
+handle of the previously displayed cursor. Note that the cursor will change
+back to the default one as soon as the mouse moves or a system command is
+performed. To change the cursor stablily, see  <A HREF="#ChangeCursor_CURSOR_">ChangeCursor()</A>.
+
+<P>
+
+<A NAME="SetCursorPos_X_Y_">
+
+<DT><STRONG><A NAME="item_SetCursorPos">SetCursorPos(X, Y)</A></STRONG><DD>
+<P>
+Moves the cursor to the specified coordinates.
+
+<P>
+
+<A NAME="SetFocus_">
+
+<DT><STRONG><A NAME="item_SetFocus">SetFocus()</A></STRONG><DD>
+<P>
+Activates a window.
+
+<P>
+
+<A NAME="SetFont_FONT_">
+
+<DT><STRONG><A NAME="item_SetFont">SetFont(FONT)</A></STRONG><DD>
+<P>
+Sets the font of the window (FONT is a Win32::GUI::Font object).
+
+<P>
+
+<A NAME="SetForegroundWindow_">
+
+<DT><STRONG><A NAME="item_SetForegroundWindow">SetForegroundWindow()</A></STRONG><DD>
+<P>
+Brings the window to the foreground.
+
+<P>
+
+<A NAME="SetIcon_ICON_TYPE_">
+
+<DT><STRONG><A NAME="item_SetIcon">SetIcon(ICON, [TYPE])</A></STRONG><DD>
+<P>
+Sets the icon of the window; TYPE can be 0 for the small icon, 1 for the
+big icon. Default is the same icon for small and big.
+
+<P>
+
+<A NAME="SetMenu_MENU_">
+
+<DT><STRONG><A NAME="item_SetMenu">SetMenu(MENU)</A></STRONG><DD>
+<P>
+Associates the specified MENU to a window.
+
+<P>
+
+<A NAME="SetRedraw_FLAG_">
+
+<DT><STRONG><A NAME="item_SetRedraw">SetRedraw(FLAG)</A></STRONG><DD>
+<P>
+Determines if a window is automatically redrawn when its content changes.
+FLAG can be a true value to allow redraw, false to prevent it.
+
+<P>
+
+<A NAME="SetWindowLong_INDEX_VALUE_">
+
+<DT><STRONG><A NAME="item_SetWindowLong">SetWindowLong(INDEX, VALUE)</A></STRONG><DD>
+<P>
+Sets a windows property; for more info consult the original API
+documentation.
+
+<P>
+
+<A NAME="Show_COMMAND_">
+
+<DT><STRONG><A NAME="item_Show">Show([COMMAND])</A></STRONG><DD>
+<P>
+Shows a window (or change its showing state to COMMAND); available COMMANDs
+are:
+
+<P>
+<PRE>  SW_HIDE
+  SW_MAXIMIZE
+  SW_MINIMIZE
+  SW_RESTORE
+  SW_SHOW
+  SW_SHOWDEFAULT
+  SW_SHOWMAXIMIZED
+  SW_SHOWMINIMIZED
+  SW_SHOWMINNOACTIVE
+  SW_SHOWNA
+  SW_SHOWNOACTIVATE
+  SW_SHOWNORMAL
+</PRE>
+<P>
+The default COMMAND, if none specified, is SW_SHOWNORMAL.
+
+<P>
+
+<A NAME="Text_TEXT_">
+
+<DT><STRONG><A NAME="item_Text">Text([TEXT])</A></STRONG><DD>
+<P>
+Gets or sets the text of a window.
+
+<P>
+
+<A NAME="Top_TOP_">
+
+<DT><STRONG><A NAME="item_Top">Top([TOP])</A></STRONG><DD>
+<P>
+Gets or sets the window y coordinate.
+
+<P>
+
+<A NAME="TrackPopupMenu_MENU_X_Y_FLAG">
+
+<DT><STRONG><A NAME="item_TrackPopupMenu">TrackPopupMenu(MENU, X, Y, [FLAGS])</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="Update_">
+
+<DT><STRONG><A NAME="item_Update">Update()</A></STRONG><DD>
+<P>
+Refreshes the content of a window.
+
+<P>
+
+<A NAME="Version_">
+
+<DT><STRONG><A NAME="item_Version">Version()</A></STRONG><DD>
+<P>
+Returns the module version number.
+
+<P>
+
+<A NAME="Width_WIDTH_">
+
+<DT><STRONG><A NAME="item_Width">Width([WIDTH])</A></STRONG><DD>
+<P>
+Gets or sets the window width.
+
+<P>
+
+<A NAME="WindowFromPoint_X_Y_">
+
+<DT><STRONG><A NAME="item_WindowFromPoint">WindowFromPoint(X, Y)</A></STRONG><DD>
+<P>
+Returns the handle of the window at the specified screen position.
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>
