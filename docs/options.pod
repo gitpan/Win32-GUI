@@ -1,10 +1,8 @@
 =head1 Win32::GUI options
 
-=over 4
+=for HTML <TT>
 
-=for HTML <HR><TT>
-
-=head2 -align => left/center/right  
+=head2 -align => left/center/right
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -15,13 +13,13 @@ Aligns the text in the control accordingly.
 
 
 
-B<Applies to>: L<Button|packages/Button>, L<Label|packages/Label>, L<Textfield|packages/Textfield>, L<RichEdit|packages/RichEdit>
+B<Applies to>: L<Button|packages/Button>, L<Label|packages/Label>, L<RichEdit|packages/RichEdit>, L<Textfield|packages/Textfield>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -autoplay => 0/1 
+=head2 -autoplay => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -36,9 +34,9 @@ B<Applies to>: L<Animation|packages/Animation>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -bandborders => 0/1  
+=head2 -bandborders => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -53,9 +51,9 @@ B<Applies to>: L<Rebar|packages/Rebar>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -buttons => 0/1  
+=head2 -buttons => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -71,13 +69,13 @@ For TabStrips, if enabled items look like push buttons.
 
 
 
-B<Applies to>: L<TreeView|packages/TreeView>, L<TabStrip|packages/TabStrip>, L<Header|packages/Header>
+B<Applies to>: L<Header|packages/Header>, L<TabStrip|packages/TabStrip>, L<TreeView|packages/TreeView>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -cancel => 0/1  
+=head2 -cancel => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -95,9 +93,9 @@ B<Applies to>: L<Button|packages/Button>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -center => 0/1 
+=head2 -center => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -112,9 +110,9 @@ B<Applies to>: L<Animation|packages/Animation>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -computeronly => 0/1 
+=head2 -computeronly => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -129,9 +127,9 @@ B<Applies to>: L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -default => 0/1  
+=head2 -default => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -147,7 +145,7 @@ B<Applies to>: L<Button|packages/Button>, L<MenuItem|packages/MenuItem>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 -directory => STRING
 
@@ -162,9 +160,9 @@ B<Applies to>: L<GetOpenFileName()|methods/GetOpenFileName_OPTIONS_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -domainonly => 0/1 
+=head2 -domainonly => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -179,9 +177,9 @@ B<Applies to>: L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -driveonly => 0/1 
+=head2 -driveonly => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -196,9 +194,9 @@ B<Applies to>: L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -editbox => 0/1 
+=head2 -editbox => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -214,7 +212,7 @@ B<Applies to>: L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 -file => STRING
 
@@ -229,9 +227,9 @@ B<Applies to>: L<GetOpenFileName()|methods/GetOpenFileName_OPTIONS_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -fill => black/gray/white/none  
+=head2 -fill => black/gray/white/none
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -247,7 +245,7 @@ B<Applies to>: L<Label|packages/Label>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 -filter => ARRAY REFERENCE
 
@@ -261,9 +259,9 @@ B<Applies to>: L<GetOpenFileName()|methods/GetOpenFileName_OPTIONS_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -fixedorder => 0/1  
+=head2 -fixedorder => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -278,9 +276,9 @@ B<Applies to>: L<Rebar|packages/Rebar>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -folderonly => 0/1 
+=head2 -folderonly => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -295,9 +293,9 @@ B<Applies to>: L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -includefiles => 0/1 
+=head2 -includefiles => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -312,7 +310,7 @@ B<Applies to>: L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 -maxsize => [X, Y]
 
@@ -333,11 +331,11 @@ Example:
 
 B<See also>: L</-maxwidth>, L</-maxheight>, L<-minsize|options/_minsize_X_Y_>
 
-B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+B<Applies to>: L<DialogBox|packages/DialogBox>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 -minsize => [X, Y]
 
@@ -358,13 +356,13 @@ Example:
 
 B<See also>: L</-minwidth>, L</-minheight>, L<-maxsize|options/_maxsize_X_Y_>
 
-B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+B<Applies to>: L<DialogBox|packages/DialogBox>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -multiline => 0/1  
+=head2 -multiline => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -376,13 +374,13 @@ controls, newline is "\r\n", not "\n"!).
 
 
 
-B<Applies to>: L<Textfield|packages/Textfield>, L<RichEdit|packages/RichEdit>, L<TabStrip|packages/TabStrip>, L<ToolBar|packages/ToolBar>
+B<Applies to>: L<RichEdit|packages/RichEdit>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<ToolBar|packages/ToolBar>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -multisel => 0/1/2  
+=head2 -multisel => 0/1/2
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -401,7 +399,7 @@ B<Applies to>: L<Listbox|packages/Listbox>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 -name => STRING
 
@@ -429,13 +427,14 @@ Example:
 
 
 
-B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<NotifyIcon(*)|packages/NotifyIcon(*)>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Timer|packages/Timer>, L<Toolbar|packages/Toolbar>, L<Tooltip(*)|packages/Tooltip(*)>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<NotifyIcon|packages/NotifyIcon>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -notify => 0/1  
+=head2 -notify => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -450,9 +449,9 @@ B<Applies to>: L<Label|packages/Label>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -ok => 0/1  
+=head2 -ok => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -470,7 +469,7 @@ B<Applies to>: L<Button|packages/Button>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 -owner => WINDOW
 
@@ -485,9 +484,9 @@ B<Applies to>: L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>, L<GetOpenF
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -password => 0/1  
+=head2 -password => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -500,13 +499,13 @@ Masks the user input (like password prompts).
 
 B<See also>: L<-passwordchar|options/_passwordchar_CHAR>
 
-B<Applies to>: L<Textfield|packages/Textfield>, L<RichEdit|packages/RichEdit>
+B<Applies to>: L<RichEdit|packages/RichEdit>, L<Textfield|packages/Textfield>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -passwordchar => CHAR  
+=head2 -passwordchar => CHAR
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -519,13 +518,36 @@ The specified CHAR that is shown instead of the text with C<-password => 1>.
 
 B<See also>: L<-password|options/_password_0_1>
 
-B<Applies to>: L<Textfield|packages/Textfield>, L<RichEdit|packages/RichEdit>
+B<Applies to>: L<RichEdit|packages/RichEdit>, L<Textfield|packages/Textfield>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -printeronly => 0/1 
+=head2 -pos => [ X, Y ]
+
+=for HTML </TT><BLOCKQUOTE>
+
+Defines the position for the window; note that X and Y must be passed in an
+array reference, eg:
+
+    -pos => [ 100, 100 ],    # correct
+    -pos =>   100, 100,      # WRONG
+    -pos => @coords,         # WRONG
+    -pos => \@coors,         # correct
+
+
+
+
+B<See also>: L</-left>, L</-top>
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 -printeronly => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -540,7 +562,7 @@ B<Applies to>: L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 -prompt => STRING or [ STRING, WIDTH ]
 
@@ -578,13 +600,13 @@ Note that the Win32::GUI::Label object is named like the Textfield, with a
 
 
 
-B<Applies to>: L<Textfield|packages/Textfield>, L<RichEdit|packages/RichEdit>
+B<Applies to>: L<RichEdit|packages/RichEdit>, L<Textfield|packages/Textfield>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -readonly => 0/1 
+=head2 -readonly => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -595,11 +617,11 @@ Text can't be changed.
 
 
 
-B<Applies to>: L<Textfield|packages/Textfield>, L<RichEdit|packages/RichEdit>
+B<Applies to>: L<RichEdit|packages/RichEdit>, L<Textfield|packages/Textfield>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 -root => PATH or CONSTANT
 
@@ -616,9 +638,32 @@ B<Applies to>: L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -smooth => 0/1  
+=head2 -size => [ X, Y ]
+
+=for HTML </TT><BLOCKQUOTE>
+
+Defines the size for the window; note that X and Y must be passed in an
+array reference, eg:
+
+    -size => [ 100, 100 ],    # correct
+    -size =>   100, 100,      # WRONG
+    -size => @coords,         # WRONG
+    -size => \@coors,         # correct
+
+
+
+
+B<See also>: L</-width>, L</-height>
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 -smooth => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -633,9 +678,9 @@ B<Applies to>: L<ProgressBar|packages/ProgressBar>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -sunken => 0/1  
+=head2 -sunken => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -650,7 +695,7 @@ B<Applies to>: L<Label|packages/Label>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 -text => STRING
 
@@ -661,13 +706,13 @@ The text that will appear in the control or item.
 
 
 
-B<Applies to>: L<*|packages/*>, L<InsertBand()|methods/InsertBand_OPTIONS_>
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>, L<InsertBand()|methods/InsertBand_OPTIONS_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -tip => STRING 
+=head2 -tip => STRING
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -680,7 +725,7 @@ B<Applies to>: L<NotifyIcon|packages/NotifyIcon>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 -title => STRING
 
@@ -691,13 +736,13 @@ The title for the window or dialog box.
 
 
 
-B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>, L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>, L<GetOpenFileName()|methods/GetOpenFileName_OPTIONS_>
+B<Applies to>: L<DialogBox|packages/DialogBox>, L<Window|packages/Window>, L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>, L<GetOpenFileName()|methods/GetOpenFileName_OPTIONS_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -topmost => 0/1  
+=head2 -topmost => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -708,13 +753,13 @@ The window "stays on top" even when deactivated.
 
 
 
-B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+B<Applies to>: L<DialogBox|packages/DialogBox>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -transparent => 0/1 
+=head2 -transparent => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -729,9 +774,9 @@ B<Applies to>: L<Animation|packages/Animation>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -truncate => 0/1/word/path 
+=head2 -truncate => 0/1/word/path
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -758,9 +803,9 @@ B<Applies to>: L<Label|packages/Label>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -valign => top/center/bottom 
+=head2 -valign => top/center/bottom
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -771,13 +816,13 @@ Defines the vertical alignment for the text in the Button.
 
 
 
-B<Applies to>: L<Button|packages/Button>, L<RadioButton|packages/RadioButton>, L<CheckBox|packages/CheckBox>
+B<Applies to>: L<Button|packages/Button>, L<CheckBox|packages/CheckBox>, L<RadioButton|packages/RadioButton>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
-=head2 -wrap => 0/1  
+=head2 -wrap => 0/1
 
 =for HTML </TT><BLOCKQUOTE>
 
@@ -794,6 +839,4 @@ limit.
 B<Applies to>: L<Label|packages/Label>, L<UpDown|packages/UpDown>
 
 =for HTML </BLOCKQUOTE>
-
-=back
 

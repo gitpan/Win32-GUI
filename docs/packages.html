@@ -14,6 +14,7 @@
 	<UL>
 
 		<LI><A HREF="#Animation">Animation</A></LI>
+		<LI><A HREF="#Button">Button</A></LI>
 		<LI><A HREF="#Checkbox">Checkbox</A></LI>
 		<LI><A HREF="#Class">Class</A></LI>
 		<LI><A HREF="#Combobox">Combobox</A></LI>
@@ -23,13 +24,18 @@
 		<LI><A HREF="#Graphic">Graphic</A></LI>
 		<LI><A HREF="#Groupbox">Groupbox</A></LI>
 		<LI><A HREF="#Header">Header</A></LI>
+		<LI><A HREF="#Label">Label</A></LI>
 		<LI><A HREF="#ListView">ListView</A></LI>
+		<LI><A HREF="#Listbox">Listbox</A></LI>
 		<LI><A HREF="#ProgressBar">ProgressBar</A></LI>
 		<LI><A HREF="#RadioButton">RadioButton</A></LI>
 		<LI><A HREF="#Rebar">Rebar</A></LI>
+		<LI><A HREF="#RichEdit">RichEdit</A></LI>
 		<LI><A HREF="#Slider">Slider</A></LI>
 		<LI><A HREF="#Splitter">Splitter</A></LI>
 		<LI><A HREF="#StatusBar">StatusBar</A></LI>
+		<LI><A HREF="#TabStrip">TabStrip</A></LI>
+		<LI><A HREF="#Textfield">Textfield</A></LI>
 		<LI><A HREF="#Timer">Timer</A></LI>
 		<LI><A HREF="#Toolbar">Toolbar</A></LI>
 		<LI><A HREF="#Tooltip">Tooltip</A></LI>
@@ -44,21 +50,63 @@
 <HR>
 <P>
 <H1><A NAME="Win32_GUI_packages">Win32::GUI packages</A></H1>
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Animation">Animation</A></H2>
 </TT><BLOCKQUOTE>
 
 <P>
-<STRONG>Available options</STRONG>: <A HREF="././options.html#_autoplay_0_1">-autoplay</A>, <A HREF="././options.html#_center_0_1">-center</A>, <A HREF="././options.html#_transparent_0_1">-transparent</A>
+The Animation control displays an AVI animation. To load an AVI file you
+can use the <A HREF="././methods.html#Open">Open()</A> method; you can then use <A HREF="././methods.html#Play">Play()</A> to start the animation (note it will start automatically with the -autoplay
+option),
+<A HREF="././methods.html#Stop">Stop()</A> to stop it and <A HREF="././methods.html#Seek">Seek()</A> to position it to a specified frame.
+
+</P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_autoplay_0_1">-autoplay</A>, <A HREF="././options.html#_center_0_1">-center</A>, <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>, <A HREF="././options.html#_transparent_0_1">-transparent</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Close_">Close</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#Open_FILE_">Open</A>, <A HREF="././methods.html#Play_FROM_TO_REPEAT_">Play</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>, <A HREF="././methods.html#Seek_FRAME_">Seek</A>, <A HREF="././methods.html#Stop_">Stop</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="Button">Button</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+x
+
+</P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_align_left_center_right">-align</A>, <A HREF="././options.html#_bitmap">-bitmap</A>, <A HREF="././options.html#_cancel_0_1">-cancel</A>, <A HREF="././options.html#_default_0_1">-default</A>, <A HREF="././options.html#_icon">-icon</A>, <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_ok_0_1">-ok</A>, <A HREF="././options.html#_picture">-picture</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>, <A HREF="././options.html#_valign_top_center_bottom">-valign</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="Checkbox">Checkbox</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -66,10 +114,24 @@
 x
 
 </P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>
+
+
+
+</P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Class">Class</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -77,10 +139,24 @@ x
 x
 
 </P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_name_STRING">-name</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>
+
+
+
+</P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Combobox">Combobox</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -88,10 +164,24 @@ x
 x
 
 </P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#Add_STRING_STRING_STRING_">Add</A>, <A HREF="././methods.html#AddString_STRING_">AddString</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Count_">Count</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#FindString_STRING_INDEX_">FindString</A>, <A HREF="././methods.html#FindStringExact_STRING_INDEX_">FindStringExact</A>, <A HREF="././methods.html#FirstVisibleItem_INDEX_">FirstVisibleItem</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#Reset_">Reset</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>, <A HREF="././methods.html#SelectedItem_">SelectedItem</A>
+
+
+
+</P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="ComboboxEx">ComboboxEx</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -99,10 +189,24 @@ x
 x
 
 </P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>
+
+
+
+</P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="DateTime">DateTime</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -110,10 +214,24 @@ x
 x
 
 </P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>
+
+
+
+</P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="DialogBox">DialogBox</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -123,15 +241,23 @@ DialogBox can not be sized, has no maximize box and has <CODE>-dialogui</CODE> e
 
 </P>
 <P>
-<STRONG>Available options</STRONG>: <A HREF="././options.html#_text_STRING">-text</A>, <A HREF="././options.html#_caption">-caption</A>, <A HREF="././options.html#_title_STRING">-title</A>, <A HREF="././options.html#_left">-left</A>, <A HREF="././options.html#_top">-top</A>, <A HREF="././options.html#_width">-width</A>, <A HREF="././options.html#_height">-height</A>, <A HREF="././options.html#_menu">-menu</A>, <A HREF="././options.html#_font">-font</A>, <A HREF="././options.html#_foreground">-foreground</A>, <A HREF="././options.html#_background">-background</A>, <A HREF="././options.html#_hscroll">-hscroll</A>, <A HREF="././options.html#_vscroll">-vscroll</A>, <A HREF="././options.html#_size">-size</A>, <A HREF="././options.html#_pos">-pos</A>, <A HREF="././options.html#_minsize_X_Y_">-minsize</A>, <A HREF="././options.html#_maxsize_X_Y_">-maxsize</A>, <A HREF="././options.html#_minwidth">-minwidth</A>, <A HREF="././options.html#_minheight">-minheight</A>, <A HREF="././options.html#_maxwidth">-maxwidth</A>, <A HREF="././options.html#_maxheight">-maxheight</A>, <A HREF="././options.html#_topmost_0_1">-topmost</A>, <A HREF="././options.html#_maximizebox">-maximizebox</A>, <A HREF="././options.html#_minimizebox">-minimizebox</A>, <A HREF="././options.html#_sizable">-sizable</A>, <A HREF="././options.html#_sysmenu">-sysmenu</A>, <A HREF="././options.html#_accel">-accel</A>, <A HREF="././options.html#_accelerators">-accelerators</A>, <A HREF="././options.html#_acceleratortable">-acceleratortable</A>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_accel">-accel</A>, <A HREF="././options.html#_accelerators">-accelerators</A>, <A HREF="././options.html#_acceleratortable">-acceleratortable</A>, <A HREF="././options.html#_background">-background</A>, <A HREF="././options.html#_caption">-caption</A>, <A HREF="././options.html#_font">-font</A>, <A HREF="././options.html#_foreground">-foreground</A>, <A HREF="././options.html#_height">-height</A>, <A HREF="././options.html#_hscroll">-hscroll</A>, <A HREF="././options.html#_left">-left</A>, <A HREF="././options.html#_maxheight">-maxheight</A>, <A HREF="././options.html#_maximizebox">-maximizebox</A>, <A HREF="././options.html#_maxsize_X_Y_">-maxsize</A>, <A HREF="././options.html#_maxwidth">-maxwidth</A>, <A HREF="././options.html#_menu">-menu</A>, <A HREF="././options.html#_minheight">-minheight</A>, <A HREF="././options.html#_minimizebox">-minimizebox</A>, <A HREF="././options.html#_minsize_X_Y_">-minsize</A>, <A HREF="././options.html#_minwidth">-minwidth</A>, <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_sizable">-sizable</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_sysmenu">-sysmenu</A>, <A HREF="././options.html#_text_STRING">-text</A>, <A HREF="././options.html#_title_STRING">-title</A>, <A HREF="././options.html#_top">-top</A>, <A HREF="././options.html#_topmost_0_1">-topmost</A>, <A HREF="././options.html#_vscroll">-vscroll</A>, <A HREF="././options.html#_width">-width</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#BringWindowToTop_">BringWindowToTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#ChangeIcon_ICON_">ChangeIcon</A>, <A HREF="././methods.html#ChangeSmallIcon_ICON_">ChangeSmallIcon</A>, <A HREF="././methods.html#CloseWindow_">CloseWindow</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#DrawMenuBar_">DrawMenuBar</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetMenu_">GetMenu</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsIconic_">IsIconic</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#IsZoomed_">IsZoomed</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#OpenIcon_">OpenIcon</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Graphic">Graphic</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -139,10 +265,24 @@ DialogBox can not be sized, has no maximize box and has <CODE>-dialogui</CODE> e
 x
 
 </P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>
+
+
+
+</P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Groupbox">Groupbox</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -150,10 +290,24 @@ x
 x
 
 </P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>
+
+
+
+</P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Header">Header</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -161,10 +315,49 @@ x
 x
 
 </P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_buttons_0_1">-buttons</A>, <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>
+
+
+
+</P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="Label">Label</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+x
+
+</P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_align_left_center_right">-align</A>, <A HREF="././options.html#_bitmap">-bitmap</A>, <A HREF="././options.html#_fill_black_gray_white_none">-fill</A>, <A HREF="././options.html#_frame">-frame</A>, <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_notify_0_1">-notify</A>, <A HREF="././options.html#_picture">-picture</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_sunken_0_1">-sunken</A>, <A HREF="././options.html#_text_STRING">-text</A>, <A HREF="././options.html#_truncate_0_1_word_path">-truncate</A>, <A HREF="././options.html#_wrap_0_1">-wrap</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="ListView">ListView</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -172,23 +365,74 @@ x
 x
 
 </P>
-</BLOCKQUOTE>
-
-<HR><TT>
-
-<H2><A NAME="ProgressBar">ProgressBar</A></H2>
-</TT><BLOCKQUOTE>
-
 <P>
-<STRONG>Available options</STRONG>: <A HREF="././options.html#_smooth_0_1">-smooth</A>, <A HREF="././options.html#_vertical">-vertical</A>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#Arrange_FLAG_">Arrange</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#EnsureVisible_ITEM_FLAG_">EnsureVisible</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetStringWidth_STRING_">GetStringWidth</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#HitTest_X_Y_">HitTest</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#ItemCheck_ITEM_VALUE_">ItemCheck</A>, <A HREF="././methods.html#ItemPosition_INDEX_X_Y_">ItemPosition</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#MoveItem_INDEX_X_Y_">MoveItem</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>, <A HREF="././methods.html#SelectCount_">SelectCount</A>, <A HREF="././methods.html#View_MODE_">View</A>, <A HREF="././methods.html#VisibleCount_">VisibleCount</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="Listbox">Listbox</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+x
+
+</P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_multisel_0_1_2">-multisel</A>, <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_sort">-sort</A>, <A HREF="././options.html#_text_STRING">-text</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#Add_STRING_STRING_STRING_">Add</A>, <A HREF="././methods.html#AddString_STRING_">AddString</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Count_">Count</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#FindString_STRING_INDEX_">FindString</A>, <A HREF="././methods.html#FindStringExact_STRING_INDEX_">FindStringExact</A>, <A HREF="././methods.html#FirstVisibleItem_INDEX_">FirstVisibleItem</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#ItemFromPoint_X_Y_">ItemFromPoint</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#Reset_">Reset</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>, <A HREF="././methods.html#SelectCount_">SelectCount</A>, <A HREF="././methods.html#SelectedItem_">SelectedItem</A>, <A HREF="././methods.html#SelectString_STRING_INDEX_">SelectString</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
+<H2><A NAME="ProgressBar">ProgressBar</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+x
+
+</P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_smooth_0_1">-smooth</A>, <A HREF="././options.html#_text_STRING">-text</A>, <A HREF="././options.html#_vertical">-vertical</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>, <A HREF="././methods.html#SetRange_MIN_MAX_">SetRange</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="RadioButton">RadioButton</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -196,10 +440,24 @@ x
 x
 
 </P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>, <A HREF="././options.html#_valign_top_center_bottom">-valign</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>
+
+
+
+</P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Rebar">Rebar</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -207,10 +465,49 @@ x
 x
 
 </P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_bandborders_0_1">-bandborders</A>, <A HREF="././options.html#_fixedorder_0_1">-fixedorder</A>, <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#BandCount_">BandCount</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#DeleteBand_">DeleteBand</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#InsertBand_OPTIONS_">InsertBand</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#RowCount_">RowCount</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>
+
+
+
+</P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="RichEdit">RichEdit</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+x
+
+</P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_align_left_center_right">-align</A>, <A HREF="././options.html#_autohscroll">-autohscroll</A>, <A HREF="././options.html#_autovscroll">-autovscroll</A>, <A HREF="././options.html#_keepselection">-keepselection</A>, <A HREF="././options.html#_lowercase">-lowercase</A>, <A HREF="././options.html#_multiline_0_1">-multiline</A>, <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_number">-number</A>, <A HREF="././options.html#_password_0_1">-password</A>, <A HREF="././options.html#_passwordchar_CHAR">-passwordchar</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_prompt_STRING_or_STRING_W">-prompt</A>, <A HREF="././options.html#_readonly_0_1">-readonly</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>, <A HREF="././options.html#_uppercase">-uppercase</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#BackColor_COLOR_">BackColor</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#LineFromChar_INDEX_">LineFromChar</A>, <A HREF="././methods.html#Load_FILENAME_FORMAT_">Load</A>, <A HREF="././methods.html#MaxLength_CHARS_">MaxLength</A>, <A HREF="././methods.html#Modified_FLAG_">Modified</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#PasswordChar_CHAR_">PasswordChar</A>, <A HREF="././methods.html#ReadOnly_FLAG_">ReadOnly</A>, <A HREF="././methods.html#ReplaceSel_STRING_FLAG_">ReplaceSel</A>, <A HREF="././methods.html#Save_FILENAME_FORMAT_">Save</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>, <A HREF="././methods.html#Scroll_COMMAND_LINE_HORIZON">Scroll</A>, <A HREF="././methods.html#SelectAll_">SelectAll</A>, <A HREF="././methods.html#Selection_">Selection</A>, <A HREF="././methods.html#Undo_">Undo</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="Slider">Slider</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -218,10 +515,24 @@ x
 x
 
 </P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>
+
+
+
+</P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Splitter">Splitter</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -229,10 +540,24 @@ x
 x
 
 </P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>
+
+
+
+</P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="StatusBar">StatusBar</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -240,10 +565,74 @@ x
 x
 
 </P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>
+
+
+
+</P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="TabStrip">TabStrip</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+x
+
+</P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_bottom">-bottom</A>, <A HREF="././options.html#_buttons_0_1">-buttons</A>, <A HREF="././options.html#_flat">-flat</A>, <A HREF="././options.html#_hottrack">-hottrack</A>, <A HREF="././options.html#_imagelist">-imagelist</A>, <A HREF="././options.html#_justify">-justify</A>, <A HREF="././options.html#_multiline_0_1">-multiline</A>, <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_right">-right</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>, <A HREF="././options.html#_vertical">-vertical</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
+<H2><A NAME="Textfield">Textfield</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+x
+
+</P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_align_left_center_right">-align</A>, <A HREF="././options.html#_autohscroll">-autohscroll</A>, <A HREF="././options.html#_autovscroll">-autovscroll</A>, <A HREF="././options.html#_keepselection">-keepselection</A>, <A HREF="././options.html#_lowercase">-lowercase</A>, <A HREF="././options.html#_multiline_0_1">-multiline</A>, <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_number">-number</A>, <A HREF="././options.html#_password_0_1">-password</A>, <A HREF="././options.html#_passwordchar_CHAR">-passwordchar</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_prompt_STRING_or_STRING_W">-prompt</A>, <A HREF="././options.html#_readonly_0_1">-readonly</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>, <A HREF="././options.html#_uppercase">-uppercase</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#LineFromChar_INDEX_">LineFromChar</A>, <A HREF="././methods.html#MaxLength_CHARS_">MaxLength</A>, <A HREF="././methods.html#Modified_FLAG_">Modified</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#PasswordChar_CHAR_">PasswordChar</A>, <A HREF="././methods.html#ReadOnly_FLAG_">ReadOnly</A>, <A HREF="././methods.html#ReplaceSel_STRING_FLAG_">ReplaceSel</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>, <A HREF="././methods.html#Scroll_COMMAND_LINE_HORIZON">Scroll</A>, <A HREF="././methods.html#SelectAll_">SelectAll</A>, <A HREF="././methods.html#Selection_">Selection</A>, <A HREF="././methods.html#Undo_">Undo</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="Timer">Timer</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -276,7 +665,7 @@ the number of milliseconds after which the <CODE>Timer()</CODE> event will
 be triggered.
 
 </P>
-
+</DL>
 <P>
 Once you've created the Timer object, you can change the ELAPSE parameter
 with the <CODE>Interval()</CODE> method, or disables it with the
@@ -301,10 +690,24 @@ Example:
         }
 </PRE>
 </P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#Interval_ELAPSE_">Interval</A>, <A HREF="././methods.html#Kill_">Kill</A>
+
+
+
+</P>
+<P>
+<STRONG>Events</STRONG>: <A HREF="././events.html#Timer_">Timer</A>
+
+
+
+</P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Toolbar">Toolbar</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -312,10 +715,24 @@ Example:
 x
 
 </P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_text_STRING">-text</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>
+
+
+
+</P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Tooltip">Tooltip</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -325,8 +742,10 @@ x
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="TreeView">TreeView</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -334,10 +753,24 @@ x
 x
 
 </P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_buttons_0_1">-buttons</A>, <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#EnsureVisible_ITEM_FLAG_">EnsureVisible</A>, <A HREF="././methods.html#Expand_NODE_FLAG_">Expand</A>, <A HREF="././methods.html#FirstVisible_NODE_">FirstVisible</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetLastVisible_">GetLastVisible</A>, <A HREF="././methods.html#GetNextVisible_NODE_">GetNextVisible</A>, <A HREF="././methods.html#GetPrevVisible_NODE_">GetPrevVisible</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#HitTest_X_Y_">HitTest</A>, <A HREF="././methods.html#Indent_VALUE_">Indent</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#ItemCheck_ITEM_VALUE_">ItemCheck</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>, <A HREF="././methods.html#VisibleCount_">VisibleCount</A>
+
+
+
+</P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="UpDown">UpDown</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -345,10 +778,24 @@ x
 x
 
 </P>
+<P>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_text_STRING">-text</A>, <A HREF="././options.html#_wrap_0_1">-wrap</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>
+
+
+
+</P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Window">Window</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -358,13 +805,18 @@ window''.
 
 </P>
 <P>
-<STRONG>Available options</STRONG>: <A HREF="././options.html#_text_STRING">-text</A>, <A HREF="././options.html#_caption">-caption</A>, <A HREF="././options.html#_title_STRING">-title</A>, <A HREF="././options.html#_left">-left</A>, <A HREF="././options.html#_top">-top</A>, <A HREF="././options.html#_width">-width</A>, <A HREF="././options.html#_height">-height</A>, <A HREF="././options.html#_menu">-menu</A>, <A HREF="././options.html#_font">-font</A>, <A HREF="././options.html#_foreground">-foreground</A>, <A HREF="././options.html#_background">-background</A>, <A HREF="././options.html#_hscroll">-hscroll</A>, <A HREF="././options.html#_vscroll">-vscroll</A>, <A HREF="././options.html#_size">-size</A>, <A HREF="././options.html#_pos">-pos</A>, <A HREF="././options.html#_minsize_X_Y_">-minsize</A>, <A HREF="././options.html#_maxsize_X_Y_">-maxsize</A>, <A HREF="././options.html#_minwidth">-minwidth</A>, <A HREF="././options.html#_minheight">-minheight</A>, <A HREF="././options.html#_maxwidth">-maxwidth</A>, <A HREF="././options.html#_maxheight">-maxheight</A>, <A HREF="././options.html#_topmost_0_1">-topmost</A>, <A HREF="././options.html#_maximizebox">-maximizebox</A>, <A HREF="././options.html#_minimizebox">-minimizebox</A>, <A HREF="././options.html#_sizable">-sizable</A>, <A HREF="././options.html#_sysmenu">-sysmenu</A>, <A HREF="././options.html#_accel">-accel</A>, <A HREF="././options.html#_accelerators">-accelerators</A>, <A HREF="././options.html#_acceleratortable">-acceleratortable</A>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_accel">-accel</A>, <A HREF="././options.html#_accelerators">-accelerators</A>, <A HREF="././options.html#_acceleratortable">-acceleratortable</A>, <A HREF="././options.html#_background">-background</A>, <A HREF="././options.html#_caption">-caption</A>, <A HREF="././options.html#_font">-font</A>, <A HREF="././options.html#_foreground">-foreground</A>, <A HREF="././options.html#_height">-height</A>, <A HREF="././options.html#_hscroll">-hscroll</A>, <A HREF="././options.html#_left">-left</A>, <A HREF="././options.html#_maxheight">-maxheight</A>, <A HREF="././options.html#_maximizebox">-maximizebox</A>, <A HREF="././options.html#_maxsize_X_Y_">-maxsize</A>, <A HREF="././options.html#_maxwidth">-maxwidth</A>, <A HREF="././options.html#_menu">-menu</A>, <A HREF="././options.html#_minheight">-minheight</A>, <A HREF="././options.html#_minimizebox">-minimizebox</A>, <A HREF="././options.html#_minsize_X_Y_">-minsize</A>, <A HREF="././options.html#_minwidth">-minwidth</A>, <A HREF="././options.html#_name_STRING">-name</A>, <A HREF="././options.html#_pos_X_Y_">-pos</A>, <A HREF="././options.html#_sizable">-sizable</A>, <A HREF="././options.html#_size_X_Y_">-size</A>, <A HREF="././options.html#_sysmenu">-sysmenu</A>, <A HREF="././options.html#_text_STRING">-text</A>, <A HREF="././options.html#_title_STRING">-title</A>, <A HREF="././options.html#_top">-top</A>, <A HREF="././options.html#_topmost_0_1">-topmost</A>, <A HREF="././options.html#_vscroll">-vscroll</A>, <A HREF="././options.html#_width">-width</A>
+
+
+
+</P>
+<P>
+<STRONG>Methods</STRONG>: <A HREF="././methods.html#AbsLeft_">AbsLeft</A>, <A HREF="././methods.html#AbsTop_">AbsTop</A>, <A HREF="././methods.html#BringWindowToTop_">BringWindowToTop</A>, <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor</A>, <A HREF="././methods.html#ChangeIcon_ICON_">ChangeIcon</A>, <A HREF="././methods.html#ChangeSmallIcon_ICON_">ChangeSmallIcon</A>, <A HREF="././methods.html#CloseWindow_">CloseWindow</A>, <A HREF="././methods.html#Disable_">Disable</A>, <A HREF="././methods.html#DrawMenuBar_">DrawMenuBar</A>, <A HREF="././methods.html#Enable_FLAG_">Enable</A>, <A HREF="././methods.html#GetClassName_">GetClassName</A>, <A HREF="././methods.html#GetClientRect_">GetClientRect</A>, <A HREF="././methods.html#GetFont_FONT_">GetFont</A>, <A HREF="././methods.html#GetFontName_">GetFontName</A>, <A HREF="././methods.html#GetMenu_">GetMenu</A>, <A HREF="././methods.html#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32</A>, <A HREF="././methods.html#GetWindowRect_">GetWindowRect</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled</A>, <A HREF="././methods.html#IsIconic_">IsIconic</A>, <A HREF="././methods.html#IsVisible_">IsVisible</A>, <A HREF="././methods.html#IsWindow_">IsWindow</A>, <A HREF="././methods.html#IsZoomed_">IsZoomed</A>, <A HREF="././methods.html#Move_X_Y_">Move</A>, <A HREF="././methods.html#OpenIcon_">OpenIcon</A>, <A HREF="././methods.html#ScaleHeight_">ScaleHeight</A>, <A HREF="././methods.html#ScaleWidth_">ScaleWidth</A>
 
 
 
 </P>
 </BLOCKQUOTE>
-
 
 
 </BODY>

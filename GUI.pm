@@ -4,7 +4,7 @@
 #
 # 29 Jan 1997 by Aldo Calpini <dada@perl.it>
 #
-# Version: 0.0.490 (20 Oct 2000)
+# Version: 0.0.502 (13 Dec 2000)
 #
 # Copyright (c) 1997..2000 Aldo Calpini. All rights reserved.
 # This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@ require DynaLoader;     # to dynuhlode the module.
 ###############################################################################
 # STATIC OBJECT PROPERTIES
 #
-$VERSION             = "0.0.490";
+$VERSION             = "0.0.502";
 $MenuIdCounter       = 1;
 $TimerIdCounter      = 1;
 $NotifyIconIdCounter = 1;
@@ -875,6 +875,11 @@ sub AddHeader      { return Win32::GUI::Header->new(@_); }
     # (@)METHOD:AddCombobox(%OPTIONS)
     # See new Win32::GUI::Combobox().
 sub AddComboboxEx  { return Win32::GUI::ComboboxEx->new(@_); }
+
+    ###########################################################################
+    # (@)METHOD:AddSplitter(%OPTIONS)
+    # See new Win32::GUI::Splitter().
+sub AddSplitter    { return Win32::GUI::Splitter->new(@_); }
 
 
     ###########################################################################

@@ -11,7 +11,7 @@ This method returns -1 on errors.
 Animation, Button, Checkbox, Class, Combobox, ComboboxEx, DateTime, DialogBox,
 Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
 RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
-Timer, Toolbar, Tooltip(*), TreeView, UpDown, Window
+Toolbar, Tooltip(*), TreeView, UpDown, Window
 =END_APPLY
 
 ================================================================================
@@ -27,8 +27,35 @@ This method returns -1 on errors.
 Animation, Button, Checkbox, Class, Combobox, ComboboxEx, DateTime, DialogBox,
 Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
 RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
-Timer, Toolbar, Tooltip(*), TreeView, UpDown, Window
+Toolbar, Tooltip(*), TreeView, UpDown, Window
 =END_APPLY
+
+================================================================================
+Add(STRING, STRING .. STRING)
+
+Adds one or more items at the end of the control's list.
+
+=APPLY Listbox, Combobox
+
+================================================================================
+AddString( STRING )
+
+Adds an item at the end of the control's list.
+
+=APPLY Listbox, Combobox
+
+================================================================================
+Arrange( [FLAG] )
+
+Arranges items in the ListView; the optional FLAG parameter can be one
+of the following values:
+
+	0  uses the current alignment style (this is the default)
+	1  align items along the left edge of the window
+	2  align items along the top edge of the window
+	5  snaps icons to the nearest grid position
+
+=APPLY ListView
 
 ================================================================================
 BackColor( [COLOR] )
@@ -99,6 +126,8 @@ ChangeIcon( ICON )
 Changes the default icon for a window to ICON (a Win32::GUI::Icon object). 
 Returns the handle of the previous default icon. 
 
+=SEE_ALSO ChangeSmallIcon()
+
 =APPLY Window, DialogBox
 
 ================================================================================
@@ -106,6 +135,8 @@ ChangeSmallIcon( ICON )
 
 Changes the default small icon for a window to ICON (a Win32::GUI::Icon object). 
 Returns the handle of the previous default small icon. 
+
+=SEE_ALSO ChangeIcon()
 
 =APPLY Window, DialogBox
 
@@ -210,6 +241,17 @@ Toolbar, TreeView, UpDown, Window
 =END_APPLY
 
 ================================================================================
+EnsureVisible( ITEM, [FLAG] )
+
+For TreeView, ensures that the specified ITEM (a node handle) is visible in the 
+control.
+
+For ListView, ensures that the specified ITEM (zero-based index) is visible in
+the control (FLAG to be defined...).
+
+=APPLY TreeView, ListView
+
+================================================================================
 Expand( NODE, [FLAG] )
 
 Opens a NODE of the TreeView; the optional FLAG parameter can indicate 
@@ -222,12 +264,58 @@ different operations:
 =APPLY TreeView
 
 ================================================================================
+FindString( STRING, [INDEX] )
+
+Searches the control for an item that begins with the specified STRING.
+The optional INDEX parameter tells to start the search from the
+specified position; if no parameter is given, the whole list is searched.
+Returns the zero-based index of the found item or -1 if no matching
+item was found.
+
+=SEE_ALSO SelectString(), FindStringExact()
+
+=APPLY Listbox, Combobox
+
+================================================================================
+FindStringExact( STRING, [INDEX] )
+
+Searches the control for an item that exactly matches the specified
+STRING (case insensitively).
+The optional INDEX parameter tells to start the search from the
+specified position; if no parameter is given, the whole list is searched.
+Returns the zero-based index of the found item or -1 if no matching
+item was found.
+
+=SEE_ALSO FindString()
+
+=APPLY Listbox, Combobox
+
+================================================================================
 FindWindow( CLASSNAME, TITLE )
 
 Returns the handle of the window whose class name and window title match the 
 specified strings; both strings can be empty. Note that the function does 
 not search child windows, only top level windows. If no matching windows 
 is found, the return value is zero. 
+
+================================================================================
+FirstVisible( [NODE] )
+
+Gets or sets the first visible NODE in the TreeView; if a NODE is given,
+it is selected and, if possible, it becomes the first visible one; the
+return value is the handle of the previously first visible.
+If no NODE is given, returns the handle of the current first visible one.
+
+=APPLY TreeView
+
+
+================================================================================
+FirstVisibleItem( [INDEX] )
+
+Gets the zero-based index of the first visible item in the control,
+or sets it to the specified INDEX.
+
+=APPLY Listbox, Combobox
 
 ================================================================================
 GetActiveWindow()
@@ -251,6 +339,8 @@ GetClientRect()
 
 Returns a four elements array defining the windows client area rectangle 
 (left, top, right, bottom) or undef on errors. 
+
+=SEE_ALSO GetWindowRect()
 
 =APPLY
 Animation, Button, Checkbox, Class, Combobox, ComboboxEx, DateTime, DialogBox,
@@ -306,6 +396,13 @@ Toolbar, TreeView, UpDown, Window
 =END_APPLY
 
 ================================================================================
+GetLastVisible()
+
+Returns the handle of the last expanded node in the TreeView.
+
+=APPLY TreeView
+
+================================================================================
 GetMenu()
 
 Returns the handle of the menu associated with the window (note: the handle,
@@ -344,6 +441,13 @@ Note that this function should not be normally used unless you know very
 well what you're doing. 
 
 ================================================================================
+GetNextVisible( NODE )
+
+Returns the handle of the next visible node for the given NODE.
+
+=APPLY TreeView
+
+================================================================================
 GetOpenFileName( OPTIONS )
 
 
@@ -367,6 +471,13 @@ Example:
 	# your program goes here...
 
 	Win32::GUI::Show( $DosPrompt );
+
+================================================================================
+GetPrevVisible(NODE)
+
+Returns the handle of the previous visible node for the given NODE.
+
+=APPLY TreeView
 
 ================================================================================
 GetStockObject( OBJECT )
@@ -401,6 +512,43 @@ directly invoke methods on it:
     print $Font->GetMetrics();                 # !!!WRONG!!!
     print Win32::GUI::Font::GetMetrics($Font); # correct
     $Window->SetFont($Font);                   # correct
+
+================================================================================
+GetStringWidth( STRING )
+
+Returns the width, in pixels, needed to display the specified STRING
+in the ListView area.
+
+=APPLY ListView
+
+================================================================================
+GetTextExtentPoint32( STRING, [FONT] )
+
+Returns a two elements array containing the x and y size of the
+specified STRING in the window (eventually with the speficied FONT), or
+undef on errors.
+
+=APPLY
+Animation, Button, Checkbox, Combobox, ComboboxEx, DateTime, DialogBox,
+Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
+RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
+Toolbar, TreeView, UpDown, Window
+=END_APPLY
+
+================================================================================
+GetWindowRect()
+
+Returns a four elements array defining the windows (external) rectangle
+(left, top, right, bottom) or undef on errors.
+
+=SEE_ALSO GetClientRect()
+
+=APPLY
+Animation, Button, Checkbox, Class, Combobox, ComboboxEx, DateTime, DialogBox,
+Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
+RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
+Toolbar, TreeView, UpDown, Window
+=END_APPLY
 
 ================================================================================
 HitTest( X, Y )
@@ -516,6 +664,38 @@ Returns TRUE if the window is maximized, FALSE otherwise.
 =APPLY Window, DialogBox
 
 ================================================================================
+ItemCheck( ITEM, [VALUE] )
+
+For TreeView, gets or sets the check state of the given ITEM (a node handle).
+
+For ListView, gets the check state of the given item (zero-based index); 
+ListView does not support setting check states, so you can't pass a VALUE.
+
+In both cases is valid only if the control was created with the -checkboxes => 1 
+option.
+
+=APPLY TreeView, ListView
+
+================================================================================
+ItemFromPoint( X, Y )
+
+Returns the zero-based index of the item nearest to the specified
+point; if called in a list context, returns an additional element which
+is TRUE if the point is inside the control area, FALSE if it's outside.
+
+=APPLY Listbox
+
+================================================================================
+ItemPosition( INDEX, [X, Y] )
+
+Moves the specified zero-based INDEX item to the specified position,
+or returns its current X and Y position if X and Y are not given.
+
+=SEE_ALSO MoveItem()
+
+=APPLY ListView
+
+================================================================================
 Kill()
 
 Disables the Timer.
@@ -523,6 +703,14 @@ Disables the Timer.
 =SEE_ALSO Interval()
 
 =APPLY Timer
+
+================================================================================
+LineFromChar( INDEX )
+
+Returns the line number (starting from zero) where the zero-based INDEX char 
+appears.
+
+=APPLY Textfield, RichEdit
 
 ================================================================================
 ListIndex()
@@ -555,6 +743,13 @@ Minimize()
 =AKA CloseWindow()
 
 ================================================================================
+Modified( [FLAG] )
+
+Gets or sets the modified flag on the control.
+
+=APPLY Textfield, RichEdit
+
+================================================================================
 Move( X, Y )
 
 Moves the window to the specified position.
@@ -565,6 +760,17 @@ Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
 RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
 Toolbar, TreeView, UpDown, Window
 =END_APPLY
+
+================================================================================
+MoveItem( INDEX, X, Y )
+
+Moves the specified zero-based INDEX item to the specified position,
+if the ListView is in big or small icon view mode; X and Y coordinates
+are relative to the ListView client area.
+
+=SEE_ALSO ItemPosition(), View()
+
+=APPLY ListView
 
 ================================================================================
 Open( FILE )
@@ -584,6 +790,18 @@ Restores a minimized window.
 =APPLY Window, DialogBox
 
 ================================================================================
+PasswordChar( [CHAR] )
+
+Gets or sets the character displayed in place of normal text; if the
+control has been created with the -password option, the default
+character is an asterisk (*).
+Note that by setting this value the text in the control will be
+redrawn using the specified character; if the character is set to
+zero instead, text will be redrawn as normal
+
+=APPLY Textfield, RichEdit
+
+================================================================================
 Play( [FROM], [TO], [REPEAT] )
 
 Plays the animation (eventually from the FROM frame to the TO frame)
@@ -594,6 +812,13 @@ and REPEAT -1 (loop forever).
 =APPLY Animation
 
 ================================================================================
+ReadOnly( [FLAG] )
+
+Gets or sets the readonly flag on the control.
+
+=APPLY Textfield, RichEdit
+
+================================================================================
 Rectangle( LEFT, TOP, RIGHT, BOTTOM )
 
 Draws a rectangle from LEFT, TOP to RIGHT, BOTTOM; the rectangle is
@@ -601,6 +826,13 @@ outlined with the current pen and filled with the current brush.
 Returns nonzero if succesful, zero on errors.
 
 =APPLY DC
+
+================================================================================
+ReplaceSel( STRING, [FLAG] )
+
+Replaces the current selection in the control with STRING.
+
+=APPLY Textfield, RichEdit
 
 ================================================================================
 Reset()
@@ -641,7 +873,7 @@ Returns the windows client area height.
 Animation, Button, Checkbox, Combobox, ComboboxEx, DateTime, DialogBox,
 Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
 RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
-Timer, Toolbar, TreeView, UpDown, Window
+Toolbar, TreeView, UpDown, Window
 =END_APPLY
 
 ================================================================================
@@ -655,8 +887,40 @@ Returns the windows client area width.
 Animation, Button, Checkbox, Combobox, ComboboxEx, DateTime, DialogBox,
 Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
 RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
-Timer, Toolbar, TreeView, UpDown, Window
+Toolbar, TreeView, UpDown, Window
 =END_APPLY
+
+================================================================================
+Scroll( COMMAND | LINE | HORIZONTAL, VERTICAL )
+
+Scrolls the text in the control; you have the following options:
+
+=over 4
+
+=item COMMAND
+
+the following commands are recognized (their meaning is self-explanatory):
+
+	up
+	down
+	pageup		
+	pagedown	
+	top
+	bottom
+
+=item LINE
+
+scrolls up or down the specified number of lines; use negative to scroll up and
+positive to scroll down.
+
+=item HORIZONTAL, VERTICAL
+
+scrolls VERTICAL lines vertically and HORIZONTAL characters horizontally; note 
+that the RichEdit control does not support horizontal scroll.
+
+=back
+
+=APPLY Textfield, RichEdit
 
 ================================================================================
 Seek( FRAME )
@@ -672,6 +936,16 @@ Selects all the text.
 
 =APPLY Textfield, RichEdit
 
+
+================================================================================
+SelectCount()
+
+Returns the number of currently selected items.
+
+For Listbox, the control must have been created with the -multisel option.
+
+=APPLY Listbox, ListView
+
 ================================================================================
 SelectedItem()
 
@@ -679,6 +953,28 @@ Returns the zero-based index of the currently selected item, or -1 if
 no item is selected.
 
 =APPLY Listbox, Combobox
+
+================================================================================
+Selection()
+
+Returns a two elements array containing the current selection start
+and end.
+
+=APPLY Textfield, RichEdit
+
+================================================================================
+SelectString( STRING, [INDEX] )
+
+Searches the control for an item that begins with the specified STRING
+and, if found, selects that item.
+The optional INDEX parameter tells to start the search from the
+specified position; if no parameter is given, the whole list is searched.
+Returns the zero-based index of the selected item or -1 if no matching
+item was found.
+
+=SEE_ALSO FindString()
+
+=APPLY Listbox
 
 ================================================================================
 SetCursor( CURSOR )
@@ -731,6 +1027,13 @@ Returns nonzero if succesful, zero on errors.
 =APPLY DC
 
 ================================================================================
+Undo()
+
+Undoes the last change in the control.
+
+=APPLY Textfield, RichEdit
+
+================================================================================
 View( [MODE] )
 
 Gets or sets the viewing mode of the ListView control; the returned or given 
@@ -742,3 +1045,12 @@ MODE can have one of the following values:
     3  list
 
 =APPLY ListView
+
+================================================================================
+VisibleCount()
+
+Returns the number of items that can be fully visible in a page of the
+control; for ListView, if the current view state is big or small icons, the
+function always returns the total number of items in the control.
+
+=APPLY TreeView, ListView

@@ -687,23 +687,25 @@ sub strreverse {
 #
 
 sub Window_Resize {
-    ($width, $height) = ($Window->GetClientRect)[2..3];
-    $TOCwidth = ( $Window->Header->ItemRect(0) )[2];
-    $Window->Header->Resize($TOCwidth, 22);
-    if($Menu->{ViewStructure}->Checked) {
-        $Window->TOC->Move(0, 22);
-        $Window->TOC->Resize($TOCwidth, $height-22-$Window->Status->Height);
-        $Window->POD->Move($TOCwidth, 0);
-        $Window->POD->Resize($width-$TOCwidth, $height-$Window->Status->Height);
-    } else {
-        $Window->POD->Move(0, 0);
-        $Window->POD->Resize($width, $height-$Window->Status->Height);
-    }
-    $Window->Status->Resize($width, $height);
-    #if($Window->Status->Progress) {
-    #    $Window->Status->Progress->Move($Window->Status->Width-150, 2);
-    #}
-    $NoPOD->Move($width/2-$NoPOD->Width/2, $height/2-$NoPOD->Height/2);
+	if(defined $Window) {
+		($width, $height) = ($Window->GetClientRect)[2..3];
+		$TOCwidth = ( $Window->Header->ItemRect(0) )[2];
+		$Window->Header->Resize($TOCwidth, 22);
+		if($Menu->{ViewStructure}->Checked) {
+			$Window->TOC->Move(0, 22);
+			$Window->TOC->Resize($TOCwidth, $height-22-$Window->Status->Height);
+			$Window->POD->Move($TOCwidth, 0);
+			$Window->POD->Resize($width-$TOCwidth, $height-$Window->Status->Height);
+		} else {
+			$Window->POD->Move(0, 0);
+			$Window->POD->Resize($width, $height-$Window->Status->Height);
+		}
+		$Window->Status->Resize($width, $height);
+		#if($Window->Status->Progress) {
+		#    $Window->Status->Progress->Move($Window->Status->Width-150, 2);
+		#}
+		$NoPOD->Move($width/2-$NoPOD->Width/2, $height/2-$NoPOD->Height/2);
+	}
 }
 
 sub Header_EndTrack {

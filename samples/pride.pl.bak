@@ -494,29 +494,6 @@ sub FileOpen_Click {
     }
 }
 
-
-sub FileSaveAs_Click {
-    my $file = GUI::GetSaveFileName(-directory => Win32::GetCwd());
-    if($file) {
-		open(BAKFILE, ">$FILE.bak");
-		open(OLDFILE, "<$FILE");
-		while(<OLDFILE>) { print <BAKFILE>; }
-		close(BAKFILE);
-		close(OLDFILE);
-
-		open(FILE, ">$file");
-		my $text = $Window->Editor->Text();
-		$text =~ s/\r\n/\n/g;
-		print FILE $text;
-		close(FILE);
-		$text = $Window->Text();
-		if($text =~ s/ \*$//) {
-			$Window->Text($text);
-		}
-    }
-}
-
-
 sub Editor_KeyPress {
     my($key) = @_;
 

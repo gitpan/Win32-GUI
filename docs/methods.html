@@ -15,6 +15,9 @@
 
 		<LI><A HREF="#AbsLeft_">AbsLeft()</A></LI>
 		<LI><A HREF="#AbsTop_">AbsTop()</A></LI>
+		<LI><A HREF="#Add_STRING_STRING_STRING_">Add(STRING, STRING .. STRING)</A></LI>
+		<LI><A HREF="#AddString_STRING_">AddString( STRING )</A></LI>
+		<LI><A HREF="#Arrange_FLAG_">Arrange( [FLAG] )</A></LI>
 		<LI><A HREF="#BackColor_COLOR_">BackColor( [COLOR] )</A></LI>
 		<LI><A HREF="#BandCount_">BandCount()</A></LI>
 		<LI><A HREF="#BringWindowToTop_">BringWindowToTop()</A></LI>
@@ -35,8 +38,13 @@
 		<LI><A HREF="#DoEvents_">DoEvents()</A></LI>
 		<LI><A HREF="#DrawMenuBar_">DrawMenuBar()</A></LI>
 		<LI><A HREF="#Enable_FLAG_">Enable( [FLAG] )</A></LI>
+		<LI><A HREF="#EnsureVisible_ITEM_FLAG_">EnsureVisible( ITEM, [FLAG] )</A></LI>
 		<LI><A HREF="#Expand_NODE_FLAG_">Expand( NODE, [FLAG] )</A></LI>
+		<LI><A HREF="#FindString_STRING_INDEX_">FindString( STRING, [INDEX] )</A></LI>
+		<LI><A HREF="#FindStringExact_STRING_INDEX_">FindStringExact( STRING, [INDEX] )</A></LI>
 		<LI><A HREF="#FindWindow_CLASSNAME_TITLE_">FindWindow( CLASSNAME, TITLE )</A></LI>
+		<LI><A HREF="#FirstVisible_NODE_">FirstVisible( [NODE] )</A></LI>
+		<LI><A HREF="#FirstVisibleItem_INDEX_">FirstVisibleItem( [INDEX] )</A></LI>
 		<LI><A HREF="#GetActiveWindow_">GetActiveWindow()</A></LI>
 		<LI><A HREF="#GetClassName_">GetClassName()</A></LI>
 		<LI><A HREF="#GetClientRect_">GetClientRect()</A></LI>
@@ -45,11 +53,17 @@
 		<LI><A HREF="#GetFocus_">GetFocus()</A></LI>
 		<LI><A HREF="#GetFont_FONT_">GetFont(FONT)</A></LI>
 		<LI><A HREF="#GetFontName_">GetFontName()</A></LI>
+		<LI><A HREF="#GetLastVisible_">GetLastVisible()</A></LI>
 		<LI><A HREF="#GetMenu_">GetMenu()</A></LI>
 		<LI><A HREF="#GetMessage_MIN_MAX_">GetMessage( [MIN, MAX] )</A></LI>
+		<LI><A HREF="#GetNextVisible_NODE_">GetNextVisible( NODE )</A></LI>
 		<LI><A HREF="#GetOpenFileName_OPTIONS_">GetOpenFileName( OPTIONS )</A></LI>
 		<LI><A HREF="#GetPerlWindow_">GetPerlWindow()</A></LI>
+		<LI><A HREF="#GetPrevVisible_NODE_">GetPrevVisible(NODE)</A></LI>
 		<LI><A HREF="#GetStockObject_OBJECT_">GetStockObject( OBJECT )</A></LI>
+		<LI><A HREF="#GetStringWidth_STRING_">GetStringWidth( STRING )</A></LI>
+		<LI><A HREF="#GetTextExtentPoint32_STRING_F">GetTextExtentPoint32( STRING, [FONT] )</A></LI>
+		<LI><A HREF="#GetWindowRect_">GetWindowRect()</A></LI>
 		<LI><A HREF="#HitTest_X_Y_">HitTest( X, Y )</A></LI>
 		<LI><A HREF="#Indent_VALUE_">Indent( [VALUE] )</A></LI>
 		<LI><A HREF="#InsertBand_OPTIONS_">InsertBand( OPTIONS )</A></LI>
@@ -60,31 +74,46 @@
 		<LI><A HREF="#IsVisible_">IsVisible()</A></LI>
 		<LI><A HREF="#IsWindow_">IsWindow()</A></LI>
 		<LI><A HREF="#IsZoomed_">IsZoomed()</A></LI>
+		<LI><A HREF="#ItemCheck_ITEM_VALUE_">ItemCheck( ITEM, [VALUE] )</A></LI>
+		<LI><A HREF="#ItemFromPoint_X_Y_">ItemFromPoint( X, Y )</A></LI>
+		<LI><A HREF="#ItemPosition_INDEX_X_Y_">ItemPosition( INDEX, [X, Y] )</A></LI>
 		<LI><A HREF="#Kill_">Kill()</A></LI>
+		<LI><A HREF="#LineFromChar_INDEX_">LineFromChar( INDEX )</A></LI>
 		<LI><A HREF="#ListIndex_">ListIndex()</A></LI>
 		<LI><A HREF="#Load_FILENAME_FORMAT_">Load( FILENAME, [FORMAT] )</A></LI>
 		<LI><A HREF="#MaxLength_CHARS_">MaxLength( [CHARS] )</A></LI>
 		<LI><A HREF="#Minimize_">Minimize()</A></LI>
+		<LI><A HREF="#Modified_FLAG_">Modified( [FLAG] )</A></LI>
 		<LI><A HREF="#Move_X_Y_">Move( X, Y )</A></LI>
+		<LI><A HREF="#MoveItem_INDEX_X_Y_">MoveItem( INDEX, X, Y )</A></LI>
 		<LI><A HREF="#Open_FILE_">Open( FILE )</A></LI>
 		<LI><A HREF="#OpenIcon_">OpenIcon()</A></LI>
+		<LI><A HREF="#PasswordChar_CHAR_">PasswordChar( [CHAR] )</A></LI>
 		<LI><A HREF="#Play_FROM_TO_REPEAT_">Play( [FROM], [TO], [REPEAT] )</A></LI>
+		<LI><A HREF="#ReadOnly_FLAG_">ReadOnly( [FLAG] )</A></LI>
 		<LI><A HREF="#Rectangle_LEFT_TOP_RIGHT_BOT">Rectangle( LEFT, TOP, RIGHT, BOTTOM )</A></LI>
+		<LI><A HREF="#ReplaceSel_STRING_FLAG_">ReplaceSel( STRING, [FLAG] )</A></LI>
 		<LI><A HREF="#Reset_">Reset()</A></LI>
 		<LI><A HREF="#Restore_">Restore()</A></LI>
 		<LI><A HREF="#RowCount_">RowCount()</A></LI>
 		<LI><A HREF="#Save_FILENAME_FORMAT_">Save( FILENAME, [FORMAT] )</A></LI>
 		<LI><A HREF="#ScaleHeight_">ScaleHeight()</A></LI>
 		<LI><A HREF="#ScaleWidth_">ScaleWidth()</A></LI>
+		<LI><A HREF="#Scroll_COMMAND_LINE_HORIZON">Scroll( COMMAND | LINE | HORIZONTAL, VERTICAL )</A></LI>
 		<LI><A HREF="#Seek_FRAME_">Seek( FRAME )</A></LI>
 		<LI><A HREF="#SelectAll_">SelectAll()</A></LI>
+		<LI><A HREF="#SelectCount_">SelectCount()</A></LI>
+		<LI><A HREF="#SelectString_STRING_INDEX_">SelectString( STRING, [INDEX] )</A></LI>
 		<LI><A HREF="#SelectedItem_">SelectedItem()</A></LI>
+		<LI><A HREF="#Selection_">Selection()</A></LI>
 		<LI><A HREF="#SetCursor_CURSOR_">SetCursor( CURSOR )</A></LI>
 		<LI><A HREF="#SetRange_MIN_MAX_">SetRange( [MIN], MAX )</A></LI>
 		<LI><A HREF="#Stop_">Stop()</A></LI>
 		<LI><A HREF="#Text_TEXT_">Text( [TEXT] )</A></LI>
 		<LI><A HREF="#TextOut_X_Y_TEXT_">TextOut( X, Y, TEXT )</A></LI>
+		<LI><A HREF="#Undo_">Undo()</A></LI>
 		<LI><A HREF="#View_MODE_">View( [MODE] )</A></LI>
+		<LI><A HREF="#VisibleCount_">VisibleCount()</A></LI>
 	</UL>
 
 </UL>
@@ -93,8 +122,10 @@
 <HR>
 <P>
 <H1><A NAME="Win32_GUI_methods">Win32::GUI methods</A></H1>
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="AbsLeft_">AbsLeft()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -111,15 +142,17 @@ returns -1 on errors.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Timer">Timer</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#Tooltip">Tooltip(*)</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#Tooltip">Tooltip(*)</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="AbsTop_">AbsTop()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -136,15 +169,82 @@ returns -1 on errors.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Timer">Timer</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#Tooltip">Tooltip(*)</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#Tooltip">Tooltip(*)</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="Add_STRING_STRING_STRING_">Add(STRING, STRING .. STRING)</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Adds one or more items at the end of the control's list.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#Listbox">Listbox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
+<H2><A NAME="AddString_STRING_">AddString( STRING )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Adds an item at the end of the control's list.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#Listbox">Listbox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
+<H2><A NAME="Arrange_FLAG_">Arrange( [FLAG] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Arranges items in the ListView; the optional FLAG parameter can be one of
+the following values:
+
+</P>
+<P>
+<PRE>        0  uses the current alignment style (this is the default)
+        1  align items along the left edge of the window
+        2  align items along the top edge of the window
+        5  snaps icons to the nearest grid position
+</PRE>
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#ListView">ListView</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="BackColor_COLOR_">BackColor( [COLOR] )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -161,8 +261,10 @@ specified, the background color is reset to the default system color.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="BandCount_">BandCount()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -178,8 +280,10 @@ Returns the number of bands in the Rebar control.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="BringWindowToTop_">BringWindowToTop()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -188,15 +292,17 @@ Brings the window to the foreground.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="BrowseForFolder_OPTIONS_">BrowseForFolder( OPTIONS )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -223,28 +329,32 @@ Example:
 </PRE>
 </P>
 <P>
-<STRONG>Available options</STRONG>: <A HREF="././options.html#_computeronly_0_1">-computeronly</A>, <A HREF="././options.html#_domainonly_0_1">-domainonly</A>, <A HREF="././options.html#_driveonly_0_1">-driveonly</A>, <A HREF="././options.html#_editbox_0_1">-editbox</A>, <A HREF="././options.html#_folderonly_0_1">-folderonly</A>, <A HREF="././options.html#_includefiles_0_1">-includefiles</A>, <A HREF="././options.html#_owner_WINDOW">-owner</A>, <A HREF="././options.html#_printeronly_0_1">-printeronly</A>, <A HREF="././options.html#_root_PATH_or_CONSTANT">-root</A>, <A HREF="././options.html#_title_STRING">-title</A>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_computeronly_0_1">-computeronly</A>, <A HREF="././options.html#_domainonly_0_1">-domainonly</A>, <A HREF="././options.html#_driveonly_0_1">-driveonly</A>, <A HREF="././options.html#_editbox_0_1">-editbox</A>, <A HREF="././options.html#_folderonly_0_1">-folderonly</A>, <A HREF="././options.html#_includefiles_0_1">-includefiles</A>, <A HREF="././options.html#_owner_WINDOW">-owner</A>, <A HREF="././options.html#_printeronly_0_1">-printeronly</A>, <A HREF="././options.html#_root_PATH_or_CONSTANT">-root</A>, <A HREF="././options.html#_title_STRING">-title</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Caption_TEXT_">Caption( [TEXT] )</A></H2>
 </TT><BLOCKQUOTE>
 
 <P>
-See <A HREF="#Text">Text</A>
+See <A HREF="././methods.html#Text_">Text().</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="ChangeCursor_CURSOR_">ChangeCursor( CURSOR )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -254,15 +364,17 @@ object). Returns the handle of the previous default cursor.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="ChangeIcon_ICON_">ChangeIcon( ICON )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -272,15 +384,23 @@ Returns the handle of the previous default icon.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+<STRONG>See also</STRONG>: <A HREF="././methods.html#ChangeSmallIcon_ICON_">ChangeSmallIcon()</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="ChangeSmallIcon_ICON_">ChangeSmallIcon( ICON )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -290,28 +410,38 @@ object). Returns the handle of the previous default small icon.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+<STRONG>See also</STRONG>: <A HREF="././methods.html#ChangeIcon_ICON_">ChangeIcon()</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Clear_">Clear()</A></H2>
 </TT><BLOCKQUOTE>
 
 <P>
-See <A HREF="#Reset">Reset</A>
+See <A HREF="././methods.html#Reset_">Reset().</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="ClipCursor_LEFT_TOP_RIGHT_B">ClipCursor( [LEFT, TOP, RIGHT, BOTTOM] )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -323,8 +453,10 @@ failure.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Close_">Close()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -346,8 +478,10 @@ Closes the opened AVI file.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="CloseWindow_">CloseWindow()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -356,15 +490,17 @@ Minimizes a window.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="CommDlgExtendedError_">CommDlgExtendedError()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -374,8 +510,10 @@ Returns the last common dialog library error code.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Count_">Count()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -384,15 +522,17 @@ Returns the number of items in the control.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#Listbox">Listbox</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="DeleteBand_">DeleteBand()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -408,8 +548,10 @@ Deletes the zero-based INDEX band from the Rebar.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Dialog_">Dialog()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -427,8 +569,10 @@ that this function must be called without ANY parameter or instantiation
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Disable_">Disable()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -443,15 +587,17 @@ Disables a window.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="DoEvents_">DoEvents()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -462,8 +608,10 @@ to process.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="DrawMenuBar_">DrawMenuBar()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -472,15 +620,17 @@ Forces redrawing of the menu bar.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Enable_FLAG_">Enable( [FLAG] )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -495,15 +645,42 @@ Enables a window (or disables it if FLAG is FALSE).
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="EnsureVisible_ITEM_FLAG_">EnsureVisible( ITEM, [FLAG] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+For TreeView, ensures that the specified ITEM (a node handle) is visible in
+the control.
+
+</P>
+<P>
+For ListView, ensures that the specified ITEM (zero-based index) is visible
+in the control (FLAG to be defined...).
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#TreeView">TreeView</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="Expand_NODE_FLAG_">Expand( NODE, [FLAG] )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -526,8 +703,67 @@ different operations:
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="FindString_STRING_INDEX_">FindString( STRING, [INDEX] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Searches the control for an item that begins with the specified STRING. The
+optional INDEX parameter tells to start the search from the specified
+position; if no parameter is given, the whole list is searched. Returns the
+zero-based index of the found item or -1 if no matching item was found.
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="././methods.html#SelectString_STRING_INDEX_">SelectString()</A>, <A HREF="././methods.html#FindStringExact_STRING_INDEX_">FindStringExact()</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#Listbox">Listbox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
+<H2><A NAME="FindStringExact_STRING_INDEX_">FindStringExact( STRING, [INDEX] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Searches the control for an item that exactly matches the specified STRING
+(case insensitively). The optional INDEX parameter tells to start the
+search from the specified position; if no parameter is given, the whole
+list is searched. Returns the zero-based index of the found item or -1 if
+no matching item was found.
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="././methods.html#FindString_STRING_INDEX_">FindString()</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#Listbox">Listbox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="FindWindow_CLASSNAME_TITLE_">FindWindow( CLASSNAME, TITLE )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -540,8 +776,52 @@ windows is found, the return value is zero.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="FirstVisible_NODE_">FirstVisible( [NODE] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Gets or sets the first visible NODE in the TreeView; if a NODE is given, it
+is selected and, if possible, it becomes the first visible one; the return
+value is the handle of the previously first visible. If no NODE is given,
+returns the handle of the current first visible one.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#TreeView">TreeView</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
+<H2><A NAME="FirstVisibleItem_INDEX_">FirstVisibleItem( [INDEX] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Gets the zero-based index of the first visible item in the control, or sets
+it to the specified INDEX.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#Listbox">Listbox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="GetActiveWindow_">GetActiveWindow()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -551,8 +831,10 @@ Returns the handle of the active window.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="GetClassName_">GetClassName()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -561,15 +843,17 @@ Returns the classname of the specified window, or undef on errors.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="GetClientRect_">GetClientRect()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -579,15 +863,23 @@ Returns a four elements array defining the windows client area rectangle
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+<STRONG>See also</STRONG>: <A HREF="././methods.html#GetWindowRect_">GetWindowRect()</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="GetCursor_">GetCursor()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -597,8 +889,10 @@ Returns the handle of the current cursor.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="GetCursorPos_">GetCursorPos()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -609,8 +903,10 @@ or undef on errors.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="GetFocus_">GetFocus()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -620,8 +916,10 @@ Returns the handle of the window that has the keyboard focus.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="GetFont_FONT_">GetFont(FONT)</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -639,15 +937,17 @@ to get font details).
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="GetFontName_">GetFontName()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -656,15 +956,36 @@ Returns the name of the font used in the window.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="GetLastVisible_">GetLastVisible()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the handle of the last expanded node in the TreeView.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#TreeView">TreeView</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="GetMenu_">GetMenu()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -674,15 +995,17 @@ handle, not the Win32::GUI::Menu object).
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="GetMessage_MIN_MAX_">GetMessage( [MIN, MAX] )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -700,7 +1023,7 @@ function returns a 7 elements array containing:
 <LI><STRONG><A NAME="item_the">the time when message occurred</A></STRONG>
 <LI><STRONG><A NAME="item_the">the x coordinate at which message occurred</A></STRONG>
 <LI><STRONG><A NAME="item_the">the y coordinate at which message occurred</A></STRONG>
-
+</UL>
 <P>
 If the result code of the message was -1 the function returns undef. Note
 that this function should not be normally used unless you know very well
@@ -709,8 +1032,29 @@ what you're doing.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="GetNextVisible_NODE_">GetNextVisible( NODE )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the handle of the next visible node for the given NODE.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#TreeView">TreeView</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="GetOpenFileName_OPTIONS_">GetOpenFileName( OPTIONS )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -720,15 +1064,17 @@ of the choosen file or undef on errors.
 
 </P>
 <P>
-<STRONG>Available options</STRONG>: <A HREF="././options.html#_directory_STRING">-directory</A>, <A HREF="././options.html#_file_STRING">-file</A>, <A HREF="././options.html#_filter_ARRAY_REFERENCE">-filter</A>, <A HREF="././options.html#_owner_WINDOW">-owner</A>, <A HREF="././options.html#_title_STRING">-title</A>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_directory_STRING">-directory</A>, <A HREF="././options.html#_file_STRING">-file</A>, <A HREF="././options.html#_filter_ARRAY_REFERENCE">-filter</A>, <A HREF="././options.html#_owner_WINDOW">-owner</A>, <A HREF="././options.html#_title_STRING">-title</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="GetPerlWindow_">GetPerlWindow()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -757,8 +1103,29 @@ Example:
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="GetPrevVisible_NODE_">GetPrevVisible(NODE)</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the handle of the previous visible node for the given NODE.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#TreeView">TreeView</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="GetStockObject_OBJECT_">GetStockObject( OBJECT )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -802,8 +1169,77 @@ note that it is not blessed, so you can't directly invoke methods on it:
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="GetStringWidth_STRING_">GetStringWidth( STRING )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the width, in pixels, needed to display the specified STRING in the
+ListView area.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#ListView">ListView</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
+<H2><A NAME="GetTextExtentPoint32_STRING_F">GetTextExtentPoint32( STRING, [FONT] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns a two elements array containing the x and y size of the specified
+STRING in the window (eventually with the speficied FONT), or undef on
+errors.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
+<H2><A NAME="GetWindowRect_">GetWindowRect()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns a four elements array defining the windows (external) rectangle
+(left, top, right, bottom) or undef on errors.
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="././methods.html#GetClientRect_">GetClientRect()</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="HitTest_X_Y_">HitTest( X, Y )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -822,8 +1258,10 @@ info about the position of the specified point [TBD].
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Indent_VALUE_">Indent( [VALUE] )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -841,8 +1279,10 @@ the system-defined minimum.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="InsertBand_OPTIONS_">InsertBand( OPTIONS )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -870,15 +1310,17 @@ Inserts a new band in the Rebar control.
 
 </P>
 <P>
-<STRONG>Available options</STRONG>: <A HREF="././options.html#_index">-index</A>, <A HREF="././options.html#_image">-image</A>, <A HREF="././options.html#_bitmap">-bitmap</A>, <A HREF="././options.html#_child">-child</A>, <A HREF="././options.html#_foreground">-foreground</A>, <A HREF="././options.html#_background">-background</A>, <A HREF="././options.html#_width">-width</A>, <A HREF="././options.html#_minwidth">-minwidth</A>, <A HREF="././options.html#_minheight">-minheight</A>, <A HREF="././options.html#_text_STRING">-text</A>
+<STRONG>Options</STRONG>: <A HREF="././options.html#_background">-background</A>, <A HREF="././options.html#_bitmap">-bitmap</A>, <A HREF="././options.html#_child">-child</A>, <A HREF="././options.html#_foreground">-foreground</A>, <A HREF="././options.html#_image">-image</A>, <A HREF="././options.html#_index">-index</A>, <A HREF="././options.html#_minheight">-minheight</A>, <A HREF="././options.html#_minwidth">-minwidth</A>, <A HREF="././options.html#_text_STRING">-text</A>, <A HREF="././options.html#_width">-width</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Interval_ELAPSE_">Interval( [ELAPSE] )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -903,8 +1345,10 @@ Timer is disabled; can also be used to resume a Timer after a
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="InvertRect_LEFT_TOP_RIGHT_BO">InvertRect( LEFT, TOP, RIGHT, BOTTOM )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -921,8 +1365,10 @@ Returns nonzero if succesful, zero on errors.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="IsEnabled_">IsEnabled()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -931,15 +1377,17 @@ Returns TRUE if the window is enabled, FALSE otherwise.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="IsIconic_">IsIconic()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -948,15 +1396,17 @@ Returns TRUE if the window is minimized, FALSE otherwise.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="IsVisible_">IsVisible()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -965,15 +1415,17 @@ Returns TRUE if the window is visible, FALSE otherwise.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="IsWindow_">IsWindow()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -982,15 +1434,17 @@ Returns TRUE if the window is a window, FALSE otherwise.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="IsZoomed_">IsZoomed()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -999,15 +1453,94 @@ Returns TRUE if the window is maximized, FALSE otherwise.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="ItemCheck_ITEM_VALUE_">ItemCheck( ITEM, [VALUE] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+For TreeView, gets or sets the check state of the given ITEM (a node
+handle).
+
+</P>
+<P>
+For ListView, gets the check state of the given item (zero-based index);
+ListView does not support setting check states, so you can't pass a VALUE.
+
+</P>
+<P>
+In both cases is valid only if the control was created with the -checkboxes
+=&gt; 1 option.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#TreeView">TreeView</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
+<H2><A NAME="ItemFromPoint_X_Y_">ItemFromPoint( X, Y )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the zero-based index of the item nearest to the specified point; if
+called in a list context, returns an additional element which is TRUE if
+the point is inside the control area, FALSE if it's outside.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Listbox">Listbox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
+<H2><A NAME="ItemPosition_INDEX_X_Y_">ItemPosition( INDEX, [X, Y] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Moves the specified zero-based INDEX item to the specified position, or
+returns its current X and Y position if X and Y are not given.
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="././methods.html#MoveItem_INDEX_X_Y_">MoveItem()</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#ListView">ListView</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="Kill_">Kill()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1029,21 +1562,45 @@ Disables the Timer.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
-<H2><A NAME="ListIndex_">ListIndex()</A></H2>
+<P>
+<HR>
+<H2><A NAME="LineFromChar_INDEX_">LineFromChar( INDEX )</A></H2>
 </TT><BLOCKQUOTE>
 
 <P>
-See <A HREF="#SelectedItem">SelectedItem</A>
+Returns the line number (starting from zero) where the zero-based INDEX
+char appears.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Textfield">Textfield</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="ListIndex_">ListIndex()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+See <A HREF="././methods.html#SelectedItem_">SelectedItem()</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="Load_FILENAME_FORMAT_">Load( FILENAME, [FORMAT] )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1061,8 +1618,10 @@ you can set FORMAT to 1.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="MaxLength_CHARS_">MaxLength( [CHARS] )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1074,28 +1633,51 @@ set it to the maximum allowed which is 32k for a single-line Textfield and
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Textfield">Textfield</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Minimize_">Minimize()</A></H2>
 </TT><BLOCKQUOTE>
 
 <P>
-See <A HREF="#CloseWindow">CloseWindow</A>
+See <A HREF="././methods.html#CloseWindow_">CloseWindow()</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="Modified_FLAG_">Modified( [FLAG] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Gets or sets the modified flag on the control.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Textfield">Textfield</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="Move_X_Y_">Move( X, Y )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1104,15 +1686,44 @@ Moves the window to the specified position.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="MoveItem_INDEX_X_Y_">MoveItem( INDEX, X, Y )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Moves the specified zero-based INDEX item to the specified position, if the
+ListView is in big or small icon view mode; X and Y coordinates are
+relative to the ListView client area.
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="././methods.html#ItemPosition_INDEX_X_Y_">ItemPosition()</A>, <A HREF="././methods.html#View_MODE_">View()</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#ListView">ListView</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="Open_FILE_">Open( FILE )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1135,8 +1746,10 @@ file must not contain sound data.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="OpenIcon_">OpenIcon()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1145,15 +1758,40 @@ Restores a minimized window.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="PasswordChar_CHAR_">PasswordChar( [CHAR] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Gets or sets the character displayed in place of normal text; if the
+control has been created with the -password option, the default character
+is an asterisk (*). Note that by setting this value the text in the control
+will be redrawn using the specified character; if the character is set to
+zero instead, text will be redrawn as normal
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Textfield">Textfield</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="Play_FROM_TO_REPEAT_">Play( [FROM], [TO], [REPEAT] )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1171,8 +1809,29 @@ last frame) and REPEAT -1 (loop forever).
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="ReadOnly_FLAG_">ReadOnly( [FLAG] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Gets or sets the readonly flag on the control.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Textfield">Textfield</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="Rectangle_LEFT_TOP_RIGHT_BOT">Rectangle( LEFT, TOP, RIGHT, BOTTOM )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1190,8 +1849,29 @@ nonzero if succesful, zero on errors.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="ReplaceSel_STRING_FLAG_">ReplaceSel( STRING, [FLAG] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Replaces the current selection in the control with STRING.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Textfield">Textfield</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="Reset_">Reset()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1200,28 +1880,32 @@ Deletes the content of the control.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#Listbox">Listbox</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Restore_">Restore()</A></H2>
 </TT><BLOCKQUOTE>
 
 <P>
-See <A HREF="#OpenIcon">OpenIcon</A>
+See <A HREF="././methods.html#OpenIcon_">OpenIcon()</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="RowCount_">RowCount()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1237,8 +1921,10 @@ Returns the number of rows in the Rebar control.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Save_FILENAME_FORMAT_">Save( FILENAME, [FORMAT] )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1256,8 +1942,10 @@ plain text file, you can set FORMAT to 1.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="ScaleHeight_">ScaleHeight()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1272,15 +1960,17 @@ Returns the windows client area height.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Timer">Timer</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="ScaleWidth_">ScaleWidth()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1295,15 +1985,64 @@ Returns the windows client area width.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Timer">Timer</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="Scroll_COMMAND_LINE_HORIZON">Scroll( COMMAND | LINE | HORIZONTAL, VERTICAL )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Scrolls the text in the control; you have the following options:
+
+</P>
+<DL>
+<DT><STRONG><A NAME="item_COMMAND">COMMAND</A></STRONG><DD>
+<P>
+the following commands are recognized (their meaning is self-explanatory):
+
+</P>
+<P>
+<PRE>        up
+        down
+        pageup          
+        pagedown        
+        top
+        bottom
+</PRE>
+</P>
+<DT><STRONG><A NAME="item_LINE">LINE</A></STRONG><DD>
+<P>
+scrolls up or down the specified number of lines; use negative to scroll up
+and positive to scroll down.
+
+</P>
+<DT><STRONG><A NAME="item_HORIZONTAL">HORIZONTAL, VERTICAL</A></STRONG><DD>
+<P>
+scrolls VERTICAL lines vertically and HORIZONTAL characters horizontally;
+note that the RichEdit control does not support horizontal scroll.
+
+</P>
+</DL>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Textfield">Textfield</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="Seek_FRAME_">Seek( FRAME )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1319,8 +2058,10 @@ Positions the AVI file to the specified FRAME.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="SelectAll_">SelectAll()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1329,15 +2070,69 @@ Selects all the text.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Textfield">Textfield</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="SelectCount_">SelectCount()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the number of currently selected items.
+
+</P>
+<P>
+For Listbox, the control must have been created with the -multisel option.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ListView">ListView</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
+<H2><A NAME="SelectString_STRING_INDEX_">SelectString( STRING, [INDEX] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Searches the control for an item that begins with the specified STRING and,
+if found, selects that item. The optional INDEX parameter tells to start
+the search from the specified position; if no parameter is given, the whole
+list is searched. Returns the zero-based index of the selected item or -1
+if no matching item was found.
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="././methods.html#FindString_STRING_INDEX_">FindString()</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Listbox">Listbox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="SelectedItem_">SelectedItem()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1347,15 +2142,37 @@ item is selected.
 
 </P>
 <P>
-<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#Listbox">Listbox</A>
 
 
 
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="Selection_">Selection()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns a two elements array containing the current selection start and
+end.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Textfield">Textfield</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="SetCursor_CURSOR_">SetCursor( CURSOR )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1375,8 +2192,10 @@ instead.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="SetRange_MIN_MAX_">SetRange( [MIN], MAX )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1393,8 +2212,10 @@ specified, it defaults to 0.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Stop_">Stop()</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1416,8 +2237,10 @@ Stops the animation currently playing.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="Text_TEXT_">Text( [TEXT] )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1433,8 +2256,10 @@ Gets or sets the text of a window.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
 <H2><A NAME="TextOut_X_Y_TEXT_">TextOut( X, Y, TEXT )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1451,8 +2276,29 @@ Returns nonzero if succesful, zero on errors.
 </P>
 </BLOCKQUOTE>
 
-<HR><TT>
+<TT>
 
+<P>
+<HR>
+<H2><A NAME="Undo_">Undo()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Undoes the last change in the control.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Textfield">Textfield</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<TT>
+
+<P>
+<HR>
 <H2><A NAME="View_MODE_">View( [MODE] )</A></H2>
 </TT><BLOCKQUOTE>
 
@@ -1476,6 +2322,26 @@ given MODE can have one of the following values:
 </P>
 </BLOCKQUOTE>
 
+<TT>
+
+<P>
+<HR>
+<H2><A NAME="VisibleCount_">VisibleCount()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the number of items that can be fully visible in a page of the
+control; for ListView, if the current view state is big or small icons, the
+function always returns the total number of items in the control.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#TreeView">TreeView</A>
+
+
+
+</P>
+</BLOCKQUOTE>
 
 
 </BODY>

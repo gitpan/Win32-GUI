@@ -1,3 +1,4 @@
+use blib;
 use Win32::GUI;
 
 my $Window = new Win32::GUI::Window(
@@ -54,22 +55,46 @@ my $Readonly = $Window->AddCheckbox(
 $Window->AddButton(
     -name   => "Reset",
     -text   => "Reset",
-    -left   => 10,
-    -top    => 100,
+    -pos    => [  10, 100 ],
     -foreground => [255, 0, 0],
-    -background => [0, 0, 0],
+    -background => [  0, 0, 0],
+);
+
+$Window->AddButton(
+    -name   => "ScrollUp",
+    -text   => "UP",
+    -pos    => [  80, 100 ],
+    -foreground => [255, 0, 0],
+    -background => [  0, 0, 0],
+);
+
+$Window->AddButton(
+    -name   => "ScrollDown",
+    -text   => "DOWN",
+    -pos    => [  120, 100 ],
+);
+
+$Window->AddButton(
+    -name   => "ScrollBottom",
+    -text   => "BOTTOM",
+    -pos    => [  160, 100 ],
+);
+
+$Window->AddButton(
+    -name   => "ScrollTop",
+    -text   => "TOP",
+    -pos    => [  200, 100 ],
 );
 
 $Multitext = $Window->AddTextfield(
     -name     => "Multitext",
     -multiline => 1,
-    -autohscroll => 0,
+    -autohscroll => 1,
+    -autovscroll => 1,
 	-vscroll   => 1,
 	-hscroll   => 1,
-    -left     => 10,
-    -top      => 140,
-    -width    => 180,
-    -height   => 180,
+    -pos       => [  10, 140 ],
+    -size      => [ 180, 180 ],
 );
 
 
@@ -136,4 +161,17 @@ sub Multitext_Change {
 sub Textfield_Change {
 	print "got Change!\n";
 	# $Window->Multitext->InvalidateRect(1);
+}
+
+sub ScrollUp_Click {
+	$Window->Multitext->Scroll("up");
+}
+sub ScrollDown_Click {
+	$Window->Multitext->Scroll("down");
+}
+sub ScrollBottom_Click {
+	$Window->Multitext->Scroll("bottom");
+}
+sub ScrollTop_Click {
+	$Window->Multitext->Scroll("top");
 }

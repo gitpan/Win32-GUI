@@ -1,6 +1,6 @@
 
 use Win32::GUI;
-# use Win32::Sound;
+use Win32::Sound;
 
 # $class = new GUI::Class("GUIPERL") or print_and_die("new Class");
 
@@ -31,7 +31,6 @@ $List1 = $W->AddListbox(
     -foreground => [255, 255, 255],
     -background => [64, 64, 64],
     -style => WS_VSCROLL | WS_VISIBLE | WS_HSCROLL | 0x0200,
-    -multisel => 1, 
 ) or print_and_die("new Listbox");
 
 $List1->SendMessage(0x0195, 201, 0);
@@ -53,6 +52,7 @@ $List2 = $W->AddListbox(
     -tabstop => 1,
     -group => 1, 
     -width => 100,
+    -multisel => 1,
 );
 
 

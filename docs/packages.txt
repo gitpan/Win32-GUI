@@ -1,10 +1,23 @@
 ================================================================================
 Animation
 
+The Animation control displays an AVI animation.
+To load an AVI file you can use the METHOD_LINK<Open()> method; 
+you can then use METHOD_LINK<Play()> to start the animation
+(note it will start automatically with the -autoplay option),
+METHOD_LINK<Stop()> to stop it
+and METHOD_LINK<Seek()> to position it to a specified frame.
+
+=TYPE GS
+
 =OPTIONS -autoplay, -center, -transparent
 
 ================================================================================
 Button
+
+x
+
+=TYPE GS
 
 =OPTIONS
 -align, -valign, -ok, -cancel, -default, -bitmap, -picture, -icon
@@ -14,6 +27,8 @@ Button
 Checkbox
 
 x
+
+=TYPE GS
 
 ================================================================================
 Class
@@ -25,15 +40,21 @@ Combobox
 
 x
 
+=TYPE GS
+
 ================================================================================
 ComboboxEx
 
 x
 
+=TYPE GS
+
 ================================================================================
 DateTime
 
 x
+
+=TYPE GS
 
 ================================================================================
 DialogBox
@@ -41,6 +62,8 @@ DialogBox
 Just like Window, but with a predefined dialog box look: by default, a DialogBox
 can not be sized, has no maximize box and has C<-dialogui> enabled (eg. 
 interprets tab/enter/esc).
+
+=TYPE GS
 
 =OPTIONS
 -text, -caption, -title, -left, -top, -width, -height, -menu, -font, -foreground,
@@ -55,18 +78,28 @@ Graphic
 
 x
 
+=TYPE GS
+
 ================================================================================
 Groupbox
 
 x
+
+=TYPE GS
 
 ================================================================================
 Header
 
 x
 
+=TYPE GS
+
 ================================================================================
 Label
+
+x
+
+=TYPE GS
 
 =OPTIONS
 -align, -bitmap, -picture, -truncate, -frame, -fill, -sunken, -wrap, -notify
@@ -77,8 +110,14 @@ ListView
 
 x
 
+=TYPE GS
+
 ================================================================================
 Listbox
+
+x
+
+=TYPE GS
 
 =OPTIONS
 -multisel, -sort
@@ -88,6 +127,10 @@ Listbox
 ================================================================================
 ProgressBar
 
+x
+
+=TYPE GS
+
 =OPTIONS -smooth, -vertical
 
 ================================================================================
@@ -95,13 +138,21 @@ RadioButton
 
 x
 
+=TYPE GS
+
 ================================================================================
 Rebar
 
 x
 
+=TYPE GS
+
 ================================================================================
 RichEdit
+
+x
+
+=TYPE GS
 
 =OPTIONS
 -align, -multiline, -keepselection, -readonly, -password, -lowercase, -uppercase, 
@@ -113,18 +164,28 @@ Slider
 
 x
 
+=TYPE GS
+
 ================================================================================
 Splitter
 
 x
+
+=TYPE GS
 
 ================================================================================
 StatusBar
 
 x
 
+=TYPE GS
+
 ================================================================================
 TabStrip
+
+x
+
+=TYPE GS
 
 =OPTIONS
 -imagelist, -multiline, -vertical, -bottom, -right, -hottrack, -buttons,
@@ -133,6 +194,10 @@ TabStrip
 
 ================================================================================
 Textfield 
+
+x
+
+=TYPE GS
 
 =OPTIONS
 -align, -multiline, -keepselection, -readonly, -password, -lowercase, -uppercase, 
@@ -189,6 +254,8 @@ Toolbar
 
 x
 
+=TYPE G
+
 ================================================================================
 Tooltip
 
@@ -199,15 +266,21 @@ TreeView
 
 x
 
+=TYPE GS
+
 ================================================================================
 UpDown
 
 x
 
+=TYPE GS
+
 ================================================================================
 Window
 
 This is the main container of a regular GUI; also known as "top level window".
+
+=TYPE GS
 
 =OPTIONS
 -text, -caption, -title, -left, -top, -width, -height, -menu, -font, -foreground,

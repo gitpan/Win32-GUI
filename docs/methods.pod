@@ -1,8 +1,6 @@
 =head1 Win32::GUI methods
 
-=over 4
-
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 AbsLeft()
 
@@ -17,11 +15,11 @@ This method returns -1 on errors.
 
 B<See also>: L</Left()>
 
-B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Timer|packages/Timer>, L<Toolbar|packages/Toolbar>, L<Tooltip(*)|packages/Tooltip(*)>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>, L<Tooltip(*)|packages/Tooltip(*)>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 AbsTop()
 
@@ -36,11 +34,62 @@ This method returns -1 on errors.
 
 B<See also>: L</Top()>
 
-B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Timer|packages/Timer>, L<Toolbar|packages/Toolbar>, L<Tooltip(*)|packages/Tooltip(*)>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>, L<Tooltip(*)|packages/Tooltip(*)>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 Add(STRING, STRING .. STRING)
+
+=for HTML </TT><BLOCKQUOTE>
+
+Adds one or more items at the end of the control's list.
+
+
+
+
+B<Applies to>: L<Combobox|packages/Combobox>, L<Listbox|packages/Listbox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 AddString( STRING )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Adds an item at the end of the control's list.
+
+
+
+
+B<Applies to>: L<Combobox|packages/Combobox>, L<Listbox|packages/Listbox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 Arrange( [FLAG] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Arranges items in the ListView; the optional FLAG parameter can be one
+of the following values:
+
+	0  uses the current alignment style (this is the default)
+	1  align items along the left edge of the window
+	2  align items along the top edge of the window
+	5  snaps icons to the nearest grid position
+
+
+
+
+B<Applies to>: L<ListView|packages/ListView>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 BackColor( [COLOR] )
 
@@ -56,7 +105,7 @@ B<Applies to>: L<RichEdit|packages/RichEdit>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 BandCount()
 
@@ -71,7 +120,7 @@ B<Applies to>: L<Rebar|packages/Rebar>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 BringWindowToTop()
 
@@ -82,11 +131,11 @@ Brings the window to the foreground.
 
 
 
-B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+B<Applies to>: L<DialogBox|packages/DialogBox>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 BrowseForFolder( OPTIONS )
 
@@ -108,21 +157,21 @@ Example:
 
 
 
-B<Available options>: L<-computeronly|options/_computeronly_0_1>, L<-domainonly|options/_domainonly_0_1>, L<-driveonly|options/_driveonly_0_1>, L<-editbox|options/_editbox_0_1>, L<-folderonly|options/_folderonly_0_1>, L<-includefiles|options/_includefiles_0_1>, L<-owner|options/_owner_WINDOW>, L<-printeronly|options/_printeronly_0_1>, L<-root|options/_root_PATH_or_CONSTANT>, L<-title|options/_title_STRING>
+B<Options>: L<-computeronly|options/_computeronly_0_1>, L<-domainonly|options/_domainonly_0_1>, L<-driveonly|options/_driveonly_0_1>, L<-editbox|options/_editbox_0_1>, L<-folderonly|options/_folderonly_0_1>, L<-includefiles|options/_includefiles_0_1>, L<-owner|options/_owner_WINDOW>, L<-printeronly|options/_printeronly_0_1>, L<-root|options/_root_PATH_or_CONSTANT>, L<-title|options/_title_STRING>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Caption( [TEXT] )
 
 =for HTML </TT><BLOCKQUOTE>
 
-See L</Text().>
+See L<Text().|methods/Text_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 ChangeCursor( CURSOR )
 
@@ -133,11 +182,11 @@ object). Returns the handle of the previous default cursor.
 
 
 
-B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 ChangeIcon( ICON )
 
@@ -149,11 +198,14 @@ Returns the handle of the previous default icon.
 
 
 
-B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+
+B<See also>: L<ChangeSmallIcon()|methods/ChangeSmallIcon_ICON_>
+
+B<Applies to>: L<DialogBox|packages/DialogBox>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 ChangeSmallIcon( ICON )
 
@@ -165,21 +217,24 @@ Returns the handle of the previous default small icon.
 
 
 
-B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+
+B<See also>: L<ChangeIcon()|methods/ChangeIcon_ICON_>
+
+B<Applies to>: L<DialogBox|packages/DialogBox>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Clear()
 
 =for HTML </TT><BLOCKQUOTE>
 
-See L</Reset().>
+See L<Reset().|methods/Reset_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 ClipCursor( [LEFT, TOP, RIGHT, BOTTOM] )
 
@@ -193,7 +248,7 @@ Returns nonzero on success, zero on failure.
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Close()
 
@@ -211,7 +266,7 @@ B<Applies to>: L<Animation|packages/Animation>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 CloseWindow()
 
@@ -222,11 +277,11 @@ Minimizes a window.
 
 
 
-B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+B<Applies to>: L<DialogBox|packages/DialogBox>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 CommDlgExtendedError()
 
@@ -238,7 +293,7 @@ Returns the last common dialog library error code.
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Count()
 
@@ -249,11 +304,11 @@ Returns the number of items in the control.
 
 
 
-B<Applies to>: L<Listbox|packages/Listbox>, L<Combobox|packages/Combobox>
+B<Applies to>: L<Combobox|packages/Combobox>, L<Listbox|packages/Listbox>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 DeleteBand()
 
@@ -268,7 +323,7 @@ B<Applies to>: L<Rebar|packages/Rebar>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Dialog()
 
@@ -288,7 +343,7 @@ of a created object):
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Disable()
 
@@ -301,11 +356,11 @@ Disables a window.
 
 B<See also>: L<Enable()|methods/Enable_FLAG_>, L<IsEnabled()|methods/IsEnabled_>
 
-B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 DoEvents()
 
@@ -317,7 +372,7 @@ Just like Dialog(), but returns when there are no more events to process.
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 DrawMenuBar()
 
@@ -328,11 +383,11 @@ Forces redrawing of the menu bar.
 
 
 
-B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+B<Applies to>: L<DialogBox|packages/DialogBox>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Enable( [FLAG] )
 
@@ -345,11 +400,30 @@ Enables a window (or disables it if FLAG is FALSE).
 
 B<See also>: L<Disable()|methods/Disable_>, L<IsEnabled()|methods/IsEnabled_>
 
-B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 EnsureVisible( ITEM, [FLAG] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+For TreeView, ensures that the specified ITEM (a node handle) is visible in the 
+control.
+
+For ListView, ensures that the specified ITEM (zero-based index) is visible in
+the control (FLAG to be defined...).
+
+
+
+
+B<Applies to>: L<ListView|packages/ListView>, L<TreeView|packages/TreeView>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 Expand( NODE, [FLAG] )
 
@@ -369,7 +443,52 @@ B<Applies to>: L<TreeView|packages/TreeView>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 FindString( STRING, [INDEX] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Searches the control for an item that begins with the specified STRING.
+The optional INDEX parameter tells to start the search from the
+specified position; if no parameter is given, the whole list is searched.
+Returns the zero-based index of the found item or -1 if no matching
+item was found.
+
+
+
+
+
+B<See also>: L<SelectString()|methods/SelectString_STRING_INDEX_>, L<FindStringExact()|methods/FindStringExact_STRING_INDEX_>
+
+B<Applies to>: L<Combobox|packages/Combobox>, L<Listbox|packages/Listbox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 FindStringExact( STRING, [INDEX] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Searches the control for an item that exactly matches the specified
+STRING (case insensitively).
+The optional INDEX parameter tells to start the search from the
+specified position; if no parameter is given, the whole list is searched.
+Returns the zero-based index of the found item or -1 if no matching
+item was found.
+
+
+
+
+
+B<See also>: L<FindString()|methods/FindString_STRING_INDEX_>
+
+B<Applies to>: L<Combobox|packages/Combobox>, L<Listbox|packages/Listbox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 FindWindow( CLASSNAME, TITLE )
 
@@ -384,7 +503,42 @@ is found, the return value is zero.
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 FirstVisible( [NODE] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Gets or sets the first visible NODE in the TreeView; if a NODE is given,
+it is selected and, if possible, it becomes the first visible one; the
+return value is the handle of the previously first visible.
+If no NODE is given, returns the handle of the current first visible one.
+
+
+
+
+
+B<Applies to>: L<TreeView|packages/TreeView>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 FirstVisibleItem( [INDEX] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Gets the zero-based index of the first visible item in the control,
+or sets it to the specified INDEX.
+
+
+
+
+B<Applies to>: L<Combobox|packages/Combobox>, L<Listbox|packages/Listbox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 GetActiveWindow()
 
@@ -396,7 +550,7 @@ Returns the handle of the active window.
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 GetClassName()
 
@@ -406,11 +560,11 @@ Returns the classname of the specified window, or undef on errors.
 
 
 
-B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 GetClientRect()
 
@@ -421,11 +575,14 @@ Returns a four elements array defining the windows client area rectangle
 
 
 
-B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+B<See also>: L<GetWindowRect()|methods/GetWindowRect_>
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 GetCursor()
 
@@ -437,7 +594,7 @@ Returns the handle of the current cursor.
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 GetCursorPos()
 
@@ -450,7 +607,7 @@ or undef on errors.
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 GetFocus()
 
@@ -462,7 +619,7 @@ Returns the handle of the window that has the keyboard focus.
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 GetFont(FONT)
 
@@ -478,11 +635,11 @@ to get font details).
 
 
 
-B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 GetFontName()
 
@@ -492,11 +649,26 @@ Returns the name of the font used in the window.
 
 
 
-B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 GetLastVisible()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the handle of the last expanded node in the TreeView.
+
+
+
+
+B<Applies to>: L<TreeView|packages/TreeView>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 GetMenu()
 
@@ -509,11 +681,11 @@ not the Win32::GUI::Menu object).
 
 
 
-B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+B<Applies to>: L<DialogBox|packages/DialogBox>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 GetMessage( [MIN, MAX] )
 
@@ -549,7 +721,22 @@ well what you're doing.
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 GetNextVisible( NODE )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the handle of the next visible node for the given NODE.
+
+
+
+
+B<Applies to>: L<TreeView|packages/TreeView>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 GetOpenFileName( OPTIONS )
 
@@ -562,11 +749,11 @@ name of the choosen file or undef on errors.
 
 
 
-B<Available options>: L<-directory|options/_directory_STRING>, L<-file|options/_file_STRING>, L<-filter|options/_filter_ARRAY_REFERENCE>, L<-owner|options/_owner_WINDOW>, L<-title|options/_title_STRING>
+B<Options>: L<-directory|options/_directory_STRING>, L<-file|options/_file_STRING>, L<-filter|options/_filter_ARRAY_REFERENCE>, L<-owner|options/_owner_WINDOW>, L<-title|options/_title_STRING>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 GetPerlWindow()
 
@@ -589,7 +776,22 @@ Example:
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 GetPrevVisible(NODE)
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the handle of the previous visible node for the given NODE.
+
+
+
+
+B<Applies to>: L<TreeView|packages/TreeView>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 GetStockObject( OBJECT )
 
@@ -630,7 +832,57 @@ directly invoke methods on it:
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 GetStringWidth( STRING )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the width, in pixels, needed to display the specified STRING
+in the ListView area.
+
+
+
+
+B<Applies to>: L<ListView|packages/ListView>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 GetTextExtentPoint32( STRING, [FONT] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns a two elements array containing the x and y size of the
+specified STRING in the window (eventually with the speficied FONT), or
+undef on errors.
+
+
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 GetWindowRect()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns a four elements array defining the windows (external) rectangle
+(left, top, right, bottom) or undef on errors.
+
+
+
+
+B<See also>: L<GetClientRect()|methods/GetClientRect_>
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 HitTest( X, Y )
 
@@ -648,7 +900,7 @@ B<Applies to>: L<ListView|packages/ListView>, L<TreeView|packages/TreeView>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Indent( [VALUE] )
 
@@ -666,7 +918,7 @@ B<Applies to>: L<TreeView|packages/TreeView>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 InsertBand( OPTIONS )
 
@@ -689,11 +941,11 @@ Inserts a new band in the Rebar control.
 
 B<Applies to>: L<Rebar|packages/Rebar>
 
-B<Available options>: L<-index|options/-index>, L<-image|options/-image>, L<-bitmap|options/-bitmap>, L<-child|options/-child>, L<-foreground|options/-foreground>, L<-background|options/-background>, L<-width|options/-width>, L<-minwidth|options/-minwidth>, L<-minheight|options/-minheight>, L<-text|options/_text_STRING>
+B<Options>: L<-background|options/-background>, L<-bitmap|options/-bitmap>, L<-child|options/-child>, L<-foreground|options/-foreground>, L<-image|options/-image>, L<-index|options/-index>, L<-minheight|options/-minheight>, L<-minwidth|options/-minwidth>, L<-text|options/_text_STRING>, L<-width|options/-width>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Interval( [ELAPSE] )
 
@@ -714,7 +966,7 @@ B<Applies to>: L<Timer|packages/Timer>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 InvertRect( LEFT, TOP, RIGHT, BOTTOM )
 
@@ -730,7 +982,7 @@ B<Applies to>: L<DC|packages/DC>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 IsEnabled()
 
@@ -740,11 +992,11 @@ Returns TRUE if the window is enabled, FALSE otherwise.
 
 
 
-B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 IsIconic()
 
@@ -755,11 +1007,11 @@ Returns TRUE if the window is minimized, FALSE otherwise.
 
 
 
-B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+B<Applies to>: L<DialogBox|packages/DialogBox>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 IsVisible()
 
@@ -769,11 +1021,11 @@ Returns TRUE if the window is visible, FALSE otherwise.
 
 
 
-B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 IsWindow()
 
@@ -783,11 +1035,11 @@ Returns TRUE if the window is a window, FALSE otherwise.
 
 
 
-B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 IsZoomed()
 
@@ -798,11 +1050,68 @@ Returns TRUE if the window is maximized, FALSE otherwise.
 
 
 
-B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+B<Applies to>: L<DialogBox|packages/DialogBox>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 ItemCheck( ITEM, [VALUE] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+For TreeView, gets or sets the check state of the given ITEM (a node handle).
+
+For ListView, gets the check state of the given item (zero-based index); 
+ListView does not support setting check states, so you can't pass a VALUE.
+
+In both cases is valid only if the control was created with the -checkboxes => 1 
+option.
+
+
+
+
+B<Applies to>: L<ListView|packages/ListView>, L<TreeView|packages/TreeView>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 ItemFromPoint( X, Y )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the zero-based index of the item nearest to the specified
+point; if called in a list context, returns an additional element which
+is TRUE if the point is inside the control area, FALSE if it's outside.
+
+
+
+
+B<Applies to>: L<Listbox|packages/Listbox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 ItemPosition( INDEX, [X, Y] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Moves the specified zero-based INDEX item to the specified position,
+or returns its current X and Y position if X and Y are not given.
+
+
+
+
+
+B<See also>: L<MoveItem()|methods/MoveItem_INDEX_X_Y_>
+
+B<Applies to>: L<ListView|packages/ListView>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 Kill()
 
@@ -820,17 +1129,33 @@ B<Applies to>: L<Timer|packages/Timer>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 LineFromChar( INDEX )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the line number (starting from zero) where the zero-based INDEX char 
+appears.
+
+
+
+
+B<Applies to>: L<RichEdit|packages/RichEdit>, L<Textfield|packages/Textfield>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 ListIndex()
 
 =for HTML </TT><BLOCKQUOTE>
 
-See L</SelectedItem()>
+See L<SelectedItem()|methods/SelectedItem_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Load( FILENAME, [FORMAT] )
 
@@ -847,7 +1172,7 @@ B<Applies to>: L<RichEdit|packages/RichEdit>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 MaxLength( [CHARS] )
 
@@ -862,21 +1187,36 @@ to 0.
 
 
 
-B<Applies to>: L<Textfield|packages/Textfield>, L<RichEdit|packages/RichEdit>
+B<Applies to>: L<RichEdit|packages/RichEdit>, L<Textfield|packages/Textfield>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Minimize()
 
 =for HTML </TT><BLOCKQUOTE>
 
-See L</CloseWindow()>
+See L<CloseWindow()|methods/CloseWindow_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 Modified( [FLAG] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Gets or sets the modified flag on the control.
+
+
+
+
+B<Applies to>: L<RichEdit|packages/RichEdit>, L<Textfield|packages/Textfield>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 Move( X, Y )
 
@@ -886,11 +1226,31 @@ Moves the window to the specified position.
 
 
 
-B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 MoveItem( INDEX, X, Y )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Moves the specified zero-based INDEX item to the specified position,
+if the ListView is in big or small icon view mode; X and Y coordinates
+are relative to the ListView client area.
+
+
+
+
+
+B<See also>: L<ItemPosition()|methods/ItemPosition_INDEX_X_Y_>, L<View()|methods/View_MODE_>
+
+B<Applies to>: L<ListView|packages/ListView>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 Open( FILE )
 
@@ -909,7 +1269,7 @@ B<Applies to>: L<Animation|packages/Animation>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 OpenIcon()
 
@@ -920,11 +1280,31 @@ Restores a minimized window.
 
 
 
-B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+B<Applies to>: L<DialogBox|packages/DialogBox>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 PasswordChar( [CHAR] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Gets or sets the character displayed in place of normal text; if the
+control has been created with the -password option, the default
+character is an asterisk (*).
+Note that by setting this value the text in the control will be
+redrawn using the specified character; if the character is set to
+zero instead, text will be redrawn as normal
+
+
+
+
+B<Applies to>: L<RichEdit|packages/RichEdit>, L<Textfield|packages/Textfield>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 Play( [FROM], [TO], [REPEAT] )
 
@@ -942,7 +1322,22 @@ B<Applies to>: L<Animation|packages/Animation>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 ReadOnly( [FLAG] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Gets or sets the readonly flag on the control.
+
+
+
+
+B<Applies to>: L<RichEdit|packages/RichEdit>, L<Textfield|packages/Textfield>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 Rectangle( LEFT, TOP, RIGHT, BOTTOM )
 
@@ -959,7 +1354,22 @@ B<Applies to>: L<DC|packages/DC>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 ReplaceSel( STRING, [FLAG] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Replaces the current selection in the control with STRING.
+
+
+
+
+B<Applies to>: L<RichEdit|packages/RichEdit>, L<Textfield|packages/Textfield>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 Reset()
 
@@ -970,21 +1380,21 @@ Deletes the content of the control.
 
 
 
-B<Applies to>: L<Listbox|packages/Listbox>, L<Combobox|packages/Combobox>
+B<Applies to>: L<Combobox|packages/Combobox>, L<Listbox|packages/Listbox>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Restore()
 
 =for HTML </TT><BLOCKQUOTE>
 
-See L</OpenIcon()>
+See L<OpenIcon()|methods/OpenIcon_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 RowCount()
 
@@ -999,7 +1409,7 @@ B<Applies to>: L<Rebar|packages/Rebar>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Save( FILENAME, [FORMAT] )
 
@@ -1016,7 +1426,7 @@ B<Applies to>: L<RichEdit|packages/RichEdit>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 ScaleHeight()
 
@@ -1029,11 +1439,11 @@ Returns the windows client area height.
 
 B<See also>: L<ScaleWidth()|methods/ScaleWidth_>
 
-B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Timer|packages/Timer>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 ScaleWidth()
 
@@ -1046,11 +1456,51 @@ Returns the windows client area width.
 
 B<See also>: L<ScaleHeight()|methods/ScaleHeight_>
 
-B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Timer|packages/Timer>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 Scroll( COMMAND | LINE | HORIZONTAL, VERTICAL )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Scrolls the text in the control; you have the following options:
+
+=over 4
+
+=item COMMAND
+
+the following commands are recognized (their meaning is self-explanatory):
+
+	up
+	down
+	pageup		
+	pagedown	
+	top
+	bottom
+
+=item LINE
+
+scrolls up or down the specified number of lines; use negative to scroll up and
+positive to scroll down.
+
+=item HORIZONTAL, VERTICAL
+
+scrolls VERTICAL lines vertically and HORIZONTAL characters horizontally; note 
+that the RichEdit control does not support horizontal scroll.
+
+=back
+
+
+
+
+B<Applies to>: L<RichEdit|packages/RichEdit>, L<Textfield|packages/Textfield>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 Seek( FRAME )
 
@@ -1065,7 +1515,7 @@ B<Applies to>: L<Animation|packages/Animation>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 SelectAll()
 
@@ -1076,11 +1526,52 @@ Selects all the text.
 
 
 
-B<Applies to>: L<Textfield|packages/Textfield>, L<RichEdit|packages/RichEdit>
+
+B<Applies to>: L<RichEdit|packages/RichEdit>, L<Textfield|packages/Textfield>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 SelectCount()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the number of currently selected items.
+
+For Listbox, the control must have been created with the -multisel option.
+
+
+
+
+B<Applies to>: L<Listbox|packages/Listbox>, L<ListView|packages/ListView>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 SelectString( STRING, [INDEX] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Searches the control for an item that begins with the specified STRING
+and, if found, selects that item.
+The optional INDEX parameter tells to start the search from the
+specified position; if no parameter is given, the whole list is searched.
+Returns the zero-based index of the selected item or -1 if no matching
+item was found.
+
+
+
+
+
+B<See also>: L<FindString()|methods/FindString_STRING_INDEX_>
+
+B<Applies to>: L<Listbox|packages/Listbox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 SelectedItem()
 
@@ -1092,11 +1583,27 @@ no item is selected.
 
 
 
-B<Applies to>: L<Listbox|packages/Listbox>, L<Combobox|packages/Combobox>
+B<Applies to>: L<Combobox|packages/Combobox>, L<Listbox|packages/Listbox>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 Selection()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns a two elements array containing the current selection start
+and end.
+
+
+
+
+B<Applies to>: L<RichEdit|packages/RichEdit>, L<Textfield|packages/Textfield>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 SetCursor( CURSOR )
 
@@ -1116,7 +1623,7 @@ B<See also>: L<ChangeCursor()|methods/ChangeCursor_CURSOR_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 SetRange( [MIN], MAX )
 
@@ -1132,7 +1639,7 @@ B<Applies to>: L<ProgressBar|packages/ProgressBar>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Stop()
 
@@ -1151,7 +1658,7 @@ B<Applies to>: L<Animation|packages/Animation>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Text( [TEXT] )
 
@@ -1165,7 +1672,7 @@ B<Applies to>: L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combo
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 TextOut( X, Y, TEXT )
 
@@ -1181,7 +1688,22 @@ B<Applies to>: L<DC|packages/DC>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 Undo()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Undoes the last change in the control.
+
+
+
+
+B<Applies to>: L<RichEdit|packages/RichEdit>, L<Textfield|packages/Textfield>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 View( [MODE] )
 
@@ -1197,9 +1719,24 @@ MODE can have one of the following values:
 
 
 
+
 B<Applies to>: L<ListView|packages/ListView>
 
 =for HTML </BLOCKQUOTE>
 
-=back
+=for HTML <TT>
+
+=head2 VisibleCount()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the number of items that can be fully visible in a page of the
+control; for ListView, if the current view state is big or small icons, the
+function always returns the total number of items in the control.
+
+
+
+B<Applies to>: L<ListView|packages/ListView>, L<TreeView|packages/TreeView>
+
+=for HTML </BLOCKQUOTE>
 

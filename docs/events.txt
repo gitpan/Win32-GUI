@@ -1,0 +1,14 @@
+================================================================================
+Click()
+
+x
+
+================================================================================
+Timer()
+
+Sent when the Timer reaches its timeout value,
+eg. after the number of milliseconds specified
+when creating the Timer.
+
+=APPLY Timer
+

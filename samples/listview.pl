@@ -27,7 +27,7 @@ $Window->AddListView(
     -fullrowselect => 1,
     -gridlines => 1,
     -checkboxes => 1,
-    -hottrack   => 1,
+#    -hottrack   => 1,
 );
 
 $Window->AddButton(

@@ -144,12 +144,7 @@ Example:
         # ...
     }
 
-=APPLY
-Animation, Button, Checkbox, Class, Combobox, ComboboxEx, DateTime, DialogBox,
-Graphic, Groupbox, Header, Label, ListView, Listbox, NotifyIcon(*), ProgressBar,
-RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
-Timer, Toolbar, Tooltip(*), TreeView, UpDown, Window
-=END_APPLY
+=APPLY [G], Class, NotifyIcon
 
 ================================================================================
 -notify => 0/1 (default 0) 
@@ -353,6 +348,20 @@ The list will include files as well folders.
 =APPLY BrowseForFolder(), GetOpenFileName()
 
 ================================================================================
+-pos => [ X, Y ]
+
+Defines the position for the window; note that X and Y must be passed in an
+array reference, eg:
+
+    -pos => [ 100, 100 ],    # correct
+    -pos =>   100, 100,      # WRONG
+    -pos => @coords,         # WRONG
+    -pos => \@coors,         # correct
+
+=SEE_ALSO -left, -top
+=APPLY [S]
+
+================================================================================
 -printeronly => 0/1 (default 0)
 
 Only enable printers to be selected
@@ -369,11 +378,25 @@ a list of such constants).
 =APPLY BrowseForFolder()
 
 ================================================================================
+-size => [ X, Y ]
+
+Defines the size for the window; note that X and Y must be passed in an
+array reference, eg:
+
+    -size => [ 100, 100 ],    # correct
+    -size =>   100, 100,      # WRONG
+    -size => @coords,         # WRONG
+    -size => \@coors,         # correct
+
+=SEE_ALSO -width, -height
+=APPLY [S]
+
+================================================================================
 -text => STRING
 
 The text that will appear in the control or item.
 
-=APPLY *
+=APPLY [G]
 
 ================================================================================
 -directory => STRING

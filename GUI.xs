@@ -5,7 +5,7 @@
 #
 # 29 Jan 1997 by Aldo Calpini <dada@perl.it>
 #
-# Version: 0.0.490 (20 Oct 2000)
+# Version: 0.0.502 (13 Dec 2000)
 #
 # Copyright (c) 1997..2000 Aldo Calpini. All rights reserved.
 # This program is free software; you can redistribute it and/or
@@ -2440,13 +2440,7 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
         break;
 
     case WM_TIMER:
-        /*
-         * (@)EVENT:Timer()
-         * Sent when the Timer reaches its timeout value,
-         * eg. after the number of milliseconds specified
-         * when creating the Timer.
-         * (@)APPLIES_TO:Timer
-         */
+        /* (@)EVENT:Timer() */
         if(GetTimerName(NOTXSCALL hwnd, wParam, Name)) {
             strcat((char *) Name, "_Timer");
             PerlResult = DoEvent_Generic(NOTXSCALL Name);
@@ -2539,27 +2533,15 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
                 // PerlResult = 1;
                 return FALSE;
             } else {
-                SetBkMode((HDC) wParam, TRANSPARENT);
+                if(uMsg == WM_CTLCOLORSTATIC) SetBkMode((HDC) wParam, TRANSPARENT);
                 obj = SV_SELF_FROM_WINDOW((HWND) lParam);
                 if(obj != NULL) {
-#ifdef WIN32__GUI__STRONG__DEBUG
-					printf("!XS(WindowMsgLoop) WM_CTLCOLOR got obj='%s'\n", SvPV((SV*) obj, na));
-#endif
 					self = (HV*) SvRV(obj);
 				} else {
-#ifdef WIN32__GUI__STRONG__DEBUG
-					printf("!XS(WindowMsgLoop) WM_CTLCOLOR got obj NULL\n");
-#endif
 					self = (HV*) NULL;
 				}
                 if(self != NULL) {
-#ifdef WIN32__GUI__STRONG__DEBUG
-					printf("!XS(WindowMsgLoop) WM_CTLCOLOR trying hv_fetch\n");
-#endif
 					color = hv_fetch(self, "-foreground", 11, FALSE);
-#ifdef WIN32__GUI__STRONG__DEBUG
-					printf("!XS(WindowMsgLoop) WM_CTLCOLOR passed\n");
-#endif
                     if(SvMAGICAL(self)) mg_get(*color);
                     if(color != NULL && SvOK(*color)) {
                         SetTextColor((HDC) wParam, (COLORREF) SvIV(*color));
@@ -3057,6 +3039,11 @@ void ParseWindowOptions(
 				||        strcmp(option, "-controlbox") == 0) {
 					next_i = i + 1;
 					SwitchFlag(perlcs->cs.style, WS_SYSMENU, SvIV(ST(next_i)));
+				} else if(strcmp(option, "-helpbutton") == 0
+				||        strcmp(option, "-helpbox") == 0
+				||        strcmp(option, "-hashelp") == 0) {
+                    next_i = i + 1;
+                    SwitchFlag(perlcs->cs.dwExStyle, WS_EX_CONTEXTHELP, SvIV(ST(next_i)));
 				} else if(strcmp(option, "-accel") == 0
 				||        strcmp(option, "-accelerators") == 0
 				||        strcmp(option, "-acceleratortable") == 0) {
@@ -5510,8 +5497,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:GetClientRect()
-    # Returns a four elements array defining the windows client area
-    # rectangle (left, top, right, bottom) or undef on errors.
 void
 GetClientRect(handle)
     HWND handle
@@ -5532,8 +5517,6 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:GetWindowRect()
-    # Returns a four elements array defining the windows rectangle
-    # (left, top, right, bottom) or undef on errors.
 void
 GetWindowRect(handle)
     HWND handle
@@ -5869,7 +5852,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:Enable([FLAG])
-    # Enables a window (or disables it if FLAG is FALSE).
 BOOL
 Enable(handle,flag=TRUE)
     HWND handle
@@ -5882,7 +5864,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:Disable()
-    # Disables a window.
 BOOL
 Disable(handle)
     HWND handle
@@ -6965,6 +6946,117 @@ PPCODE:
     }
 
 
+    ###########################################################################
+    # (@)METHOD:GetSaveFileName(%OPTIONS)
+    # Allowed %OPTIONS are:
+    #  -owner => WINDOW
+    #      [TBD]
+    #  -title => STRING
+    #      the title for the dialog
+    #  -directory => STRING
+    #      specifies the initial directory
+    #  -file => STRING
+    #      specifies a name that will appear on the dialog's edit field
+    #  -filter => ARRAY REFERENCE
+    #      [TBD]
+void
+GetSaveFileName(...)
+PPCODE:
+    OPENFILENAME ofn;
+    BOOL retval;
+    int i, next_i;
+    char filename[MAX_PATH];
+    char *option;
+    char *filter;
+
+    ZeroMemory(&ofn, sizeof(OPENFILENAME));
+    ofn.lStructSize = sizeof(OPENFILENAME);
+    ofn.hwndOwner = NULL;
+    ofn.lpstrFilter = NULL;
+    ofn.lpstrCustomFilter = NULL;
+    ofn.nFilterIndex = 0;
+    ofn.lpstrFileTitle = NULL;
+    ofn.lpstrInitialDir = NULL;
+    ofn.lpstrTitle = NULL;
+    ofn.lpstrDefExt = NULL;
+    ofn.lpTemplateName = NULL;
+    ofn.Flags = 0;
+    filename[0] = 0;
+    ofn.lpstrFile = filename;
+    ofn.nMaxFile = MAX_PATH;
+
+    next_i = -1;
+    for(i = 0; i < items; i++) {
+        if(next_i == -1) {
+            option = SvPV(ST(i), na);
+            if(strcmp(option, "-owner") == 0) {
+                next_i = i + 1;
+                ofn.hwndOwner = (HWND) handle_From(NOTXSCALL ST(next_i));
+            }
+            if(strcmp(option, "-title") == 0) {
+                next_i = i + 1;
+                ofn.lpstrTitle = SvPV(ST(next_i), na);
+            }
+            if(strcmp(option, "-directory") == 0) {
+                next_i = i + 1;
+                ofn.lpstrInitialDir = SvPV(ST(next_i), na);
+            }
+            if(strcmp(option, "-filter") == 0) {
+                next_i = i + 1;
+                if(SvROK(ST(next_i)) && SvTYPE(SvRV(ST(next_i))) == SVt_PVAV) {
+                    AV* filters;
+                    SV** t;
+                    int i, filterlen;
+                    char *fpointer;
+                    filters = (AV*)SvRV(ST(next_i));
+                    for(i=0; i<=av_len(filters); i++) {
+                        t = av_fetch(filters, i, 0);
+                        if(t != NULL) {
+                            filterlen += SvCUR(*t) + 1;
+                        }
+                    }
+                    filterlen += 2;
+                    filter = (char *) safemalloc(filterlen);
+                    fpointer = filter;
+                    for(i=0; i<=av_len(filters); i++) {
+                        t = av_fetch(filters, i, 0);
+                        if(t != NULL) {
+                            strcpy(fpointer, SvPV(*t, na));
+                            fpointer += SvCUR(*t) + 1;
+                            *fpointer = 0;
+                        }
+
+                    }
+                    fpointer++;
+                    *fpointer = 0;
+                    ofn.lpstrFilter = (LPCTSTR) filter;
+                } else {
+                    if(dowarn) warn("Win32::GUI: argument to -filter is not an array reference!");
+                }
+
+            }
+            if(strcmp(option, "-file") == 0) {
+                next_i = i + 1;
+                strcpy(filename, SvPV(ST(next_i), na));
+            }
+        } else {
+            next_i = -1;
+        }
+    }
+    retval = GetSaveFileName(&ofn);
+    if(retval) {
+        EXTEND(SP, 1);
+        XST_mPV( 0, ofn.lpstrFile);
+        if(ofn.lpstrFilter != NULL) safefree((void *)filter);
+        XSRETURN(1);
+    } else {
+        if(ofn.lpstrFilter != NULL) safefree((void *)filter);
+        XSRETURN_NO;
+    }
+
+
+
+
 
     ###########################################################################
     # (@)METHOD:BrowseForFolder(%OPTIONS)
@@ -7012,6 +7104,9 @@ PPCODE:
             } else if(strcmp(option, "-includefiles") == 0) {
                 next_i = i + 1;
                 SwitchFlag(bi.ulFlags, BIF_BROWSEINCLUDEFILES, SvIV(ST(next_i)));
+            } else if(strcmp(option, "-directory") == 0) {
+                next_i = i + 1;
+                strcpy(folder, SvPV(ST(next_i), na));
             } else if(strcmp(option, "-root") == 0) {
                 next_i = i + 1;
                 if(SvIOK(ST(next_i))) {
@@ -7033,7 +7128,7 @@ PPCODE:
 						&pidl,
 						NULL
 					);
-					if (FAILED(hr)) {
+					if(FAILED(hr)) {
 						if(dowarn) warn("Win32::GUI::BrowseForFolder: can't get ITEMIDLIST for -root!\n");
 						pDesktopFolder->Release();
 						XSRETURN_NO;
@@ -7060,7 +7155,6 @@ PPCODE:
 			XSRETURN_NO;
 		}
     } else {
-
         XSRETURN_NO;
     }
 
@@ -7329,8 +7423,6 @@ CODE:
 OUTPUT:
     RETVAL
 
-
-    # TODO: GetSaveFileName
 
 HGDIOBJ
 SelectObject(handle,hgdiobj)
@@ -7749,7 +7841,6 @@ MODULE = Win32::GUI     PACKAGE = Win32::GUI::Textfield
 
     ###########################################################################
     # (@)METHOD:ReplaceSel(STRING, [FLAG])
-    # Replaces the current selection in the Textfield with STRING.
 LRESULT
 ReplaceSel(handle,string,flag=TRUE)
     HWND handle
@@ -7765,7 +7856,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:ReadOnly([FLAG])
-    # Gets or sets the readonly flag on the textfield.
 BOOL
 ReadOnly(handle,...)
     HWND handle
@@ -7782,7 +7872,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:Modified([FLAG])
-    # Gets or sets the modified flag on the textfield.
 BOOL
 Modified(handle,...)
     HWND handle
@@ -7799,7 +7888,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:Undo()
-    # Undoes the last change in the textfield.
 BOOL
 Undo(handle)
     HWND handle
@@ -7814,7 +7902,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:LineFromChar(INDEX)
-    # Returns the line where the zero-based INDEX char appears.
 LRESULT
 LineFromChar(handle,index)
     HWND handle
@@ -7827,12 +7914,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:PasswordChar([CHAR])
-    # Gets or sets the character displayed in place of normal text; if the
-    # Textfield has been created with the -password option, the default
-    # character is an asterisk (*).
-    # Note that by setting this value the text in the textfield will be
-    # redrawn using the specified character; if the character is set to
-    # zero instead, text will be redrawn as normal
 LRESULT
 PasswordChar(handle,passchar=0)
     HWND handle
@@ -7849,8 +7930,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:Selection()
-    # Returns a two elements array containing the current selection start
-    # and end.
 void
 Selection(handle)
     HWND handle
@@ -7868,6 +7947,72 @@ PPCODE:
 
 
     ###########################################################################
+    # (@)METHOD:Scroll(COMMAND | LINE | HORIZONTAL, VERTICAL)
+LRESULT
+Scroll(handle, line, otherdirection=NULL)
+    SV* handle
+    SV* line
+    DWORD otherdirection
+PREINIT:
+	HWND hwnd;
+    WPARAM wparam;
+    char *arg;
+    POINT pt;
+CODE:
+	hwnd = handle_From(NOTXSCALL handle);
+	if(items == 2) {
+		if(SvPOK(line)) {
+			arg = strlwr( SvPV(line, na) );
+
+			if(0 == strcmp( arg, "bottom" )) {
+				RETVAL = SendMessage( hwnd, EM_GETLINECOUNT, 0, 0 );
+				wparam = RETVAL;
+				RETVAL = SendMessage( hwnd, EM_GETFIRSTVISIBLELINE, 0, 0);
+				wparam -= RETVAL;
+				RETVAL = SendMessage( hwnd, EM_LINESCROLL, 0, wparam);
+			} else if(0 == strcmp( arg, "top" )) {
+				wparam = SendMessage( hwnd, EM_GETFIRSTVISIBLELINE, 0, 0);
+				RETVAL = SendMessage( hwnd, EM_LINESCROLL, 0, -wparam);
+			} else {
+				if(0 == strcmp( arg, "up" )) {
+					wparam = SB_LINEUP;
+				} else if(0 == strcmp( arg, "down" )
+				||        0 == strcmp( arg, "dn" )) {
+					wparam = SB_LINEDOWN;
+				} else if(0 == strcmp( arg, "pageup" )
+				||        0 == strcmp( arg, "pgup" )) {
+					wparam = SB_PAGEUP;
+				} else if(0 == strcmp( arg, "pagedown" )
+				||        0 == strcmp( arg, "pagedn" )
+				||        0 == strcmp( arg, "pgdown" )
+				||        0 == strcmp( arg, "pgdn")) {
+					wparam = SB_PAGEDOWN;
+				}
+				RETVAL = SendMessage(
+					hwnd, EM_SCROLL, (WPARAM) wparam, (LPARAM) 0
+				);
+			}
+		} else {
+			RETVAL = SendMessage(
+				hwnd, EM_LINESCROLL, 0, (WPARAM) SvIV(line)
+			);
+		}
+	} else {
+		if(sv_derived_from(handle, "Win32::GUI::RichEdit")) {
+			RETVAL = SendMessage(
+				hwnd, EM_LINESCROLL, 0, (WPARAM) otherdirection
+			);
+		} else {
+			RETVAL = SendMessage(
+				hwnd, EM_LINESCROLL, (LPARAM) SvIV(line), (WPARAM) otherdirection
+			);
+		}
+	}
+	SendMessage( handle, EM_SCROLLCARET, 0, 0);
+OUTPUT:
+	RETVAL
+
+    ###########################################################################
     # (@)PACKAGE:Win32::GUI::Listbox
     ###########################################################################
 
@@ -7876,7 +8021,6 @@ MODULE = Win32::GUI     PACKAGE = Win32::GUI::Listbox
 
     ###########################################################################
     # (@)METHOD:AddString(STRING)
-    # Adds an item at the end of the Listbox.
 LRESULT
 AddString(handle,string)
     HWND handle
@@ -7888,7 +8032,6 @@ OUTPUT:
 
 	###########################################################################
     # (@)METHOD:Add(STRING, STRING .. STRING)
-    # Adds one or more items at the end of the control's list.
 void
 Add(handle,...)
     HWND handle
@@ -7962,8 +8105,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:FirstVisibleItem([INDEX])
-    # Gets the zero-based index of the first visible item in the Listbox,
-    # or sets it to the specified INDEX.
 LRESULT
 FirstVisibleItem(handle,index=-1)
     HWND handle
@@ -7979,9 +8120,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:ItemFromPoint(X, Y)
-    # Returns the zero-based index of the item nearest to the specified
-    # point; if called in a list context, returns an additional element which
-    # is TRUE if the point is inside the Listbox area, FALSE if it's outside.
 void
 ItemFromPoint(handle,x,y)
     HWND handle
@@ -8006,12 +8144,6 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:SelectString(STRING, [INDEX])
-    # Searches the Listbox for an item that begins with the specified STRING
-    # and, if found, selects that item.
-    # The optional INDEX parameter tells to start the search from the
-    # specified position; if no parameter is given, the whole list is searched.
-    # Returns the zero-based index of the selected item or -1 if no matching
-    # item was found.
 LRESULT
 SelectString(handle,string,index=-1)
     HWND handle
@@ -8025,11 +8157,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:FindString(STRING, [INDEX])
-    # Searches the Listbox for an item that begins with the specified STRING.
-    # The optional INDEX parameter tells to start the search from the
-    # specified position; if no parameter is given, the whole list is searched.
-    # Returns the zero-based index of the found item or -1 if no matching
-    # item was found.
 LRESULT
 FindString(handle,string,index=-1)
     HWND handle
@@ -8043,12 +8170,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:FindStringExact(STRING, [INDEX])
-    # Searches the Listbox for an item that exactly matches the specified
-    # STRING (case insensitively).
-    # The optional INDEX parameter tells to start the search from the
-    # specified position; if no parameter is given, the whole list is searched.
-    # Returns the zero-based index of the found item or -1 if no matching
-    # item was found.
 LRESULT
 FindStringExact(handle,string,index=-1)
     HWND handle
@@ -8062,7 +8183,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:SelectCount()
-    # Returns the number of selected items in a multiple selection Listbox.
 LRESULT
 SelectCount(handle)
     HWND handle
@@ -8195,8 +8315,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:FirstVisibleItem([INDEX])
-    # Gets the zero-based index of the first visible item in the listbox
-    # portion of the Combobox, or sets it to the specified INDEX.
 LRESULT
 FirstVisibleItem(handle,index=-1)
     HWND handle
@@ -8211,11 +8329,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:FindString(STRING, [INDEX])
-    # Searches the Combobox for an item that begins with the specified STRING.
-    # The optional INDEX parameter tells to start the search from the
-    # specified position; if no parameter is given, the whole list is searched.
-    # Returns the zero-based index of the found item or -1 if no matching
-    # item was found.
 LRESULT
 FindString(handle,string,index=-1)
     HWND handle
@@ -8228,12 +8341,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:FindStringExact(STRING, [INDEX])
-    # Searches the Combobox for an item that exactly matches the specified
-    # STRING (case insensitively).
-    # The optional INDEX parameter tells to start the search from the
-    # specified position; if no parameter is given, the whole list is searched.
-    # Returns the zero-based index of the found item or -1 if no matching
-    # item was found.
 LRESULT
 FindStringExact(handle,string,index=-1)
     HWND handle
@@ -9417,7 +9524,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:SelectCount()
-    # Returns the number of currently selected items.
 UINT
 SelectCount(handle)
     HWND handle
@@ -9464,8 +9570,6 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:GetStringWidth(STRING)
-    # Returns the width, in pixels, needed to display the specified STRING
-    # in the ListView area.
 int
 GetStringWidth(handle,string)
     HWND handle
@@ -9567,9 +9671,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:VisibleCount()
-    # Returns the number of items that can be fully visible in a page of the
-    # ListView control; if the current view state is big or small icons, the
-    # function returns the total number of items in the control.
 int
 VisibleCount(handle)
     HWND handle
@@ -9580,9 +9681,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:MoveItem(INDEX, X, Y)
-    # Moves the specified zero-based INDEX item to the specified position,
-    # if the ListView is in big or small icon view mode; X and Y coordinates
-    # are relative to the ListView client area.
 BOOL
 MoveItem(handle, index, x, y)
     HWND handle
@@ -9596,9 +9694,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:ItemPosition(INDEX, [X, Y])
-    # Moves the specified zero-based INDEX item to the specified position,
-    # or returns its current X and Y position if X and Y are not given.
-    # See also MoveItem()
 void
 ItemPosition(handle, index, x=-1, y=-1)
     HWND handle
@@ -9623,12 +9718,6 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:Arrange([FLAG])
-    # Arranges items in the ListView; the optional FLAG parameter can be one
-    # of the following values:
-    #   0 uses the current alignment style (this is the default)
-    #   1 align items along the left edge of the window
-    #   2 align items along the top edge of the window
-    #   5 snaps icons to the nearest grid position
 int
 Arrange(handle,flag=LVA_DEFAULT)
     HWND handle
@@ -9640,8 +9729,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:ItemCheck(INDEX)
-    # Gets the check state of a ListView item (valid only if the
-    # control was created with the -checkboxes => 1 option).
 BOOL
 ItemCheck(handle,index,value=FALSE)
     HWND handle
@@ -10162,7 +10249,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:EnsureVisible(NODE)
-    # Ensures that the specified NODE is visible in the TreeView.
 BOOL
 EnsureVisible(handle,item)
     HWND handle
@@ -10175,7 +10261,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:VisibleCount()
-    # Returns the number of items that can be fully visible in the TreeView.
 UINT
 VisibleCount(handle)
     HWND handle
@@ -10187,10 +10272,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:FirstVisible([NODE])
-    # Gets or sets the first visible NODE in the TreeView; if a NODE is given,
-    # it is selected and, if possible, it becomes the first visible one; the
-    # return value is the handle of the previously first visible.
-    # If no NODE is given, returns the handle of the current first visible one.
 HTREEITEM
 FirstVisible(handle,item=0)
     HWND handle
@@ -10205,7 +10286,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:GetNextVisible(NODE)
-    # Returns the handle of the next visible node for the given NODE.
 HTREEITEM
 GetNextVisible(handle,item)
     HWND handle
@@ -10218,7 +10298,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:GetPrevVisible(NODE)
-    # Returns the handle of the previous visible node for the given NODE.
 HTREEITEM
 GetPrevVisible(handle,item)
     HWND handle
@@ -10231,7 +10310,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:GetLastVisible()
-    # Returns the handle of the last expanded node in the TreeView.
 HTREEITEM
 GetLastVisible(handle)
     HWND handle
@@ -10243,8 +10321,6 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:ItemCheck(NODE, [VALUE])
-    # Gets or sets the check state of the given NODE (valid only if the
-    # control was created with the -checkboxes => 1 option).
 BOOL
 ItemCheck(handle,item,value=FALSE)
     HWND handle
@@ -10618,7 +10694,73 @@ CODE:
 OUTPUT:
     RETVAL
 
-    # TODO: BandInfo, ChangeBand
+
+    ###########################################################################
+    # (@)METHOD:BandInfo(INDEX)
+LRESULT
+BandInfo(handle,index)
+    HWND handle
+    UINT index
+PREINIT:
+    REBARBANDINFO rbbi;
+    int i, next_i;
+CODE:
+    ZeroMemory(&rbbi, sizeof(REBARBANDINFO));
+    rbbi.cbSize = sizeof(REBARBANDINFO);
+    rbbi.fMask =
+    	RBBIM_BACKGROUND | RBBIM_CHILD | RBBIM_CHILDSIZE | RBBIM_COLORS |
+    	RBBIM_HEADERSIZE | RBBIM_IDEALSIZE | RBBIM_ID | RBBIM_IMAGE |
+    	RBBIM_LPARAM | RBBIM_SIZE | RBBIM_STYLE | RBBIM_TEXT;
+    if(SendMessage(handle, RB_GETBANDINFO, (WPARAM) index, (LPARAM) &rbbi)) {
+        EXTEND(SP, 18);
+        XST_mPV( 0, "-text");
+        XST_mPV( 1, rbbi.lpText);
+        XST_mPV( 2, "-foreground");
+        XST_mIV( 3, rbbi.clrFore);
+		XST_mPV( 4, "-background");
+		XST_mIV( 5, rbbi.clrBack);
+		XST_mPV( 6, "-image");
+		XST_mIV( 7, rbbi.iImage);
+		XST_mPV( 8, "-child");
+		XST_mIV( 9, (long) rbbi.hwndChild);
+		XST_mPV(10, "-bitmap");
+		XST_mIV(11, (long) rbbi.hbmBack);
+		XST_mPV(12, "-width");
+		XST_mIV(13, rbbi.cx);
+		XST_mPV(14, "-minwidth");
+		XST_mIV(15, rbbi.cxMinChild);
+		XST_mPV(16, "-minheight");
+		XST_mIV(17, rbbi.cyMinChild);
+        XSRETURN(18);
+    } else {
+        XSRETURN_NO;
+    }
+
+    ###########################################################################
+    # (@)METHOD:MinimizeBand(INDEX)
+LRESULT
+MinimizeBand(handle,index)
+    HWND handle
+    UINT index
+CODE:
+    RETVAL = SendMessage(handle, RB_MINIMIZEBAND, (WPARAM) index, 0);
+OUTPUT:
+    RETVAL
+
+    ###########################################################################
+    # (@)METHOD:MaximizeBand(INDEX, [FLAG])
+LRESULT
+MaximizeBand(handle,index,flag=0)
+    HWND handle
+    UINT index
+    BOOL flag
+CODE:
+    RETVAL = SendMessage(handle, RB_MAXIMIZEBAND, (WPARAM) index, (LPARAM) flag);
+OUTPUT:
+    RETVAL
+
+
+    # TODO: ChangeBand
 
 
     ###########################################################################

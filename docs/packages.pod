@@ -1,21 +1,46 @@
 =head1 Win32::GUI packages
 
-=over 4
-
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Animation
 
 =for HTML </TT><BLOCKQUOTE>
 
+The Animation control displays an AVI animation.
+To load an AVI file you can use the L<Open()|methods/Open()> method; 
+you can then use L<Play()|methods/Play()> to start the animation
+(note it will start automatically with the -autoplay option),
+L<Stop()|methods/Stop()> to stop it
+and L<Seek()|methods/Seek()> to position it to a specified frame.
 
 
 
-B<Available options>: L<-autoplay|options/_autoplay_0_1>, L<-center|options/_center_0_1>, L<-transparent|options/_transparent_0_1>
+
+
+B<Options>: L<-autoplay|options/_autoplay_0_1>, L<-center|options/_center_0_1>, L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>, L<-transparent|options/_transparent_0_1>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Close|methods/Close_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<Move|methods/Move_X_Y_>, L<Open|methods/Open_FILE_>, L<Play|methods/Play_FROM_TO_REPEAT_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>, L<Seek|methods/Seek_FRAME_>, L<Stop|methods/Stop_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 Button
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+
+B<Options>: L<-align|options/_align_left_center_right>, L<-bitmap|options/-bitmap>, L<-cancel|options/_cancel_0_1>, L<-default|options/_default_0_1>, L<-icon|options/-icon>, L<-name|options/_name_STRING>, L<-ok|options/_ok_0_1>, L<-picture|options/-picture>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>, L<-valign|options/_valign_top_center_bottom>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<Move|methods/Move_X_Y_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 Checkbox
 
@@ -25,9 +50,14 @@ x
 
 
 
+
+B<Options>: L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<Move|methods/Move_X_Y_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>
+
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Class
 
@@ -37,9 +67,13 @@ x
 
 
 
+B<Options>: L<-name|options/_name_STRING>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetWindowRect|methods/GetWindowRect_>
+
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Combobox
 
@@ -49,9 +83,14 @@ x
 
 
 
+
+B<Options>: L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<Add|methods/Add_STRING_STRING_STRING_>, L<AddString|methods/AddString_STRING_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Count|methods/Count_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<FindString|methods/FindString_STRING_INDEX_>, L<FindStringExact|methods/FindStringExact_STRING_INDEX_>, L<FirstVisibleItem|methods/FirstVisibleItem_INDEX_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<Move|methods/Move_X_Y_>, L<Reset|methods/Reset_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>, L<SelectedItem|methods/SelectedItem_>
+
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 ComboboxEx
 
@@ -61,9 +100,14 @@ x
 
 
 
+
+B<Options>: L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<Move|methods/Move_X_Y_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>
+
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 DateTime
 
@@ -73,9 +117,14 @@ x
 
 
 
+
+B<Options>: L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<Move|methods/Move_X_Y_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>
+
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 DialogBox
 
@@ -87,11 +136,14 @@ interprets tab/enter/esc).
 
 
 
-B<Available options>: L<-text|options/_text_STRING>, L<-caption|options/-caption>, L<-title|options/_title_STRING>, L<-left|options/-left>, L<-top|options/-top>, L<-width|options/-width>, L<-height|options/-height>, L<-menu|options/-menu>, L<-font|options/-font>, L<-foreground|options/-foreground>, L<-background|options/-background>, L<-hscroll|options/-hscroll>, L<-vscroll|options/-vscroll>, L<-size|options/-size>, L<-pos|options/-pos>, L<-minsize|options/_minsize_X_Y_>, L<-maxsize|options/_maxsize_X_Y_>, L<-minwidth|options/-minwidth>, L<-minheight|options/-minheight>, L<-maxwidth|options/-maxwidth>, L<-maxheight|options/-maxheight>, L<-topmost|options/_topmost_0_1>, L<-maximizebox|options/-maximizebox>, L<-minimizebox|options/-minimizebox>, L<-sizable|options/-sizable>, L<-sysmenu|options/-sysmenu>, L<-accel|options/-accel>, L<-accelerators|options/-accelerators>, L<-acceleratortable|options/-acceleratortable>
+
+B<Options>: L<-accel|options/-accel>, L<-accelerators|options/-accelerators>, L<-acceleratortable|options/-acceleratortable>, L<-background|options/-background>, L<-caption|options/-caption>, L<-font|options/-font>, L<-foreground|options/-foreground>, L<-height|options/-height>, L<-hscroll|options/-hscroll>, L<-left|options/-left>, L<-maxheight|options/-maxheight>, L<-maximizebox|options/-maximizebox>, L<-maxsize|options/_maxsize_X_Y_>, L<-maxwidth|options/-maxwidth>, L<-menu|options/-menu>, L<-minheight|options/-minheight>, L<-minimizebox|options/-minimizebox>, L<-minsize|options/_minsize_X_Y_>, L<-minwidth|options/-minwidth>, L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-sizable|options/-sizable>, L<-size|options/_size_X_Y_>, L<-sysmenu|options/-sysmenu>, L<-text|options/_text_STRING>, L<-title|options/_title_STRING>, L<-top|options/-top>, L<-topmost|options/_topmost_0_1>, L<-vscroll|options/-vscroll>, L<-width|options/-width>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<BringWindowToTop|methods/BringWindowToTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<ChangeIcon|methods/ChangeIcon_ICON_>, L<ChangeSmallIcon|methods/ChangeSmallIcon_ICON_>, L<CloseWindow|methods/CloseWindow_>, L<Disable|methods/Disable_>, L<DrawMenuBar|methods/DrawMenuBar_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetMenu|methods/GetMenu_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsIconic|methods/IsIconic_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<IsZoomed|methods/IsZoomed_>, L<Move|methods/Move_X_Y_>, L<OpenIcon|methods/OpenIcon_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Graphic
 
@@ -101,9 +153,14 @@ x
 
 
 
+
+B<Options>: L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<Move|methods/Move_X_Y_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>
+
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Groupbox
 
@@ -113,9 +170,14 @@ x
 
 
 
+
+B<Options>: L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<Move|methods/Move_X_Y_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>
+
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Header
 
@@ -125,9 +187,31 @@ x
 
 
 
+
+B<Options>: L<-buttons|options/_buttons_0_1>, L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<Move|methods/Move_X_Y_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>
+
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 Label
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+
+B<Options>: L<-align|options/_align_left_center_right>, L<-bitmap|options/-bitmap>, L<-fill|options/_fill_black_gray_white_none>, L<-frame|options/-frame>, L<-name|options/_name_STRING>, L<-notify|options/_notify_0_1>, L<-picture|options/-picture>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-sunken|options/_sunken_0_1>, L<-text|options/_text_STRING>, L<-truncate|options/_truncate_0_1_word_path>, L<-wrap|options/_wrap_0_1>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<Move|methods/Move_X_Y_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 ListView
 
@@ -137,22 +221,49 @@ x
 
 
 
+
+B<Options>: L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<Arrange|methods/Arrange_FLAG_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<EnsureVisible|methods/EnsureVisible_ITEM_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetStringWidth|methods/GetStringWidth_STRING_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<HitTest|methods/HitTest_X_Y_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<ItemCheck|methods/ItemCheck_ITEM_VALUE_>, L<ItemPosition|methods/ItemPosition_INDEX_X_Y_>, L<Move|methods/Move_X_Y_>, L<MoveItem|methods/MoveItem_INDEX_X_Y_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>, L<SelectCount|methods/SelectCount_>, L<View|methods/View_MODE_>, L<VisibleCount|methods/VisibleCount_>
+
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 Listbox
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+
+B<Options>: L<-multisel|options/_multisel_0_1_2>, L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-sort|options/-sort>, L<-text|options/_text_STRING>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<Add|methods/Add_STRING_STRING_STRING_>, L<AddString|methods/AddString_STRING_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Count|methods/Count_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<FindString|methods/FindString_STRING_INDEX_>, L<FindStringExact|methods/FindStringExact_STRING_INDEX_>, L<FirstVisibleItem|methods/FirstVisibleItem_INDEX_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<ItemFromPoint|methods/ItemFromPoint_X_Y_>, L<Move|methods/Move_X_Y_>, L<Reset|methods/Reset_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>, L<SelectCount|methods/SelectCount_>, L<SelectedItem|methods/SelectedItem_>, L<SelectString|methods/SelectString_STRING_INDEX_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 ProgressBar
 
 =for HTML </TT><BLOCKQUOTE>
 
+x
 
 
 
-B<Available options>: L<-smooth|options/_smooth_0_1>, L<-vertical|options/-vertical>
+
+
+B<Options>: L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-smooth|options/_smooth_0_1>, L<-text|options/_text_STRING>, L<-vertical|options/-vertical>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<Move|methods/Move_X_Y_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>, L<SetRange|methods/SetRange_MIN_MAX_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 RadioButton
 
@@ -162,9 +273,14 @@ x
 
 
 
+
+B<Options>: L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>, L<-valign|options/_valign_top_center_bottom>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<Move|methods/Move_X_Y_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>
+
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Rebar
 
@@ -174,9 +290,31 @@ x
 
 
 
+
+B<Options>: L<-bandborders|options/_bandborders_0_1>, L<-fixedorder|options/_fixedorder_0_1>, L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<BandCount|methods/BandCount_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<DeleteBand|methods/DeleteBand_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<InsertBand|methods/InsertBand_OPTIONS_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<Move|methods/Move_X_Y_>, L<RowCount|methods/RowCount_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>
+
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 RichEdit
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+
+B<Options>: L<-align|options/_align_left_center_right>, L<-autohscroll|options/-autohscroll>, L<-autovscroll|options/-autovscroll>, L<-keepselection|options/-keepselection>, L<-lowercase|options/-lowercase>, L<-multiline|options/_multiline_0_1>, L<-name|options/_name_STRING>, L<-number|options/-number>, L<-password|options/_password_0_1>, L<-passwordchar|options/_passwordchar_CHAR>, L<-pos|options/_pos_X_Y_>, L<-prompt|options/_prompt_STRING_or_STRING_W>, L<-readonly|options/_readonly_0_1>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>, L<-uppercase|options/-uppercase>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<BackColor|methods/BackColor_COLOR_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<LineFromChar|methods/LineFromChar_INDEX_>, L<Load|methods/Load_FILENAME_FORMAT_>, L<MaxLength|methods/MaxLength_CHARS_>, L<Modified|methods/Modified_FLAG_>, L<Move|methods/Move_X_Y_>, L<PasswordChar|methods/PasswordChar_CHAR_>, L<ReadOnly|methods/ReadOnly_FLAG_>, L<ReplaceSel|methods/ReplaceSel_STRING_FLAG_>, L<Save|methods/Save_FILENAME_FORMAT_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>, L<Scroll|methods/Scroll_COMMAND_LINE_HORIZON>, L<SelectAll|methods/SelectAll_>, L<Selection|methods/Selection_>, L<Undo|methods/Undo_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 Slider
 
@@ -186,9 +324,14 @@ x
 
 
 
+
+B<Options>: L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<Move|methods/Move_X_Y_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>
+
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Splitter
 
@@ -198,9 +341,14 @@ x
 
 
 
+
+B<Options>: L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<Move|methods/Move_X_Y_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>
+
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 StatusBar
 
@@ -210,9 +358,48 @@ x
 
 
 
+
+B<Options>: L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<Move|methods/Move_X_Y_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>
+
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
+
+=head2 TabStrip
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+
+B<Options>: L<-bottom|options/-bottom>, L<-buttons|options/_buttons_0_1>, L<-flat|options/-flat>, L<-hottrack|options/-hottrack>, L<-imagelist|options/-imagelist>, L<-justify|options/-justify>, L<-multiline|options/_multiline_0_1>, L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-right|options/-right>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>, L<-vertical|options/-vertical>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<Move|methods/Move_X_Y_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 Textfield
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+
+B<Options>: L<-align|options/_align_left_center_right>, L<-autohscroll|options/-autohscroll>, L<-autovscroll|options/-autovscroll>, L<-keepselection|options/-keepselection>, L<-lowercase|options/-lowercase>, L<-multiline|options/_multiline_0_1>, L<-name|options/_name_STRING>, L<-number|options/-number>, L<-password|options/_password_0_1>, L<-passwordchar|options/_passwordchar_CHAR>, L<-pos|options/_pos_X_Y_>, L<-prompt|options/_prompt_STRING_or_STRING_W>, L<-readonly|options/_readonly_0_1>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>, L<-uppercase|options/-uppercase>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<LineFromChar|methods/LineFromChar_INDEX_>, L<MaxLength|methods/MaxLength_CHARS_>, L<Modified|methods/Modified_FLAG_>, L<Move|methods/Move_X_Y_>, L<PasswordChar|methods/PasswordChar_CHAR_>, L<ReadOnly|methods/ReadOnly_FLAG_>, L<ReplaceSel|methods/ReplaceSel_STRING_FLAG_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>, L<Scroll|methods/Scroll_COMMAND_LINE_HORIZON>, L<SelectAll|methods/SelectAll_>, L<Selection|methods/Selection_>, L<Undo|methods/Undo_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
 
 =head2 Timer
 
@@ -255,16 +442,18 @@ Example:
 		print "one second passed.\n";
 	}
 
-=METHODS Interval(), Kill()
-
-=EVENTS Timer()
 
 
 
+
+
+B<Methods>: L<Interval|methods/Interval_ELAPSE_>, L<Kill|methods/Kill_>
+
+B<Events>: L<Timer|events/Timer_>
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Toolbar
 
@@ -274,9 +463,14 @@ x
 
 
 
+
+B<Options>: L<-name|options/_name_STRING>, L<-text|options/_text_STRING>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<Move|methods/Move_X_Y_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>
+
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Tooltip
 
@@ -288,7 +482,7 @@ x
 
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 TreeView
 
@@ -298,9 +492,14 @@ x
 
 
 
+
+B<Options>: L<-buttons|options/_buttons_0_1>, L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<EnsureVisible|methods/EnsureVisible_ITEM_FLAG_>, L<Expand|methods/Expand_NODE_FLAG_>, L<FirstVisible|methods/FirstVisible_NODE_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetLastVisible|methods/GetLastVisible_>, L<GetNextVisible|methods/GetNextVisible_NODE_>, L<GetPrevVisible|methods/GetPrevVisible_NODE_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<HitTest|methods/HitTest_X_Y_>, L<Indent|methods/Indent_VALUE_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<ItemCheck|methods/ItemCheck_ITEM_VALUE_>, L<Move|methods/Move_X_Y_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>, L<VisibleCount|methods/VisibleCount_>
+
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 UpDown
 
@@ -310,9 +509,14 @@ x
 
 
 
+
+B<Options>: L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-size|options/_size_X_Y_>, L<-text|options/_text_STRING>, L<-wrap|options/_wrap_0_1>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<Disable|methods/Disable_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<Move|methods/Move_X_Y_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>
+
 =for HTML </BLOCKQUOTE>
 
-=for HTML <HR><TT>
+=for HTML <TT>
 
 =head2 Window
 
@@ -322,9 +526,10 @@ This is the main container of a regular GUI; also known as "top level window".
 
 
 
-B<Available options>: L<-text|options/_text_STRING>, L<-caption|options/-caption>, L<-title|options/_title_STRING>, L<-left|options/-left>, L<-top|options/-top>, L<-width|options/-width>, L<-height|options/-height>, L<-menu|options/-menu>, L<-font|options/-font>, L<-foreground|options/-foreground>, L<-background|options/-background>, L<-hscroll|options/-hscroll>, L<-vscroll|options/-vscroll>, L<-size|options/-size>, L<-pos|options/-pos>, L<-minsize|options/_minsize_X_Y_>, L<-maxsize|options/_maxsize_X_Y_>, L<-minwidth|options/-minwidth>, L<-minheight|options/-minheight>, L<-maxwidth|options/-maxwidth>, L<-maxheight|options/-maxheight>, L<-topmost|options/_topmost_0_1>, L<-maximizebox|options/-maximizebox>, L<-minimizebox|options/-minimizebox>, L<-sizable|options/-sizable>, L<-sysmenu|options/-sysmenu>, L<-accel|options/-accel>, L<-accelerators|options/-accelerators>, L<-acceleratortable|options/-acceleratortable>
+
+B<Options>: L<-accel|options/-accel>, L<-accelerators|options/-accelerators>, L<-acceleratortable|options/-acceleratortable>, L<-background|options/-background>, L<-caption|options/-caption>, L<-font|options/-font>, L<-foreground|options/-foreground>, L<-height|options/-height>, L<-hscroll|options/-hscroll>, L<-left|options/-left>, L<-maxheight|options/-maxheight>, L<-maximizebox|options/-maximizebox>, L<-maxsize|options/_maxsize_X_Y_>, L<-maxwidth|options/-maxwidth>, L<-menu|options/-menu>, L<-minheight|options/-minheight>, L<-minimizebox|options/-minimizebox>, L<-minsize|options/_minsize_X_Y_>, L<-minwidth|options/-minwidth>, L<-name|options/_name_STRING>, L<-pos|options/_pos_X_Y_>, L<-sizable|options/-sizable>, L<-size|options/_size_X_Y_>, L<-sysmenu|options/-sysmenu>, L<-text|options/_text_STRING>, L<-title|options/_title_STRING>, L<-top|options/-top>, L<-topmost|options/_topmost_0_1>, L<-vscroll|options/-vscroll>, L<-width|options/-width>
+
+B<Methods>: L<AbsLeft|methods/AbsLeft_>, L<AbsTop|methods/AbsTop_>, L<BringWindowToTop|methods/BringWindowToTop_>, L<ChangeCursor|methods/ChangeCursor_CURSOR_>, L<ChangeIcon|methods/ChangeIcon_ICON_>, L<ChangeSmallIcon|methods/ChangeSmallIcon_ICON_>, L<CloseWindow|methods/CloseWindow_>, L<Disable|methods/Disable_>, L<DrawMenuBar|methods/DrawMenuBar_>, L<Enable|methods/Enable_FLAG_>, L<GetClassName|methods/GetClassName_>, L<GetClientRect|methods/GetClientRect_>, L<GetFont|methods/GetFont_FONT_>, L<GetFontName|methods/GetFontName_>, L<GetMenu|methods/GetMenu_>, L<GetTextExtentPoint32|methods/GetTextExtentPoint32_STRING_F>, L<GetWindowRect|methods/GetWindowRect_>, L<IsEnabled|methods/IsEnabled_>, L<IsIconic|methods/IsIconic_>, L<IsVisible|methods/IsVisible_>, L<IsWindow|methods/IsWindow_>, L<IsZoomed|methods/IsZoomed_>, L<Move|methods/Move_X_Y_>, L<OpenIcon|methods/OpenIcon_>, L<ScaleHeight|methods/ScaleHeight_>, L<ScaleWidth|methods/ScaleWidth_>
 
 =for HTML </BLOCKQUOTE>
-
-=back
 
