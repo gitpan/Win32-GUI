@@ -5,7 +5,7 @@
 #
 # 29 Jan 1997 by Aldo Calpini <dada@perl.it>
 #
-# Version: 0.99_1 (2 Oct 2004)
+# Version: 1.0 (12 Nov 2004)
 #
 # Copyright (c) 1997..2004 Aldo Calpini. All rights reserved.
 # This program is free software; you can redistribute it and/or

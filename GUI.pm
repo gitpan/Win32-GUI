@@ -4,13 +4,13 @@
 #
 # 29 Jan 1997 by Aldo Calpini <dada@perl.it>
 #
-# Version: 0.99_1 (2 Oct 2004)
+# Version: 1.0 (12 Nov 2004)
 #
 # Copyright (c) 1997..2004 Aldo Calpini. All rights reserved.
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: GUI.pm,v 1.24 2004/10/02 12:47:51 lrocher Exp $
+# $Id: GUI.pm,v 1.25 2004/11/12 15:58:50 lrocher Exp $
 #
 ###############################################################################
 package Win32::GUI;
@@ -24,7 +24,7 @@ require DynaLoader;     # to dynuhlode the module.
 ###############################################################################
 # STATIC OBJECT PROPERTIES
 #
-$VERSION             = "0.99_1";
+$VERSION             = "1.0";
 $MenuIdCounter       = 1;
 $TimerIdCounter      = 1;
 $NotifyIconIdCounter = 1;

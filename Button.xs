@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Button
     #
-    # $Id: Button.xs,v 1.3 2004/04/17 08:34:09 lrocher Exp $
+    # $Id: Button.xs,v 1.5 2004/10/08 17:40:13 lrocher Exp $
     #
     ###########################################################################
     */
@@ -22,17 +22,15 @@ Button_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATESTR
     BOOL retval = TRUE;
 
     if(strcmp(option, "-align") == 0) {
+        // BS_CENTER is BS_LEFT | BS_RIGHT
         if(strcmp(SvPV_nolen(value), "left") == 0) {
+            SwitchBit(perlcs->cs.style, BS_RIGHT, 0);
             SwitchBit(perlcs->cs.style, BS_LEFT, 1);
-            SwitchBit(perlcs->cs.style, BS_CENTER, 0);
-            SwitchBit(perlcs->cs.style, BS_RIGHT, 0);
         } else if(strcmp(SvPV_nolen(value), "center") == 0) {
-            SwitchBit(perlcs->cs.style, BS_LEFT, 0);
-            SwitchBit(perlcs->cs.style, BS_CENTER, 1);
-            SwitchBit(perlcs->cs.style, BS_RIGHT, 0);
+            SwitchBit(perlcs->cs.style, BS_LEFT,  1);
+            SwitchBit(perlcs->cs.style, BS_RIGHT, 1);
         } else if(strcmp(SvPV_nolen(value), "right") == 0) {
             SwitchBit(perlcs->cs.style, BS_LEFT, 0);
-            SwitchBit(perlcs->cs.style, BS_CENTER, 0);
             SwitchBit(perlcs->cs.style, BS_RIGHT, 1);
         } else {
             if(PL_dowarn) warn("Win32::GUI: Invalid value for -align!");

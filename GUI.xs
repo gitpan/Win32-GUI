@@ -5,13 +5,13 @@
 #
 # 29 Jan 1997 by Aldo Calpini <dada@perl.it>
 #
-# Version: 0.99_1 (2 Oct 2004)
+# Version: 1.0 (12 Nov 2004)
 #
 # Copyright (c) 1997..2004 Aldo Calpini. All rights reserved.
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: GUI.xs,v 1.26 2004/10/02 12:47:52 lrocher Exp $
+# $Id: GUI.xs,v 1.29 2004/11/12 15:58:51 lrocher Exp $
 #
 ###############################################################################
  */
@@ -157,6 +157,7 @@ PPCODE:
     }
     if(perlud->hvEvents == NULL) XSRETURN_UNDEF;
 
+    perlcs.iClass = perlud->iClass;
     perlcs.hvEvents = perlud->hvEvents;
     perlcs.dwEventMask = perlud->dwEventMask;
 
@@ -4011,7 +4012,8 @@ OUTPUT:
     #  MB_ICONQUESTION : Play SystemQuestion sound.
     #  0xFFFFFFFF Play Standard beep using the computer speaker 
 
-BOOL MessageBeep(type=MB_OK)
+BOOL 
+MessageBeep(type=MB_OK)
     UINT type
 CODE:
     RETVAL = MessageBeep(type);

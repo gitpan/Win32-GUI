@@ -1,10 +1,24 @@
 ###############################################################################
 # CHANGELOG
-# $Id: CHANGELOG,v 1.33 2004/10/02 12:47:51 lrocher Exp $
+# $Id: CHANGELOG,v 1.36 2004/11/12 15:58:50 lrocher Exp $
 ###############################################################################
 
 Win32-GUI ChangeLog
 ===================
+
++ [Laurent Rocher] :
+    - GUI.pm, GUI.xs, Readme.txt, Readme
+        + VERSION 1.0
+
++ [Jeremy White] :
+    - GUI.xs :
+        + Fix SetEvent
+        
++ [Laurent Rocher] :
+    - GUI.xs :
+        + Fix MessageBeep XS interface.
+    - Button.xs 
+        + Fix -align option
 
 + [Laurent Rocher] :
     - Readme.txt, readme, GUI.pm, GUI.xs
