@@ -1,0 +1,16 @@
+testing/.*
+dodoc/.*
+blib/.*
+old/.*
+tmp/.*
+.*\.bat$
+.*\.bak$
+.*\.zip$
+.*\.ppd$
+.*\.gz$
+MANIFEST\.good
+MANIFEST\.SKIP
+Makefile\.old
+GUI_def\.old
+.*PPM\.LOG$
+pod2html-.*cache

@@ -1,6 +1,6 @@
 =head2 Win32::GUI General Concepts
 
-L<Back to the index|gui/>
+L<Back to the index|GUI/>
 
 =head3 Packages
 
@@ -23,7 +23,7 @@ a fully qualified call including the package name:
 
     ($x, $y) = Win32::GUI::GetCursorPos();
 
-L<Windows> are the well known windows that you see on 
+L<Windows|Window/> are the well known windows that you see on 
 your screen; your script will probably generate one
 or more window that contain your user interface;
 this content is usually made up of L<Controls> (eg.

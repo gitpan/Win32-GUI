@@ -1,7 +1,7 @@
 
 =head2 Win32::GUI Common Options
 
-L<Back to the index|gui/>
+L<Back to the index|GUI/>
 
 This document illustrates the options available when creating
 an object (in particular, windows and controls).
@@ -41,7 +41,7 @@ to create a control which is initially disabled.
 
 =head4 -font => FONT
 
-Defines the font for the control; must be a Win32::GUI::Font
+Defines the font for the control; must be a L<Win32::GUI::Font|Font/>
 object.
 
 =head4 -foreground => COLOR

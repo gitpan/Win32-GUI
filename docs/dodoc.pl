@@ -4,10 +4,38 @@ use Pod::Html;
 
 my %METHOD;
 my %EVENT;
-my $DEBUG = 0;
+my $DEBUG = 1;
 
-Parse("../GUI.xs");
 Parse("../GUI.pm");
+Parse("../Animation.xs");
+Parse("../Bitmap.xs");
+Parse("../Button.xs");
+Parse("../Combobox.xs");
+Parse("../DateTime.xs");
+Parse("../DC.xs");
+Parse("../Font.xs");
+Parse("../GUI.xs");
+Parse("../Header.xs");
+Parse("../ImageList.xs");
+Parse("../Label.xs");
+Parse("../Listbox.xs");
+Parse("../ListView.xs");
+Parse("../MDI.xs");
+Parse("../MonthCal.xs");
+Parse("../NotifyIcon.xs");
+Parse("../Rebar.xs");
+Parse("../RichEdit.xs");
+Parse("../Splitter.xs");
+Parse("../StatusBar.xs");
+Parse("../TabStrip.xs");
+Parse("../Textfield.xs");
+Parse("../Toolbar.xs");
+Parse("../ToolTip.xs");
+Parse("../Trackbar.xs");
+Parse("../Treeview.xs");
+Parse("../UpDown.xs");
+Parse("../Window.xs");
+Parse("../GUI_MessageLoops.cpp");
 
 if($ARGV[0] eq "-u") {
     TbdOutput();
@@ -32,13 +60,21 @@ sub Parse {
     my @packages;
     my $p;
 
+    print "Parse file: '$file'\n" if $DEBUG == 1;
+
     open(FILE, "<$file") or die;
     while(<FILE>) {
         if($method) {
-            if(s/^\s*#\s?//) {
-                $METHOD{$package}{$method} .= $_;            
+	        if(/\(\@\)METHOD:\s*(.*\S)\s*/) {
+	            $methodname = $1;
+                    ($p = $methodname) =~ s/\(.*//;
+                    $METHOD{$package}{$method} .= "See $methodname";
+                    $method = 0;
+	        } elsif(s/^\s*#\s?//) {
+                    $_ = "\n" unless (length($_));
+                    $METHOD{$package}{$method} .= $_;
             } else {
-                $method = 0;           
+                    $method = 0;
             }
         }
         if($event) {
@@ -60,7 +96,7 @@ sub Parse {
                     $thisevent .= $_;
                 }
             } else {
-                $event = 0;         
+                $event = 0;
                 $thisevent = "";
             }
         }
@@ -69,8 +105,8 @@ sub Parse {
             print "Found package: '$package'\n" if $DEBUG == 1;
             $METHOD{$package} = {} unless exists($METHOD{$package});
         }
-        if(/\(\@\)EVENT:\s*(.*\S)\s*/) {        
-            $event = $1;        
+        if(/\(\@\)EVENT:\s*(.*\S)\s*/) {
+            $event = $1;
             print "Found event: '$event'\n" if $DEBUG == 1;
 
         }
@@ -110,7 +146,7 @@ sub TxtOutput {
 ###############################################################################
 
 sub newfirst {
-    return ($a =~ /^new/) ? -1 : 
+    return ($a =~ /^new/) ? -1 :
            ($b =~ /^new/) ? 1 : uc($a) cmp uc($b);
 }
 
@@ -154,7 +190,7 @@ sub HtmlOutput {
                 $newdone = 1;
             }
             ($syntax, $content) = split(/;;;/, $METHOD{$pak}{$sub});
-            print HTML HtmlList("#m_".$sub, $syntax);        
+            print HTML HtmlList("#m_".$sub, $syntax);
             $nofmethods++;
             $nofumethods++ if $content eq "";
             if($METHOD{$pak}{$sub} =~ /^new/) {
@@ -270,22 +306,24 @@ sub PodOutput {
     my $nofevents = 0;
     my $nofuevents = 0;
 
+    mkdir './pod';
+
     foreach $pak (sort keys %METHOD) {
         $page = PodPage($pak);
         open(POD, ">$page") or warn "$0: can't open $page for writing: $!";
-        print POD "=head2 Package $pak\n\n";
+        print POD "=head1 Package $pak\n\n";
         print POD "L<Back to the Packages|guipacks/>\n\n";
         $newdone = 0;
         print POD "=over\n\n";
         foreach $sub (sort newfirst keys %{$METHOD{$pak}}) {
             if(!$newdone) {
                 if($METHOD{$pak}{$sub} =~ /^new/) {
-                    print POD "=item *\n\nL<Constructor>\n\n=over\n\n";
+                    print POD "=item * L<Constructor|/Constructor>\n\n=over\n\n";
                 } else {
-                    print POD "=item *\n\nL<Methods>\n\n=over\n\n";
+                    print POD "=item * L<Methods|/Methods>\n\n=over\n\n";
                 }
             } elsif($newdone == 2) {
-                print POD "=back\n\n=item *\n\nL<Methods>\n\n=over\n\n";
+                print POD "=back\n\n=item * L<Methods|/Methods>\n\n=over\n\n";
                 $newdone = 1;
             }
             ($syntax, $content) = split(/;;;/, $METHOD{$pak}{$sub});
@@ -296,14 +334,14 @@ sub PodOutput {
             }
             ($syntax, $content) = split(/;;;/, $METHOD{$pak}{$sub});
             ($subname = $syntax) =~ s/\|/&#124;/g;
-            print POD "=item *\n\nL<$subname|/".htmlify(0, $syntax).">\n\n";
+            print POD "=item * L<$subname|/".htmlify($syntax).">\n\n";
         }
         if(keys %{$EVENT{$pak}} > 0) {
-            print POD "=back\n\n=item *\n\nL<Events>\n\n=over\n\n";
+            print POD "=back\n\n=item * L<Events|/Events>\n\n=over\n\n";
             foreach $sub (sort keys %{$EVENT{$pak}}) {
                 $subname = $sub;
                 $subname =~ s/\(.*$//;
-                print POD "=item *\n\nL<$sub|/".htmlify(0, $sub).">\n\n";
+                print POD "=item * L<$sub|/".htmlify($sub).">\n\n";
             }
         }
         print POD "=back\n\n=back\n\n";
@@ -311,12 +349,12 @@ sub PodOutput {
         foreach $sub (sort newfirst keys %{$METHOD{$pak}}) {
             if(!$newdone) {
                 if($METHOD{$pak}{$sub} =~ /^new/) {
-                    print POD "=head3 Constructor\n\n=over 4\n\n";
+                    print POD "=head2 Constructor\n\n=over 4\n\n";
                 } else {
-                    print POD "=head3 Methods\n\n=over 4\n\n";
+                    print POD "=head2 Methods\n\n=over 4\n\n";
                 }
             } elsif($newdone == 2) {
-                print POD "=back\n\n=head3 Methods\n\n=over 4\n\n";
+                print POD "=back\n\n=head2 Methods\n\n=over 4\n\n";
                 $newdone = 1;
             }
             ($syntax, $content) = split(/;;;/, $METHOD{$pak}{$sub});
@@ -330,18 +368,18 @@ sub PodOutput {
             print "METHOD<$pak><$sub>\n" if $DEBUG == 1;
             ($syntax, $content) = split(/;;;/, $METHOD{$pak}{$sub});
             print POD PodDefinition($pak, $syntax, $content);
-            #print POD "=head4 $syntax\n\n";
+            #print POD "=head3 $syntax\n\n";
             #print POD "$content\n\n";
         }
         if(keys %{$EVENT{$pak}} > 0) {
-            print POD "=back\n\n=head3 Events\n\n=over 4\n\n";
+            print POD "=back\n\n=head2 Events\n\n=over 4\n\n";
         }
         foreach $sub (sort keys %{$EVENT{$pak}}) {
             $subname = $sub;
             $subname =~ s/\(.*$//;
             print POD PodDefinition($pak, $sub, $EVENT{$pak}{$sub});
-            #print POD "=head4 $sub\n\n";
-            #print POD "$EVENT{$pak}{$sub}\n\n";            
+            #print POD "=head3 $sub\n\n";
+            #print POD "$EVENT{$pak}{$sub}\n\n";
         }
         print POD "=back\n\n=cut\n";
         close(POD);
@@ -349,14 +387,14 @@ sub PodOutput {
     }
 
     open(INDEX, ">pod/guipacks.pod") or warn "$0: can't open guipacks.pod for writing!";
-    print INDEX "=head2 Win32::GUI Packages\n\n";
-    print INDEX "L<Back to the index|gui/>\n\n";
-    print INDEX "=head3 Packages\n\n=over\n\n";
+    print INDEX "=head1 Win32::GUI Packages\n\n";
+    print INDEX "L<Back to the index|GUI/>\n\n";
+    print INDEX "=head2 Packages\n\n=over\n\n";
     foreach $pak (sort keys %METHOD) {
         $page = PodPage($pak);
         $page =~ s/\.pod//;
-		$page =~ s/^pod\///;
-        print INDEX "=item *\n\nL<$pak|$page/>\n\n";
+        $page =~ s/^pod\///;
+        print INDEX "=item * L<$pak|$page/>\n\n";
     }
     print INDEX "=back\n\n=cut\n";
     close(INDEX);
@@ -391,15 +429,16 @@ sub PodDefinition {
     #$definition =~ s/\n(\S.*)\n/\n$1\n\n/g;
     #$definition =~ s/\n(\s.*)\n(\S)/\n\n$1\n\n$2/g;
     $definition =~ s
-        [(see\s*)(also)?(\s*)(.*\(\))]
+        [(see\s*)(also)?(\s*)(.*\(.*\))]
         [$1.$2.$3.' '.PodInternalLink($package, $4)]gie;
     if($definition eq "") {
         # print "TBD: ${package}::${term}\n";
         $definition = "[TBD]\n\n";
     }
-    
-    return 
-    "=for html <A NAME=\"".htmlify(0, $term)."\">\n\n"
+    my $url = htmlify($term);
+    $url =~ s/ /_/g;
+    return
+    "=for html <A NAME=\"".$url."\">\n\n"
     .
     "=item $term\n\n$definition\n\n"
     .
@@ -430,7 +469,7 @@ sub PodInternalLink {
                 my $page = PodPage($pak);
                 $page =~ s/\.pod//;
                 $page =~ s/^pod\///;
-				return "L<$link|".$page."/$name>";
+                return "L<$link|".$page."/$name>";
             }
         }
     }
@@ -441,7 +480,7 @@ sub PodInternalLink {
 sub PodLinkSyntax {
     my($package, $name) = @_;
     my ($syntax, $content) = split(/;;;/, $METHOD{$package}{$name});
-    return htmlify(0, $syntax);
+    return htmlify($syntax);
 }
 
 sub PodOutput_OLD {
@@ -485,14 +524,14 @@ sub PodOutput_OLD {
             }
             ($syntax, $content) = split(/;;;/, $METHOD{$pak}{$sub});
             ($subname = $syntax) =~ s/\|/&#124;/g;
-            print POD "=item *\n\nL<$subname|/".htmlify(0, $syntax).">\n\n";
+            print POD "=item *\n\nL<$subname|/".htmlify($syntax).">\n\n";
         }
         if(keys %{$EVENT{$pak}} > 0) {
             print POD "=back\n\n=item *\n\nL<Events>\n\n=over\n\n";
             foreach $sub (sort keys %{$EVENT{$pak}}) {
                 $subname = $sub;
                 $subname =~ s/\(.*$//;
-                print POD "=item *\n\nL<$sub|/".htmlify(0, $sub).">\n\n";
+                print POD "=item *\n\nL<$sub|/".htmlify($sub).">\n\n";
             }
         }
         print POD "=back\n\n=back\n\n";
@@ -529,7 +568,7 @@ sub PodOutput_OLD {
             $subname = $sub;
             $subname =~ s/\(.*$//;
             print POD "=head4 $sub\n\n";
-            print POD "$EVENT{$pak}{$sub}\n\n";            
+            print POD "$EVENT{$pak}{$sub}\n\n";
         }
         print POD "=cut\n";
         close(POD);
@@ -538,7 +577,7 @@ sub PodOutput_OLD {
 
     open(INDEX, ">guipacks.pod") or warn "$0: can't open guipacks.pod for writing!";
     print INDEX "=head2 Win32::GUI Packages\n\n";
-    print INDEX "L<Back to the index|gui/>\n\n";
+    print INDEX "L<Back to the index|GUI/>\n\n";
     print INDEX "=head3 Packages\n\n=over\n\n";
     foreach $pak (sort keys %METHOD) {
         $page = PodPage($pak);
@@ -575,7 +614,7 @@ sub TbdOutput {
             if($content eq "") {
                 $nofumethods++;
                 print "Method: ${pak}::$sub\n";
-            }            
+            }
         }
         if(keys %{$EVENT{$pak}} > 0) {
             foreach $sub (sort keys %{$EVENT{$pak}}) {

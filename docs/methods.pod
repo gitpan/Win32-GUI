@@ -32,7 +32,7 @@ This method returns -1 on errors.
 
 
 
-B<See also>: L</Top()>
+B<See also>: L<Top()|methods/Top_TOP_>
 
 B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>, L<Tooltip(*)|packages/Tooltip(*)>
 
@@ -605,6 +605,9 @@ or undef on errors.
 
 
 
+
+B<See also>: L<SetCursorPos()|methods/SetCursorPos_X_Y_>
+
 =for HTML </BLOCKQUOTE>
 
 =for HTML <TT>
@@ -884,6 +887,39 @@ B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Che
 
 =for HTML <TT>
 
+=head2 Height( [HEIGHT] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Gets or sets the window height.
+
+
+
+
+
+B<See also>: L</Width>
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 Hide()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Hides a window.
+
+
+
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
 =head2 HitTest( X, Y )
 
 =for HTML </TT><BLOCKQUOTE>
@@ -963,6 +999,28 @@ after a Kill().
 B<See also>: L<Kill()|methods/Kill_>
 
 B<Applies to>: L<Timer|packages/Timer>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 InvalidateRect(...)
+
+=for HTML </TT><BLOCKQUOTE>
+
+Forces a refresh of a window, or a rectangle of it.
+The parameters can be (FLAG) for the whole area of the window,
+or (LEFT, TOP, RIGHT, BOTTOM, [FLAG]) to specify a rectangle.
+If the FLAG parameter is set to TRUE, the background is erased before the
+window is refreshed (this is the default).
+
+
+
+
+
+B<See also>: L<Update()|methods/Update_>
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
@@ -1126,6 +1184,29 @@ Disables the Timer.
 B<See also>: L<Interval()|methods/Interval_ELAPSE_>
 
 B<Applies to>: L<Timer|packages/Timer>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 Left ( [LEFT] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Gets or sets the window X coordinate.
+If the window is a top level window (a L<Window|packages/Window> or a
+L<DialogBox|packages/DialogBox>) the value is relative to the screen (absolute),
+otherwise it is relative to the container of the control.
+To get the absolute (screen position) of a child control, use AbsLeft()
+instead.
+
+
+
+
+
+B<See also>: L<AbsLeft()|methods/AbsLeft_>, L<Top()|methods/Top_TOP_>
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
@@ -1386,6 +1467,21 @@ B<Applies to>: L<Combobox|packages/Combobox>, L<Listbox|packages/Listbox>
 
 =for HTML <TT>
 
+=head2 Resize( X, Y )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Resizes the window to the specified dimension.
+
+
+
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
 =head2 Restore()
 
 =for HTML </TT><BLOCKQUOTE>
@@ -1618,8 +1714,22 @@ instead.
 
 
 
-
 B<See also>: L<ChangeCursor()|methods/ChangeCursor_CURSOR_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 SetCursorPos( X, Y )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Moves the cursor to the specified coordinates.
+
+
+
+
+B<See also>: L<GetCursorPos()|methods/GetCursorPos_>
 
 =for HTML </BLOCKQUOTE>
 
@@ -1636,6 +1746,37 @@ is not specified, it defaults to 0.
 
 
 B<Applies to>: L<ProgressBar|packages/ProgressBar>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 Show( [COMMAND] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Shows a window (or change its showing state to COMMAND); available
+COMMANDs are:
+
+   SW_HIDE
+   SW_MAXIMIZE
+   SW_MINIMIZE
+   SW_RESTORE
+   SW_SHOW
+   SW_SHOWDEFAULT
+   SW_SHOWMAXIMIZED
+   SW_SHOWMINIMIZED
+   SW_SHOWMINNOACTIVE
+   SW_SHOWNA
+   SW_SHOWNOACTIVATE
+   SW_SHOWNORMAL
+
+The default COMMAND, if none specified, is SW_SHOWNORMAL.
+
+
+
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
@@ -1690,6 +1831,29 @@ B<Applies to>: L<DC|packages/DC>
 
 =for HTML <TT>
 
+=head2 Top( [TOP] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Gets or sets the window Y coordinate.
+If the window is a top level window (a L<Window|packages/Window> or a
+L<DialogBox|packages/DialogBox>) the value is relative to the screen (absolute),
+otherwise it is relative to the container of the control.
+To get the absolute (screen position) of a child control, use AbsTop()
+instead.
+
+
+
+
+
+B<See also>: L<AbsTop()|methods/AbsTop_>, L</Left()>
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
 =head2 Undo()
 
 =for HTML </TT><BLOCKQUOTE>
@@ -1700,6 +1864,24 @@ Undoes the last change in the control.
 
 
 B<Applies to>: L<RichEdit|packages/RichEdit>, L<Textfield|packages/Textfield>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 Update()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Refreshes the content of a window.
+
+
+
+
+
+B<See also>: L<InvalidateRect()|methods/InvalidateRect_>
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
 
 =for HTML </BLOCKQUOTE>
 
@@ -1736,7 +1918,38 @@ function always returns the total number of items in the control.
 
 
 
+
 B<Applies to>: L<ListView|packages/ListView>, L<TreeView|packages/TreeView>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 Width( [WIDTH] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Gets or sets the window width.
+
+
+
+
+
+B<See also>: L</Height>
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<ListView|packages/ListView>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <TT>
+
+=head2 WindowFromPoint( X, Y )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the handle of the window at the specified screen position.
+
+
 
 =for HTML </BLOCKQUOTE>
 

@@ -32,16 +32,82 @@ ____EXPLAIN
     }
 }
 
+@subpackages = qw(
+    Animation
+    Bitmap
+    Button
+    Combobox
+    DateTime
+    DC
+    Font
+    Header
+    ImageList
+    Label
+    Listbox
+    ListView
+    MDI
+    MonthCal
+    NotifyIcon
+    ProgressBar
+    Rebar
+    RichEdit
+    Splitter
+    TabStrip
+    Textfield
+    Toolbar
+    Tooltip
+    Trackbar
+    TreeView
+    StatusBar
+    UpDown
+    Window
+);
+
+@c_files = qw(
+    GUI
+    GUI_Constants
+    GUI_Helpers
+    GUI_Options
+    GUI_MessageLoops
+    GUI_Events
+);
+
+$c_ext = ($^O eq "cygwin") ? "c" : "cpp";
+
+@arg_c = ();
+$arg_object = "";
+
+foreach (@c_files) {
+    push( @arg_c, $_ . '.' . $c_ext );
+    $arg_object .= ' ' . $_ . $Config{'obj_ext'};
+}
+
+%arg_xs = ( 'GUI.xs' => 'GUI.' . $c_ext );
+@arg_dl_funcs = ( 'boot_Win32__GUI' );
+foreach (@subpackages) {
+    $arg_xs{$_.'.xs'} = $_ . '.' . $c_ext;
+    push( @arg_c, $_ . '.' . $c_ext );
+    push( @arg_dl_funcs, 'boot_Win32__GUI__' . $_ );
+    $arg_object .= ' ' . $_ . $Config{'obj_ext'};
+}
+
+
 %MakefileArgs = (
     'NAME'         => 'Win32::GUI',
     'VERSION_FROM' => 'GUI.pm',
     'LIBS'         => ( ($^O eq "cygwin") ? '-lcomctl32' : 'comctl32.lib' ),
-    'XS'           => { 'GUI.xs' => 'GUI.cpp' },
     'PM' => {
         'GUI.pm'            => '$(INST_LIBDIR)/GUI.pm',
         'BitmapInline.pm'   => '$(INST_LIBDIR)/GUI/BitmapInline.pm',
         'GridLayout.pm'     => '$(INST_LIBDIR)/GUI/GridLayout.pm',
     },
+    'XS' => { %arg_xs },
+    'C'  => [ @arg_c ],
+    'OBJECT' => $arg_object,
+    'DL_FUNCS' => { 'Win32::GUI' => [ @arg_dl_funcs ] },
+
+    ($^O eq "cygwin") ? ( 'DEFINE' => '-UWIN32' ) : (), 
+
     'dist'  => {
         ZIP => 'zip',
         ZIPFLAGS => '-r9',
@@ -63,9 +129,12 @@ WriteMakefile( %MakefileArgs );
 package MY;
 
 sub xs_c {
+($^O eq 'cygwin') ? 
+    shift->SUPER::xs_c(@_)
+:
     '
 .xs.cpp:
-    $(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) $(XSUBPP) $(XSPROTOARG) $(XSUBPPARGS) $*.xs >xstmp.c && $(MV) xstmp.c $*.cpp
+    $(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) $(XSUBPP) $(XSPROTOARG) $(XSUBPPARGS) $*.xs >$*.cpp
 ';
 }
 
@@ -80,7 +149,7 @@ sub constants {
 sub c_o {
     my $inherited = shift->SUPER::c_o(@_);
     if($main::USERESOURCE) {
-        $inherited .= "\nGUI.res:\n    rc.exe /l 0x409 /fo\"GUI.res\" GUI.rc\n\n";
+        $inherited .= "\nGUI.res:\n\trc.exe /l 0x409 /fo\"GUI.res\" GUI.rc\n\n";
     }
     return $inherited;
 }
@@ -91,13 +160,4 @@ sub top_targets {
         $inherited =~ s/pure_all(.*) linkext/pure_all$1 GUI.res linkext/;
     }
     return $inherited;
-}
-
-sub postamble {
-    my $inherited = shift->SUPER::postamble(@_);   
-    $inherited .= q(
-    @$(PERL) -pi.bak -e "s/\$build = (\d+);/'$build = '.($1+1).';'/e;" getbuild.bat    
-    );
-    return $inherited;
-    
 }

@@ -19,8 +19,8 @@ while($infile = readdir(D)) {
 }
 closedir(D);
 
-open(P, "<gui.pod");
-open(N, ">gui.new");
+open(P, "<GUI.pod");
+open(N, ">GUI.new");
 $found = "no";
 $ver = Win32::GUI::Version();
 ($mday,$mon,$year) = (localtime)[3..5];
@@ -51,11 +51,11 @@ while(<P>) {
 }
 close(P);
 close(N);
-unlink("gui.pod");
-rename("gui.new", "gui.pod");
+unlink("GUI.pod");
+rename("GUI.new", "GUI.pod");
 
 system("copy *.pod pod");
-
+mkdir("./html");
 chdir("./pod");
 opendir(D, ".");
 @files = readdir(D);
@@ -68,6 +68,7 @@ foreach $infile (sort @files) {
         "--infile=./$infile",
         "--outfile=../html/$outfile",
         "--noindex",
+        "--css=../../../Active.css",
     );
 }
 closedir(D);

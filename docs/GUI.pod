@@ -1,0 +1,78 @@
+=head1 Win32::GUI Documentation
+
+Version: B<0.99_1>, 2 Oct 2004
+
+=head2 Table Of Contents
+
+=over
+
+=item *
+
+B<User's Guide>
+
+=over
+
+=item *
+
+L<Introduction|guiintro/>
+
+=item *
+
+L<General concepts|guiconcepts/>
+
+=item *
+
+L<Writing a script with Win32::GUI|guitut/>
+
+=back
+
+=for html <P>
+
+=item *
+
+B<Reference Manual>
+
+=over
+
+=item *
+
+L<Common options|guioptions/>
+
+=item *
+
+L<Packages|guipacks/>
+
+=item *
+
+B<Support packages>
+
+
+=over 4
+
+=item *
+
+L<Win32::GUI::BitmapInline|BitmapInline/>
+
+=item *
+
+L<Win32::GUI::GridLayout|GridLayout/>
+
+=back
+
+=back
+
+=for html <P>
+
+=item *
+
+B<FAQs>
+
+=back
+
+=head2 AUTHOR
+
+(c) 1997, 8, 9 Aldo Calpini, C<dada@divinf.it>.
+
+
+
+=cut

@@ -4,7 +4,7 @@ require Exporter;
 @ISA = qw(Exporter);
 @EXPORT = qw(inline);
 
-$VERSION = "0.01";
+$VERSION = "0.02";
 
 $Counter = 1;
 
@@ -22,10 +22,37 @@ sub new {
     return $B;  
 }
 
+sub newCursor {
+    my($class, $data) = @_;
+    open(BMP, ">~$$.tmp") or return undef;
+    binmode(BMP);
+    print BMP MIME::Base64::decode($data);
+    close(BMP); 
+    my $B = new Win32::GUI::Cursor("~$$.tmp");
+    unlink("~$$.tmp");
+    return $B;  
+}
+
+sub newIcon {
+    my($class, $data) = @_;
+    open(BMP, ">~$$.tmp") or return undef;
+    binmode(BMP);
+    print BMP MIME::Base64::decode($data);
+    close(BMP); 
+    my $B = new Win32::GUI::Icon("~$$.tmp");
+    unlink("~$$.tmp");
+    return $B;  
+}
+
 sub inline {
     my ($file, $name) = @_;
 
     $name = "Bitmap" . $Win32::GUI::BitmapInline::Counter++ unless $name;
+
+    my $type = "";
+    $file =~ /\.ico$/i and $type = "Icon";
+    $file =~ /\.cur$/i and $type = "Cursor";
+
 
     open(BMP, $file) or
         $! = "Bitmap file '$file' not found",
@@ -34,7 +61,7 @@ sub inline {
     undef $/;
     binmode(BMP);
     my $ret = "";
-    $ret .= "\$$name = new Win32::GUI::BitmapInline( q(\n";
+    $ret .= "\$$name = new$type Win32::GUI::BitmapInline( q(\n";
     $ret .= MIME::Base64::encode( <BMP> );
     $ret .= ") );\n";
     close(BMP);
@@ -79,9 +106,8 @@ to another location).
 
 The C<inline> function is used to create an inlined bitmap resource; it
 will print on STDOUT the packed data including the lines of Perl  
-needed to use the inlined bitmap resource; it
-is intended to be used as a one-liner whose output is appended to your
-script.
+needed to use the inlined bitmap resource; it is intended to be used as 
+a one-liner whose output is appended to your script.
 
 The function takes the name of the bitmap file to inline as its first
 parameter; an additional, optional parameter can be given which will be 
@@ -96,6 +122,22 @@ If no name is given, the resulting object name will be $Bitmap1
 
 Note that the object returned by C<new Win32::GUI::BitmapInline> is
 a regular Win32::GUI::Bitmap object.
+
+With version 0.02 you can inline icons and cursors too. Nothing changes
+in the inlining process, just the file extension:
+
+    perl -MWin32::GUI::BitmapInline -e inline('harrow.cur','Cursor1') >>script.pl
+    perl -MWin32::GUI::BitmapInline -e inline('guiperl.ico','Icon1') >>script.pl
+
+The module recognizes from the extension the type of object that it
+should recreate, so it will add these lines to F<script.pl>:
+
+    $Cursor1 = newCursor Win32::GUI::BitmapInline( q( ...
+    $Icon1 = newIcon Win32::GUI::BitmapInline( q( ...
+   
+C<newCursor> or C<newIcon> are used in place of just C<new>. As above,
+the returned objects are regular Win32::GUI objects (respectively,
+Win32::GUI::Cursor and Win32::GUI::Icon).
 
 =head1 WARNINGS
 
@@ -157,10 +199,10 @@ production scripts as follows:
 
 =head1 VERSION
 
-Win32::GUI::BitmapInline version 0.01, 02 April 1999.
+Win32::GUI::BitmapInline version 0.02, 24 January 2001.
 
 =head1 AUTHOR
 
-Aldo Calpini ( C<dada@divinf.it> ).
+Aldo Calpini ( C<dada@perl.it> ).
 
 =cut

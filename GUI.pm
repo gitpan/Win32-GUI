@@ -4,11 +4,13 @@
 #
 # 29 Jan 1997 by Aldo Calpini <dada@perl.it>
 #
-# Version: 0.0.558 (15 Jan 2001)
+# Version: 0.99_1 (2 Oct 2004)
 #
-# Copyright (c) 1997..2001 Aldo Calpini. All rights reserved.
+# Copyright (c) 1997..2004 Aldo Calpini. All rights reserved.
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
+#
+# $Id: GUI.pm,v 1.24 2004/10/02 12:47:51 lrocher Exp $
 #
 ###############################################################################
 package Win32::GUI;
@@ -22,14 +24,14 @@ require DynaLoader;     # to dynuhlode the module.
 ###############################################################################
 # STATIC OBJECT PROPERTIES
 #
-$VERSION             = "0.0.558";
+$VERSION             = "0.99_1";
 $MenuIdCounter       = 1;
 $TimerIdCounter      = 1;
 $NotifyIconIdCounter = 1;
 %Menus               = ();
 %Accelerators        = ();
 $AcceleratorCounter  = 9001;
-%AcceleratorTable    = ();
+%DefClassProc        = ();
 
 @ISA = qw( Exporter DynaLoader );
 @EXPORT = qw(
@@ -95,6 +97,14 @@ $AcceleratorCounter  = 9001;
     DS_SETFOREGROUND
     DS_SYSMODAL
 
+    DTS_UPDOWN
+    DTS_SHOWNONE
+    DTS_SHORTDATEFORMAT
+    DTS_LONGDATEFORMAT
+    DTS_TIMEFORMAT
+    DTS_APPCANPARSE
+    DTS_RIGHTALIGN
+
     ES_AUTOHSCROLL
     ES_AUTOVSCROLL
     ES_CENTER
@@ -120,6 +130,14 @@ $AcceleratorCounter  = 9001;
     IMAGE_BITMAP
     IMAGE_CURSOR
     IMAGE_ICON
+
+    IDABORT
+    IDCANCEL
+    IDIGNORE
+    IDNO
+    IDOK
+    IDRETRY
+    IDYES
 
     LR_DEFAULTCOLOR
     LR_MONOCHROME
@@ -166,6 +184,37 @@ $AcceleratorCounter  = 9001;
 
     MF_STRING
     MF_POPUP
+
+    RBBS_BREAK
+    RBBS_CHILDEDGE
+    RBBS_FIXEDBMP
+    RBBS_FIXEDSIZE
+    RBBS_GRIPPERALWAYS
+    RBBS_HIDDEN
+    RBBS_NOGRIPPER
+    RBBS_NOVERT
+    RBBS_VARIABLEHEIGHT
+
+    SB_LINEUP
+    SB_LINELEFT
+    SB_LINEDOWN
+    SB_LINERIGHT
+    SB_PAGEUP
+    SB_PAGELEFT
+    SB_PAGEDOWN
+    SB_PAGERIGHT
+    SB_THUMBPOSITION
+    SB_THUMBTRACK
+    SB_TOP
+    SB_LEFT
+    SB_BOTTOM
+    SB_RIGHT
+    SB_ENDSCROLL
+
+    SBT_POPOUT
+    SBT_RTLREADING
+    SBT_NOBORDERS
+    SBT_OWNERDRAW
 
     SM_ARRANGE
     SM_CLEANBOOT
@@ -240,6 +289,78 @@ $AcceleratorCounter  = 9001;
     SM_SHOWSOUNDS
     SM_SLOWMACHINE
     SM_SWAPBUTTON
+
+    TPM_LEFTBUTTON
+    TPM_RIGHTBUTTON
+    TPM_LEFTALIGN
+    TPM_CENTERALIGN
+    TPM_RIGHTALIGN
+    TPM_TOPALIGN
+    TPM_VCENTERALIGN
+    TPM_BOTTOMALIGN
+    TPM_HORIZONTAL
+    TPM_VERTICAL
+    TPM_NONOTIFY
+    TPM_RETURNCMD
+    TPM_RECURSE
+
+    TBSTATE_CHECKED
+    TBSTATE_ELLIPSES
+    TBSTATE_ENABLED
+    TBSTATE_HIDDEN
+    TBSTATE_INDETERMINATE
+    TBSTATE_MARKED
+    TBSTATE_PRESSED
+    TBSTATE_WRAP
+
+    TBSTYLE_ALTDRAG
+    TBSTYLE_CUSTOMERASE
+    TBSTYLE_FLAT
+    TBSTYLE_LIST
+    TBSTYLE_REGISTERDROP
+    TBSTYLE_TOOLTIPS
+    TBSTYLE_TRANSPARENT
+    TBSTYLE_WRAPABLE
+
+    BTNS_AUTOSIZE
+    BTNS_BUTTON
+    BTNS_CHECK
+    BTNS_CHECKGROUP
+    BTNS_DROPDOWN
+    BTNS_GROUP
+    BTNS_NOPREFIX
+    BTNS_SEP
+    BTNS_SHOWTEXT
+    BTNS_WHOLEDROPDOWN
+
+    TBSTYLE_AUTOSIZE
+    TBSTYLE_BUTTON
+    TBSTYLE_CHECK
+    TBSTYLE_CHECKGROUP
+    TBSTYLE_DROPDOWN
+    TBSTYLE_GROUP
+    TBSTYLE_NOPREFIX
+    TBSTYLE_SEP
+
+    TBSTYLE_EX_DRAWDDARROWS
+    TBSTYLE_EX_HIDECLIPPEDBUTTONS
+    TBSTYLE_EX_MIXEDBUTTONS
+
+    TBTS_TOP
+    TBTS_LEFT
+    TBTS_BOTTOM
+    TBTS_RIGHT
+
+    TVGN_CARET
+    TVGN_CHILD
+    TVGN_DROPHILITE
+    TVGN_FIRSTVISIBLE
+    TVGN_NEXT
+    TVGN_NEXTVISIBLE
+    TVGN_PARENT
+    TVGN_PREVIOUS
+    TVGN_PREVIOUSVISIBLE
+    TVGN_ROOT
 
     WM_CREATE
     WM_DESTROY
@@ -332,6 +453,19 @@ sub AUTOLOAD {
     goto &$AUTOLOAD;
 }
 
+sub bootstrap_subpackage {
+    my($package) = @_;
+    $package = 'Win32::GUI::' . $package;
+    my $symbol = $package;
+    $symbol =~ s/\W/_/g;
+    no strict 'refs';
+    DynaLoader::dl_install_xsub(
+        "${package}::bootstrap",
+        DynaLoader::dl_find_symbol_anywhere( "boot_$symbol" )
+    );
+    &{ "${package}::bootstrap" };
+}
+
 ###############################################################################
 # PUBLIC METHODS
 # (@)PACKAGE:Win32::GUI
@@ -341,55 +475,6 @@ sub AUTOLOAD {
     # Returns the module version number.
 sub Version {
     return $VERSION;
-}
-
-    ###########################################################################
-    # (@)METHOD:SetFont(FONT)
-    # Sets the font of the window (FONT is a Win32::GUI::Font object).
-sub SetFont {
-    my($self, $font) = @_;
-    $font = $font->{-handle} if ref($font);
-    # 48 == WM_SETFONT
-    return Win32::GUI::SendMessage($self, 48, $font, 0);
-}
-
-    ###########################################################################
-    # (@)METHOD:GetFont(FONT)
-    # Gets the font of the window (returns an handle; use
-    #   $Font = $W->GetFont();
-    #   %details = Win32::GUI::Font::Info( $Font );
-    # to get font details).
-sub GetFont {
-    my($self) = shift;
-    # 49 == WM_GETFONT
-    return Win32::GUI::SendMessage($self, 49, 0, 0);
-}
-
-    ###########################################################################
-    # (@)METHOD:SetIcon(ICON, [TYPE])
-    # Sets the icon of the window; TYPE can be 0 for the small icon, 1 for
-    # the big icon. Default is the same icon for small and big.
-sub SetIcon {
-    my($self, $icon, $type) = @_;
-    $icon = $icon->{-handle} if ref($icon);
-    # 128 == WM_SETICON
-    if(defined($type)) {
-        return Win32::GUI::SendMessage($self, 128, $type, $icon);
-    } else {
-        Win32::GUI::SendMessage($self, 128, 0, $icon); # small icon
-        Win32::GUI::SendMessage($self, 128, 1, $icon); # big icon
-    }
-}
-
-    ###########################################################################
-    # (@)METHOD:SetRedraw(FLAG)
-    # Determines if a window is automatically redrawn when its content changes.
-    # FLAG can be a true value to allow redraw, false to prevent it.
-sub SetRedraw {
-    my($self, $value) = @_;
-    # 11 == WM_SETREDRAW
-    my $r = Win32::GUI::SendMessage($self, 11, $value, 0);
-    return $r;
 }
 
     ###########################################################################
@@ -404,16 +489,20 @@ sub MakeMenu {
     my $level;
     my %last;
     my $parent;
-    for($i = 0; $i <= $#menudata; $i+=2) {
+    for($i = 0; $i <= $#menudata; $i += 2) {
         $text = $menudata[$i];
         undef %data;
         if(ref($menudata[$i+1])) {
             %data = %{$menudata[$i+1]};
+        } elsif ($menudata[$i+1] eq '' ) {
+            $data{-name} = "dummy$MenuIdCounter";
         } else {
             $data{-name} = $menudata[$i+1];
         }
         $level = 0;
         $level++ while($text =~ s/^\s*>\s*//);
+
+        # print "PM(MakeMenu) processing '$data{-name}', level=$level\n";
 
         if($level == 0) {
             $M->{$data{-name}} = $M->AddMenuButton(
@@ -426,11 +515,11 @@ sub MakeMenu {
         } elsif($level == 1) {
             $parent = $last{$level-1};
             if($text eq "-") {
-                $data{-name} = "dummy$MenuIdCounter";
                 $M->{$data{-name}} = $M->{$parent}->AddMenuItem(
                     -item => 0,
                     -id => $MenuIdCounter++,
                     -separator => 1,
+                    -name => $data{-name},
                 );
             } else {
                 $M->{$data{-name}} = $M->{$parent}->AddMenuItem(
@@ -457,12 +546,12 @@ sub MakeMenu {
                 );
             }
             if($text eq "-") {
-                $data{-name} = "dummy$MenuIdCounter";
                 $M->{$data{-name}} =
                     $M->{$parent."_SubmenuButton"}->AddMenuItem(
                         -item => 0,
                         -id => $MenuIdCounter++,
                         -separator => 1,
+                        -name => $data{-name},
                     );
             } else {
                 $M->{$data{-name}} =
@@ -486,7 +575,7 @@ sub MakeMenu {
     # it works pretty well for almost all controls.
     # However, other kind of objects may overload it.
 sub _new {
-    # this is always Win32::GUI (class of _new);
+    # this is always Win32::GUI (class of _new):
     my $xclass = shift;
 
     # the window type passed by new():
@@ -494,25 +583,19 @@ sub _new {
 
     # this is the real class:
     my $class = shift;
-    my $oself = {};
-    # bless($oself, $class);
 
-    my %tier = ();
+    my %tier;
+    my $oself = $tier{-OSELF} = {};
     tie %tier, $class, $oself;
     my $self = bless \%tier, $class;
 
+    # print "OSELF = $oself\n";   
+    # print " SELF = $self\n";
+
     my (@input) = @_;
+    # print "PM(Win32::GUI::_new) self='$self' type='$type' input='@input'\n";
     my $handle = Win32::GUI::Create($self, $type, @input);
 
-    # print "[_new] self='$self' oself='$oself'\n";
-
-    # print "[_new] handle = $handle\n";
-#   $self->{-handle} = $handle;
-
-    # print "[_new] enumerating self.keys\n";
-    # foreach my $k (keys %$self) {
-    #   print "[_new] '$k' = '$self->{$k}'\n";
-    # }
     if($handle) {
         return $self;
     } else {
@@ -681,25 +764,36 @@ package Win32::GUI::Class;
     #       the name for the class (it must be unique!).
     #   -icon => Win32::GUI::Icon object
     #   -cursor => Win32::GUI::Cursor object
-    #   -color => COLOR or Win32::GUI::Brush object
-    #       the window background color.
+    #   -color => COLOR 
+    #       system color use as window background.
+    #   -brush => Win32::GUI::Brush object
+    #       brush use as window background brush.
     #   -menu => STRING
     #       a menu name (not yet implemented).
     #   -extends => STRING
     #       name of the class to extend (aka subclassing).
     #   -widget => STRING
-    #       name of a widget class to subclass; currently available are:
-    #       Button, Listbox, TabStrip, RichEdit.
+    #       name of a widget class procedure to use.
     #   -style => FLAGS
     #       use with caution!
+    #
+    # Don't use -color and -brush as same time.
+    #
 sub new {
     my $class = shift;
     my %args = @_;
     my $self = {};
 
-    $args{-color} =
-        Win32::GUI::constant("COLOR_WINDOW", 0)
-        unless exists($args{-color});
+    # figure out the correct background color 
+    # (to avoid the "white background" syndrome on XP)
+    if(not exists $args{-color} && not exists $args{-brush}) {
+        my($undef, $major, $minor) = Win32::GetOSVersion();
+        if($major == 5 && $minor > 0) {         
+            $args{-color} = Win32::GUI::constant("COLOR_BTNFACE", 0)+1;
+        } else {
+            $args{-color} = Win32::GUI::constant("COLOR_WINDOW", 0);
+        }
+    }
 
     my $handle = Win32::GUI::RegisterClassEx(%args);
 
@@ -718,29 +812,64 @@ sub new {
 # (@)PACKAGE:Win32::GUI::Window
 #
 package Win32::GUI::Window;
-@ISA = qw( 
-    Win32::GUI 
-    Win32::GUI::WindowProps 
+@ISA = qw(
+    Win32::GUI
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
     # (@)METHOD:new Win32::GUI::Window(%OPTIONS)
     # Creates a new Window object.
-    # Class specific %OPTIONS are:
+    #
+    # Class specific B<%OPTIONS> are:
+    #   -accel => Win32::GUI::Accelerator
+    #   -accelerators => Win32::GUI::Accelerator
+    #   -acceleratortable => Win32::GUI::Accelerator
+    #     Associate accelerator table to Window
     #   -minsize => [X, Y]
-    #     specifies the minimum size (width and height) in pixels;
+    #     Specifies the minimum size (width and height) in pixels;
     #     X and Y must be passed in an array reference
     #   -maxsize => [X, Y]
-    #     specifies the maximum size (width and height) in pixels;
+    #     Specifies the maximum size (width and height) in pixels;
     #     X and Y must be passed in an array reference
     #   -minwidth  => N
     #   -minheight => N
     #   -maxwidht  => N
     #   -maxheight => N
-    #     specify the minimum and maximum size width
-    #     and height, in pixels
+    #     Specify the minimum and maximum size width and height, in pixels
+    #   -hasmaximize => 0/1
+    #   -maximizebox => 0/1
+    #     Set/Unset maximize box.
+    #   -hasminimize => 0/1
+    #   -minimizebox => 0/1
+    #     Set/Unset minimize box.
+    #   -sizable => 0/1
+    #   -resizable => 0/1
+    #     Set/Unset tick frame style.
+    #   -sysmenu => 0/1
+    #   -menubox => 0/1
+    #   -controlbox => 0/1
+    #     Set/Unset system menu style.
+    #   -titlebar => 0/1
+    #     Set/Unset caption style.    
+    #   -helpbutton => 0/1
+    #   -helpbox => 0/1
+    #   -hashelp => 0/1
+    #     Set/Unset help context extended style.
+    #   -toolwindow => 0/1
+    #     Set/Unset tool window extended style. 
+    #   -appwindow => 0/1
+    #     Set/Unset app window extended style. 
     #   -topmost => 0/1 (default 0)
-    #     the window "stays on top" even when deactivated
+    #     The window "stays on top" even when deactivated
+    #   -controlparent => 0/1 (default 0)
+    #     Set/Unset control parent extended style. 
+    #   -noflicker => 0/1 (default 0)
+    #     Set to 1 to enable anti-flicker. This will eliminate all flicker from
+    #     your window, but may prevent things like Graphic objects from showing
+    #     correctly.
+    #   -dialogui => 0/1
+    #     Act as a dialog box.
 sub new {
     my $self = Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__WINDOW", 0), @_);
     if($self) {
@@ -749,7 +878,6 @@ sub new {
         return undef;
     }
 }
-
 
     ###########################################################################
     # (@)METHOD:AddButton(%OPTIONS)
@@ -857,15 +985,14 @@ sub AddRebar       { return Win32::GUI::Rebar->new(@_); }
 sub AddHeader      { return Win32::GUI::Header->new(@_); }
 
     ###########################################################################
-    # (@)METHOD:AddCombobox(%OPTIONS)
-    # See new Win32::GUI::Combobox().
+    # (@)METHOD:AddComboboxEx(%OPTIONS)
+    # See new Win32::GUI::ComboboxEx().
 sub AddComboboxEx  { return Win32::GUI::ComboboxEx->new(@_); }
 
     ###########################################################################
     # (@)METHOD:AddSplitter(%OPTIONS)
     # See new Win32::GUI::Splitter().
 sub AddSplitter    { return Win32::GUI::Splitter->new(@_); }
-
 
     ###########################################################################
     # (@)METHOD:AddTimer(NAME, ELAPSE)
@@ -876,6 +1003,21 @@ sub AddTimer       { return Win32::GUI::Timer->new(@_); }
     # (@)METHOD:AddNotifyIcon(%OPTIONS)
     # See new Win32::GUI::NotifyIcon().
 sub AddNotifyIcon  { return Win32::GUI::NotifyIcon->new(@_); }
+
+    ###########################################################################
+    # (@)METHOD:AddDateTime(%OPTIONS)
+    # See new Win32::GUI::DateTime().
+sub AddDateTime  { return Win32::GUI::DateTime->new(@_); }
+
+    ###########################################################################
+    # (@)METHOD:AddMonthCal(%OPTIONS)
+    # See new Win32::GUI::MonthCal().
+sub AddMonthCal  { return Win32::GUI::MonthCal->new(@_); }
+
+    ###########################################################################
+    # (@)METHOD:AddGraphic(%OPTIONS)
+    # See new Win32::GUI::Graphic().
+sub AddGraphic  { return Win32::GUI::Graphic->new(@_); }
 
     ###########################################################################
     # (@)METHOD:AddMenu()
@@ -897,19 +1039,23 @@ sub GetDC {
 }
 
     ###########################################################################
-    # (@)INTERNAL:DESTROY(HANDLE)
-sub DESTROY {
-    my $self = shift;
-    if(tied($self)) {
-        my $timer;
-        if( exists $self->{-timers} ) {
-            foreach $timer ($self->{-timers}) {
-                undef $self->{-timers}->{$timer};
-            }
-        }
+    # (@)METHOD:Center([Parent])
+    # Center the window vertically and horizontally in the Parent (Default: the Desktop window).
+    # Parent can be either a Win32::GUI::Window or a hwind.
+    # Return 1 on success, else 0.
+
+sub Center {
+    #Code taken from Win32::GUI::AdHoc by Johan Lindström
+    my ($winSelf, $winParent) = @_;
+    defined($winParent) or $winParent = Win32::GUI::GetDesktopWindow();
+    
+    #Avoid OO notation to enable us to use either a hwind or a Win32::GUI::Window object
+    my $x = Win32::GUI::Left($winParent) + (Win32::GUI::Width($winParent) / 2) - (Win32::GUI::Width($winSelf) / 2);
+    my $y = Win32::GUI::Top($winParent) + (Win32::GUI::Height($winParent) / 2) - (Win32::GUI::Height($winSelf) / 2);
+    
+    Win32::GUI::Move($winSelf, $x, $y) and return(1);
+    return(0);
     }
-    # Win32::GUI::DestroyWindow($self);
-}
 
     ###########################################################################
     # (@)INTERNAL:AUTOLOAD(HANDLE, METHOD)
@@ -925,7 +1071,6 @@ sub AUTOLOAD {
     }
 }
 
-
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::DialogBox
 #
@@ -938,41 +1083,120 @@ package Win32::GUI::DialogBox;
 sub new {
     my $self = Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__DIALOG", 0), @_);
     if($self) {
-        $self->DialogUI(1);
         return $self;
     } else {
         return undef;
     }
 }
 
-
 ###############################################################################
-# (@)PACKAGE:Win32::GUI::MDI
+# (@)PACKAGE:Win32::GUI::MDIFrame
 #
-package Win32::GUI::MDI;
-@ISA = qw( 
-    Win32::GUI::Window
-    Win32::GUI::WindowProps 
+package Win32::GUI::MDIFrame;
+@ISA = qw(
+    Win32::GUI
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
-    # (@)METHOD:new Win32::GUI::MDI(%OPTIONS)
-    # Creates a new MDI (Multiple Document Interface) object.
-    # Class specific %OPTIONS are:
-    #   -minsize => [X, Y]
-    #     specifies the minimum size (width and height) in pixels;
-    #     X and Y must be passed in an array reference
-    #   -maxsize => [X, Y]
-    #     specifies the maximum size (width and height) in pixels;
-    #     X and Y must be passed in an array reference
-    #   -minwidth  => N
-    #   -minheight => N
-    #   -maxwidht  => N
-    #   -maxheight => N
-    #     specify the minimum and maximum size width
-    #     and height, in pixels
-    #   -topmost => 0/1 (default 0)
-    #     the window "stays on top" even when deactivated
+    # (@)METHOD:new Win32::GUI::MDIFrame(%OPTIONS)
+    # Creates a new MDI Client object.
+    #
+    # Class specific B<%OPTIONS> are:
+
+sub new {
+    my $self = Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__MDIFRAME", 0), @_);
+    if($self) {
+        return $self;
+    } else {
+        return undef;
+    }
+}
+
+    ###########################################################################
+    # (@)METHOD:AddMDIClient(%OPTIONS)
+    # See new Win32::GUI::MDIClient().
+sub AddMDIClient  { return Win32::GUI::MDIClient->new(@_); }
+
+    ###########################################################################
+    # (@)METHOD:AddStatusBar(%OPTIONS)
+    # See new Win32::GUI::StatusBar().
+sub AddStatusBar   { return Win32::GUI::StatusBar->new(@_); }
+
+    ###########################################################################
+    # (@)METHOD:AddToolbar(%OPTIONS)
+    # See new Win32::GUI::Toolbar().
+sub AddToolbar     { return Win32::GUI::Toolbar->new(@_); }
+
+    ###########################################################################
+    # (@)METHOD:AddRebar(%OPTIONS)
+    # See new Win32::GUI::Rebar().
+sub AddRebar       { return Win32::GUI::Rebar->new(@_); }
+
+    ###########################################################################
+    # (@)METHOD:AddSplitter(%OPTIONS)
+    # See new Win32::GUI::Splitter().
+sub AddSplitter    { return Win32::GUI::Splitter->new(@_); }
+
+    ###########################################################################
+    # (@)METHOD:AddTimer(NAME, ELAPSE)
+    # See new Win32::GUI::Timer().
+sub AddTimer       { return Win32::GUI::Timer->new(@_); }
+
+    ###########################################################################
+    # (@)METHOD:AddNotifyIcon(%OPTIONS)
+    # See new Win32::GUI::NotifyIcon().
+sub AddNotifyIcon  { return Win32::GUI::NotifyIcon->new(@_); }
+
+    ###########################################################################
+    # (@)METHOD:AddMenu()
+    # See new Win32::GUI::Menu().
+sub AddMenu {
+    my $self = shift;
+    my $menu = Win32::GUI::Menu->new();
+    my $r = Win32::GUI::SetMenu($self, $menu->{-handle});
+    # print "SetMenu=$r\n";
+    return $menu;
+}
+    ###########################################################################
+    # (@)METHOD:Center([Parent])
+    # Center the window vertically and horizontally in the Parent (Default: the Desktop window).
+    # Parent can be either a Win32::GUI::Window or a hwind.
+    # Return 1 on success, else 0.
+
+sub Center {
+    return Win32::GUI::Window::Center(@_);
+}
+
+    ###########################################################################
+    # (@)METHOD:GetDC()
+    # Returns the DC object associated with the window.
+sub GetDC {
+    my $self = shift;
+    return Win32::GUI::DC->new($self);
+}
+
+    ###########################################################################
+    # (@)INTERNAL:AUTOLOAD(HANDLE, METHOD)
+sub AUTOLOAD {
+    Win32::GUI::Window::AUTOLOAD(@_);
+}
+
+###############################################################################
+# (@)PACKAGE:Win32::GUI::MDIClient
+#
+package Win32::GUI::MDIClient;
+@ISA = qw(
+    Win32::GUI
+    Win32::GUI::WindowProps
+);
+
+    ###########################################################################
+    # (@)METHOD:new Win32::GUI::MDIClient(%OPTIONS)
+    # Creates a new MDI Client object.
+    #
+    # Class specific B<%OPTIONS> are:
+
 sub new {
     my $self = Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__MDICLIENT", 0), @_);
     if($self) {
@@ -982,13 +1206,62 @@ sub new {
     }
 }
 
+    ###########################################################################
+    # (@)METHOD:AddMDIChild(%OPTIONS)
+    # See new Win32::GUI::MDIChild().
+sub AddMDIChild  { return Win32::GUI::MDIChild->new(@_); }
+
+    ###########################################################################
+    # (@)METHOD:GetDC()
+    # Returns the DC object associated with the window.
+sub GetDC {
+    my $self = shift;
+    return Win32::GUI::DC->new($self);
+}
+
+    ###########################################################################
+    # (@)INTERNAL:AUTOLOAD(HANDLE, METHOD)
+sub AUTOLOAD {
+    Win32::GUI::Window::AUTOLOAD(@_);
+}
+
+###############################################################################
+# (@)PACKAGE:Win32::GUI::MDIChild
+#
+package Win32::GUI::MDIChild;
+@ISA = qw(
+    Win32::GUI::Window
+);
+
+    ###########################################################################
+    # (@)METHOD:new Win32::GUI::MDIChild(%OPTIONS)
+    # Creates a new MDI Child window object.
+    #
+    # Class specific B<%OPTIONS> are:
+
+sub new {
+    my $self = Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__MDICHILD", 0), @_);
+    if($self) {
+        return $self;
+    } else {
+        return undef;
+    }
+}
+
+    ###########################################################################
+    # (@)METHOD:GetDC()
+    # Returns the DC object associated with the window.
+sub GetDC {
+    my $self = shift;
+    return Win32::GUI::DC->new($self);
+}
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Button
 #
 package Win32::GUI::Button;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -996,40 +1269,47 @@ package Win32::GUI::Button;
     # (@)METHOD:new Win32::GUI::Button(PARENT, %OPTIONS)
     # Creates a new Button object;
     # can also be called as PARENT->AddButton(%OPTIONS).
-    # Class specific %OPTIONS are:
-    #     -align   => left/center/right (default left)
-    #     -valign  => top/center/bottom
     #
+    # Class specific B<%OPTIONS> are:
+    #     -align   => left/center/right (default left)
+    #       specify horizontal text align.
+    #     -valign  => top/center/bottom
+    #       specify vertical text align.
     #     -default => 0/1 (default 0)
+    #       Set/Unset default push button style.
     #     -ok      => 0/1 (default 0)
+    #       Set/Unset button id to ID_OK.
     #     -cancel  => 0/1 (default 0)
+    #       Set/Unset button id to ID_CANCEL.
     #     -bitmap  => Win32::GUI::Bitmap object
+    #       Create a bitmap button.
     #     -picture => see -bitmap
     #     -icon    => Win32::GUI::Icon object
+    #       Create a icon button.
+    #     -3state  => 0/1 (default 0)
+    #       Set/Unset 3 state style.
+    #     -flat  => 0/1 (default 0)
+    #       Set/Unset flat style.
+    #     -multiline  => 0/1 (default 0)
+    #       Set/Unset multiline style.
+    #     -notify  => 0/1 (default 0)
+    #       Set/Unset notify style.
+    #     -pushlike  => 0/1 (default 0)
+    #       Set/Unset pushlike style.
+    #     -rightbutton  => 0/1 (default 0)
+    #       Set/Unset rightbutton style.
+
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__BUTTON", 0), @_);
 }
 
-    ###########################################################################
-    # (@)METHOD:SetImage(BITMAP)
-    # Draws the specified BITMAP, a Win32::GUI::Bitmap or Win32::GUI::Icon
-    # object, in the Button.
-sub SetImage {
-    my $self = shift;
-    my $image = shift;
-    my $type = Win32::GUI::constant("IMAGE_BITMAP", 0);
-    $type = Win32::GUI::constant("IMAGE_ICON", 0) if ref($image) =~ /Icon/;
-    $image = $image->{-handle} if ref($image);
-    # 247 == BM_SETIMAGE
-    return Win32::GUI::SendMessage($self, 247, $type, $image);
-}
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::RadioButton
 #
 package Win32::GUI::RadioButton;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -1037,37 +1317,19 @@ package Win32::GUI::RadioButton;
     # (@)METHOD:new Win32::GUI::RadioButton(PARENT, %OPTIONS)
     # Creates a new RadioButton object;
     # can also be called as PARENT->AddRadioButton(%OPTIONS).
-    # %OPTIONS are the same of Button (see new Win32::GUI::Button() ).
+    #
+    # B<%OPTIONS> are the same of Button (see new Win32::GUI::Button() ).
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__RADIOBUTTON", 0), @_);
 }
 
-    ###########################################################################
-    # (@)METHOD:Checked([VALUE])
-    # Gets or sets the checked state of the RadioButton; if called without
-    # arguments, returns the current state:
-    #   0 not checked
-    #   1 checked
-    # If a VALUE is specified, it can be one of these (eg. 0 to uncheck the
-    # RadioButton, 1 to check it).
-sub Checked {
-    my $self = shift;
-    my $check = shift;
-    if(defined($check)) {
-        # 241 == BM_SETCHECK
-        return Win32::GUI::SendMessage($self, 241, $check, 0);
-    } else {
-        # 240 == BM_GETCHECK
-        return Win32::GUI::SendMessage($self, 240, 0, 0);
-    }
-}
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Checkbox
 #
 package Win32::GUI::Checkbox;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -1075,56 +1337,10 @@ package Win32::GUI::Checkbox;
     # (@)METHOD:new Win32::GUI::Checkbox(PARENT, %OPTIONS)
     # Creates a new Checkbox object;
     # can also be called as PARENT->AddCheckbox(%OPTIONS).
-    # %OPTIONS are the same of Button (see new Win32::GUI::Button() ).
+    #
+    # B<%OPTIONS> are the same of Button (see new Win32::GUI::Button() ).
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__CHECKBOX", 0), @_);
-}
-
-
-    ###########################################################################
-    # (@)METHOD:GetCheck()
-    # Returns the check state of the Checkbox:
-    #   0 not checked
-    #   1 checked
-    #   2 indeterminate (grayed)
-sub GetCheck {
-    my $self = shift;
-    # 240 == BM_GETCHECK
-    return Win32::GUI::SendMessage($self, 240, 0, 0);
-}
-
-    ###########################################################################
-    # (@)METHOD:SetCheck([VALUE])
-    # Sets the check state of the Checkbox; for a list of possible values,
-    # see GetCheck().
-    # If called without arguments, it checks the Checkbox (eg. state = 1).
-sub SetCheck {
-    my $self = shift;
-    my $check = shift;
-    $check = 1 unless defined($check);
-    # 241 == BM_SETCHECK
-    return Win32::GUI::SendMessage($self, 241, $check, 0);
-}
-
-    ###########################################################################
-    # (@)METHOD:Checked([VALUE])
-    # Gets or sets the check state of the Checkbox; if called without
-    # arguments, returns the current state:
-    #   0 not checked
-    #   1 checked
-    #   2 indeterminate (grayed)
-    # If a VALUE is specified, it can be one of these (eg. 0 to uncheck the
-    # Checkbox, 1 to check it).
-sub Checked {
-    my $self = shift;
-    my $check = shift;
-    if(defined($check)) {
-        # 241 == BM_SETCHECK
-        return Win32::GUI::SendMessage($self, 241, $check, 0);
-    } else {
-        # 240 == BM_GETCHECK
-        return Win32::GUI::SendMessage($self, 240, 0, 0);
-    }
 }
 
 ###############################################################################
@@ -1132,7 +1348,7 @@ sub Checked {
 #
 package Win32::GUI::Groupbox;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -1150,7 +1366,7 @@ sub new {
 #
 package Win32::GUI::Label;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -1158,46 +1374,38 @@ package Win32::GUI::Label;
     # (@)METHOD:new Win32::GUI::Label(PARENT, %OPTIONS)
     # Creates a new Label object;
     # can also be called as PARENT->AddLabel(%OPTIONS).
-    # Class specific %OPTIONS are:
+    #
+    # Class specific B<%OPTIONS> are:
     #    -align    => left/center/right (default left)
+    #      Set text align.
     #    -bitmap   => Win32::GUI::Bitmap object
     #    -fill     => black/gray/white/none (default none)
-    #        fills the control rectangle ("black", "gray" and "white" are
-    #        the window frame color, the desktop color and the window
-    #        background color respectively).
+    #       Fills the control rectangle ("black", "gray" and "white" are
+    #       the window frame color, the desktop color and the window
+    #       background color respectively).
     #    -frame    => black/gray/white/etched/none (default none)
-    #        draws a border around the control. colors are the same
-    #        of -fill, with the addition of "etched" (a raised border).
+    #       Draws a border around the control. colors are the same
+    #       of -fill, with the addition of "etched" (a raised border).
     #    -icon     => Win32::GUI::Icon object
     #    -noprefix => 0/1 (default 0)
-    #        disables the interpretation of "&" as accelerator prefix.
+    #       Disables the interpretation of "&" as accelerator prefix.
     #    -notify   => 0/1 (default 0)
-    #        enables the Click(), DblClick, etc. events.
+    #       Enables the Click(), DblClick, etc. events.
     #    -picture  => see -bitmap
     #    -sunken   => 0/1 (default 0)
-    #        draws a half-sunken border around the control.
+    #       Draws a half-sunken border around the control.
     #    -truncate => 0/1/word/path (default 0)
-    #        specifies how the text is to be truncated:
-    #            0 the text is not truncated
-    #            1 the text is truncated at the end
+    #       Specifies how the text is to be truncated:
+    #          0 the text is not truncated
+    #          1 the text is truncated at the end
     #         path the text is truncated before the last "\"
     #              (used to shorten paths).
     #    -wrap     => 0/1 (default 1)
-    #        the text wraps automatically to a new line.
+    #       The text wraps automatically to a new line.
+    #    -simple   => 0/1 (default 1)
+    #       Set/Unset simple style. 
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__STATIC", 0), @_);
-}
-
-    ###########################################################################
-    # (@)METHOD:SetImage(BITMAP)
-    # Draws the specified BITMAP, a Win32::GUI::Bitmap object, in the Label.
-sub SetImage {
-    my $self = shift;
-    my $image = shift;
-    $image = $image->{-handle} if ref($image);
-    my $type = Win32::GUI::constant("IMAGE_BITMAP", 0);
-    # 370 == STM_SETIMAGE
-    return Win32::GUI::SendMessage($self, 370, $type, $image);
 }
 
 
@@ -1206,7 +1414,7 @@ sub SetImage {
 #
 package Win32::GUI::Textfield;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -1224,8 +1432,14 @@ package Win32::GUI::Textfield;
     #       is "\r\n", not "\n"!).
     #   -password      => 0/1 (default 0)
     #       masks the user input (like password prompts).
-    #   -passwordchar  => char (default '*')
-    #       the char that is shown instead of the text with -password => 1.
+    #   -lowercase     => 0/1 (default 0)
+    #       Convert all caracter into lowercase
+    #   -uppercase     => 0/1 (default 0)
+    #       Convert all caracter into uppercase
+    #   -autohscroll   => 0/1 (default 0)
+    #   -autovscroll   => 0/1 (default 0)
+    #   -number        => 0/1 (default 0)
+    #       Allows only digits to be entered into the edit control
     #   -prompt        => (see below)
     #   -readonly      => 0/1 (default 0)
     #       text can't be changed.
@@ -1255,25 +1469,35 @@ package Win32::GUI::Textfield;
     # a "_Prompt" suffix (in the example above, the Label is named
     # "Username_Prompt").
 sub new {
-    my($class, $parent, %options) = @_;
+    my($class, $parent, @options) = @_;
+    my %options = @options;
     if(exists $options{-prompt}) {
         my $add = 0;
         my ($text, $left, $width, $height, );
         my $visible = 1;
+        # Convert -pos and -size options to -left, -top, -width and -height options
+        if (exists $options{-pos}) {
+          $options{-left} = $options{-pos}[0];
+          $options{-top}  = $options{-pos}[1];
+        }
+        if (exists $options{-size}) {
+          $options{-width}  = $options{-size}[0];
+          $options{-height} = $options{-size}[1];
+        }
+         
         if(ref($options{-prompt}) eq "ARRAY") {
             $left = pop(@{$options{'-prompt'}});
             $text = pop(@{$options{'-prompt'}});
             if($left < 0) {
-                $left = $options{-left} + $left;
                 $width = -$left;
+                $left += $options{-left};
             } else {
                 $width = $left;
-                $left = $options{-left};
-                $add = $width;
+                $left  = $options{-left};
+                $add   = 1;
             }
         } else {
             $text = $options{-prompt};
-            $add = -1;
         }
         if(exists $options{-height}) {
             $height = $options{-height}-3;
@@ -1293,47 +1517,25 @@ sub new {
             -height  => $height,
             -visible => $visible,
         );
-        $add = $prompt->Width if $add == -1;
-        $options{-left} += $add;
+
+        $options{-left} += $prompt->Width if $add;
+
+        # Update array options
+        for (my $i = 0; $i < @options; $i += 2) {
+            if ($options[$i] eq '-left') {
+                $options[$i+1] = $options{-left};
+                last;
+            }
+            if ($options[$i] eq '-pos') {
+                $options[$i+1][0] = $options{-left};
+                last;
+            }
+        }
     }
     return Win32::GUI->_new(
         Win32::GUI::constant("WIN32__GUI__EDIT", 0),
-        $class, $parent, %options,
+        $class, $parent, @options,
     );
-}
-
-    ###########################################################################
-    # (@)METHOD:Select(START, END)
-    # Selects the specified range of characters.
-sub Select {
-    my($self, $wparam, $lparam) = @_;
-    # 177 == EM_SETSEL
-    return Win32::GUI::SendMessage($self, 177, $wparam, $lparam);
-}
-
-    ###########################################################################
-    # (@)METHOD:SelectAll()
-sub SelectAll {
-    my($self, $wparam, $lparam) = @_;
-    # 177 == EM_SETSEL
-    #  14 == WM_GETTEXTLENGTH
-    return Win32::GUI::SendMessage(
-        $self, 177,
-        0, Win32::GUI::SendMessage($self, 14, 0, 0),
-    );
-}
-
-    ###########################################################################
-    # (@)METHOD:MaxLength([CHARS])
-sub MaxLength {
-    my($self, $chars) = @_;
-    if(defined $chars) {
-        # 197 == EM_SETLIMITTEXT
-        return Win32::GUI::SendMessage($self, 197, $chars, 0);
-    } else {
-        # 213 == EM_GETLIMITTEXT
-        return Win32::GUI::SendMessage($self, 213, 0, 0);
-    }
 }
 
 ###############################################################################
@@ -1341,7 +1543,7 @@ sub MaxLength {
 #
 package Win32::GUI::Listbox;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -1349,7 +1551,8 @@ package Win32::GUI::Listbox;
     # (@)METHOD:new Win32::GUI::Listbox(PARENT, %OPTIONS)
     # Creates a new Listbox object;
     # can also be called as PARENT->AddListbox(%OPTIONS).
-    # Class specific %OPTIONS are:
+    #
+    # Class specific B<%OPTIONS> are:
     #    -multisel => 0/1/2 (default 0)
     #        specifies the selection type:
     #            0 single selection
@@ -1357,66 +1560,20 @@ package Win32::GUI::Listbox;
     #            2 multiple selection ehnanced (with Shift, Control, etc.)
     #    -sort     => 0/1 (default 0)
     #        items are sorted alphabetically.
+    #    -multicolumn => 0/1 (default 0)
+    #    -nointegralheight => 0/1 (default 0)
+    #    -noredraw => 0/1 (default 0)
+    #    -notify => 0/1 (default 0)
+    #    -usetabstop => 0/1 (default 0)
+    #    -disablenoscroll => 0/1 (default 0)
 
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__LISTBOX", 0), @_);
 }
 
     ###########################################################################
-    # (@)METHOD:SelectedItem()
-sub SelectedItem {
-    my $self = shift;
-    # 392 == LB_GETCURSEL
-    return Win32::GUI::SendMessage($self, 392, 0, 0);
-}
-    ###########################################################################
-    # (@)METHOD:ListIndex()
-sub ListIndex { SelectedItem(@_); }
-
-    ###########################################################################
-    # (@)METHOD:Select(INDEX)
-    # Selects the zero-based INDEX item in the Listbox.
-sub Select {
-    my $self = shift;
-    my $item = shift;
-    # 390 == LB_SETCURSEL
-    my $r = Win32::GUI::SendMessage($self, 390, $item, 0);
-    return $r;
-}
-
-    ###########################################################################
-    # (@)METHOD:Reset()
-sub Reset {
-    my $self = shift;
-    # 388 == LB_RESETCONTENT
-    my $r = Win32::GUI::SendMessage($self, 388, 0, 0);
-    return $r;
-}
-    ###########################################################################
-    # (@)METHOD:Clear()
-sub Clear { Reset(@_); }
-
-
-    ###########################################################################
-    # (@)METHOD:RemoveItem(INDEX)
-    # Removes the zero-based INDEX item from the Listbox.
-sub RemoveItem {
-    my $self = shift;
-    my $item = shift;
-    # 386 == LB_DELETESTRING
-    my $r = Win32::GUI::SendMessage($self, 386, $item, 0);
-    return $r;
-}
-
-    ###########################################################################
-    # (@)METHOD:Count()
-    # Returns the number of items in the Listbox.
-sub Count {
-    my $self = shift;
-    # 395 == LB_GETCOUNT
-    my $r = Win32::GUI::SendMessage($self, 395, 0, 0);
-    return $r;
-}
+    # (@)METHOD:List ()
+    # Return a list of Listbox::Item.
 
 sub List {
     my $self = shift;
@@ -1431,6 +1588,11 @@ sub List {
         return Win32::GUI::Listbox::Item->new($self, $index);
     }
 }
+
+    ###########################################################################
+    # (@)METHOD:Item (INDEX)
+    # Return an Listbox::Item.
+
 sub Item { &List; }
 
 ###############################################################################
@@ -1448,24 +1610,29 @@ sub new {
     return bless $self, $class;
 }
 
+    ###########################################################################
+    # (@)METHOD:Remove()
+    # Remove Item.
 sub Remove {
     my($self) = @_;
     $self->{-parent}->RemoveItem($self->{-index});
     undef $_[0];
 }
 
+    ###########################################################################
+    # (@)METHOD:Select()
+    # Select Item.
 sub Select {
     my($self) = @_;
     $self->{-parent}->Select($self->{-index});
 }
-
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Combobox
 #
 package Win32::GUI::Combobox;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -1473,75 +1640,39 @@ package Win32::GUI::Combobox;
     # (@)METHOD:new Win32::GUI::Combobox(PARENT, %OPTIONS)
     # Creates a new Combobox object;
     # can also be called as PARENT->AddCombobox(%OPTIONS).
+    #
+    # Class specific B<%OPTIONS> are:
+    #  -autohscroll => 0/1 (default 0)
+    #    Set/Unset autohscroll style
+    #  -disablenoscroll => 0/1 (default 0)
+    #    Set/Unset disablenoscroll style
+    #  -dropdown => 0/1 (default 0)
+    #    Set/Unset dropdown style
+    #  -dropdownlist => 0/1 (default 0)
+    #    Set/Unset dropdownlist style
+    #  -hasstring => 0/1 (default 0)
+    #    Set/Unset hasstring style
+    #  -lowercase => 0/1 (default 0)
+    #    Set/Unset lowercase style
+    #  -nointegraleheight => 0/1 (default 0)
+    #    Set/Unset nointegraleheight style
+    #  -simple => 0/1 (default 0)
+    #    Set/Unset simple style
+    #  -sort => 0/1 (default 0)
+    #    Set/Unset sort style
+    #  -uppercase => 0/1 (default 0)
+    #    Set/Unset uppercase style
+
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__COMBOBOX", 0), @_);
 }
-
-    ###########################################################################
-    # (@)METHOD:SelectedItem()
-    # Returns the zero-based index of the currently selected item, or -1 if
-    # no item is selected.
-sub SelectedItem {
-    my $self = shift;
-    # 327 == CB_GETCURSEL
-    return Win32::GUI::SendMessage($self, 327, 0, 0);
-}
-    ###########################################################################
-    # (@)METHOD:ListIndex()
-    # See SelectedItem().
-sub ListIndex { SelectedItem(@_); }
-
-    ###########################################################################
-    # (@)METHOD:Select(INDEX)
-    # Selects the zero-based INDEX item in the Combobox.
-sub Select {
-    my $self = shift;
-    my $item = shift;
-    # 334 == CB_SETCURSEL
-    my $r = Win32::GUI::SendMessage($self, 334, $item, 0);
-    return $r;
-}
-
-    ###########################################################################
-    # (@)METHOD:Reset()
-sub Reset {
-    my $self = shift;
-    # 331 == CB_RESETCONTENT
-    my $r = Win32::GUI::SendMessage($self, 331, 0, 0);
-    return $r;
-}
-    ###########################################################################
-    # (@)METHOD:Clear()
-sub Clear { Reset(@_); }
-
-    ###########################################################################
-    # (@)METHOD:RemoveItem(INDEX)
-    # Removes the zero-based INDEX item from the Combobox.
-sub RemoveItem {
-    my $self = shift;
-    my $item = shift;
-    # 324 == CB_DELETESTRING
-    my $r = Win32::GUI::SendMessage($self, 324, $item, 0);
-    return $r;
-}
-
-    ###########################################################################
-    # (@)METHOD:Count()
-sub Count {
-    my $self = shift;
-    # 326 == CB_GETCOUNT
-    my $r = Win32::GUI::SendMessage($self, 326, 0, 0);
-    return $r;
-}
-
-
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::ProgressBar
 #
 package Win32::GUI::ProgressBar;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -1549,7 +1680,8 @@ package Win32::GUI::ProgressBar;
     # (@)METHOD:new Win32::GUI::ProgressBar(PARENT, %OPTIONS)
     # Creates a new ProgressBar object;
     # can also be called as PARENT->AddProgressBar(%OPTIONS).
-    # Class specific %OPTIONS are:
+    #
+    # Class specific B<%OPTIONS> are:
     #     -smooth   => 0/1 (default 0)
     #         uses a smooth bar instead of the default segmented bar.
     #     -vertical => 0/1 (default 0)
@@ -1558,56 +1690,12 @@ sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__PROGRESS", 0), @_);
 }
 
-    ###########################################################################
-    # (@)METHOD:SetPos(VALUE)
-    # Sets the position of the ProgressBar to the specified VALUE.
-sub SetPos {
-    my $self = shift;
-    my $pos = shift;
-    # 1026 == PBM_SETPOS
-    return Win32::GUI::SendMessage($self, 1026, $pos, 0);
-}
-
-    ###########################################################################
-    # (@)METHOD:StepIt()
-    # Increments the position of the ProgressBar of the defined step value;
-    # see SetStep().
-sub StepIt {
-    my $self = shift;
-    # 1029 == PBM_STEPIT
-    return Win32::GUI::SendMessage($self, 1029, 0, 0);
-}
-
-    ###########################################################################
-    # (@)METHOD:SetRange([MIN], MAX)
-sub SetRange {
-    my $self = shift;
-    my ($min, $max) = @_;
-    $max = $min, $min = 0 unless defined($max);
-    # 1025 == PBM_SETRANGE
-    # return Win32::GUI::SendMessage($self, 1025, 0, ($max + $min >> 8));
-    return Win32::GUI::SendMessage($self, 1025, 0, ($min | $max << 16));
-
-}
-    ###########################################################################
-    # (@)METHOD:SetStep([VALUE])
-    # Sets the increment value for the ProgressBar; see StepIt().
-sub SetStep {
-    my $self = shift;
-    my $step = shift;
-    $step = 10 unless $step;
-    # 1028 == PBM_SETSTEP
-    return Win32::GUI::SendMessage($self, 1028, $step, 0);
-}
-
-    # TODO 4.71: Color, BackColor
-
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::StatusBar
 #
 package Win32::GUI::StatusBar;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -1615,6 +1703,11 @@ package Win32::GUI::StatusBar;
     # (@)METHOD:new Win32::GUI::StatusBar(PARENT, %OPTIONS)
     # Creates a new StatusBar object;
     # can also be called as PARENT->AddStatusBar(%OPTIONS).
+    #
+    # Class specific B<%OPTIONS> are:
+    #     -sizegrip   => 0/1 (default 0)
+    #         Set/Unset size grip style.
+
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__STATUS", 0), @_);
 }
@@ -1625,52 +1718,44 @@ sub new {
 #
 package Win32::GUI::TabStrip;
 @ISA = qw(
-    Win32::GUI::Window 
-    Win32::GUI::WindowProps 
+    Win32::GUI::Window
+    Win32::GUI::WindowProps
 );
 
     ###########################################################################
     # (@)METHOD:new Win32::GUI::TabStrip(PARENT, %OPTIONS)
     # Creates a new TabStrip object;
     # can also be called as PARENT->AddTabStrip(%OPTIONS).
-    # Class specific %OPTIONS are:
+    #
+    # Class specific B<%OPTIONS> are:
+    #   -alignright=> 0/1 (default 0)
     #   -bottom    => 0/1 (default 0)
     #   -buttons   => 0/1 (default 0)
     #   -hottrack  => 0/1 (default 0)
     #   -imagelist => Win32::GUI::ImageList object
     #   -justify   => 0/1 (default 0)
+    #   -forceiconleft => 0/1 (default 0)
+    #   -forcelabelleft => 0/1 (default 0)
+    #   -fixedwidth => 0/1 (default 0)
+    #   -focusbottondown => 0/1 (default 0)
+    #   -focusnever => 0/1 (default 0)
+    #   -flat      => 0/1 (default 0)
+    #   -flatseparator => 0/1 (default 0)
+    #   -raggedright => 0/1 (default 0)
     #   -multiline => 0/1 (default 0)
-    #   -right     => 0/1 (default 0)
+    #   -multiselect => 0/1 (default 0)   
     #   -vertical  => 0/1 (default 0)
+    #   -tooltip => Win32::GUI::Tooltip object    
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__TAB", 0), @_);
 }
-
-    ###########################################################################
-    # (@)METHOD:SelectedItem()
-    # Returns the zero-based index of the currently selected item.
-sub SelectedItem {
-    my $self = shift;
-    # 4875 == TCM_GETCURSEL
-    return Win32::GUI::SendMessage($self, 4875, 0, 0);
-}
-
-    ###########################################################################
-    # (@)METHOD:Select(INDEX)
-    # Selects the zero-based INDEX item in the TabStrip.
-sub Select {
-    my $self = shift;
-    # 4876 == TCM_SETCURSEL
-    return Win32::GUI::SendMessage($self, 4876, shift, 0);
-}
-
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Toolbar
 #
 package Win32::GUI::Toolbar;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -1678,26 +1763,20 @@ package Win32::GUI::Toolbar;
     # (@)METHOD:new Win32::GUI::Toolbar(PARENT, %OPTIONS)
     # Creates a new Toolbar object;
     # can also be called as PARENT->AddToolbar(%OPTIONS).
-    # Class specific %OPTIONS are:
-    #   -flat      => 0/1
+    #
+    # Class specific B<%OPTIONS> are:
+    #   -adjustable => 0/1
+    #   -altdrag => 0/1
+    #   -flat => 0/1
+    #   -list => 0/1
+    #   -transparent => 0/1
     #   -imagelist => IMAGELIST
     #   -multiline => 0/1
     #   -nodivider => 0/1
+    #   -tooltip => Win32::GUI::Tooltip object    
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__TOOLBAR", 0), @_);
 }
-
-    ###########################################################################
-    # (@)METHOD:SetBitmapSize([X, Y])
-sub SetBitmapSize {
-    my $self = shift;
-    my ($x, $y) = @_;
-    $x = 16 unless defined($x);
-    $y = 15 unless defined($y);
-    # 1056 == TB_SETBITMAPSIZE
-    return Win32::GUI::SendMessage($self, 1056, 0, ($x | $y << 16));
-}
-
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::RichEdit
@@ -1712,6 +1791,7 @@ package Win32::GUI::RichEdit;
     # (@)METHOD:new Win32::GUI::RichEdit(PARENT, %OPTIONS)
     # Creates a new RichEdit object;
     # can also be called as PARENT->AddRichEdit(%OPTIONS).
+    # See new Win32::GUI::Edit for B<%OPTIONS>
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__RICHEDIT", 0), @_);
 }
@@ -1722,7 +1802,7 @@ sub new {
 #
 package Win32::GUI::ListView;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -1730,9 +1810,45 @@ package Win32::GUI::ListView;
     # (@)METHOD:new Win32::GUI::ListView(PARENT, %OPTIONS)
     # Creates a new ListView object;
     # can also be called as PARENT->AddListView(%OPTIONS).
+    #
+    # Class specific B<%OPTIONS> are:
+    #   -align => left, top
+    #   -imagelist => IMAGELIST
+    #   -report => 0/1
+    #   -list => 0/1
+    #   -singlesel => 0/1
+    #   -showselalways => 0/1
+    #   -sortascending => 0/1
+    #   -sortdescending => 0/1
+    #   -nolabelwrap => 0/1
+    #   -autoarrange => 0/1
+    #   -editlabel => 0/1
+    #   -noscroll => 0/1
+    #   -alignleft => 0/1
+    #   -ownerdrawfixed => 0/1
+    #   -nocolumnheader => 0/1
+    #   -nosortheader => 0/1
+    #   -gridlines => 0/1
+    #   -subitemimages => 0/1
+    #   -checkboxes => 0/1
+    #   -hottrack => 0/1
+    #   -reordercolumns => 0/1
+    #   -fullrowselect => 0/1
+    #   -oneclickactivate => 0/1
+    #   -twoclickactivate => 0/1
+    #   -flatsb => 0/1
+    #   -regional => 0/1
+    #   -infotip => 0/1
+    #   -underlinehot => 0/1
+    #   -underlinecold => 0/1
+    #   -multiworkareas => 0/1
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__LISTVIEW", 0), @_);
 }
+
+    ###########################################################################
+    # (@)METHOD:Item(INDEX)
+    # Return an Win32::GUI::ListView::Item.
 
 sub Item {
     my($self, $index) = @_;
@@ -1753,22 +1869,34 @@ sub new {
     return bless $self, $class;
 }
 
+    ###########################################################################
+    # (@)METHOD:SubItem(INDEX)
+    # Return a Win32::GUI::ListView::SubItem object.
 sub SubItem {
     my($self, $index) = @_;
     return Win32::GUI::ListView::SubItem->new($self, $index);
 }
 
+    ###########################################################################
+    # (@)METHOD:Remove()
+    # Remove listview item.
 sub Remove {
     my($self) = @_;
     $self->{-parent}->DeleteItem($self->{-index});
     undef $_[0];
 }
 
+    ###########################################################################
+    # (@)METHOD:Select()
+    # Select listview item.
 sub Select {
     my($self) = @_;
     $self->{-parent}->Select($self->{-index});
 }
 
+    ###########################################################################
+    # (@)METHOD:Text([TEXT])
+    # Set or Get item text.
 sub Text {
     my($self, $text) = @_;
     if(not defined $text) {
@@ -1776,7 +1904,7 @@ sub Text {
         return $data{-text};
     } else {
         return $self->{-parent}->ChangeItem(
-            -item => $self->{-index}, 
+            -item => $self->{-index},
             -text => $text,
         );
     }
@@ -1797,17 +1925,20 @@ sub new {
     return bless $self, $class;
 }
 
+    ###########################################################################
+    # (@)METHOD:Text([TEXT])
+    # Set or Get sub item text.
 sub Text {
     my($self, $text) = @_;
     if(not defined $text) {
         my %data = $self->{-parent}->ItemInfo(
-            $self->{-index}, 
+            $self->{-index},
             $self->{-subindex},
         );
         return $data{-text};
     } else {
         return $self->{-parent}->ChangeItem(
-            -item => $self->{-index}, 
+            -item => $self->{-index},
             -subitem => $self->{-subindex},
             -text => $text,
         );
@@ -1819,7 +1950,7 @@ sub Text {
 #
 package Win32::GUI::TreeView;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -1827,6 +1958,24 @@ package Win32::GUI::TreeView;
     # (@)METHOD:new Win32::GUI::TreeView(PARENT, %OPTIONS)
     # Creates a new TreeView object
     # can also be called as PARENT->AddTreeView(%OPTIONS).
+    #
+    # Class specific B<%OPTIONS> are:
+    #   -imagelist => IMAGELIST
+    #   -tooltip => Win32::GUI::Tooltip
+    #   -lines => 0/1
+    #   -rootlines => 0/1
+    #   -buttons => 0/1
+    #   -showselalways => 0/1
+    #   -checkboxes => 0/1
+    #   -trackselect => 0/1
+    #   -disabledragdrop => 0/1
+    #   -editlabels => 0/1
+    #   -fullrowselect => 0/1
+    #   -nonevenheight => 0/1
+    #   -noscroll => 0/1
+    #   -notooltips => 0/1
+    #   -rtlreading => 0/1
+    #   -singleexpand => 0/1
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__TREEVIEW", 0), @_);
 }
@@ -1837,7 +1986,7 @@ sub new {
 #
 package Win32::GUI::Trackbar;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -1845,63 +1994,21 @@ package Win32::GUI::Trackbar;
     # (@)METHOD:new Win32::GUI::Slider(PARENT, %OPTIONS)
     # Creates a new Slider object;
     # can also be called as PARENT->AddSlider(%OPTIONS).
+    #
+    # Class specific B<%OPTIONS> are:
+    #   -tooltip => Win32::GUI::Tooltip
+    #   -vertical => 0/1
+    #   -aligntop => 0/1
+    #   -alignleft => 0/1
+    #   -noticks => 0/1
+    #   -nothumb => 0/1
+    #   -selrange => 0/1
+    #   -autoticks => 0/1
+    #   -both => 0/1
+    #   -fixedlength => 0/1
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__TRACKBAR", 0), @_);
 }
-
-sub SetRange {
-
-}
-
-sub Min {
-    my $self = shift;
-    my $value = shift;
-    if(defined($value)) {
-        my $flag = shift;
-        $flag = 1 unless defined($flag);
-        # 1031 == TBM_SETRANGEMIN
-        return Win32::GUI::SendMessage($self, 1031, $flag, $value);
-    } else {
-        # 1025 == TBM_GETRANGEMIN
-        return Win32::GUI::SendMessage($self, 1025, 0, 0);
-    }
-}
-
-sub Max {
-    my $self = shift;
-    my $value = shift;
-    if(defined($value)) {
-        my $flag = shift;
-        $flag = 1 unless defined($flag);
-        # 1032 == TBM_SETRANGEMAX
-        return Win32::GUI::SendMessage($self, 1032, $flag, $value);
-    } else {
-        # 1026 == TBM_GETRANGEMAX
-        return Win32::GUI::SendMessage($self, 1026, 0, 0);
-    }
-}
-
-sub Pos {
-    my $self = shift;
-    my $value = shift;
-    if(defined($value)) {
-        my $flag = shift;
-        $flag = 1 unless defined($flag);
-        # 1029 == TBM_SETPOS
-        return Win32::GUI::SendMessage($self, 1029, $flag, $value);
-    } else {
-        # 1024 == TBM_GETPOS
-        return Win32::GUI::SendMessage($self, 1024, 0, 0);
-    }
-}
-
-sub TicFrequency {
-    my $self = shift;
-    my $value = shift;
-    # 1044 == TBM_SETTICFREQ
-    return Win32::GUI::SendMessage($self, 1044, $value, 0);
-}
-
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Slider
@@ -1914,7 +2021,7 @@ package Win32::GUI::Slider;
 #
 package Win32::GUI::UpDown;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -1922,6 +2029,15 @@ package Win32::GUI::UpDown;
     # (@)METHOD:new Win32::GUI::UpDown(PARENT, %OPTIONS)
     # Creates a new UpDown object;
     # can also be called as PARENT->AddUpDown(%OPTIONS).
+    #
+    # Class specific B<%OPTIONS> are:
+    #   -align => left,right
+    #   -nothousands => 0/1
+    #   -wrap => 0/1
+    #   -horizontal => 0/1
+    #   -autobuddy => 0/1
+    #   -setbuddy => 0/1
+    #   -arrowkeys => 0/1
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__UPDOWN", 0), @_);
 }
@@ -1931,15 +2047,19 @@ sub new {
 #
 package Win32::GUI::Tooltip;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
     ###########################################################################
     # (@)METHOD:new Win32::GUI::Tooltip(PARENT, %OPTIONS)
-    # (preliminary) creates a new Tooltip object
+    # Creates a new Tooltip object
+    #
+    # Class specific B<%OPTIONS> are:
+    #   -alwaystip => 0/1
+    #   -noprefix => 0/1
 sub new {
-    my $parent = $_[0];
+    my $parent = $_[1];
     my $new = Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__TOOLTIP", 0), @_);
     if($new) {
         if($parent->{-tooltips}) {
@@ -1956,7 +2076,7 @@ sub new {
 #
 package Win32::GUI::Animation;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -1964,13 +2084,14 @@ package Win32::GUI::Animation;
     # (@)METHOD:new Win32::GUI::Animation(PARENT, %OPTIONS)
     # Creates a new Animation object;
     # can also be called as PARENT->AddAnimation(%OPTIONS).
-    # Class specific %OPTIONS are:
+    #
+    # Class specific B<%OPTIONS> are:
     #   -autoplay    => 0/1 (default 0)
-    #     starts playing the animation as soon as an AVI clip is loaded
+    #     Starts playing the animation as soon as an AVI clip is loaded.
     #   -center      => 0/1 (default 0)
-    #     centers the animation in the control window
+    #     Centers the animation in the control window.
     #   -transparent => 0/1 (default 0)
-    #     draws the animation using a transparent background
+    #     Draws the animation using a transparent background.
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__ANIMATION", 0), @_);
 }
@@ -1980,7 +2101,7 @@ sub new {
 #
 package Win32::GUI::Rebar;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -1988,14 +2109,29 @@ package Win32::GUI::Rebar;
     # (@)METHOD:new Win32::GUI::Rebar(PARENT, %OPTIONS)
     # Creates a new Rebar object;
     # can also be called as PARENT->AddRebar(%OPTIONS).
-    # Class specific %OPTIONS are:
+    #
+    # Class specific B<%OPTIONS> are:
+    #   -autosize => 0/1 (default 0)
+    #     Set/Unset autosize style.
     #   -bandborders => 0/1 (default 0)
     #     display a border to separate bands.
+    #   -doubleclick => 0/1 (default 0)
+    #     Set/Unset double click toggle style.
     #   -fixedorder => 0/1 (default 0)
     #     band position cannot be swapped.
     #   -imagelist => Win32::GUI::ImageList object
+    #     Set imagelist.
+    #   -nodivider => 0/1 (default 1)
+    #     Set/Unset nodivider style.
     #   -varheight => 0/1 (default 1)
     #     display bands using the minimum required height.
+    #   -vertical => 0/1 (default 0)
+    #     Set/Unset vertical style.
+    #   -vgripper => 0/1 (default 0)
+    #     Set/Unset vertical gripper style.
+    #   -tooltip => Win32::GUI::Tooltip
+    #     Set tooltip window.
+
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__REBAR", 0), @_);
 }
@@ -2005,7 +2141,7 @@ sub new {
 #
 package Win32::GUI::Header;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -2013,11 +2149,25 @@ package Win32::GUI::Header;
     # (@)METHOD:new Win32::GUI::Header(PARENT, %OPTIONS)
     # Creates a new Header object;
     # can also be called as PARENT->AddHeader(%OPTIONS).
-    # Class specific %OPTIONS are:
+    #
+    # Class specific B<%OPTIONS> are:
     #   -buttons => 0/1 (default 0)
-    #     header items look like push buttons and can be clicked.
+    #     Set/Unset buttons style.
+    #     Header items look like push buttons and can be clicked.
+    #   -dragdrop => 0/1 (default 0)
+    #     Set/Unset dragdrop style.
+    #   -fulldrag => 0/1 (default 0)
+    #     Set/Unset fulldrag style.
+    #   -hidden => 0/1 (default 0)
+    #     Set/Unset hidden style.
+    #   -horizontal => 0/1 (default 0)
+    #     Set/Unset horizontal style.
     #   -hottrack => 0/1 (default 0)
-    #   -imagelist => Win32::GUI::ImageList object
+    #     Set/Unset hottrack style.
+    #   -hottrack => 0/1 (default 0)
+    #     Set/Unset hottrack style.
+    #   -imagelist => Win32::GUI::ImageList object.
+    #     Set imagelist.
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__HEADER", 0), @_);
 }
@@ -2027,19 +2177,25 @@ sub new {
 #
 package Win32::GUI::Splitter;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
     ###########################################################################
     # (@)METHOD:new Win32::GUI::Splitter(PARENT, %OPTIONS)
     # Creates a new Splitter object;
-    # can also be called as PARENT->AddHeader(%OPTIONS).
-    # Class specific %OPTIONS are:
-    #   -buttons => 0/1 (default 0)
-    #     header items look like push buttons and can be clicked.
-    #   -hottrack => 0/1 (default 0)
-    #   -imagelist => Win32::GUI::ImageList object
+    # can also be called as PARENT->AddSplitter(%OPTIONS).
+    #
+    # Class specific B<%OPTIONS> are:
+    #   -horizontal => 0/1 (default 0)
+    #     Set/Unset horizontal orientation
+    #   -min => VALUE
+    #     Set minimum range value.
+    #   -max => VALUE
+    #     Set maximum range value.
+    #   -range => [ MIN, MAX ]
+    #     Set range values.
+
 sub new {
     my $new = Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__SPLITTER", 0), @_);
     if($new) {
@@ -2050,21 +2206,31 @@ sub new {
     }
 }
 
-
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::ComboboxEx
 #
 package Win32::GUI::ComboboxEx;
 @ISA = qw(
-    Win32::GUI::Combobox 
+    Win32::GUI::Combobox
 );
 
     ###########################################################################
     # (@)METHOD:new Win32::GUI::ComboboxEx(PARENT, %OPTIONS)
     # Creates a new ComboboxEx object;
     # can also be called as PARENT->AddComboboxEx(%OPTIONS).
-    # Class specific %OPTIONS are:
+    #
+    # Class specific B<%OPTIONS> are:
     #   -imagelist => Win32::GUI::ImageList object
+    #     Set Imagelist object
+    #   -casesensitive => 0/1 (default 0)
+    #     Set/Unset casesensitive extended style.
+    #   -noeditimage => 0/1 (default 0)
+    #     Set/Unset noeditimage extended style.
+    #   -noeditimageindent => 0/1 (default 0)
+    #     Set/Unset noeditimageindent extended style.
+    #   -nosizelimit => 0/1 (default 0)
+    #     Set/Unset nosizelimit extended style.
+    #
     # Except for images, a ComboboxEx object acts like a Win32::GUI::Combobox
     # object. See also new Win32::GUI::Combobox().
 sub new {
@@ -2076,7 +2242,7 @@ sub new {
 #
 package Win32::GUI::DateTime;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -2084,10 +2250,48 @@ package Win32::GUI::DateTime;
     # (@)METHOD:new Win32::GUI::DateTime(PARENT, %OPTIONS)
     # Creates a new DateTime object;
     # can also be called as PARENT->AddDateTime(%OPTIONS).
-    # Class specific %OPTIONS are:
-    #   [TBD]
+    #
+    # Class specific B<%OPTIONS> are:
+    #   -align  => 'right'/'left' (default 'left')
+    #     The drop-down month calendar alignement.
+    #   -format => 'shortdate', 'longdate', 'time'
+    #     Control format type (Use local format date/time).
+    #   -shownone => 0/1 (default 0)
+    #     Allow no datetime (add a prefix checkbox).
+    #   -updown   => 0/1 (default 0 for date, 1 for time format)
+    #     Use updown control instead of the drop-down month calendar.
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__DTPICK", 0), @_);
+}
+
+###############################################################################
+# (@)PACKAGE:Win32::GUI::MonthCal
+#
+package Win32::GUI::MonthCal;
+@ISA = qw(
+    Win32::GUI
+    Win32::GUI::WindowProps
+);
+
+    ###########################################################################
+    # (@)METHOD:new Win32::GUI::MonthCal(PARENT, %OPTIONS)
+    # Creates a new MonthCal object;
+    # can also be called as PARENT->AddMonthCal(%OPTIONS).
+    #
+    # Class specific B<%OPTIONS> are:
+    #   -daystate  => 0/1 (default 0)
+    #     Set/Unset daystate style. 
+    #   -multiselect  => 0/1 (default 0)
+    #     Set/Unset multiselect style. 
+    #   -notoday  => 0/1 (default 0)
+    #     Set/Unset notoday style. 
+    #   -notodaycircle  => 0/1 (default 0)
+    #     Set/Unset notodaycircle style. 
+    #   -weeknumber  => 0/1 (default 0)
+    #     Set/Unset weeknumber style. 
+
+sub new {
+    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__MONTHCAL", 0), @_);
 }
 
 ###############################################################################
@@ -2095,7 +2299,7 @@ sub new {
 #
 package Win32::GUI::Graphic;
 @ISA = qw(
-    Win32::GUI 
+    Win32::GUI
     Win32::GUI::WindowProps
 );
 
@@ -2103,18 +2307,13 @@ package Win32::GUI::Graphic;
     # (@)METHOD:new Win32::GUI::Graphic(PARENT, %OPTIONS)
     # Creates a new Graphic object;
     # can also be called as PARENT->AddGraphic(%OPTIONS).
-    # Class specific %OPTIONS are:
+    #
+    # Class specific B<%OPTIONS> are:
+    #   -intercative => 0/1 (default 0)
+    #     Set/Unset interactive graphic.
 sub new {
-    my $class = shift;
-    my $self = {};
-    bless($self, $class);
-    my(@input) = @_;
-    my $handle = Win32::GUI::Create($self, 101, @input);
-    if($handle) {
-        return $self;
-    } else {
-        return undef;
-    }
+
+    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__GRAPHIC", 0), @_);
 }
 
     ###########################################################################
@@ -2140,6 +2339,7 @@ package Win32::GUI::ImageList;
     # is allocated (GROW).
 sub new {
     my $class = shift;
+    my $self = {};
     my $handle = Win32::GUI::ImageList::Create(@_);
     if($handle) {
         $self->{-handle} = $handle;
@@ -2152,7 +2352,7 @@ sub new {
 
     ###########################################################################
     # (@)METHOD:Add(BITMAP, [BITMAPMASK])
-    # Adds a bitmap to the ImageList; both BITMAP and BITMAPMASK can be either
+    # Adds a bitmap to the ImageList; both B<BITMAP> and B<BITMAPMASK> can be either
     # Win32::GUI::Bitmap objects or filenames.
 sub Add {
     my($self, $bitmap, $bitmapMask) = @_;
@@ -2163,6 +2363,16 @@ sub Add {
     } else {
         $self->AddBitmap($bitmap);
     }
+}
+
+    ###########################################################################
+    # (@)METHOD:AddMasked(BITMAP, COLORMASK)
+    # Adds a bitmap to the ImageList; B<BITMAP> can be either Win32::GUI::Bitmap 
+    # object or filename.
+sub AddMasked {
+    my($self, $bitmap, $colorMask) = @_;
+    $bitmap = new Win32::GUI::Bitmap($bitmap) unless ref($bitmap);
+    return $self->AddBitmapMasked($bitmap);
 }
 
 ###############################################################################
@@ -2176,7 +2386,7 @@ package Win32::GUI::Menu;
 sub new {
     my $class = shift;
     $class = "Win32::" . $class if $class =~ /^GUI::/;
-    my $self={};
+    my $self = {};
 
     if($#_ > 0) {
         return Win32::GUI::MakeMenu(@_);
@@ -2221,13 +2431,17 @@ sub new {
 
     if($handle) {
         $args{-submenu} = $handle;
+        # print "PM(MenuButton::new) calling InsertMenuItem with menu=$menu, args=", join(", ", %args), "\n";
         Win32::GUI::MenuButton::InsertMenuItem($menu, %args);
+        # print "PM(MenuButton::new) back from InsertMenuItem\n";
         $self->{-handle} = $handle;
         bless($self, $class);
-        if($args{-name}) {
-            $Win32::GUI::Menus{$args{-id}} = $self;
-            $self->{-name} = $args{-name};
-        }
+        $Win32::GUI::Menus{ $args{-id} } = $handle;
+        #if($args{-name}) {
+        #    $Win32::GUI::Menus{$args{-id}} = $self;
+        #    $self->{-name} = $args{-name};
+        #}
+        # print "PM(MenuButton::new) returning self=$self\n";
         return $self;
     } else {
         return undef;
@@ -2257,18 +2471,22 @@ sub new {
     my %args = @_;
     my $self = {};
 
+    # print "PM(MenuItem::new) calling InsertMenuItem with menu=$menu, args=", join(", ", %args), "\n";
     my $handle = Win32::GUI::MenuButton::InsertMenuItem($menu, %args);
+    # print "PM(MenuItem::new) back from InsertMenuItem\n";
 
     if($handle) {
-        $self->{-handle} = $handle;
-        $Win32::GUI::menucallbacks{$args{-id}} = $args{-function} if $args{-function};
+        # $self->{-handle} = $handle;
+        # $Win32::GUI::menucallbacks{$args{-id}} = $args{-function} if $args{-function};
         $self->{-id} = $args{-id};
         $self->{-menu} = $menu->{-handle};
         bless($self, $class);
-        if($args{-name}) {
-            $Win32::GUI::Menus{$args{-id}} = $self;
-            $self->{-name} = $args{-name};
-        }
+        $Win32::GUI::Menus{ $args{-id} } = $menu->{-handle};
+        #if($args{-name}) {
+        #    $Win32::GUI::Menus{$args{-id}} = $self;
+        #    $self->{-name} = $args{-name};
+        #}
+        # print "PM(MenuItem::new) returning self=$self\n";
         return $self;
     } else {
         return undef;
@@ -2294,11 +2512,14 @@ sub new {
     my $elapse = shift;
 
     my %args = @_;
-    my $id = $Win32::GUI::TimerIdCounter;
 
+    # Get a new Id
+    $id = $Win32::GUI::TimerIdCounter;
     $Win32::GUI::TimerIdCounter++;
 
-    Win32::GUI::SetTimer($window, $id, $elapse);
+    # Force a name if havent.
+    $name = "_Timer".$id unless defined $name;
+    $elapse = 1 unless defined $elapse;
 
     my $self = {};
     bless($self, $class);
@@ -2306,13 +2527,15 @@ sub new {
     # add $self->{name}
     $self->{-id} = $id;
     $self->{-name} = $name;
-    $self->{-parent} = $window;
     $self->{-handle} = $window->{-handle};
     $self->{-interval} = $elapse;
 
-    # add to $window->timers->{$id} = $self;
-    $window->{-timers}->{$id} = $self;
+    # Store name in timers hash
+    $window->{-timers}->{$id} = $name;
+    # Add Timer into parent hash.
     $window->{$name} = $self;
+
+    Win32::GUI::SetTimer($window, $id, $elapse);
 
     return $self;
 }
@@ -2323,7 +2546,7 @@ sub Interval {
     my $self = shift;
     my $interval = shift;
     if(defined $interval) {
-        Win32::GUI::SetTimer($self->{-parent}->{-handle}, $self->{-id}, $interval);
+        Win32::GUI::SetTimer($self->{-handle}, $self->{-id}, $interval);
         $self->{-interval} = $interval;
     } else {
         return $self->{-interval};
@@ -2334,15 +2557,19 @@ sub Interval {
     # (@)METHOD:Kill()
 sub Kill {
     my $self = shift;
-    Win32::GUI::KillTimer($self->{-parent}->{-handle}, $self->{-id});
+    Win32::GUI::KillTimer($self->{-handle}, $self->{-id});
 }
 
     ###########################################################################
     # (@)INTERNAL:DESTROY(HANDLE)
 sub DESTROY {
     my $self = shift;
-    Win32::GUI::KillTimer($self->{-handle}, $self->{-id});
-    undef $self->{-parent}->{-timers}->{$self->{-id}};
+    if ( defined $self &&
+         defined $self->{-handle} &&
+         defined $self->{-id} ) {
+        # Kill timer
+        Win32::GUI::KillTimer($self->{-handle}, $self->{-id});
+    }
 }
 
 
@@ -2355,7 +2582,8 @@ package Win32::GUI::NotifyIcon;
     # (@)METHOD:new Win32::GUI::NotifyIcon(PARENT, %OPTIONS)
     # Creates a new NotifyIcon (also known as system tray icon) object;
     # can also be called as PARENT->AddNotifyIcon(%OPTIONS).
-    # %OPTIONS are:
+    #
+    # B<%OPTIONS> are:
     #     -icon => Win32::GUI::Icon object
     #     -id => NUMBER
     #         a unique identifier for the NotifyIcon object
@@ -2364,6 +2592,9 @@ package Win32::GUI::NotifyIcon;
     #     -tip => STRING
     #         the text that will appear as tooltip when the mouse is
     #         on the NotifyIcon
+    #     -event => NEM Event Hash
+    #        Set NEM event handler (you can also use -on Event Option).
+
 sub new {
     my $class = shift;
     $class = "Win32::" . $class if $class =~ /^GUI::/;
@@ -2371,37 +2602,56 @@ sub new {
 
     my %args = @_;
 
-    $Win32::GUI::NotifyIconIdCounter++;
-
     if(!exists($args{-id})) {
         $args{-id} = $Win32::GUI::NotifyIconIdCounter;
+        $Win32::GUI::NotifyIconIdCounter++;
     }
 
-    Win32::GUI::NotifyIcon::Add($window, %args);
+    if(!exists($args{-name})) {
+        $args{-name} = "_NotifyIcon".$args{-id};
+    }
 
     my $self = {};
     bless($self, $class);
 
     $self->{-id} = $args{-id};
     $self->{-name} = $args{-name};
-    $self->{-parent} = $window;
     $self->{-handle} = $window->{-handle};
 
-    $window->{-notifyicons}->{$args{-id}} = $self;
+    # Store name in notifyicons hash
+    $window->{-notifyicons}->{$args{-id}} = $args{-name};
+    # AutoReference to parent
     $window->{$args{-name}} = $self;
+
+    Win32::GUI::NotifyIcon::Add($self->{-handle}, %args);
 
     return $self;
 }
 
     ###########################################################################
+    # (@)METHOD:Change(%OPTIONS)
+    # Change most option. See new Win32::GUI::NotifyIcon.
+sub Change {
+    my $self = shift;
+    my %args = @_;
+    return Win32::GUI::NotifyIcon::Modify($self->{-handle}, %args);
+}
+
+    ###########################################################################
     # (@)INTERNAL:DESTROY(OBJECT)
+
 sub DESTROY {
+
     my($self) = @_;
-    Win32::GUI::NotifyIcon::Delete(
-        $self->{-parent},
-        -id => $self->{-id},
-    );
-    undef $self->{-parent}->{$self->{-name}};
+    if ( defined $self &&
+         defined $self->{-handle} && 
+         defined $self->{-id} ) {
+         
+        Win32::GUI::NotifyIcon::Delete(
+            $self->{-handle},
+            -id => $self->{-id},
+        );
+    }
 }
 
 ###############################################################################
@@ -2432,7 +2682,12 @@ sub new {
             $self->{-window} = $window->{-handle};
         } else {
             my $device = shift;
-            $self->{-handle} = CreateDC($window, $device);
+            if(!defined($device) && $window =~ /^[0-9]+$/) {
+                $self->{-handle} = $window;
+            }
+            else {
+                $self->{-handle} = CreateDC($window, $device);
+            }
         }
     } else {
         $self = CreateDC("DISPLAY", 0);
@@ -2457,7 +2712,8 @@ package Win32::GUI::Pen;
     ###########################################################################
     # (@)METHOD:new Win32::GUI::Pen(COLOR | %OPTIONS)
     # Creates a new Pen object.
-    # Allowed %OPTIONS are:
+    #
+    # Allowed B<%OPTIONS> are:
     #   -style =>
     #     0 PS_SOLID
     #     1 PS_DASH
@@ -2486,7 +2742,8 @@ package Win32::GUI::Brush;
     ###########################################################################
     # (@)METHOD:new Win32::GUI::Brush(COLOR | %OPTIONS)
     # Creates a new Brush object.
-    # Allowed %OPTIONS are:
+    #
+    # Allowed B<%OPTIONS> are:
     #   -style =>
     #     0 BS_SOLID
     #     1 BS_NULL
@@ -2522,17 +2779,19 @@ package Win32::GUI::AcceleratorTable;
     ###########################################################################
     # (@)METHOD:new Win32::GUI::AcceleratorTable(%ACCELERATORS)
     # Creates an AcceleratorTable object.
-    # %ACCELERATORS is an associative array of key combinations and
-    # accelerator names, in pair:
+    #
+    # B<%ACCELERATORS> is an associative array of key combinations and
+    # accelerator names or sub reference, in pair:
     # Example:
     #     $A = new Win32::GUI::AcceleratorTable(
     #         "Ctrl-X"       => "Close",
     #         "Shift-N"      => "New",
     #         "Ctrl-Alt-Del" => "Reboot",
+    #         "Shift-A"      => sub { print "Hello\n"; },
     #     );
     # The AcceleratorTable object can be associated to a window
-    # with the -accel option; then, when an accelerator is used, a 
-    # corresponding <name>_Click event is fired. 
+    # with the -accel option; then, when an accelerator is used, a
+    # corresponding <name>_Click event is fired.
     # Keyboard combinations currently support the following modifier :
     #     Shift
     #     Ctrl  (or Control)
@@ -2544,67 +2803,170 @@ package Win32::GUI::AcceleratorTable;
     #     Space, Ins, Del, Esc, Backspace, Tab, Return
     #     F1..F12
 sub new {
-    shift;
+    my $class = shift;
+    $class = "Win32::" . $class if $class =~ /^GUI::/;
     my($k, $v);
     my $flag = 0;
     my $key = 0;
     my %accels = @_;
+    my @acc;
+    
     while( ($k, $v) = each %accels) {
-        $flag = 0;
+        $flag = 0x0001;
         if($k =~ s/shift[-\+]//i)                { $flag |= 0x0004; }
         if($k =~ s/(ctrl|control)[-\+]//i)       { $flag |= 0x0008; }
         if($k =~ s/alt[-\+]//i)                  { $flag |= 0x0010; }
 
-           if($k =~ /^space$/i)                  { $flag |= 0x0001; $key = 0x20; } # VK_SPACE
-        elsif($k =~ /^left$/i)                   { $flag |= 0x0001; $key = 0x25; } # VK_LEFT
-        elsif($k =~ /^right$/i)                  { $flag |= 0x0001; $key = 0x27; } # VK_RIGHT
-        elsif($k =~ /^up$/i)                     { $flag |= 0x0001; $key = 0x26; } # VK_UP
-        elsif($k =~ /^down$/i)                   { $flag |= 0x0001; $key = 0x28; } # VK_DOWN
-        elsif($k =~ /^ins$/i)                    { $flag |= 0x0001; $key = 0x2D; } # VK_INSERT
-        elsif($k =~ /^del$/i)                    { $flag |= 0x0001; $key = 0x2E; } # VK_DELETE      
-        elsif($k =~ /^f1$/i)                     { $flag |= 0x0001; $key = 0x70; } # VK_F1
-        elsif($k =~ /^f2$/i)                     { $flag |= 0x0001; $key = 0x71; } # VK_F2
-        elsif($k =~ /^f3$/i)                     { $flag |= 0x0001; $key = 0x72; } # VK_F3
-        elsif($k =~ /^f4$/i)                     { $flag |= 0x0001; $key = 0x73; } # VK_F4
-        elsif($k =~ /^f5$/i)                     { $flag |= 0x0001; $key = 0x74; } # VK_F5
-        elsif($k =~ /^f6$/i)                     { $flag |= 0x0001; $key = 0x75; } # VK_F6
-        elsif($k =~ /^f7$/i)                     { $flag |= 0x0001; $key = 0x76; } # VK_F7
-        elsif($k =~ /^f8$/i)                     { $flag |= 0x0001; $key = 0x77; } # VK_F8
-        elsif($k =~ /^f9$/i)                     { $flag |= 0x0001; $key = 0x78; } # VK_F9
-        elsif($k =~ /^f10$/i)                    { $flag |= 0x0001; $key = 0x79; } # VK_F10
-        elsif($k =~ /^f11$/i)                    { $flag |= 0x0001; $key = 0x7A; } # VK_F11
-        elsif($k =~ /^f12$/i)                    { $flag |= 0x0001; $key = 0x7B; } # VK_F12
-        elsif($k =~ /^esc$/i)                    { $flag |= 0x0001; $key = 0x1B; } # VK_ESCAPE
-        elsif($k =~ /^backspace$/i)              { $flag |= 0x0001; $key = 0x08; } # VK_BACK
-        elsif($k =~ /^tab$/i)                    { $flag |= 0x0001; $key = 0x09; } # VK_TAB
-        elsif($k =~ /^return$/i)                 { $flag |= 0x0001; $key = 0x0D; } # VK_RETURN
-        elsif($k =~ /^end$/i)                    { $flag |= 0x0001; $key = 0x23; } # VK_END
-        elsif($k =~ /^home$/i)                   { $flag |= 0x0001; $key = 0x24; } # VK_HOME
-        elsif($k =~ /^(pgup|pageup)$/i)          { $flag |= 0x0001; $key = 0x21; } # VK_PRIOR
-        elsif($k =~ /^(pgdn|pagedn|pagedown)$/i) { $flag |= 0x0001; $key = 0x22; } # VK_NEXT
-        elsif($k =~ /^[0-9a-zA-Z]$/)             { $flag |= 0x0001; $key = ord(uc($k)); } # ASCII
+                                                 # { $key = 0x01; } # VK_LBUTTON             
+                                                 # { $key = 0x02; } # VK_RBUTTON             
+                                                 # { $key = 0x03; } # VK_CANCEL              
+                                                 # { $key = 0x04; } # VK_MBUTTON             
+           if($k =~ /^backspace$/i)                { $key = 0x08; } # VK_BACK                
+        elsif($k =~ /^tab$/i)                      { $key = 0x09; } # VK_TAB                 
+#       elsif($k =~ /^clear$/i)                    { $key = 0x0c; } # VK_CLEAR               
+        elsif($k =~ /^return$/i)                   { $key = 0x0d; } # VK_RETURN              
+                                                 # { $key = 0x10; } # VK_SHIFT               
+                                                 # { $key = 0x11; } # VK_CONTROL             
+                                                 # { $key = 0x12; } # VK_MENU /ALT           
+        elsif($k =~ /^pause$/i)                    { $key = 0x13; } # VK_PAUSE               
+        elsif($k =~ /^capslock$/i)                 { $key = 0x14; } # VK_CAPITAL             
+        elsif($k =~ /^(esc|escape)$/i)             { $key = 0x1b; } # VK_ESCAPE              
+        elsif($k =~ /^space$/i)                    { $key = 0x20; } # VK_SPACE               
+        elsif($k =~ /^(pgup|pageup)$/i)            { $key = 0x21; } # VK_PRIOR               
+        elsif($k =~ /^(pgdn|pagedn|pagedown)$/i)   { $key = 0x22; } # VK_NEXT                
+        elsif($k =~ /^end$/i)                      { $key = 0x23; } # VK_END                 
+        elsif($k =~ /^home$/i)                     { $key = 0x24; } # VK_HOME                
+        elsif($k =~ /^left$/i)                     { $key = 0x25; } # VK_LEFT                
+        elsif($k =~ /^up$/i)                       { $key = 0x26; } # VK_UP                  
+        elsif($k =~ /^right$/i)                    { $key = 0x27; } # VK_RIGHT               
+        elsif($k =~ /^down$/i)                     { $key = 0x28; } # VK_DOWN                
+#       elsif($k =~ /^select$/i)                   { $key = 0x29; } # VK_SELECT              
+#       elsif($k =~ /^print$/i)                    { $key = 0x2a; } # VK_PRINT               
+#       elsif($k =~ /^execute$/i)                  { $key = 0x2b; } # VK_EXECUTE             
+        elsif($k =~ /^(prntscrn|printscreen)$/i)   { $key = 0x2c; } # VK_SNAPSHOT            
+        elsif($k =~ /^ins$/i)                      { $key = 0x2d; } # VK_INSERT              
+        elsif($k =~ /^del$/i)                      { $key = 0x2e; } # VK_DELETE              
+#       elsif($k =~ /^help$/i)                     { $key = 0x2f; } # VK_HELP                
+        elsif($k =~ /^[0-9a-z]$/i)                 { $key = ord(uc($k)); }                   
+                                                 # 0x30-0x39: ASCII 0-9                      
+                                                 # 0x41-0x5a: ASCII A-Z                      
+        elsif($k =~ /^left(win|windows)$/i)        { $key = 0x5b; } # VK_LWIN                
+        elsif($k =~ /^right(win|windows)$/i)       { $key = 0x5c; } # VK_RWIN                
+        elsif($k =~ /^(app|application)$/i)        { $key = 0x5d; } # VK_APPS                
+#       elsif($k =~ /^sleep$/i)                    { $key = 0x5e; } # VK_SLEEP               
+        elsif($k =~ /^(num|numeric|keypad)0$/i)    { $key = 0x60; } # VK_NUMPAD0             
+        elsif($k =~ /^(num|numeric|keypad)1$/i)    { $key = 0x61; } # VK_NUMPAD1             
+        elsif($k =~ /^(num|numeric|keypad)2$/i)    { $key = 0x62; } # VK_NUMPAD2             
+        elsif($k =~ /^(num|numeric|keypad)3$/i)    { $key = 0x63; } # VK_NUMPAD3             
+        elsif($k =~ /^(num|numeric|keypad)4$/i)    { $key = 0x64; } # VK_NUMPAD4             
+        elsif($k =~ /^(num|numeric|keypad)5$/i)    { $key = 0x65; } # VK_NUMPAD5             
+        elsif($k =~ /^(num|numeric|keypad)6$/i)    { $key = 0x66; } # VK_NUMPAD6             
+        elsif($k =~ /^(num|numeric|keypad)7$/i)    { $key = 0x67; } # VK_NUMPAD7             
+        elsif($k =~ /^(num|numeric|keypad)8$/i)    { $key = 0x68; } # VK_NUMPAD8             
+        elsif($k =~ /^(num|numeric|keypad)9$/i)    { $key = 0x69; } # VK_NUMPAD9             
+        elsif($k =~ /^multiply$/i)                 { $key = 0x6a; } # VK_MULTIPLY            
+        elsif($k =~ /^add$/i)                      { $key = 0x6b; } # VK_ADD                 
+#       elsif($k =~ /^separator$/i)                { $key = 0x6c; } # VK_SEPARATOR           
+        elsif($k =~ /^subtract$/i)                 { $key = 0x6d; } # VK_SUBTRACT            
+        elsif($k =~ /^decimal$/i)                  { $key = 0x6e; } # VK_DECIMAL             
+        elsif($k =~ /^divide$/i)                   { $key = 0x6f; } # VK_DIVIDE              
+        elsif($k =~ /^f1$/i)                       { $key = 0x70; } # VK_F1                  
+        elsif($k =~ /^f2$/i)                       { $key = 0x71; } # VK_F2                  
+        elsif($k =~ /^f3$/i)                       { $key = 0x72; } # VK_F3                  
+        elsif($k =~ /^f4$/i)                       { $key = 0x73; } # VK_F4                  
+        elsif($k =~ /^f5$/i)                       { $key = 0x74; } # VK_F5                  
+        elsif($k =~ /^f6$/i)                       { $key = 0x75; } # VK_F6                  
+        elsif($k =~ /^f7$/i)                       { $key = 0x76; } # VK_F7                  
+        elsif($k =~ /^f8$/i)                       { $key = 0x77; } # VK_F8                  
+        elsif($k =~ /^f9$/i)                       { $key = 0x78; } # VK_F9                  
+        elsif($k =~ /^f10$/i)                      { $key = 0x79; } # VK_F10                 
+        elsif($k =~ /^f11$/i)                      { $key = 0x7a; } # VK_F11                 
+        elsif($k =~ /^f12$/i)                      { $key = 0x7b; } # VK_F12                 
+#       elsif($k =~ /^f13$/i)                      { $key = 0x7c; } # VK_F13                 
+#       elsif($k =~ /^f14$/i)                      { $key = 0x7d; } # VK_F14                 
+#       elsif($k =~ /^f15$/i)                      { $key = 0x7e; } # VK_F15                 
+#       elsif($k =~ /^f16$/i)                      { $key = 0x7f; } # VK_F16                 
+#       elsif($k =~ /^f17$/i)                      { $key = 0x80; } # VK_F17                 
+#       elsif($k =~ /^f18$/i)                      { $key = 0x81; } # VK_F18                 
+#       elsif($k =~ /^f19$/i)                      { $key = 0x82; } # VK_F19                 
+#       elsif($k =~ /^f20$/i)                      { $key = 0x83; } # VK_F20                 
+#       elsif($k =~ /^f21$/i)                      { $key = 0x84; } # VK_F21                 
+#       elsif($k =~ /^f22$/i)                      { $key = 0x85; } # VK_F22                 
+#       elsif($k =~ /^f23$/i)                      { $key = 0x86; } # VK_F23                 
+#       elsif($k =~ /^f24$/i)                      { $key = 0x87; } # VK_F24                 
+        elsif($k =~ /^numlock$/i)                  { $key = 0x90; } # VK_NUMLOCK             
+        elsif($k =~ /^scrolllock$/i)               { $key = 0x91; } # VK_SCROLL              
+                                                 # { $key = 0xa0; } # VK_LSHIFT              
+                                                 # { $key = 0xa1; } # VK_RSHIFT              
+                                                 # { $key = 0xa2; } # VK_LCONTROL            
+                                                 # { $key = 0xa3; } # VK_RCONTROL            
+                                                 # { $key = 0xa4; } # VK_LMENU               
+                                                 # { $key = 0xa5; } # VK_RMENU               
+#       elsif($k =~ /^browserback$/i)              { $key = 0xa6; } # VK_BROWSER_BACK        
+#       elsif($k =~ /^browserforward$/i)           { $key = 0xa7; } # VK_BROWSER_FORWARD     
+#       elsif($k =~ /^browserrefresh$/i)           { $key = 0xa8; } # VK_BROWSER_REFRESH     
+#       elsif($k =~ /^browserstop$/i)              { $key = 0xa9; } # VK_BROWSER_STOP        
+#       elsif($k =~ /^browsersearch$/i)            { $key = 0xaa; } # VK_BROWSER_SEARCH      
+#       elsif($k =~ /^browserfavorites$/i)         { $key = 0xab; } # VK_BROWSER_FAVORITES   
+#       elsif($k =~ /^browserhome$/i)              { $key = 0xac; } # VK_BROWSER_HOME        
+#       elsif($k =~ /^volumemute$/i)               { $key = 0xad; } # VK_VOLUME_MUTE         
+#       elsif($k =~ /^volumedown$/i)               { $key = 0xae; } # VK_VOLUME_UP           
+#       elsif($k =~ /^volumenup$/i)                { $key = 0xaf; } # VK_VOLUME_DOWN         
+#       elsif($k =~ /^medianexttrack$/i)           { $key = 0xb0; } # VK_MEDIA_NEXT_TRACK    
+#       elsif($k =~ /^mediaprevtrack$/i)           { $key = 0xb1; } # VK_MEDIA_PREV_TRACK    
+#       elsif($k =~ /^mediastop$/i)                { $key = 0xb2; } # VK_MEDIA_STOP          
+#       elsif($k =~ /^mediaplaypause$/i)           { $key = 0xb3; } # VK_MEDIA_PLAY_PAUSE    
+#       elsif($k =~ /^launchmail$/i)               { $key = 0xb4; } # VK_LAUNCH_MAIL         
+#       elsif($k =~ /^launchmediaselect$/i)        { $key = 0xb5; } # VK_LAUNCH_MEDIA_SELECT 
+#       elsif($k =~ /^launchapp1$/i)               { $key = 0xb6; } # VK_LAUNCH_APP1         
+#       elsif($k =~ /^launchapp2$/i)               { $key = 0xb7; } # VK_LAUNCH_APP2         
+        elsif($k =~ /^semicolon$/i)                { $key = 0xba; } # VK_OEM_1               
+        elsif($k =~ /^(plus|equal)$/i)             { $key = 0xbb; } # VK_OEM_PLUS            
+        elsif($k =~ /^(comma|lessthan)$/i)         { $key = 0xbc; } # VK_OEM_COMMA           
+        elsif($k =~ /^(minus|underscore)$/i)       { $key = 0xbd; } # VK_OEM_MINUS           
+        elsif($k =~ /^(period|greaterthan)$/i)     { $key = 0xbe; } # VK_OEM_PERIOD          
+        elsif($k =~ /^(slash|question)$/i)         { $key = 0xbf; } # VK_OEM_2               
+        elsif($k =~ /^(acute|tilde)$/i)            { $key = 0xc0; } # VK_OEM_3               
+        elsif($k =~ /^(left|open)brac(e|ket)$/i)   { $key = 0xdb; } # VK_OEM_4               
+        elsif($k =~ /^(backslash|verticalbar)$/i)  { $key = 0xdc; } # VK_OEM_5               
+        elsif($k =~ /^(right|close)brac(e|ket)$/i) { $key = 0xdd; } # VK_OEM_6               
+        elsif($k =~ /^(single|double|)quote$/i)    { $key = 0xde; } # VK_OEM_7               
+#       elsif($k =~ /^unknown$/i)                  { $key = 0xdf; } # VK_OEM_8               
+#       elsif($k =~ /^process$/i)                  { $key = 0xe5; } # VK_PROCESSKEY          
+        elsif($k =~ /^(attn|attention)$/i)         { $key = 0xf6; } # VK_ATTN                
+        elsif($k =~ /^crsel$/i)                    { $key = 0xf7; } # VK_CRSEL               
+        elsif($k =~ /^exsel$/i)                    { $key = 0xf8; } # VK_EXSEL               
+        elsif($k =~ /^(ereof|eraseeof)$/i)         { $key = 0xf9; } # VK_EREOF               
+        elsif($k =~ /^play$/i)                     { $key = 0xfa; } # VK_PLAY                
+        elsif($k =~ /^zoom$/i)                     { $key = 0xfb; } # VK_ZOOM                
+        elsif($k =~ /^noname$/i)                   { $key = 0xfc; } # VK_NONAME              
+        elsif($k =~ /^pa1$/i)                      { $key = 0xfd; } # VK_PA1                 
+        elsif($k =~ /^oem_clear$/i)                { $key = 0xfe; } # VK_OEM_CLEAR           
+        else {$key = 0; print "Key name '$k' unknown\n"; }                                            
 
-        push(@acc, $id);
-        push(@acc, $key);
-        push(@acc, $flag);
-
-        $self->{$Win32::GUI::AcceleratorCounter++} = $v;
-    }
-    if($Win32::GUI::AcceleratorTable) {
-        Win32::GUI::DestroyAcceleratorTable($Win32::GUI::AcceleratorTable);
+        if ($key) {
+            my $id = $Win32::GUI::AcceleratorCounter++;
+            push @acc, $id, $key, $flag;
+            $Win32::GUI::Accelerators{$id} = $v;
+        }
     }
     my $handle = Win32::GUI::CreateAcceleratorTable( @acc );
     if($handle) {
+        my $self = {};
         $self->{-handle} = $handle;
-        return 1;
+        bless $self, $class;
+        return $self;
     } else {
-        return 0;
+        return undef;
     }
 }
 
 sub DESTROY {
-    print "DESTROYING AcceleratorTable $self->{-handle}\n";
-    Win32::GUI::DestroyAcceleratorTable($self->{-handle});
+    my($self) = @_;
+    # print "DESTROYING AcceleratorTable $self->{-handle}\n";
+    if( $self->{-handle} ) {
+        Win32::GUI::DestroyAcceleratorTable( $self->{-handle} );
+    }
 }
 
 ###############################################################################
@@ -2623,9 +2985,31 @@ my %TwoWayMethodMap = (
     -dialogui => "DialogUI",
 );
 
+my $Textfield_TwoWayMethodMap = {
+    -passwordchar => "PasswordChar",
+};
+
+my %PackageSpecific_TwoWayMethodMap = (
+    Splitter => {
+        -min => "Min",
+        -max => "Max",
+        -horizontal => "Horizontal",
+        -vertical => "Vertical",
+    },
+    MenuItem => {
+        -checked => "Checked",
+        -enabled => "Enabled",
+    },
+    Textfield => $Textfield_TwoWayMethodMap,
+    RichEdit  => $Textfield_TwoWayMethodMap,
+);
+
+
 my %OneWayMethodMap = (
     -scalewidth   => "ScaleHeight",
     -scaleheight  => "ScaleWidth",
+    -abstop       => "AbsTop",
+    -absleft      => "AbsLeft",
 );
 
     ###########################################################################
@@ -2644,7 +3028,17 @@ sub STORE {
     my($self, $key, $value) = @_;
     # print "[STORE] called for '$self' {$key}='$value'\n";
 
-    if(exists $TwoWayMethodMap{$key}) {
+    my $Package = ref($self);
+    $Package =~ s/Win32::GUI:://;
+
+    if(exists $PackageSpecific_TwoWayMethodMap{$Package}{$key}) {
+        if(my $method = $self->can($PackageSpecific_TwoWayMethodMap{$Package}{$key})) {
+            #print "[STORE] calling method '$PackageSpecific_TwoWayMethodMap{$Package}{$key}' on '$self'\n";
+            return &{$method}($self, $value);
+        } else {
+            #print "[STORE] PROBLEM: method '$PackageSpecific_TwoWayMethodMap{$Package}{$key}' not found on '$self'\n";
+        }
+    } elsif(exists $TwoWayMethodMap{$key}) {
         if(my $method = $self->can($TwoWayMethodMap{$key})) {
             # print "[STORE] calling method '$TwoWayMethodMap{$key}' on '$self'\n";
             return &{$method}($self, $value);
@@ -2666,10 +3060,21 @@ sub STORE {
     # (@)INTERNAL:FETCH
 sub FETCH {
     my($self, $key) = @_;
+    # print "[FETCH] called for '$self' {$key}='$value'\n";
+    my $Package = ref($self);
+    $Package =~ s/Win32::GUI:://;
 
     if($key eq "UNDERLYING") {
         # print "[FETCH] returning UNDERLYING for '$self'\n";
         return $self->{UNDERLYING};
+
+    } elsif(exists $PackageSpecific_TwoWayMethodMap{$Package}{$key}) {
+        if(my $method = $self->can($PackageSpecific_TwoWayMethodMap{$Package}{$key})) {
+            #print "[FETCH] calling method '$PackageSpecific_TwoWayMethodMap{$package}{$key}' on '$self'\n";
+            return &{$method}($self);
+        } else {
+            #print "[FETCH] PROBLEM: method '$PackageSpecific_TwoWayMethodMap{$package}{$key}' not found on '$self'\n";
+        }
 
     } elsif(exists $TwoWayMethodMap{$key}) {
         # if(my $method = $self->{UNDERLYING}->can($TwoWayMethodMap{$key})) {
@@ -2723,6 +3128,38 @@ sub EXISTS {
     return exists $self->{$key};
 }
 
+sub DELETE {
+    my($self, $key) = @_;
+    # print "[DELETE]  self='$self' key='$key'\n";
+    return delete $self->{$key};
+}
+
+sub UNTIE {
+    my($self, $count) = @_;
+    # print "[UNTIE] self='$self' count='$count'\n";
+}
+
+sub DESTROY {
+  my $self = shift;
+  # print "[DESTROY Debut] self='$self'\n";
+
+  my $oself = tied(%$self);
+  if ( defined $oself ) {
+      # print "[OSELF] self='$oself' ".$oself->{-handle}."\n";
+
+      foreach $key (keys %$oself) {
+        if ( ref $oself->{$key} ) {
+            delete $oself->{$key};
+        }
+      }
+      
+      Win32::GUI::DestroyWindow($oself->{-handle}) if exists $oself->{-handle};
+      undef $oself;
+      untie %$self;
+  }
+
+  # print "[DESTROY Fin] self='$self'\n";
+}
 
 ###############################################################################
 # dynamically load in the GUI.dll module.
@@ -2732,34 +3169,64 @@ package Win32::GUI;
 
 bootstrap Win32::GUI;
 
+bootstrap_subpackage 'Animation';
+bootstrap_subpackage 'Bitmap';
+bootstrap_subpackage 'Button';
+bootstrap_subpackage 'Combobox';
+bootstrap_subpackage 'DateTime';
+bootstrap_subpackage 'DC';
+bootstrap_subpackage 'Font';
+bootstrap_subpackage 'Header';
+bootstrap_subpackage 'ImageList';
+bootstrap_subpackage 'Label';
+bootstrap_subpackage 'Listbox';
+bootstrap_subpackage 'ListView';
+bootstrap_subpackage 'NotifyIcon';
+bootstrap_subpackage 'ProgressBar';
+bootstrap_subpackage 'Rebar';
+bootstrap_subpackage 'RichEdit';
+bootstrap_subpackage 'Splitter';
+bootstrap_subpackage 'TabStrip';
+bootstrap_subpackage 'Textfield';
+bootstrap_subpackage 'Toolbar';
+bootstrap_subpackage 'Tooltip';
+bootstrap_subpackage 'Trackbar';
+bootstrap_subpackage 'TreeView';
+bootstrap_subpackage 'StatusBar';
+bootstrap_subpackage 'UpDown';
+bootstrap_subpackage 'Window';
+bootstrap_subpackage 'MDI';
+bootstrap_subpackage 'MonthCal';
+
 # Preloaded methods go here.
 
 $Win32::GUI::StandardWinClass = Win32::GUI::Class->new(
-    -name => "PerlWin32GUI_STD_OBSOLETED"
+    -name    => "PerlWin32GUI_STD",
 );
 
-$Win32::GUI::StandardWinClassVisual = Win32::GUI::Class->new(
-    -name => "PerlWin32GUI_STD",
-    -visual => 1,
+$Win32::GUI::MDIFrameWinClass = Win32::GUI::Class->new(
+    -name    => "PerlWin32GUI_MDIFrame",
+    -widget  => "MDIFrame"
+);
+
+$Win32::GUI::MDIChildWinClass = Win32::GUI::Class->new(
+    -name    => "PerlWin32GUI_MDIChild",
+    -widget  => "MDIChild"
 );
 
 $Win32::GUI::GraphicWinClass = Win32::GUI::Class->new(
-    -name => "Win32::GUI::Graphic",
-    -widget => "Graphic",
-);
-
-$Win32::GUI::InteractiveGraphicWinClass = Win32::GUI::Class->new(
-    -name => "Win32::GUI::InteractiveGraphic",
-    -widget => "InteractiveGraphic",
+    -name    => "Win32::GUI::Graphic",
+    -widget  => "Graphic",
 );
 
 $Win32::GUI::SplitterHorizontal = Win32::GUI::Class->new(
-    -name => "Win32::GUI::Splitter(horizontal)",
-    -widget => "SplitterH",
+    -name    => "Win32::GUI::Splitter(horizontal)",
+    -widget  => "SplitterH",
 );
+
 $Win32::GUI::SplitterVertical = Win32::GUI::Class->new(
-    -name => "Win32::GUI::Splitter(vertical)",
-    -widget => "Splitter",
+    -name    => "Win32::GUI::Splitter(vertical)",
+    -widget  => "Splitter",
 );
 
 $Win32::GUI::RICHED = Win32::GUI::LoadLibrary("RICHED32");
@@ -2774,5 +3241,3 @@ END {
 
 1;
 __END__
-
-

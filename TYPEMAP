@@ -1,3 +1,4 @@
+# $Id: TYPEMAP,v 1.4 2004/04/04 18:01:34 lrocher Exp $
 TYPEMAP
 HWND         T_HANDLE
 HMENU        T_HANDLE
@@ -10,6 +11,7 @@ HIMAGELIST   T_HANDLE
 HDC          T_HANDLE
 HBRUSH       T_HANDLE
 HPEN         T_HANDLE
+HRGN         T_HANDLE
 HTREEITEM    T_IV
 LONG         T_IV
 LPCTSTR      T_PV
@@ -18,7 +20,7 @@ DWORD        T_IV
 UINT         T_IV
 BOOL         T_IV
 WPARAM       T_IV
-LPARAM       T_IV
+LPARAM       T_LPARAM
 LRESULT      T_IV
 HINSTANCE    T_IV
 COLORREF     T_COLOR
@@ -40,7 +42,11 @@ T_HANDLE
         $var = ($type) SvIV($arg);
 T_COLOR
     $var = SvCOLORREF(NOTXSCALL $arg);
-
+T_LPARAM
+    if(SvPOK($arg))
+      $var = ($type) SvPV_nolen($arg);
+    else
+      $var = ($type) SvIV($arg);
 ################################################################################
 OUTPUT
 T_HANDLE

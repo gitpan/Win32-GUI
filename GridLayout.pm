@@ -263,6 +263,6 @@ Win32::GUI::GridLayout version 0.03, 13 April 1999.
 =head1 AUTHOR
 
 Mike Kangas ( C<kangas@anlon.com> );
-additional coding by Aldo Calpini ( C<dada@divinf.it> ).
+additional coding by Aldo Calpini ( C<dada@perl.it> ).
 
 =cut
