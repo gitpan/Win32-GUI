@@ -1,0 +1,595 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::ListView</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_ListView">Package Win32::GUI::ListView</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Methods">Methods</A>
+			<LI><A HREF="#Events">Events</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_ListView">Package Win32::GUI::ListView</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_ListView_PARENT_">new Win32::GUI::ListView(PARENT, %OPTIONS)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Methods">Methods</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Add_ITEM_ITEM_ITEM_">Add(ITEM, ITEM .. ITEM)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Arrange_FLAG_">Arrange([FLAG])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ChangeItem_OPTIONS_">ChangeItem(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Clear_">Clear()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ColumnWidth_COLUMN_WIDTH_">ColumnWidth(COLUMN, [WIDTH])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Count_">Count()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#DeleteColumn_INDEX_">DeleteColumn(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#DeleteItem_INDEX_">DeleteItem(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#EditLabel_INDEX_">EditLabel(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#EnsureVisible_INDEX_FLAG_">EnsureVisible(INDEX, [FLAG])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetFirstVisible_">GetFirstVisible()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetItem_INDEX_SUBINDEX_">GetItem(INDEX, [SUBINDEX])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetStringWidth_STRING_">GetStringWidth(STRING)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#HitTest_X_Y_">HitTest(X, Y)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#InsertColumn_OPTIONS_">InsertColumn(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#InsertItem_OPTIONS_">InsertItem(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ItemCheck_INDEX_">ItemCheck(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ItemInfo_INDEX_SUBINDEX_">ItemInfo(INDEX, [SUBINDEX])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ItemPosition_INDEX_X_Y_">ItemPosition(INDEX, [X, Y])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#MoveItem_INDEX_X_Y_">MoveItem(INDEX, X, Y)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Select_INDEX_">Select(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SelectCount_">SelectCount()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SelectedItems_">SelectedItems()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SetImageList_IMAGELIST_TYPE_">SetImageList(IMAGELIST, [TYPE])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SetItem_OPTIONS_">SetItem(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#TextBkColor_COLOR_">TextBkColor([COLOR])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#TextColor_COLOR_">TextColor([COLOR])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#View_MODE_">View([MODE])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#VisibleCount_">VisibleCount()</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Events">Events</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#ColumnClick_ITEM_">ColumnClick(ITEM)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ItemClick_ITEM_">ItemClick(ITEM)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#KeyDown_KEY_">KeyDown(KEY)</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_ListView_PARENT_">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::ListView(PARENT, %OPTIONS)</A></STRONG><DD>
+<P>
+Creates a new ListView object; can also be called as
+PARENT-&gt;AddListView(%OPTIONS).
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Methods">Methods</A></H3>
+<A NAME="Add_ITEM_ITEM_ITEM_">
+
+<DL>
+<DT><STRONG><A NAME="item_Add">Add(ITEM, ITEM .. ITEM)</A></STRONG><DD>
+<P>
+Inserts one or more items in the control; each item must be passed as an
+hash reference. See  <A HREF="#InsertItem_OPTIONS_">InsertItem()</A> for a list of the available key/values of these hashes.
+
+<P>
+
+<A NAME="Arrange_FLAG_">
+
+<DT><STRONG><A NAME="item_Arrange">Arrange([FLAG])</A></STRONG><DD>
+<P>
+Arranges items in the ListView; the optional FLAG parameter can be one of
+the following values:
+
+<P>
+<PRE>  0 uses the current alignment style (this is the default)
+  1 align items along the left edge of the window
+  2 align items along the top edge of the window
+  5 snaps icons to the nearest grid position
+</PRE>
+<P>
+
+<A NAME="ChangeItem_OPTIONS_">
+
+<DT><STRONG><A NAME="item_ChangeItem">ChangeItem(%OPTIONS)</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="Clear_">
+
+<DT><STRONG><A NAME="item_Clear">Clear()</A></STRONG><DD>
+<P>
+Deletes all items from the ListView.
+
+<P>
+
+<A NAME="ColumnWidth_COLUMN_WIDTH_">
+
+<DT><STRONG><A NAME="item_ColumnWidth">ColumnWidth(COLUMN, [WIDTH])</A></STRONG><DD>
+<P>
+Gets or sets the width of the specified COLUMN; WIDTH can be the desired
+width in pixels or one of the following special values:
+
+<P>
+<PRE>  -1 automatically size the column
+  -2 automatically size the column to fit the header text
+</PRE>
+<P>
+
+<A NAME="Count_">
+
+<DT><STRONG><A NAME="item_Count">Count()</A></STRONG><DD>
+<P>
+Returns the number of items in the ListView.
+
+<P>
+
+<A NAME="DeleteColumn_INDEX_">
+
+<DT><STRONG><A NAME="item_DeleteColumn">DeleteColumn(INDEX)</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="DeleteItem_INDEX_">
+
+<DT><STRONG><A NAME="item_DeleteItem">DeleteItem(INDEX)</A></STRONG><DD>
+<P>
+Removes the zero-based INDEX item from the ListView.
+
+<P>
+
+<A NAME="EditLabel_INDEX_">
+
+<DT><STRONG><A NAME="item_EditLabel">EditLabel(INDEX)</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="EnsureVisible_INDEX_FLAG_">
+
+<DT><STRONG><A NAME="item_EnsureVisible">EnsureVisible(INDEX, [FLAG])</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="GetFirstVisible_">
+
+<DT><STRONG><A NAME="item_GetFirstVisible">GetFirstVisible()</A></STRONG><DD>
+<P>
+Returns the index of the first visible item in the ListView.
+
+<P>
+
+<A NAME="GetItem_INDEX_SUBINDEX_">
+
+<DT><STRONG><A NAME="item_GetItem">GetItem(INDEX, [SUBINDEX])</A></STRONG><DD>
+<P>
+See  <A HREF="#ItemInfo_INDEX_SUBINDEX_">ItemInfo()</A>.
+
+<P>
+
+<A NAME="GetStringWidth_STRING_">
+
+<DT><STRONG><A NAME="item_GetStringWidth">GetStringWidth(STRING)</A></STRONG><DD>
+<P>
+Returns the width, in pixels, needed to display the specified STRING in the
+ListView area.
+
+<P>
+
+<A NAME="HitTest_X_Y_">
+
+<DT><STRONG><A NAME="item_HitTest">HitTest(X, Y)</A></STRONG><DD>
+<P>
+Checks if the specified point in the ListView area is occupied by an item;
+it returns the index of the found item or zero if none was found. If called
+in an array context, it returns an additional value containing more info
+about the position of the specified point.
+
+<P>
+
+<A NAME="InsertColumn_OPTIONS_">
+
+<DT><STRONG><A NAME="item_InsertColumn">InsertColumn(%OPTIONS)</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="InsertItem_OPTIONS_">
+
+<DT><STRONG><A NAME="item_InsertItem">InsertItem(%OPTIONS)</A></STRONG><DD>
+<P>
+Inserts a new item in the control. (@)OPT: -image =&gt; NUMBER (@)OPT:
+index of an image from the associated ImageList (@)OPT: -indent =&gt;
+NUMBER (@)OPT: how much the item must be indented; one unit (@)OPT: is the
+width of an item image, so 2 is twice (@)OPT: the width of the image, and
+so on. (@)OPT: -item =&gt; NUMBER (@)OPT: zero-based index for the new
+item; the default (@)OPT: is to add the item at the end of the list.
+(@)OPT: -selected =&gt; 0/1, default 0 (@)OPT: -text =&gt; STRING (@)OPT:
+the text for the item
+
+<P>
+
+<A NAME="ItemCheck_INDEX_">
+
+<DT><STRONG><A NAME="item_ItemCheck">ItemCheck(INDEX)</A></STRONG><DD>
+<P>
+Gets the check state of a ListView item (valid only if the control was
+created with the -checkboxes =&gt; 1 option).
+
+<P>
+
+<A NAME="ItemInfo_INDEX_SUBINDEX_">
+
+<DT><STRONG><A NAME="item_ItemInfo">ItemInfo(INDEX, [SUBINDEX])</A></STRONG><DD>
+<P>
+Returns an associative array of information about the given zero-based
+INDEX item:
+
+<P>
+<PRE>    -image
+    -state
+    -text
+</PRE>
+<P>
+Optionally, a SUBINDEX (one-based index) can be given, to get the text for
+the specified column.
+
+<P>
+
+<A NAME="ItemPosition_INDEX_X_Y_">
+
+<DT><STRONG><A NAME="item_ItemPosition">ItemPosition(INDEX, [X, Y])</A></STRONG><DD>
+<P>
+Moves the specified zero-based INDEX item to the specified position, or
+returns its current X and Y position if X and Y are not given. See also  <A HREF="#MoveItem_INDEX_X_Y_">MoveItem()</A>
+
+
+
+<P>
+
+<A NAME="MoveItem_INDEX_X_Y_">
+
+<DT><STRONG><A NAME="item_MoveItem">MoveItem(INDEX, X, Y)</A></STRONG><DD>
+<P>
+Moves the specified zero-based INDEX item to the specified position, if the
+ListView is in big or small icon view mode; X and Y coordinates are
+relative to the ListView client area.
+
+<P>
+
+<A NAME="Select_INDEX_">
+
+<DT><STRONG><A NAME="item_Select">Select(INDEX)</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="SelectCount_">
+
+<DT><STRONG><A NAME="item_SelectCount">SelectCount()</A></STRONG><DD>
+<P>
+Returns the number of currently selected items.
+
+<P>
+
+<A NAME="SelectedItems_">
+
+<DT><STRONG><A NAME="item_SelectedItems">SelectedItems()</A></STRONG><DD>
+<P>
+Retuns an array containing the zero-based indexes of selected items.
+
+<P>
+
+<A NAME="SetImageList_IMAGELIST_TYPE_">
+
+<DT><STRONG><A NAME="item_SetImageList">SetImageList(IMAGELIST, [TYPE])</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="SetItem_OPTIONS_">
+
+<DT><STRONG><A NAME="item_SetItem">SetItem(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="#ChangeItem_OPTIONS_">ChangeItem()</A>.
+
+<P>
+
+<A NAME="TextBkColor_COLOR_">
+
+<DT><STRONG><A NAME="item_TextBkColor">TextBkColor([COLOR])</A></STRONG><DD>
+<P>
+Gets or sets the background color for the text in the ListView.
+
+<P>
+
+<A NAME="TextColor_COLOR_">
+
+<DT><STRONG><A NAME="item_TextColor">TextColor([COLOR])</A></STRONG><DD>
+<P>
+Gets or sets the text color for the ListView.
+
+<P>
+
+<A NAME="View_MODE_">
+
+<DT><STRONG><A NAME="item_View">View([MODE])</A></STRONG><DD>
+<P>
+Gets or sets the viewing mode of the ListView control; the returned or
+given MODE can have one of the following values:
+
+<P>
+<PRE>  0  big icons
+  1  details
+  2  small icons
+  3  list
+</PRE>
+<P>
+
+<A NAME="VisibleCount_">
+
+<DT><STRONG><A NAME="item_VisibleCount">VisibleCount()</A></STRONG><DD>
+<P>
+Returns the number of items that can be fully visible in a page of the
+ListView control; if the current view state is big or small icons, the
+function returns the total number of items in the control.
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Events">Events</A></H3>
+<A NAME="ColumnClick_ITEM_">
+
+<DL>
+<DT><STRONG><A NAME="item_ColumnClick">ColumnClick(ITEM)</A></STRONG><DD>
+<P>
+Sent when the user clicks on a column header in the ListView; ITEM
+specifies the one-based index of the selected column.
+
+<P>
+
+<A NAME="ItemClick_ITEM_">
+
+<DT><STRONG><A NAME="item_ItemClick">ItemClick(ITEM)</A></STRONG><DD>
+<P>
+Sent when the user selects an item in the ListView; ITEM specifies the
+zero-based index of the selected item.
+
+<P>
+
+<A NAME="KeyDown_KEY_">
+
+<DT><STRONG><A NAME="item_KeyDown">KeyDown(KEY)</A></STRONG><DD>
+<P>
+Sent when the user presses a key while the ListView control has focus; KEY
+is the ASCII code of the key being pressed.
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

@@ -1,0 +1,42 @@
+=head2 Package Win32::GUI::Splitter
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::Splitter(PARENT, %OPTIONS)|/new_Win32_GUI_Splitter_PARENT_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_Splitter_PARENT_">
+
+=item new Win32::GUI::Splitter(PARENT, %OPTIONS)
+
+Creates a new Splitter object;
+can also be called as PARENT->AddHeader(%OPTIONS).
+Class specific %OPTIONS are:
+
+  -buttons => 0/1 (default 0)
+    header items look like push buttons and can be clicked.
+  -hottrack => 0/1 (default 0)
+  -imagelist => Win32::GUI::ImageList object
+
+=for html <P>
+
+=back
+
+=cut

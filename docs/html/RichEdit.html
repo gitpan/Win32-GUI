@@ -1,0 +1,330 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::RichEdit</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_RichEdit">Package Win32::GUI::RichEdit</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Methods">Methods</A>
+			<LI><A HREF="#Events">Events</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_RichEdit">Package Win32::GUI::RichEdit</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_RichEdit_PARENT_">new Win32::GUI::RichEdit(PARENT, %OPTIONS)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Methods">Methods</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#BackColor_COLOR_">BackColor([COLOR])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#CharFromPos_X_Y_">CharFromPos(X, Y)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#FirstVisibleLine_">FirstVisibleLine()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetCharFormat_FLAG_">GetCharFormat([FLAG])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#LineFromChar_INDEX_">LineFromChar(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Load_FILENAME_FORMAT_">Load(FILENAME, [FORMAT])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#PosFromChar_INDEX_">PosFromChar(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ReplaceSel_STRING_FLAG_">ReplaceSel(STRING, [FLAG])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Save_FILENAME_FORMAT_">Save(FILENAME, [FORMAT])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Select_START_END_">Select(START, END)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Selection_">Selection()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SetCharFormat_OPTIONS_">SetCharFormat(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SetParaFormat_OPTIONS_">SetParaFormat(%OPTIONS)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Events">Events</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Change_">Change()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GotFocus_">GotFocus()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#LostFocus_">LostFocus()</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_RichEdit_PARENT_">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::RichEdit(PARENT, %OPTIONS)</A></STRONG><DD>
+<P>
+Creates a new RichEdit object; can also be called as
+PARENT-&gt;AddRichEdit(%OPTIONS).
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Methods">Methods</A></H3>
+<A NAME="BackColor_COLOR_">
+
+<DL>
+<DT><STRONG><A NAME="item_BackColor">BackColor([COLOR])</A></STRONG><DD>
+<P>
+Sets the background color of the RichEdit control; if no COLOR is
+specified, the background color is reset to the default system color.
+
+<P>
+
+<A NAME="CharFromPos_X_Y_">
+
+<DT><STRONG><A NAME="item_CharFromPos">CharFromPos(X, Y)</A></STRONG><DD>
+<P>
+Returns a two elements array identifying the character nearest to the
+position specified by X and Y. The array contains the zero-based index of
+the character and its line index.
+
+<P>
+
+<A NAME="FirstVisibleLine_">
+
+<DT><STRONG><A NAME="item_FirstVisibleLine">FirstVisibleLine()</A></STRONG><DD>
+<P>
+Returns the first visible line in the RichEdit control.
+
+<P>
+
+<A NAME="GetCharFormat_FLAG_">
+
+<DT><STRONG><A NAME="item_GetCharFormat">GetCharFormat([FLAG])</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="LineFromChar_INDEX_">
+
+<DT><STRONG><A NAME="item_LineFromChar">LineFromChar(INDEX)</A></STRONG><DD>
+<P>
+Returns the line number where the zero-based INDEX character appears.
+
+<P>
+
+<A NAME="Load_FILENAME_FORMAT_">
+
+<DT><STRONG><A NAME="item_Load">Load(FILENAME, [FORMAT])</A></STRONG><DD>
+<P>
+Loads a file named FILENAME into the RichEdit control. By default the file
+is a RTF (Rich Text Format) file; if you want to load a plain text file,
+you can set FORMAT to 1.
+
+<P>
+
+<A NAME="PosFromChar_INDEX_">
+
+<DT><STRONG><A NAME="item_PosFromChar">PosFromChar(INDEX)</A></STRONG><DD>
+<P>
+Returns a two elements array containing the x and y position of the
+specified zero-based INDEX character in the RichEdit control.
+
+<P>
+
+<A NAME="ReplaceSel_STRING_FLAG_">
+
+<DT><STRONG><A NAME="item_ReplaceSel">ReplaceSel(STRING, [FLAG])</A></STRONG><DD>
+<P>
+Replaces the current selection with the given STRING. The optional FLAG
+parameter can be set to zero to tell the control that the operation cannot
+be undone; see also  <A HREF="././Textfield.html#Undo_">Undo()</A>.
+
+<P>
+
+<A NAME="Save_FILENAME_FORMAT_">
+
+<DT><STRONG><A NAME="item_Save">Save(FILENAME, [FORMAT])</A></STRONG><DD>
+<P>
+Saves the content of the RichEdit control in a file named FILENAME. By
+default the file is a RTF (Rich Text Format) file; if you want to save in a
+plain text file, you can set FORMAT to 1.
+
+<P>
+
+<A NAME="Select_START_END_">
+
+<DT><STRONG><A NAME="item_Select">Select(START, END)</A></STRONG><DD>
+<P>
+Selects the characters range from START to END.
+
+<P>
+
+<A NAME="Selection_">
+
+<DT><STRONG><A NAME="item_Selection">Selection()</A></STRONG><DD>
+<P>
+Returns a two elements array containing the current selection start and
+end.
+
+<P>
+
+<A NAME="SetCharFormat_OPTIONS_">
+
+<DT><STRONG><A NAME="item_SetCharFormat">SetCharFormat(%OPTIONS)</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="SetParaFormat_OPTIONS_">
+
+<DT><STRONG><A NAME="item_SetParaFormat">SetParaFormat(%OPTIONS)</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Events">Events</A></H3>
+<A NAME="Change_">
+
+<DL>
+<DT><STRONG><A NAME="item_Change">Change()</A></STRONG><DD>
+<P>
+Sent when the text in the field is changed by the user.
+
+<P>
+
+<A NAME="GotFocus_">
+
+<DT><STRONG><A NAME="item_GotFocus">GotFocus()</A></STRONG><DD>
+<P>
+Sent when the control is activated.
+
+<P>
+
+<A NAME="LostFocus_">
+
+<DT><STRONG><A NAME="item_LostFocus">LostFocus()</A></STRONG><DD>
+<P>
+Sent when the control is deactivated.
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

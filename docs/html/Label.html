@@ -1,0 +1,164 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::Label</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_Label">Package Win32::GUI::Label</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Methods">Methods</A>
+			<LI><A HREF="#Events">Events</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_Label">Package Win32::GUI::Label</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_Label_PARENT_O">new Win32::GUI::Label(PARENT, %OPTIONS)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Methods">Methods</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#SetImage_BITMAP_">SetImage(BITMAP)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Events">Events</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Click_">Click()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#DblClick_">DblClick()</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_Label_PARENT_O">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::Label(PARENT, %OPTIONS)</A></STRONG><DD>
+<P>
+Creates a new Label object; can also be called as
+PARENT-&gt;AddLabel(%OPTIONS). Class specific <CODE>%OPTIONS</CODE> are:
+
+<P>
+<PRE>   -align    =&gt; left/center/right (default left)
+   -bitmap   =&gt; Win32::GUI::Bitmap object
+   -fill     =&gt; black/gray/white/none (default none)
+       fills the control rectangle (&quot;black&quot;, &quot;gray&quot; and &quot;white&quot; are
+       the window frame color, the desktop color and the window
+       background color respectively).
+   -frame    =&gt; black/gray/white/etched/none (default none)
+       draws a border around the control. colors are the same
+       of -fill, with the addition of &quot;etched&quot; (a raised border).
+   -icon     =&gt; Win32::GUI::Icon object
+   -noprefix =&gt; 0/1 (default 0)
+       disables the interpretation of &quot;&amp;&quot; as accelerator prefix.
+   -notify   =&gt; 0/1 (default 0)
+       enables the Click(), DblClick, etc. events.
+   -picture  =&gt; see -bitmap
+   -sunken   =&gt; 0/1 (default 0)
+       draws a half-sunken border around the control.
+   -truncate =&gt; 0/1/word/path (default 0)
+       specifies how the text is to be truncated:
+           0 the text is not truncated
+           1 the text is truncated at the end
+        path the text is truncated before the last &quot;\&quot;
+             (used to shorten paths).
+   -wrap     =&gt; 0/1 (default 1)
+       the text wraps automatically to a new line.
+</PRE>
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Methods">Methods</A></H3>
+<A NAME="SetImage_BITMAP_">
+
+<DL>
+<DT><STRONG><A NAME="item_SetImage">SetImage(BITMAP)</A></STRONG><DD>
+<P>
+Draws the specified BITMAP, a Win32::GUI::Bitmap object, in the Label.
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Events">Events</A></H3>
+<A NAME="Click_">
+
+<DL>
+<DT><STRONG><A NAME="item_Click">Click()</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+<A NAME="DblClick_">
+
+<DT><STRONG><A NAME="item_DblClick">DblClick()</A></STRONG><DD>
+<P>
+[TBD]
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

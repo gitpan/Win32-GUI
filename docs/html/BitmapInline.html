@@ -1,0 +1,165 @@
+<HTML>
+<HEAD>
+<TITLE>Win32::GUI::BitmapInline - Inline bitmap support for Win32::GUI</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<LI><A HREF="#NAME">NAME</A>
+	<LI><A HREF="#SYNOPSIS">SYNOPSIS</A>
+	<LI><A HREF="#DESCRIPTION">DESCRIPTION</A>
+	<LI><A HREF="#WARNINGS">WARNINGS</A>
+	<LI><A HREF="#VERSION">VERSION</A>
+	<LI><A HREF="#AUTHOR">AUTHOR</A>
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H1><A NAME="NAME">NAME</A></H1>
+<P>
+Win32::GUI::BitmapInline - Inline bitmap support for Win32::GUI
+
+<P>
+<HR>
+<H1><A NAME="SYNOPSIS">SYNOPSIS</A></H1>
+<P>
+To create a BitmapInline:
+
+<P>
+<PRE>    perl -MWin32::GUI::BitmapInline -e inline('image.bmp') &gt;&gt;script.pl
+</PRE>
+<P>
+To use a BitmapInline (in script.pl):
+
+<P>
+<PRE>    use Win32::GUI;
+    use Win32::GUI::BitmapInline ();
+    
+    $Bitmap1 = new Win32::GUI::BitmapInline( q(
+    Qk32AAAAAAAAAHYAAAAoAAAAEAAAABAAAAABAAQAAAAAAIAAAAAAAAAAAAAAABAAAAAQAAAAAAAA
+    AACcnABjzs4A9/f3AJzO/wCc//8Azv//AP///wD///8A////AP///wD///8A////AP///wD///8A
+    ////AHd3d3d3d3d3d3d3d3d3d3dwAAAAAAAABxIiIiIiIiIHFkVFRUVEQgcWVVRUVFRCBxZVVVVF
+    RUIHFlVVVFRUUgcWVVVVVUVCBxZVVVVUVFIHFlVVVVVVQgcWZmZmZmZSBxIiIiIRERF3cTZlUQd3
+    d3d3EREQd3d3d3d3d3d3d3d3
+    ) );
+</PRE>
+<P>
+<HR>
+<H1><A NAME="DESCRIPTION">DESCRIPTION</A></H1>
+<P>
+This module can be used to ``inline'' a bitmap file in your script, so that
+it doesn't need to be accompained by several external files (less hassle
+when you need to redistribute your script or move it to another location).
+
+<P>
+The <CODE>inline</CODE> function is used to create an inlined bitmap resource; it will print on
+STDOUT the packed data including the lines of Perl needed to use the
+inlined bitmap resource; it is intended to be used as a one-liner whose
+output is appended to your script.
+
+<P>
+The function takes the name of the bitmap file to inline as its first
+parameter; an additional, optional parameter can be given which will be the
+name of the bitmap object in the resulting scriptlet, eg:
+
+<P>
+<PRE>    perl -MWin32::GUI::BitmapInline -e inline('image.bmp','IMAGE')
+    
+    $IMAGE = new Win32::GUI::BitmapInline( q( ...
+</PRE>
+<P>
+If no name is given, the resulting object name will be
+<CODE>$Bitmap1</CODE> (the next ones <CODE>$Bitmap2</CODE> ,
+<CODE>$Bitmap3</CODE> and so on).
+
+<P>
+Note that the object returned by <CODE>new Win32::GUI::BitmapInline</CODE> is a regular Win32::GUI::Bitmap object.
+
+<P>
+<HR>
+<H1><A NAME="WARNINGS">WARNINGS</A></H1>
+<UL>
+<LI>
+<P>
+<STRONG>Requires MIME::Base64</STRONG>
+
+
+
+<P>
+...and, of course, Win32::GUI :-)
+
+<P>
+
+<LI>
+<P>
+<STRONG>Don't use it on large bitmap files!</STRONG>
+
+
+
+<P>
+BitmapInline was designed for small bitmaps, such as toolbar items, icons,
+et alia; it is not at all performant. Inlined data takes approximatively
+the size of your bitmap file plus a 30%; thus, if you inline a 100k bitmap
+you're adding about 130k of bad-looking data to your script...
+
+<P>
+
+<LI>
+<P>
+<STRONG>Your script must have write access to its current directory</STRONG>
+
+
+
+<P>
+When inlined data are used in your script (with 
+<CODE>new Win32::GUI::BitmapInline...</CODE>) a temporary file is created, then loaded as a regular bitmap and then
+immediately deleted. This will fail if your script is not able to create
+and delete files in the current directory at the moment of the call. One
+workaround could be to change directory to a safer place before
+constructing the bitmap:
+
+<P>
+<PRE>    chdir(&quot;c:\\temp&quot;);
+    $Bitmap1 = new Win32::GUI::BitmapInline( ... );
+</PRE>
+<P>
+A better solution could pop up in some future release...
+
+<P>
+
+<LI>
+<P>
+<STRONG>The package exports <CODE>inline</CODE> by default</STRONG>
+
+
+
+<P>
+For practical reasons (see one-liners above), <CODE>inline</CODE> is exported by default into your <CODE>main</CODE> namespace; to avoid this side-effect is recommended to use the module in
+your production scripts as follows:
+
+<P>
+<PRE>    use Win32::GUI::BitmapInline ();
+</PRE>
+</UL>
+<P>
+<HR>
+<H1><A NAME="VERSION">VERSION</A></H1>
+<P>
+Win32::GUI::BitmapInline version 0.01, 02 April 1999.
+
+<P>
+<HR>
+<H1><A NAME="AUTHOR">AUTHOR</A></H1>
+<P>
+Aldo Calpini ( <CODE>dada@divinf.it</CODE> ).
+
+</BODY>
+
+</HTML>

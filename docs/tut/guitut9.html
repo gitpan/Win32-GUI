@@ -1,0 +1,103 @@
+<HTML>
+<HEAD>
+<TITLE>Win32::GUI Tutorial - Part 9 - Some peripheral issues</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+
+<UL>
+
+	<LI><A HREF="#Win32_GUI_Tutorial_Part_9_S">Win32::GUI Tutorial - Part 9 - Some peripheral issues</A>
+	<UL>
+
+		<LI><A HREF="#What_about_that_console_window_">What about that console window?</A>
+	</UL>
+
+</UL>
+<!-- INDEX END -->
+
+<HR>
+<P>
+<H1><A NAME="Win32_GUI_Tutorial_Part_9_S">Win32::GUI Tutorial - Part 9 - Some peripheral issues</A></H1>
+<P>
+<HR>
+<H2><A NAME="What_about_that_console_window_">What about that console window?</A></H2>
+<P>
+One thing I have glossed over in all of the above is precisely how we run
+our Win32::GUI Perl program. There are a number of possibilities you might
+have used.
+
+<UL>
+<LI>
+<P>
+Enter the command ``perl MyApp.plx'' from a Windows console window.
+
+<LI>
+<P>
+Enter the command ``perl MyApp.plx'' in the Windows ``Run'' box.
+
+<LI>
+<P>
+Double click on the file ``MyApp.plx'' (assuming you have .plx files
+associated with the perl.exe application).
+
+</UL>
+<P>
+In the first case, you will notice that the command prompt does not return
+until you close your GUI application's window. In the second and third
+case, it's worse - a console window opens and stays visible until the GUI
+application terminates.
+
+<P>
+This is ugly. Unfortunately, it's fairly inevitable, because of the way
+Windows works. Perl itself is a Windows ``console'' application, and so it
+behaves the way we see. You can't change this without changing Perl itself.
+
+<P>
+There is a fix for this, if you have Windows development tools available.
+Simply take a copy of perl.exe, call it perlw.exe, and change its
+``subsystem'' setting from ``console'' to ``windows''. With Microsoft
+Visual Studio, the command to do this is
+
+<P>
+<PRE>    editbin /subsystem:windows perlw.exe
+</PRE>
+<P>
+There is also an all-perl way to achieve the same result on Jenda's site:
+<A
+HREF="http://jenda.krynicky.cz/perl/GUIscripts.html">http://jenda.krynicky.cz/perl/GUIscripts.html</A>
+
+
+<P>
+If you can't (or don't want to) create a perlw.exe, then a compromise is to
+hide the console window while your application is running. This is
+reasonable for the second and third cases above, but less so for the first
+(where the application is run from an existing console window).
+
+<P>
+The code to do this is
+
+<P>
+<PRE>    my ($DOS) = Win32::GUI::GetPerlWindow();
+    Win32::GUI::Hide($DOS);
+</PRE>
+<P>
+Do this as early as possible. Obviously, if we hide the console, we must
+show it when we finish (otherwise, someone who runs your program from a
+command prompt will be <STRONG>very</STRONG> cross with you!)
+
+<P>
+To do this, we need to put
+
+<P>
+<PRE>    Win32::GUI::Show($DOS);
+</PRE>
+<P>
+just before our program terminates. After the Win32::GUI::Dialog() call is
+usually the right place.
+</BODY>
+
+</HTML>

@@ -1,0 +1,1131 @@
+<HTML>
+<HEAD>
+<TITLE>Win32::GUI options</TITLE>
+<LINK REV="made" HREF="mailto:">
+<LINK REL="stylesheet" TYPE="text/css" HREF="style.css"></HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+
+<UL>
+
+	<LI><A HREF="#Win32_GUI_options">Win32::GUI options</A></LI>
+	<UL>
+
+		<LI><A HREF="#_align_left_center_right">-align =&gt; left/center/right  </A></LI>
+		<LI><A HREF="#_autoplay_0_1">-autoplay =&gt; 0/1 </A></LI>
+		<LI><A HREF="#_bandborders_0_1">-bandborders =&gt; 0/1  </A></LI>
+		<LI><A HREF="#_buttons_0_1">-buttons =&gt; 0/1  </A></LI>
+		<LI><A HREF="#_cancel_0_1">-cancel =&gt; 0/1  </A></LI>
+		<LI><A HREF="#_center_0_1">-center =&gt; 0/1 </A></LI>
+		<LI><A HREF="#_computeronly_0_1">-computeronly =&gt; 0/1 </A></LI>
+		<LI><A HREF="#_default_0_1">-default =&gt; 0/1  </A></LI>
+		<LI><A HREF="#_directory_STRING">-directory =&gt; STRING</A></LI>
+		<LI><A HREF="#_domainonly_0_1">-domainonly =&gt; 0/1 </A></LI>
+		<LI><A HREF="#_driveonly_0_1">-driveonly =&gt; 0/1 </A></LI>
+		<LI><A HREF="#_editbox_0_1">-editbox =&gt; 0/1 </A></LI>
+		<LI><A HREF="#_file_STRING">-file =&gt; STRING</A></LI>
+		<LI><A HREF="#_fill_black_gray_white_none">-fill =&gt; black/gray/white/none  </A></LI>
+		<LI><A HREF="#_filter_ARRAY_REFERENCE">-filter =&gt; ARRAY REFERENCE</A></LI>
+		<LI><A HREF="#_fixedorder_0_1">-fixedorder =&gt; 0/1  </A></LI>
+		<LI><A HREF="#_folderonly_0_1">-folderonly =&gt; 0/1 </A></LI>
+		<LI><A HREF="#_includefiles_0_1">-includefiles =&gt; 0/1 </A></LI>
+		<LI><A HREF="#_maxsize_X_Y_">-maxsize =&gt; [X, Y]</A></LI>
+		<LI><A HREF="#_minsize_X_Y_">-minsize =&gt; [X, Y]</A></LI>
+		<LI><A HREF="#_multiline_0_1">-multiline =&gt; 0/1  </A></LI>
+		<LI><A HREF="#_multisel_0_1_2">-multisel =&gt; 0/1/2  </A></LI>
+		<LI><A HREF="#_name_STRING">-name =&gt; STRING</A></LI>
+		<LI><A HREF="#_notify_0_1">-notify =&gt; 0/1  </A></LI>
+		<LI><A HREF="#_ok_0_1">-ok =&gt; 0/1  </A></LI>
+		<LI><A HREF="#_owner_WINDOW">-owner =&gt; WINDOW</A></LI>
+		<LI><A HREF="#_password_0_1">-password =&gt; 0/1  </A></LI>
+		<LI><A HREF="#_passwordchar_CHAR">-passwordchar =&gt; CHAR  </A></LI>
+		<LI><A HREF="#_printeronly_0_1">-printeronly =&gt; 0/1 </A></LI>
+		<LI><A HREF="#_prompt_STRING_or_STRING_W">-prompt =&gt; STRING or [ STRING, WIDTH ]</A></LI>
+		<LI><A HREF="#_readonly_0_1">-readonly =&gt; 0/1 </A></LI>
+		<LI><A HREF="#_root_PATH_or_CONSTANT">-root =&gt; PATH or CONSTANT</A></LI>
+		<LI><A HREF="#_smooth_0_1">-smooth =&gt; 0/1  </A></LI>
+		<LI><A HREF="#_sunken_0_1">-sunken =&gt; 0/1  </A></LI>
+		<LI><A HREF="#_text_STRING">-text =&gt; STRING</A></LI>
+		<LI><A HREF="#_tip_STRING">-tip =&gt; STRING </A></LI>
+		<LI><A HREF="#_title_STRING">-title =&gt; STRING</A></LI>
+		<LI><A HREF="#_topmost_0_1">-topmost =&gt; 0/1  </A></LI>
+		<LI><A HREF="#_transparent_0_1">-transparent =&gt; 0/1 </A></LI>
+		<LI><A HREF="#_truncate_0_1_word_path">-truncate =&gt; 0/1/word/path </A></LI>
+		<LI><A HREF="#_valign_top_center_bottom">-valign =&gt; top/center/bottom </A></LI>
+		<LI><A HREF="#_wrap_0_1">-wrap =&gt; 0/1  </A></LI>
+	</UL>
+
+</UL>
+<!-- INDEX END -->
+
+<HR>
+<P>
+<H1><A NAME="Win32_GUI_options">Win32::GUI options</A></H1>
+<HR><TT>
+
+<H2><A NAME="_align_left_center_right">-align =&gt; left/center/right</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>center for Button, otherwise left</CODE>
+
+
+
+</P>
+<P>
+Aligns the text in the control accordingly. 
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_autoplay_0_1">-autoplay =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+Starts playing the animation as soon as an AVI clip is loaded.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_bandborders_0_1">-bandborders =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+Display a border to separate bands. 
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Rebar">Rebar</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_buttons_0_1">-buttons =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>1 for TreeView, otherwise 0</CODE>
+
+
+
+</P>
+<P>
+For TreeViews, enables or disables the +/- buttons to expand/collapse tree
+items.
+
+</P>
+<P>
+For Headers, if enabled header items look like push buttons and can be
+clicked.
+
+</P>
+<P>
+For TabStrips, if enabled items look like push buttons.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Header">Header</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_cancel_0_1">-cancel =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+If 1, the button will correspond to the CANCEL action of a dialog, and its
+Click event will be fired by pressing the ESC key.
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="#_dialogui">-dialogui</A>, <A HREF="././options.html#_cancel_0_1">-cancel</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Button">Button</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_center_0_1">-center =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+Centers the animation in the control area.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_computeronly_0_1">-computeronly =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+Only enable computers to be selected.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././methods.html#BrowseForFolder_OPTIONS_">BrowseForFolder()</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_default_0_1">-default =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+Identify the item as the default one; a default Button has a black border
+drawn around it; a default MenuItem is printed with a bold font.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#MenuItem">MenuItem</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_directory_STRING">-directory =&gt; STRING</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Specifies the initial directory.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././methods.html#GetOpenFileName_OPTIONS_">GetOpenFileName()</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_domainonly_0_1">-domainonly =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+Only show computers in the current domain or workgroup.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././methods.html#BrowseForFolder_OPTIONS_">BrowseForFolder()</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_driveonly_0_1">-driveonly =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+Only enable drives to be selected.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././methods.html#BrowseForFolder_OPTIONS_">BrowseForFolder()</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_editbox_0_1">-editbox =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+If 1, the dialog will include an edit field in which the user can type the
+name of an item.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././methods.html#BrowseForFolder_OPTIONS_">BrowseForFolder()</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_file_STRING">-file =&gt; STRING</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Specifies a name that will appear on the dialog's edit field.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././methods.html#GetOpenFileName_OPTIONS_">GetOpenFileName()</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_fill_black_gray_white_none">-fill =&gt; black/gray/white/none</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>none</CODE>
+
+
+
+</P>
+<P>
+Fills the control rectangle (``black'', ``gray'' and ``white'' are the
+window frame color, the desktop color and the window background color
+respectively). 
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Label">Label</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_filter_ARRAY_REFERENCE">-filter =&gt; ARRAY REFERENCE</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+[TBD]
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././methods.html#GetOpenFileName_OPTIONS_">GetOpenFileName()</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_fixedorder_0_1">-fixedorder =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+Band position cannot be swapped.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Rebar">Rebar</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_folderonly_0_1">-folderonly =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+Only enable folders to be selected (eg. no computers or printers).
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././methods.html#BrowseForFolder_OPTIONS_">BrowseForFolder()</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_includefiles_0_1">-includefiles =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+The list will include files as well folders.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././methods.html#BrowseForFolder_OPTIONS_">BrowseForFolder()</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_maxsize_X_Y_">-maxsize =&gt; [X, Y]</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Specifies the maximum size (width and height) in pixels; X and Y must be
+passed in an array reference.
+
+</P>
+<P>
+Example:
+
+</P>
+<P>
+<PRE>    $Window = new Win32::GUI::Window(
+        # ...
+        -maxsize =&gt; [ 200, 200 ],
+    );
+</PRE>
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="#_maxwidth">-maxwidth</A>, <A HREF="#_maxheight">-maxheight</A>, <A HREF="././options.html#_minsize_X_Y_">-minsize</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_minsize_X_Y_">-minsize =&gt; [X, Y]</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Specifies the minimum size (width and height) in pixels; X and Y must be
+passed in an array reference.
+
+</P>
+<P>
+Example:
+
+</P>
+<P>
+<PRE>    $Window = new Win32::GUI::Window(
+        # ...
+        -minsize =&gt; [ 100, 100 ],
+    );
+</PRE>
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="#_minwidth">-minwidth</A>, <A HREF="#_minheight">-minheight</A>, <A HREF="././options.html#_maxsize_X_Y_">-maxsize</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_multiline_0_1">-multiline =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+The control can have more than one line (note that in Textfield and
+RichEdit controls, newline is ``\r\n'', not ``\n''!). 
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#ToolBar">ToolBar</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_multisel_0_1_2">-multisel =&gt; 0/1/2</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+Specifies the selection type: 
+
+</P>
+<P>
+<PRE>    0 single selection
+    1 multiple selection
+    2 multiple selection ehnanced (with Shift, Control, etc.)
+</PRE>
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Listbox">Listbox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_name_STRING">-name =&gt; STRING</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Defines the name for the control. The name is used to callback its events
+and to access its methods, so it is absolutely <STRONG>necessary</STRONG>, and each name must be unique in your application. 
+
+</P>
+<P>
+Example: 
+
+</P>
+<P>
+<PRE>    $Window-&gt;AddButton(
+        -name =&gt; &quot;Button1&quot;,
+        # ...
+    );
+</PRE>
+</P>
+<P>
+<PRE>    # methods...
+    $Window-&gt;Button1-&gt;Hide();
+</PRE>
+</P>
+<P>
+<PRE>    # events...
+    sub Button1_Click {
+        # ...
+    }
+</PRE>
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#NotifyIcon">NotifyIcon(*)</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Timer">Timer</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#Tooltip">Tooltip(*)</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_notify_0_1">-notify =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+Enables the <CODE>Click(),</CODE> <CODE>DblClick(),</CODE> etc. events. 
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Label">Label</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_ok_0_1">-ok =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+If 1, the button will correspond to the OK action of a dialog, and its
+Click event will be fired by pressing the ENTER key.
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="#_dialogui">-dialogui</A>, <A HREF="././options.html#_cancel_0_1">-cancel</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Button">Button</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_owner_WINDOW">-owner =&gt; WINDOW</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+[TBD]
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././methods.html#BrowseForFolder_OPTIONS_">BrowseForFolder()</A>, <A HREF="././methods.html#GetOpenFileName_OPTIONS_">GetOpenFileName()</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_password_0_1">-password =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+Masks the user input (like password prompts). 
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="././options.html#_passwordchar_CHAR">-passwordchar</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_passwordchar_CHAR">-passwordchar =&gt; CHAR</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>'*'</CODE>
+
+
+
+</P>
+<P>
+The specified CHAR that is shown instead of the text with <CODE>-password =</CODE> 1&gt;.
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="././options.html#_password_0_1">-password</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_printeronly_0_1">-printeronly =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+Only enable printers to be selected
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././methods.html#BrowseForFolder_OPTIONS_">BrowseForFolder()</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_prompt_STRING_or_STRING_W">-prompt =&gt; STRING or [ STRING, WIDTH ]</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+The -prompt option is very special; if a string is passed, a
+Win32::GUI::Label object (with text set to the STRING passed) is created to
+the left of the Textfield. 
+
+</P>
+<P>
+Example: 
+
+</P>
+<P>
+<PRE>    $Window-&gt;AddTextfield(
+        -name   =&gt; &quot;Username&quot;,
+        -left   =&gt; 75,
+        -top    =&gt; 150,
+        -prompt =&gt; &quot;Your name:&quot;,
+    );
+</PRE>
+</P>
+<P>
+Furthermore, the value to <CODE>-prompt</CODE> can be a reference to a list containing the string and an additional
+parameter, which sets the width for the Label. If WIDTH is negative, it is
+calculated relative to the Textfield left coordinate. 
+
+</P>
+<P>
+Example: 
+
+</P>
+<P>
+<PRE>                                        (Label left)    (Textfield left)
+    -left   =&gt; 75,
+    -prompt =&gt; [ &quot;Your name:&quot;, 30 ],    75              105 (75+30)
+ 
+    -left   =&gt; 75,
+    -prompt =&gt; [ &quot;Your name:&quot;, -30 ],   45 (75-30)      75    
+</PRE>
+</P>
+<P>
+Note that the Win32::GUI::Label object is named like the Textfield, with a
+``_Prompt'' suffix (in the example above, the Label is named
+``Username_Prompt''). 
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_readonly_0_1">-readonly =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+Text can't be changed.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_root_PATH_or_CONSTANT">-root =&gt; PATH or CONSTANT</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+The root directory for browsing; this can be either a path or one of the
+CSIDL_* constants for special folders (see the Win32::FileOp module by
+Jenda for a list of such constants).
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././methods.html#BrowseForFolder_OPTIONS_">BrowseForFolder()</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_smooth_0_1">-smooth =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+Uses a smooth bar instead of the default segmented bar. 
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#ProgressBar">ProgressBar</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_sunken_0_1">-sunken =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+Draws a half-sunken border around the control. 
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Label">Label</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_text_STRING">-text =&gt; STRING</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+The text that will appear in the control or item.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#">*</A>, <A HREF="././methods.html#InsertBand_OPTIONS_">InsertBand()</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_tip_STRING">-tip =&gt; STRING</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+The text that will appear as tooltip when the mouse is on the NotifyIcon.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#NotifyIcon">NotifyIcon</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_title_STRING">-title =&gt; STRING</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+The title for the window or dialog box.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././methods.html#BrowseForFolder_OPTIONS_">BrowseForFolder()</A>, <A HREF="././methods.html#GetOpenFileName_OPTIONS_">GetOpenFileName()</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_topmost_0_1">-topmost =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+The window ``stays on top'' even when deactivated.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_transparent_0_1">-transparent =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+Draws the animation using a transparent background.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_truncate_0_1_word_path">-truncate =&gt; 0/1/word/path</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>0</CODE>
+
+
+
+</P>
+<P>
+Specifies how the text is to be truncated:
+
+</P>
+<P>
+<PRE>           0    the text is not truncated
+           1    the text is truncated at the end.
+        word    the text is truncated at the end of a word.
+        path    the text is truncated before the last &quot;\&quot; 
+                (used to shorten paths).
+</PRE>
+</P>
+
+<P>
+NOTE: this style does not seem to be working.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Label">Label</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_valign_top_center_bottom">-valign =&gt; top/center/bottom</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>center</CODE>
+
+
+
+</P>
+<P>
+Defines the vertical alignment for the text in the Button.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#CheckBox">CheckBox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="_wrap_0_1">-wrap =&gt; 0/1</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+<STRONG>Default value</STRONG>: <CODE>1 for Label, 0 for UpDown</CODE>
+
+
+
+</P>
+<P>
+For Labels, the text wraps automatically to a new line. For UpDown
+controls, the counter wraps when it reaches the lower or upper limit.
+
+</P>
+<P>
+<PRE> 
+</PRE>
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#UpDown">UpDown</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+
+
+</BODY>
+
+</HTML>

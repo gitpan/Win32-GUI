@@ -1,0 +1,214 @@
+=head2 Package Win32::GUI::TabStrip
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::TabStrip(PARENT, %OPTIONS)|/new_Win32_GUI_TabStrip_PARENT_>
+
+=back
+
+=item *
+
+L<Methods>
+
+=over
+
+=item *
+
+L<ChangeItem(ITEM, %OPTIONS)|/ChangeItem_ITEM_OPTIONS_>
+
+=item *
+
+L<Count()|/Count_>
+
+=item *
+
+L<DeleteItem(ITEM)|/DeleteItem_ITEM_>
+
+=item *
+
+L<GetString(ITEM)|/GetString_ITEM_>
+
+=item *
+
+L<InsertItem(%OPTIONS)|/InsertItem_OPTIONS_>
+
+=item *
+
+L<Reset()|/Reset_>
+
+=item *
+
+L<Select(INDEX)|/Select_INDEX_>
+
+=item *
+
+L<SelectedItem()|/SelectedItem_>
+
+=back
+
+=item *
+
+L<Events>
+
+=over
+
+=item *
+
+L<Change()|/Change_>
+
+=item *
+
+L<Changing()|/Changing_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_TabStrip_PARENT_">
+
+=item new Win32::GUI::TabStrip(PARENT, %OPTIONS)
+
+Creates a new TabStrip object;
+can also be called as PARENT->AddTabStrip(%OPTIONS).
+Class specific %OPTIONS are:
+
+  -bottom    => 0/1 (default 0)
+  -buttons   => 0/1 (default 0)
+  -hottrack  => 0/1 (default 0)
+  -imagelist => Win32::GUI::ImageList object
+  -justify   => 0/1 (default 0)
+  -multiline => 0/1 (default 0)
+  -right     => 0/1 (default 0)
+  -vertical  => 0/1 (default 0)
+
+=for html <P>
+
+=back
+
+=head3 Methods
+
+=over 4
+
+=for html <A NAME="ChangeItem_ITEM_OPTIONS_">
+
+=item ChangeItem(ITEM, %OPTIONS)
+
+Change most of the options used when the item was created
+(see  L<InsertItem()|/InsertItem_OPTIONS_>).
+Allowed %OPTIONS are:
+
+    -image
+    -text
+
+=for html <P>
+
+=for html <A NAME="Count_">
+
+=item Count()
+
+Returns the number of items in the TabStrip.
+
+=for html <P>
+
+=for html <A NAME="DeleteItem_ITEM_">
+
+=item DeleteItem(ITEM)
+
+Removes the specified ITEM from the TabStrip.
+
+=for html <P>
+
+=for html <A NAME="GetString_ITEM_">
+
+=item GetString(ITEM)
+
+Returns the string associated with the specified ITEM in the TabStrip.
+
+=for html <P>
+
+=for html <A NAME="InsertItem_OPTIONS_">
+
+=item InsertItem(%OPTIONS)
+
+Adds an item to the TabStrip.
+Allowed %OPTIONS are:
+
+ -image => NUMBER
+   the index of an image from the associated ImageList
+ -index => NUMBER
+   the position for the new item (if not specified, the item
+   is added at the end of the control)
+ -text  => STRING
+   the text that will appear on the item
+
+=for html <P>
+
+=for html <A NAME="Reset_">
+
+=item Reset()
+
+Deletes all items from the TabStrip.
+
+=for html <P>
+
+=for html <A NAME="Select_INDEX_">
+
+=item Select(INDEX)
+
+Selects the zero-based INDEX item in the TabStrip.
+
+=for html <P>
+
+=for html <A NAME="SelectedItem_">
+
+=item SelectedItem()
+
+Returns the zero-based index of the currently selected item.
+
+=for html <P>
+
+=back
+
+=head3 Events
+
+=over 4
+
+=for html <A NAME="Change_">
+
+=item Change()
+
+Sent when the current
+selection has changed. Use SelectedItem()
+to determine the current selection.
+
+=for html <P>
+
+=for html <A NAME="Changing_">
+
+=item Changing()
+
+Sent before the current selection changes.
+Use SelectedItem() to determine the
+current selection.
+The event should return 0 to prevent
+the selection changing, 1 to allow it.
+
+=for html <P>
+
+=back
+
+=cut

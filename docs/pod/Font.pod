@@ -1,0 +1,111 @@
+=head2 Package Win32::GUI::Font
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::Font(%OPTIONS)|/new_Win32_GUI_Font_OPTIONS_>
+
+=back
+
+=item *
+
+L<Methods>
+
+=over
+
+=item *
+
+L<GetMetrics()|/GetMetrics_>
+
+=item *
+
+L<Info()|/Info_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_Font_OPTIONS_">
+
+=item new Win32::GUI::Font(%OPTIONS)
+
+Creates a new Font object. %OPTIONS are:
+
+  -size
+  -height
+  -width
+  -escapement
+  -orientation
+  -weight
+  -bold => 0/1
+  -italic => 0/1
+  -underline => 0/1
+  -strikeout => 0/1
+  -charset
+  -outputprecision
+  -clipprecision
+  -family
+  -quality
+  -name
+  -face
+
+=for html <P>
+
+=back
+
+=head3 Methods
+
+=over 4
+
+=for html <A NAME="GetMetrics_">
+
+=item GetMetrics()
+
+Returns an associative array of information about the Font:
+
+ -height
+ -ascent
+ -descent
+ -ileading
+ -eleading
+ -avgwidth
+ -maxwidth
+ -overhang
+ -aspectx
+ -aspecty
+ -firstchar
+ -lastchar
+ -breakchar
+ -italic
+ -underline
+ -strikeout
+ -flags
+ -charset
+
+=for html <P>
+
+=for html <A NAME="Info_">
+
+=item Info()
+
+Returns an associative array of information about the Font, with
+the same options given when creating the font.
+
+=for html <P>
+
+=back
+
+=cut

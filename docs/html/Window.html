@@ -1,0 +1,531 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::Window</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_Window">Package Win32::GUI::Window</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Methods">Methods</A>
+			<LI><A HREF="#Events">Events</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_Window">Package Win32::GUI::Window</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_Window_OPTIONS_">new Win32::GUI::Window(%OPTIONS)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Methods">Methods</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#AddAnimation_OPTIONS_">AddAnimation(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddButton_OPTIONS_">AddButton(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddCheckbox_OPTIONS_">AddCheckbox(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddCombobox_OPTIONS_">AddCombobox(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddGroupbox_OPTIONS_">AddGroupbox(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddHeader_OPTIONS_">AddHeader(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddLabel_OPTIONS_">AddLabel(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddListbox_OPTIONS_">AddListbox(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddListView_OPTIONS_">AddListView(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddMenu_">AddMenu()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddNotifyIcon_OPTIONS_">AddNotifyIcon(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddProgressBar_OPTIONS_">AddProgressBar(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddRadioButton_OPTIONS_">AddRadioButton(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddRebar_OPTIONS_">AddRebar(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddRichEdit_OPTIONS_">AddRichEdit(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddSlider_OPTIONS_">AddSlider(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddStatusBar_OPTIONS_">AddStatusBar(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddTabStrip_OPTIONS_">AddTabStrip(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddTextfield_OPTIONS_">AddTextfield(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddTimer_NAME_ELAPSE_">AddTimer(NAME, ELAPSE)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddToolbar_OPTIONS_">AddToolbar(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddTreeView_OPTIONS_">AddTreeView(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddUpDown_OPTIONS_">AddUpDown(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GetDC_">GetDC()</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Events">Events</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Activate_">Activate()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Deactivate_">Deactivate()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Maximize_">Maximize()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Minimize_">Minimize()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Resize_">Resize()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Terminate_">Terminate()</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_Window_OPTIONS_">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::Window(%OPTIONS)</A></STRONG><DD>
+<P>
+Creates a new Window object. Class specific <CODE>%OPTIONS</CODE> are:
+
+<P>
+<PRE>  -minsize =&gt; [X, Y]
+    specifies the minimum size (width and height) in pixels;
+    X and Y must be passed in an array reference
+  -maxsize =&gt; [X, Y]
+    specifies the maximum size (width and height) in pixels;
+    X and Y must be passed in an array reference
+  -minwidth  =&gt; N
+  -minheight =&gt; N
+  -maxwidht  =&gt; N
+  -maxheight =&gt; N
+    specify the minimum and maximum size width
+    and height, in pixels
+  -topmost =&gt; 0/1 (default 0)
+    the window &quot;stays on top&quot; even when deactivated
+</PRE>
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Methods">Methods</A></H3>
+<A NAME="AddAnimation_OPTIONS_">
+
+<DL>
+<DT><STRONG><A NAME="item_AddAnimation">AddAnimation(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././Animation.html#new_Win32_GUI_Animation_PARENT">new Win32::GUI::Animation()</A>.
+
+<P>
+
+<A NAME="AddButton_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddButton">AddButton(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././Button.html#new_Win32_GUI_Button_PARENT_">new Win32::GUI::Button()</A>.
+
+<P>
+
+<A NAME="AddCheckbox_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddCheckbox">AddCheckbox(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././Checkbox.html#new_Win32_GUI_Checkbox_PARENT_">new Win32::GUI::Checkbox()</A>.
+
+<P>
+
+<A NAME="AddCombobox_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddCombobox">AddCombobox(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././Combobox.html#new_Win32_GUI_Combobox_PARENT_">new Win32::GUI::Combobox()</A>.
+
+<P>
+
+<A NAME="AddGroupbox_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddGroupbox">AddGroupbox(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././Groupbox.html#new_Win32_GUI_Groupbox_PARENT_">new Win32::GUI::Groupbox()</A>.
+
+<P>
+
+<A NAME="AddHeader_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddHeader">AddHeader(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././Header.html#new_Win32_GUI_Header_PARENT_">new Win32::GUI::Header()</A>.
+
+<P>
+
+<A NAME="AddLabel_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddLabel">AddLabel(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././Label.html#new_Win32_GUI_Label_PARENT_O">new Win32::GUI::Label()</A>.
+
+<P>
+
+<A NAME="AddListbox_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddListbox">AddListbox(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././Listbox.html#new_Win32_GUI_Listbox_PARENT_">new Win32::GUI::Listbox()</A>.
+
+<P>
+
+<A NAME="AddListView_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddListView">AddListView(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././ListView.html#new_Win32_GUI_ListView_PARENT_">new Win32::GUI::ListView()</A>.
+
+<P>
+
+<A NAME="AddMenu_">
+
+<DT><STRONG><A NAME="item_AddMenu">AddMenu()</A></STRONG><DD>
+<P>
+See  <A HREF="././Menu.html#new_Win32_GUI_Menu_">new Win32::GUI::Menu()</A>.
+
+<P>
+
+<A NAME="AddNotifyIcon_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddNotifyIcon">AddNotifyIcon(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././NotifyIcon.html#new_Win32_GUI_NotifyIcon_PAREN">new Win32::GUI::NotifyIcon()</A>.
+
+<P>
+
+<A NAME="AddProgressBar_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddProgressBar">AddProgressBar(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././ProgressBar.html#new_Win32_GUI_ProgressBar_PARE">new Win32::GUI::ProgressBar()</A>.
+
+<P>
+
+<A NAME="AddRadioButton_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddRadioButton">AddRadioButton(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././RadioButton.html#new_Win32_GUI_RadioButton_PARE">new Win32::GUI::RadioButton()</A>.
+
+<P>
+
+<A NAME="AddRebar_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddRebar">AddRebar(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././Rebar.html#new_Win32_GUI_Rebar_PARENT_O">new Win32::GUI::Rebar()</A>.
+
+<P>
+
+<A NAME="AddRichEdit_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddRichEdit">AddRichEdit(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././RichEdit.html#new_Win32_GUI_RichEdit_PARENT_">new Win32::GUI::RichEdit()</A>.
+
+<P>
+
+<A NAME="AddSlider_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddSlider">AddSlider(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././Slider.html#new_Win32_GUI_Slider_PARENT_">new Win32::GUI::Slider()</A>.
+
+<P>
+
+<A NAME="AddStatusBar_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddStatusBar">AddStatusBar(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././StatusBar.html#new_Win32_GUI_StatusBar_PARENT">new Win32::GUI::StatusBar()</A>.
+
+<P>
+
+<A NAME="AddTabStrip_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddTabStrip">AddTabStrip(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././TabStrip.html#new_Win32_GUI_TabStrip_PARENT_">new Win32::GUI::TabStrip()</A>.
+
+<P>
+
+<A NAME="AddTextfield_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddTextfield">AddTextfield(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././Textfield.html#new_Win32_GUI_Textfield_PARENT">new Win32::GUI::Textfield()</A>.
+
+<P>
+
+<A NAME="AddTimer_NAME_ELAPSE_">
+
+<DT><STRONG><A NAME="item_AddTimer">AddTimer(NAME, ELAPSE)</A></STRONG><DD>
+<P>
+See  <A HREF="././Timer.html#new_Win32_GUI_Timer_PARENT_NA">new Win32::GUI::Timer()</A>.
+
+<P>
+
+<A NAME="AddToolbar_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddToolbar">AddToolbar(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././Toolbar.html#new_Win32_GUI_Toolbar_PARENT_">new Win32::GUI::Toolbar()</A>.
+
+<P>
+
+<A NAME="AddTreeView_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddTreeView">AddTreeView(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././TreeView.html#new_Win32_GUI_TreeView_PARENT_">new Win32::GUI::TreeView()</A>.
+
+<P>
+
+<A NAME="AddUpDown_OPTIONS_">
+
+<DT><STRONG><A NAME="item_AddUpDown">AddUpDown(%OPTIONS)</A></STRONG><DD>
+<P>
+See  <A HREF="././UpDown.html#new_Win32_GUI_UpDown_PARENT_">new Win32::GUI::UpDown()</A>.
+
+<P>
+
+<A NAME="GetDC_">
+
+<DT><STRONG><A NAME="item_GetDC">GetDC()</A></STRONG><DD>
+<P>
+Returns the DC object associated with the window.
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Events">Events</A></H3>
+<A NAME="Activate_">
+
+<DL>
+<DT><STRONG><A NAME="item_Activate">Activate()</A></STRONG><DD>
+<P>
+Sent when the window is activated.
+
+<P>
+
+<A NAME="Deactivate_">
+
+<DT><STRONG><A NAME="item_Deactivate">Deactivate()</A></STRONG><DD>
+<P>
+Sent when the window is deactivated.
+
+<P>
+
+<A NAME="Maximize_">
+
+<DT><STRONG><A NAME="item_Maximize">Maximize()</A></STRONG><DD>
+<P>
+Sent when the window is maximized.
+
+<P>
+
+<A NAME="Minimize_">
+
+<DT><STRONG><A NAME="item_Minimize">Minimize()</A></STRONG><DD>
+<P>
+Sent when the window is minimized.
+
+<P>
+
+<A NAME="Resize_">
+
+<DT><STRONG><A NAME="item_Resize">Resize()</A></STRONG><DD>
+<P>
+Sent when the window is resized.
+
+<P>
+
+<A NAME="Terminate_">
+
+<DT><STRONG><A NAME="item_Terminate">Terminate()</A></STRONG><DD>
+<P>
+Sent when the window is closed. The event should return -1 to terminate the
+interaction and return control to the perl script; see  <A HREF="././Win32_GUI.html#Dialog_">Dialog()</A>.
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

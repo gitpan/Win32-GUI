@@ -1,0 +1,188 @@
+<HTML>
+<HEAD>
+<TITLE>Win32::GUI::GridLayout - Grid layout support for Win32::GUI</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<LI><A HREF="#NAME">NAME</A>
+	<LI><A HREF="#SYNOPSIS">SYNOPSIS</A>
+	<LI><A HREF="#DESCRIPTION">DESCRIPTION</A>
+	<UL>
+
+		<LI><A HREF="#Constructors">Constructors</A>
+		<LI><A HREF="#Methods">Methods</A>
+	</UL>
+
+	<LI><A HREF="#VERSION">VERSION</A>
+	<LI><A HREF="#AUTHOR">AUTHOR</A>
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H1><A NAME="NAME">NAME</A></H1>
+<P>
+Win32::GUI::GridLayout - Grid layout support for Win32::GUI
+
+<P>
+<HR>
+<H1><A NAME="SYNOPSIS">SYNOPSIS</A></H1>
+<P>
+<PRE>    use Win32::GUI::
+    use Win32::GUI::GridLayout;
+</PRE>
+<P>
+<PRE>    # 1. make a &quot;static&quot; grid
+    $grid = new Win32::GUI::GridLayout(400, 300, 3, 3, 0, 0);
+    
+    $win = new Win32::GUI::Window(
+    
+    $win-&gt;AddLabel(
+        -name =&gt; &quot;label1&quot;,
+        -text =&gt; &quot;Label 1&quot;,
+        -width  =&gt; $grid-&gt;width(35),
+        -height =&gt; $grid-&gt;height(11),
+        -left   =&gt; $grid-&gt;col(1, &quot;left&quot;),
+        -top    =&gt; $grid-&gt;row(1, &quot;top&quot;),
+    );
+    
+    # 2. make a &quot;dynamic&quot; grid
+    $grid = apply Win32::GUI::GridLayout($win, 3, 3, 0, 0);
+    
+    $win-&gt;AddLabel(
+        -name =&gt; &quot;label1&quot;,
+        -text =&gt; &quot;Label 1&quot;,
+    );
+    $grid-&gt;add($win-&gt;label1, 1, 1, &quot;left top&quot;);
+</PRE>
+<P>
+<PRE>    $grid-&gt;recalc();
+</PRE>
+<P>
+<HR>
+<H1><A NAME="DESCRIPTION">DESCRIPTION</A></H1>
+<P>
+<HR>
+<H2><A NAME="Constructors">Constructors</A></H2>
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::GridLayout(WIDTH, HEIGHT, COLS, ROWS, XPAD, YPAD)</A></STRONG><DD>
+<DT><STRONG><A NAME="item_apply">apply Win32::GUI::GridLayout(WINDOW, COLS, ROWS, XPAD, YPAD)</A></STRONG><DD>
+</DL>
+<P>
+<HR>
+<H2><A NAME="Methods">Methods</A></H2>
+<DL>
+<DT><STRONG><A NAME="item_add">add(CONTROL, COL, ROW, ALIGN)</A></STRONG><DD>
+<P>
+Adds CONTROL to the grid at (COL, ROW). ALIGN can specify both horizontal
+and vertical alignment (see the <CODE>col()</CODE> and <CODE>row()</CODE>
+methods), separated by at least one blank and/or a comma.
+
+<P>
+Example:
+
+<P>
+<PRE>    $grid-&gt;add($win-&gt;label1, 1, 1, &quot;left top&quot;);
+</PRE>
+<DT><STRONG><A NAME="item_col">col(N, ALIGN)</A></STRONG><DD>
+<P>
+Positions the control at the Nth column in the grid, optionally with an
+ALIGN; this can be feed to a
+<CODE>-left</CODE> option when creating a control.
+
+<P>
+ALIGN can be <CODE>left</CODE>, <CODE>center</CODE> or <CODE>right</CODE> (can be shortened to <CODE>l</CODE>, <CODE>c</CODE>, <CODE>r</CODE>); default is <CODE>left</CODE>.
+
+<P>
+Note that for alignment to work properly, the <CODE>width()</CODE> and
+<CODE>height()</CODE> methods must have been previously called.
+
+<P>
+Example:
+
+<P>
+<PRE>    $win-&gt;AddLabel(
+        -name =&gt; &quot;label1&quot;,
+        -text =&gt; &quot;Label 1&quot;,
+        -width  =&gt; $grid-&gt;width(35),
+        -height =&gt; $grid-&gt;height(11),
+        -left   =&gt; $grid-&gt;col(1, &quot;left&quot;),
+        -top    =&gt; $grid-&gt;row(1, &quot;top&quot;),
+    );      
+</PRE>
+<DT><STRONG><A NAME="item_draw">draw()</A></STRONG><DD>
+<P>
+Draws the GridLayout in the associated window (may be useful for
+debugging); is only meaningful if the GridLayout was created with the
+<CODE>apply()</CODE> constructor.
+
+<DT><STRONG><A NAME="item_height">height(N)</A></STRONG><DD>
+<P>
+Sets the height of the control for subsequent alignment; this can be feed
+to a <A HREF="#item__height">-height</A> option when creating a control.
+
+<P>
+Example: see <CODE>col().</CODE>
+
+<DT><STRONG><A NAME="item_recalc">recalc()</A></STRONG><DD>
+<P>
+Recalculates the grid and repositions all the <CODE>add()ed</CODE>
+controls, taking into account the actual window and controls sizes; is only
+meaningful if the GridLayout was created with the <CODE>apply()</CODE>
+constructor.
+
+<P>
+Example:
+
+<P>
+<PRE>    sub Window_Resize {
+        $grid-&gt;recalc();
+    }
+</PRE>
+<DT><STRONG><A NAME="item_row">row(N, ALIGN)</A></STRONG><DD>
+<P>
+Positions the control at the Nth row in the grid, optionally with an ALIGN;
+this can be feed to a
+<CODE>-top</CODE> option when creating a control.
+
+<P>
+ALIGN can be <CODE>top</CODE>, <CODE>center</CODE> or <CODE>bottom</CODE> (can be shortened to t, c, b); default is top.
+
+<P>
+Note that for alignment to work properly, the <CODE>width()</CODE> and
+<CODE>height()</CODE> methods must have been previously called.
+
+<P>
+Example: see <CODE>col().</CODE>
+
+<DT><STRONG><A NAME="item_width">width(N)</A></STRONG><DD>
+<P>
+Sets the width of the control for subsequent alignment; this can be feed to
+a <A HREF="#item__width">-width</A> option when creating a control.
+
+<P>
+Example: see <CODE>col().</CODE>
+
+</DL>
+<P>
+<HR>
+<H1><A NAME="VERSION">VERSION</A></H1>
+<P>
+Win32::GUI::GridLayout version 0.03, 13 April 1999.
+
+<P>
+<HR>
+<H1><A NAME="AUTHOR">AUTHOR</A></H1>
+<P>
+Mike Kangas ( <CODE>kangas@anlon.com</CODE> ); additional coding by Aldo Calpini ( <CODE>dada@divinf.it</CODE> ).
+
+</BODY>
+
+</HTML>

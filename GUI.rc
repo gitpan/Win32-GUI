@@ -1,0 +1,5 @@
+#include "resource.h"
+
+IDI_DEFAULTICON         ICON    DISCARDABLE     "guiperl.ico"
+IDC_HSPLIT         		CURSOR  DISCARDABLE     "hsplit.cur"
+IDC_VSPLIT         		CURSOR  DISCARDABLE     "vsplit.cur"

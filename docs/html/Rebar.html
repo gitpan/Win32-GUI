@@ -1,0 +1,186 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::Rebar</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_Rebar">Package Win32::GUI::Rebar</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Methods">Methods</A>
+			<LI><A HREF="#Events">Events</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_Rebar">Package Win32::GUI::Rebar</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_Rebar_PARENT_O">new Win32::GUI::Rebar(PARENT, %OPTIONS)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Methods">Methods</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#BandCount_">BandCount()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#DeleteBand_INDEX_">DeleteBand(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#InsertBand_OPTIONS_">InsertBand(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#RowCount_">RowCount()</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Events">Events</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#HeightChange_">HeightChange()</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_Rebar_PARENT_O">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::Rebar(PARENT, %OPTIONS)</A></STRONG><DD>
+<P>
+Creates a new Rebar object; can also be called as
+PARENT-&gt;AddRebar(%OPTIONS). Class specific <CODE>%OPTIONS</CODE> are:
+
+<P>
+<PRE>  -bandborders =&gt; 0/1 (default 0)
+    display a border to separate bands.
+  -fixedorder =&gt; 0/1 (default 0)
+    band position cannot be swapped.
+  -imagelist =&gt; Win32::GUI::ImageList object
+  -varheight =&gt; 0/1 (default 1)
+    display bands using the minimum required height.
+</PRE>
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Methods">Methods</A></H3>
+<A NAME="BandCount_">
+
+<DL>
+<DT><STRONG><A NAME="item_BandCount">BandCount()</A></STRONG><DD>
+<P>
+Returns the number of bands in the Rebar control.
+
+<P>
+
+<A NAME="DeleteBand_INDEX_">
+
+<DT><STRONG><A NAME="item_DeleteBand">DeleteBand(INDEX)</A></STRONG><DD>
+<P>
+Deletes the zero-based INDEX band from the Rebar.
+
+<P>
+
+<A NAME="InsertBand_OPTIONS_">
+
+<DT><STRONG><A NAME="item_InsertBand">InsertBand(%OPTIONS)</A></STRONG><DD>
+<P>
+Inserts a new band in the Rebar control. Allowed <CODE>%OPTIONS</CODE> are:
+
+<P>
+<PRE>  -index =&gt; position or -1 to add it at the end, default -1
+  -image =&gt; index of an image from the associated ImageList
+  -bitmap =&gt; Win32::GUI::Bitmap object
+  -child =&gt; child control
+  -foreground =&gt; COLOR
+  -background  =&gt; COLOR
+  -width =&gt; pixels
+  -minwidth =&gt; pixels
+  -minheight =&gt; pixels
+  -text =&gt; string
+</PRE>
+<P>
+
+<A NAME="RowCount_">
+
+<DT><STRONG><A NAME="item_RowCount">RowCount()</A></STRONG><DD>
+<P>
+Returns the number of rows in the Rebar control.
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Events">Events</A></H3>
+<A NAME="HeightChange_">
+
+<DL>
+<DT><STRONG><A NAME="item_HeightChange">HeightChange()</A></STRONG><DD>
+<P>
+Sent when the height of the Rebar control has changed.
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

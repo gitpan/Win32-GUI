@@ -1,0 +1,36 @@
+=head2 Package Win32::GUI::Groupbox
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::Groupbox(PARENT, %OPTIONS)|/new_Win32_GUI_Groupbox_PARENT_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_Groupbox_PARENT_">
+
+=item new Win32::GUI::Groupbox(PARENT, %OPTIONS)
+
+Creates a new Groupbox object;
+can also be called as PARENT->AddGroupbox(%OPTIONS).
+
+=for html <P>
+
+=back
+
+=cut

@@ -1,0 +1,60 @@
+TYPEMAP
+HWND         T_HANDLE
+HMENU        T_HANDLE
+HICON        T_HANDLE
+HCURSOR      T_HANDLE
+HBITMAP      T_HANDLE
+HFONT        T_HANDLE
+HGDIOBJ      T_HANDLE
+HIMAGELIST   T_HANDLE
+HDC          T_HANDLE
+HBRUSH       T_HANDLE
+HPEN         T_HANDLE
+HTREEITEM    T_IV
+LONG         T_IV
+LPCTSTR      T_PV
+LPTSTR       T_PV
+DWORD        T_IV
+UINT         T_IV
+BOOL         T_IV
+WPARAM       T_IV
+LPARAM       T_IV
+LRESULT      T_IV
+HINSTANCE    T_IV
+COLORREF     T_COLOR
+LPCSTR       T_PV
+HENHMETAFILE T_IV
+FLOAT        T_FLOAT
+LPVOID       T_PV
+HACCEL       T_IV
+
+################################################################################
+INPUT
+T_HANDLE
+    if(SvROK($arg)) {
+        if(hv_fetch((HV*)SvRV($arg), \"-handle\", 7, 0) != NULL)
+            $var = ($type) SvIV(*(hv_fetch((HV*)SvRV($arg), \"-handle\", 7, 0)));
+        else
+            $var = NULL;
+    } else
+        $var = ($type) SvIV($arg);
+T_COLOR
+    if(SvROK($arg) && SvTYPE(SvRV($arg)) == SVt_PVAV) {
+        $var = ($type) (
+            ((BYTE) (av_fetch((AV*)SvRV($arg), 0, 0) == NULL) ? 
+                     0 : SvIV(*(av_fetch((AV*)SvRV($arg), 0, 0))) ) |
+            ((BYTE) (av_fetch((AV*)SvRV($arg), 1, 0) == NULL) ? 
+                     0 : SvIV(*(av_fetch((AV*)SvRV($arg), 1, 0))) )<<8 |
+            ((BYTE) (av_fetch((AV*)SvRV($arg), 2, 0) == NULL) ? 
+                     0 : SvIV(*(av_fetch((AV*)SvRV($arg), 2, 0))) )<<16
+        );
+    } else
+        $var = ($type) SvIV($arg);
+
+################################################################################
+OUTPUT
+T_HANDLE
+    sv_setiv($arg, (IV) $var);
+T_COLOR
+    sv_setiv($arg, (IV) $var);
+

@@ -1,0 +1,148 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::Font</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_Font">Package Win32::GUI::Font</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Methods">Methods</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_Font">Package Win32::GUI::Font</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_Font_OPTIONS_">new Win32::GUI::Font(%OPTIONS)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Methods">Methods</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#GetMetrics_">GetMetrics()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Info_">Info()</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_Font_OPTIONS_">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::Font(%OPTIONS)</A></STRONG><DD>
+<P>
+Creates a new Font object. <CODE>%OPTIONS</CODE> are:
+
+<P>
+<PRE>  -size
+  -height
+  -width
+  -escapement
+  -orientation
+  -weight
+  -bold =&gt; 0/1
+  -italic =&gt; 0/1
+  -underline =&gt; 0/1
+  -strikeout =&gt; 0/1
+  -charset
+  -outputprecision
+  -clipprecision
+  -family
+  -quality
+  -name
+  -face
+</PRE>
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Methods">Methods</A></H3>
+<A NAME="GetMetrics_">
+
+<DL>
+<DT><STRONG><A NAME="item_GetMetrics">GetMetrics()</A></STRONG><DD>
+<P>
+Returns an associative array of information about the Font:
+
+<P>
+<PRE> -height
+ -ascent
+ -descent
+ -ileading
+ -eleading
+ -avgwidth
+ -maxwidth
+ -overhang
+ -aspectx
+ -aspecty
+ -firstchar
+ -lastchar
+ -breakchar
+ -italic
+ -underline
+ -strikeout
+ -flags
+ -charset
+</PRE>
+<P>
+
+<A NAME="Info_">
+
+<DT><STRONG><A NAME="item_Info">Info()</A></STRONG><DD>
+<P>
+Returns an associative array of information about the Font, with the same
+options given when creating the font.
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

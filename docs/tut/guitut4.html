@@ -1,0 +1,215 @@
+<HTML>
+<HEAD>
+<TITLE>Win32::GUI Tutorial - Part 4 - Further Features of Win32::GUI</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+
+<UL>
+
+	<LI><A HREF="#Win32_GUI_Tutorial_Part_4_F">Win32::GUI Tutorial - Part 4 - Further Features of Win32::GUI</A>
+	<UL>
+
+		<LI><A HREF="#Timers">Timers</A>
+		<LI><A HREF="#Status_Bars">Status Bars</A>
+		<LI><A HREF="#System_Tray_Icons">System Tray Icons</A>
+	</UL>
+
+</UL>
+<!-- INDEX END -->
+
+<HR>
+<P>
+<H1><A NAME="Win32_GUI_Tutorial_Part_4_F">Win32::GUI Tutorial - Part 4 - Further Features of Win32::GUI</A></H1>
+<P>
+<HR>
+<H2><A NAME="Timers">Timers</A></H2>
+<P>
+Many types of application need to be able to perform an action at regular
+intervals. The obvious example is a clock application, but other examples
+might be
+
+<UL>
+<LI>
+<P>
+A file viewer, which watches at regular intervals to see if the file being
+displayed has changed, and shows the new contents if it has.
+
+<LI>
+<P>
+A monitor application (like the WIndows NT performance monitor) which
+displays updated information every second.
+
+<LI>
+<P>
+A network ``ping'' utility, which polls a remote server at regular
+intervals, to see that it is still running.
+
+</UL>
+<P>
+Adding a timer to your application is easy. All you do is call the
+<CODE>AddTimer()</CODE> method on the window you want to ``own'' the timer.
+When the timer expires, its
+<CODE>Timer</CODE> event is fired, which you can catch in the normal way.
+
+<P>
+For example,
+
+<P>
+<PRE>    $t1 = $main-&gt;AddTimer('T1', 1000);
+</PRE>
+<P>
+<PRE>    sub T1_Timer {
+        print &quot;Timer went off!\n&quot;;
+    }
+</PRE>
+<P>
+Some things to note:
+
+<UL>
+<LI>
+<P>
+The <CODE>AddTimer()</CODE> method takes two explicit parameters, the timer
+name and the interval (in milliseconds). The normal <CODE>option =&amp;gt; value</CODE> syntax is <STRONG>not</STRONG>
+used.
+
+<LI>
+<P>
+The timer keeps firing repeatedly. To disable a timer, use
+$timer-&gt;Kill().
+
+<LI>
+<P>
+To reset the interval of a timer, use $timer-&gt;Interval(n). Setting an
+interval of zero disables the timer.
+
+</UL>
+<P>
+That's about all there is to timers.
+
+<P>
+<HR>
+<H2><A NAME="Status_Bars">Status Bars</A></H2>
+<P>
+To add a status bar to your window, just use
+
+<P>
+<PRE>    $sb = $main-&gt;AddStatusBar();
+</PRE>
+<P>
+The normal options are available, but in general you don't need them.
+
+<P>
+The only surprise is that your status bar will <STRONG>not</STRONG> resize automatically when your main window resizes. You need to include
+code in your main window resize event handler to resize the status bar. The
+following code will do the job:
+
+<P>
+<PRE>    sub Main_Resize {
+        $sb-&gt;Move(0, $main-&gt;ScaleHeight - $sb-&gt;Height);
+        $sb-&gt;Resize($main-&gt;ScaleWidth, $sb-&gt;Height);
+    }
+</PRE>
+<P>
+You can write text to your status bar using the <CODE>Text()</CODE> method.
+
+<P>
+<PRE>    $sb-&gt;Text(&quot;This appears in the status bar&quot;);
+</PRE>
+<P>
+To clear the status bar, just write an empty string.
+
+<P>
+<HR>
+<H2><A NAME="System_Tray_Icons">System Tray Icons</A></H2>
+<P>
+Many utility programs these days add an icon to the Windows ``System Tray''
+- the small area on the taskbar near the clock. Once again, this is easy
+with Win32::GUI - you simply use the <CODE>AddNotifyIcon()</CODE> method. A
+notify icon has four key properties - a name (which is used for event
+handling, just like for any other Win32::GUI object), an ID (which is just
+a unique number, used internally, you specify it and then ignore it), a
+tooltip (a string which is displayed when you hold the mouse pointer over
+the icon) and an icon (a Win32::GUI::Icon object - you create this using
+the <CODE>new()</CODE> constructor, passing the name of the .ico file to
+use). Notify icons have Click and RightClick events, to let you process
+mouse clicks.
+
+<P>
+The normal protocol for an application which uses a notify icon is for the
+main window to start hidden, and to show the window when the icon is
+clicked. When the main window is minimised, it hides itself, leaving just
+the notify icon visible.
+
+<P>
+The simplest way to demonstrate this is to show some working code...
+
+<P>
+<PRE>    use Win32::GUI;
+</PRE>
+<P>
+<PRE>    $main = Win32::GUI::Window-&gt;new(-name =&gt; 'Main', -text =&gt; 'Perl',
+                                    -width =&gt; 200, -height =&gt; 200);
+</PRE>
+<P>
+<PRE>    $icon = new Win32::GUI::Icon('GUIPERL.ICO');
+    $ni = $main-&gt;AddNotifyIcon(-name =&gt; &quot;NI&quot;, -id =&gt; 1,
+                               -icon =&gt; $icon, -tip =&gt; &quot;Hello&quot;);
+</PRE>
+<P>
+<PRE>    Win32::GUI::Dialog();
+</PRE>
+<P>
+<PRE>    sub Main_Terminate {
+        -1;
+    }
+</PRE>
+<P>
+<PRE>    sub Main_Minimize {
+        $main-&gt;Disable();
+        $main-&gt;Hide();
+        1;
+    }
+</PRE>
+<P>
+<PRE>    sub NI_Click {
+        $main-&gt;Enable();
+        $main-&gt;Show();
+        1;
+    }
+</PRE>
+<P>
+Some points to note
+
+<UL>
+<LI>
+<P>
+To remove the window's icon from the taskbar, it is necessary to diable the
+window as well as hiding it. And hence, when we show the window again, we
+need to re-enable it.
+
+<LI>
+<P>
+There is a small bug in this program. The tray icon does not disappear
+immediately when the program terminates. Instead, it remains in the system
+tray until you point the mouse cursor at it, when it disappears. This is a
+bug in Win32::GUI - when you close your program, you should explicitly
+remove any system tray icons you still have displayed. Win32::GUI does not
+(yet) have a way of removing a tray icon. Hopefully, this will be fixed in
+a later version.
+
+</UL>
+<P>
+That's it for the simpler objects available in the Win32::GUI package. Even
+though I have referred to them as simple, it is possible to create some
+fairly complicated applications using just what we have seen so far.
+
+<P>
+In the next couple of tutorials, I will move on to the more sophisticated
+controls available - list views and tree views.
+</BODY>
+
+</HTML>

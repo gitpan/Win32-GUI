@@ -1,0 +1,231 @@
+<HTML>
+<HEAD>
+<TITLE>Win32::GUI Common Options</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Win32_GUI_Common_Options">Win32::GUI Common Options</A>
+		<UL>
+
+			<LI><A HREF="#Required_options">Required options</A>
+			<LI><A HREF="#List_of_available_options">List of available options</A>
+			<UL>
+
+				<LI><A HREF="#_background_COLOR">-background =&gt; COLOR</A>
+				<LI><A HREF="#_class_CLASS">-class =&gt; CLASS</A>
+				<LI><A HREF="#_disabled_0_1">-disabled =&gt; 0/1</A>
+				<LI><A HREF="#_font_FONT">-font =&gt; FONT</A>
+				<LI><A HREF="#_foreground_COLOR">-foreground =&gt; COLOR</A>
+				<LI><A HREF="#_group_0_1">-group =&gt; 0/1</A>
+				<LI><A HREF="#_height_NUMBER">-height =&gt; NUMBER</A>
+				<LI><A HREF="#_left_NUMBER">-left =&gt; NUMBER</A>
+				<LI><A HREF="#_menu_MENU">-menu =&gt; MENU</A>
+				<LI><A HREF="#_name_STRING">-name =&gt; STRING</A>
+				<LI><A HREF="#_style_NUMBER">-style =&gt; NUMBER</A>
+				<LI><A HREF="#_tabstop_0_1">-tabstop =&gt; 0/1</A>
+				<LI><A HREF="#_text_STRING">-text =&gt; STRING</A>
+				<LI><A HREF="#_title_STRING">-title =&gt; STRING</A>
+				<LI><A HREF="#_top_NUMBER">-top =&gt; NUMBER</A>
+				<LI><A HREF="#_visible_0_1">-visible =&gt; 0/1</A>
+				<LI><A HREF="#_width_NUMBER">-width =&gt; NUMBER</A>
+			</UL>
+
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Win32_GUI_Common_Options">Win32::GUI Common Options</A></H2>
+<P>
+<A HREF="././gui.html#">Back to the index</A>
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Win32_GUI_Common_Options">Win32::GUI Common Options</A>
+		<UL>
+
+			<LI><A HREF="#Required_options">Required options</A>
+			<LI><A HREF="#List_of_available_options">List of available options</A>
+			<UL>
+
+				<LI><A HREF="#_background_COLOR">-background =&gt; COLOR</A>
+				<LI><A HREF="#_class_CLASS">-class =&gt; CLASS</A>
+				<LI><A HREF="#_disabled_0_1">-disabled =&gt; 0/1</A>
+				<LI><A HREF="#_font_FONT">-font =&gt; FONT</A>
+				<LI><A HREF="#_foreground_COLOR">-foreground =&gt; COLOR</A>
+				<LI><A HREF="#_group_0_1">-group =&gt; 0/1</A>
+				<LI><A HREF="#_height_NUMBER">-height =&gt; NUMBER</A>
+				<LI><A HREF="#_left_NUMBER">-left =&gt; NUMBER</A>
+				<LI><A HREF="#_menu_MENU">-menu =&gt; MENU</A>
+				<LI><A HREF="#_name_STRING">-name =&gt; STRING</A>
+				<LI><A HREF="#_style_NUMBER">-style =&gt; NUMBER</A>
+				<LI><A HREF="#_tabstop_0_1">-tabstop =&gt; 0/1</A>
+				<LI><A HREF="#_text_STRING">-text =&gt; STRING</A>
+				<LI><A HREF="#_title_STRING">-title =&gt; STRING</A>
+				<LI><A HREF="#_top_NUMBER">-top =&gt; NUMBER</A>
+				<LI><A HREF="#_visible_0_1">-visible =&gt; 0/1</A>
+				<LI><A HREF="#_width_NUMBER">-width =&gt; NUMBER</A>
+			</UL>
+
+		</UL>
+
+	</UL>
+
+</UL>
+
+
+<HR>
+
+
+
+
+<P>
+This document illustrates the options available when creating an object (in
+particular, windows and controls). Here you'll find the general options,
+the ones that apply to every window class; for class-specific options,
+refer to that object's HTML reference file.
+
+<P>
+<HR>
+<H3><A NAME="Required_options">Required options</A></H3>
+<P>
+<A HREF="#_name_STRING">-name</A>
+
+
+
+<P>
+<HR>
+<H3><A NAME="List_of_available_options">List of available options</A></H3>
+<P>
+<HR>
+<H4><A NAME="_background_COLOR">-background =&gt; COLOR</A></H4>
+<P>
+[TBD]
+
+<P>
+<HR>
+<H4><A NAME="_class_CLASS">-class =&gt; CLASS</A></H4>
+<P>
+Specifies the window class (which is different from the Perl's object
+class, eg. Win32::GUI::Button) for the window; all the predefined objects
+have hardcoded class names (eg. ``BUTTON'' for Win32::GUI::Button), so you
+shouldn't want to pick a different one unless you are familiar with window
+classes and you want to subclass an existing one. This technique is
+documented in the Microsoft Platform SDK Reference, and (at a lighter
+level) in <EM>guiclasses.pod</EM>. The CLASS parameter can be either a name or a reference to a <A HREF="././Class.html#">Win32::GUI::Class</A> object. As for many other options in Win32::GUI, its use is <STRONG>not recommended</STRONG> unless you know what you're doing.
+
+<P>
+<HR>
+<H4><A NAME="_disabled_0_1">-disabled =&gt; 0/1</A></H4>
+<P>
+Sets the initial enabled state for the control; by default this option is 0
+(the control is enabled). Set it to 1 to create a control which is
+initially disabled.
+
+<P>
+<HR>
+<H4><A NAME="_font_FONT">-font =&gt; FONT</A></H4>
+<P>
+[TBD]
+
+<P>
+<HR>
+<H4><A NAME="_foreground_COLOR">-foreground =&gt; COLOR</A></H4>
+<P>
+[TBD]
+
+<P>
+<HR>
+<H4><A NAME="_group_0_1">-group =&gt; 0/1</A></H4>
+<P>
+[TBD]
+
+<P>
+<HR>
+<H4><A NAME="_height_NUMBER">-height =&gt; NUMBER</A></H4>
+<P>
+[TBD]
+
+<P>
+<HR>
+<H4><A NAME="_left_NUMBER">-left =&gt; NUMBER</A></H4>
+<P>
+This option ...
+
+<P>
+<HR>
+<H4><A NAME="_menu_MENU">-menu =&gt; MENU</A></H4>
+<P>
+[TBD]
+
+<P>
+<HR>
+<H4><A NAME="_name_STRING">-name =&gt; STRING</A></H4>
+<P>
+[TBD]
+
+<P>
+<HR>
+<H4><A NAME="_style_NUMBER">-style =&gt; NUMBER</A></H4>
+<P>
+[TBD]
+
+<P>
+<HR>
+<H4><A NAME="_tabstop_0_1">-tabstop =&gt; 0/1</A></H4>
+<P>
+[TBD]
+
+<P>
+<HR>
+<H4><A NAME="_text_STRING">-text =&gt; STRING</A></H4>
+<P>
+Specifies the STRING that will appear on the window's caption or in the
+control's body (eg. a Label text, a Button caption, a Textfield content,
+and so on). Its use depends of course on the control type; some controls,
+like ProgressBars, makes no use of it at all.
+
+<P>
+<HR>
+<H4><A NAME="_title_STRING">-title =&gt; STRING</A></H4>
+<P>
+A synonim for <A HREF="#_text_STRING">-text</A>.
+
+<P>
+<HR>
+<H4><A NAME="_top_NUMBER">-top =&gt; NUMBER</A></H4>
+<P>
+[TBD]
+
+<P>
+<HR>
+<H4><A NAME="_visible_0_1">-visible =&gt; 0/1</A></H4>
+<P>
+Sets the initial visibility state for the control; by default this option
+is 1 (the control is visible). Set it to 0 to create a control which is
+initially hidden.
+
+<P>
+<HR>
+<H4><A NAME="_width_NUMBER">-width =&gt; NUMBER</A></H4>
+<P>
+[TBD]
+
+</BODY>
+
+</HTML>

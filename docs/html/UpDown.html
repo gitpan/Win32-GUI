@@ -1,0 +1,171 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::UpDown</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_UpDown">Package Win32::GUI::UpDown</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Methods">Methods</A>
+			<LI><A HREF="#Events">Events</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_UpDown">Package Win32::GUI::UpDown</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_UpDown_PARENT_">new Win32::GUI::UpDown(PARENT, %OPTIONS)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Methods">Methods</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Base_VALUE_">Base([VALUE])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Buddy_OBJECT_">Buddy([OBJECT])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Pos_VALUE_">Pos([VALUE])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Range_MIN_MAX_">Range([MIN, MAX])</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Events">Events</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Scroll_">Scroll()</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_UpDown_PARENT_">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::UpDown(PARENT, %OPTIONS)</A></STRONG><DD>
+<P>
+Creates a new UpDown object; can also be called as
+PARENT-&gt;AddUpDown(%OPTIONS).
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Methods">Methods</A></H3>
+<A NAME="Base_VALUE_">
+
+<DL>
+<DT><STRONG><A NAME="item_Base">Base([VALUE])</A></STRONG><DD>
+<P>
+Gets or sets the radix base for the UpDown control; VALUE can be either 10
+or 16 for decimal or hexadecimal base numbering.
+
+<P>
+
+<A NAME="Buddy_OBJECT_">
+
+<DT><STRONG><A NAME="item_Buddy">Buddy([OBJECT])</A></STRONG><DD>
+<P>
+Gets or sets the buddy window for the UpDown control.
+
+<P>
+
+<A NAME="Pos_VALUE_">
+
+<DT><STRONG><A NAME="item_Pos">Pos([VALUE])</A></STRONG><DD>
+<P>
+Gets or sets the current position of the UpDown control.
+
+<P>
+
+<A NAME="Range_MIN_MAX_">
+
+<DT><STRONG><A NAME="item_Range">Range([MIN, MAX])</A></STRONG><DD>
+<P>
+Gets or sets the range for the UpDown control; if no parameter is given,
+returns a two element array containing the MIN and MAX range values,
+otherwise sets them to the given values. If MAX is lower than MIN, the
+UpDown control function is reversed, eg. the up button decrements the value
+and the down button increments it
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Events">Events</A></H3>
+<A NAME="Scroll_">
+
+<DL>
+<DT><STRONG><A NAME="item_Scroll">Scroll()</A></STRONG><DD>
+<P>
+Sent when the user presses either the up or down button of the UpDown
+control.
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

@@ -1,0 +1,11 @@
+[BEGIN]
+
+ Name:      ____________________ 
+ Password:  ____________________ 
+ Domain:    ____________________ 
+
+      {   OK   } { Cancel }
+
+[END]
+Fields = Name, Password, Domain
+Buttons = OK, Cancel

@@ -1,0 +1,126 @@
+=head2 Package Win32::GUI::ComboboxEx
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::ComboboxEx(PARENT, %OPTIONS)|/new_Win32_GUI_ComboboxEx_PAREN>
+
+=back
+
+=item *
+
+L<Methods>
+
+=over
+
+=item *
+
+L<InsertItem(%OPTIONS)|/InsertItem_OPTIONS_>
+
+=back
+
+=item *
+
+L<Events>
+
+=over
+
+=item *
+
+L<Change()|/Change_>
+
+=item *
+
+L<GotFocus()|/GotFocus_>
+
+=item *
+
+L<LostFocus()|/LostFocus_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_ComboboxEx_PAREN">
+
+=item new Win32::GUI::ComboboxEx(PARENT, %OPTIONS)
+
+Creates a new ComboboxEx object;
+can also be called as PARENT->AddComboboxEx(%OPTIONS).
+Class specific %OPTIONS are:
+
+  -imagelist => Win32::GUI::ImageList object
+
+Except for images, a ComboboxEx object acts like a Win32::GUI::Combobox
+object. See also  L<new Win32::GUI::Combobox()|Combobox/new_Win32_GUI_Combobox_PARENT_>.
+
+=for html <P>
+
+=back
+
+=head3 Methods
+
+=over 4
+
+=for html <A NAME="InsertItem_OPTIONS_">
+
+=item InsertItem(%OPTIONS)
+
+Inserts a new item in the ComboboxEx control. Returns the newly created
+item zero-based index or -1 on errors.
+%OPTIONS can be:
+
+  -index => position (-1 for the end of the list)
+  -image => index of an image from the associated ImageList
+  -selectedimage => index of an image from the associated ImageList
+  -text => string
+  -indent => indentation spaces (1 space == 10 pixels)
+
+=for html <P>
+
+=back
+
+=head3 Events
+
+=over 4
+
+=for html <A NAME="Change_">
+
+=item Change()
+
+Sent when the user selects an item from the Combobox
+
+=for html <P>
+
+=for html <A NAME="GotFocus_">
+
+=item GotFocus()
+
+Sent when the control is activated.
+
+=for html <P>
+
+=for html <A NAME="LostFocus_">
+
+=item LostFocus()
+
+Sent when the control is deactivated.
+
+=for html <P>
+
+=back
+
+=cut

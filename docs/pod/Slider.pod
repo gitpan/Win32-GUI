@@ -1,0 +1,62 @@
+=head2 Package Win32::GUI::Slider
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::Slider(PARENT, %OPTIONS)|/new_Win32_GUI_Slider_PARENT_>
+
+=back
+
+=item *
+
+L<Events>
+
+=over
+
+=item *
+
+L<Scroll()|/Scroll_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_Slider_PARENT_">
+
+=item new Win32::GUI::Slider(PARENT, %OPTIONS)
+
+Creates a new Slider object;
+can also be called as PARENT->AddSlider(%OPTIONS).
+
+=for html <P>
+
+=back
+
+=head3 Events
+
+=over 4
+
+=for html <A NAME="Scroll_">
+
+=item Scroll()
+
+Sent when the user moves the slider handle.
+
+=for html <P>
+
+=back
+
+=cut

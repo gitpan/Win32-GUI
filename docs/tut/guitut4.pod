@@ -1,0 +1,165 @@
+=head1 Win32::GUI Tutorial - Part 4 - Further Features of Win32::GUI
+
+=head2 Timers
+
+Many types of application need to be able to perform an action at regular
+intervals. The obvious example is a clock application, but other examples
+might be
+
+=over 4
+
+=item *
+
+A file viewer, which watches at regular intervals to see if the file being
+displayed has changed, and shows the new contents if it has.
+
+=item *
+
+A monitor application (like the WIndows NT performance monitor) which displays
+updated information every second.
+
+=item *
+
+A network "ping" utility, which polls a remote server at regular intervals, to
+see that it is still running.
+
+=back
+
+Adding a timer to your application is easy. All you do is call the AddTimer()
+method on the window you want to "own" the timer. When the timer expires, its
+C<Timer> event is fired, which you can catch in the normal way.
+
+For example,
+
+    $t1 = $main->AddTimer('T1', 1000);
+
+    sub T1_Timer {
+        print "Timer went off!\n";
+    }
+
+Some things to note:
+
+=over 4
+
+=item *
+
+The AddTimer() method takes two explicit parameters, the timer name and the
+interval (in milliseconds). The normal C<option =E<gt> value> syntax is B<not>
+used.
+
+=item *
+
+The timer keeps firing repeatedly. To disable a timer, use $timer->Kill().
+
+=item *
+
+To change the interval of a timer (or to re-enable it after a Kill), use 
+$timer->Interval(n). Setting an interval of zero disables the timer, just
+like Kill.
+
+=back
+
+That's about all there is to timers.
+
+=head2 Status Bars
+
+To add a status bar to your window, just use
+
+    $sb = $main->AddStatusBar();
+
+The normal options are available, but in general you don't need them.
+
+The only surprise is that your status bar will B<not> resize automatically
+when your main window resizes. You need to include code in your main window
+resize event handler to resize the status bar. The following code will do the
+job:
+
+    sub Main_Resize {
+        $sb->Move(0, $main->ScaleHeight - $sb->Height);
+        $sb->Resize($main->ScaleWidth, $sb->Height);
+    }
+
+You can write text to your status bar using the Text() method.
+
+    $sb->Text("This appears in the status bar");
+
+To clear the status bar, just write an empty string.
+
+=head2 System Tray Icons
+
+Many utility programs these days add an icon to the Windows "System Tray" -
+the small area on the taskbar near the clock. Once again, this is easy with
+Win32::GUI - you simply use the AddNotifyIcon() method. A notify icon has four
+key properties - a name (which is used for event handling, just like for any
+other Win32::GUI object), an ID (which is just a unique number, used
+internally, you specify it and then ignore it), a tooltip (a string which is
+displayed when you hold the mouse pointer over the icon) and an icon (a
+Win32::GUI::Icon object - you create this using the new() constructor, passing
+the name of the .ico file to use). Notify icons have Click and RightClick
+events, to let you process mouse clicks.
+
+The normal protocol for an application which uses a notify icon is for the
+main window to start hidden, and to show the window when the icon is clicked.
+When the main window is minimised, it hides itself, leaving just the notify
+icon visible.
+
+The simplest way to demonstrate this is to show some working code...
+
+    use Win32::GUI;
+
+    $main = Win32::GUI::Window->new(-name => 'Main', -text => 'Perl',
+				    -width => 200, -height => 200);
+
+    $icon = new Win32::GUI::Icon('GUIPERL.ICO');
+    $ni = $main->AddNotifyIcon(-name => "NI", -id => 1,
+			       -icon => $icon, -tip => "Hello");
+
+    Win32::GUI::Dialog();
+
+    sub Main_Terminate {
+	-1;
+    }
+
+    sub Main_Minimize {
+	$main->Disable();
+	$main->Hide();
+	1;
+    }
+
+    sub NI_Click {
+	$main->Enable();
+	$main->Show();
+	1;
+    }
+
+Some points to note
+
+=over 4
+
+=item *
+
+To remove the window's icon from the taskbar, it is necessary to diable the
+window as well as hiding it. And hence, when we show the window again, we need
+to re-enable it.
+
+=item *
+
+There is a small bug in this program. The tray icon does not disappear
+immediately when the program terminates. Instead, it remains in the system
+tray until you point the mouse cursor at it, when it disappears. This is a bug
+in Win32::GUI - when you close your program, you should explicitly remove any
+system tray icons you still have displayed. Referring to the example above,
+you should place this line after the Win32::GUI::Dialog() call:
+
+	$main->NI->Delete(-id => 1);
+
+Hopefully, this will be fixed in a later version.
+
+=back
+
+That's it for the simpler objects available in the Win32::GUI package. Even
+though I have referred to them as simple, it is possible to create some fairly
+complicated applications using just what we have seen so far.
+
+In the next couple of tutorials, I will move on to the more sophisticated
+controls available - list views and tree views.

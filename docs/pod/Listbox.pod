@@ -1,0 +1,371 @@
+=head2 Package Win32::GUI::Listbox
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::Listbox(PARENT, %OPTIONS)|/new_Win32_GUI_Listbox_PARENT_>
+
+=back
+
+=item *
+
+L<Methods>
+
+=over
+
+=item *
+
+L<Add(STRING, STRING .. STRING)|/Add_STRING_STRING_STRING_>
+
+=item *
+
+L<AddString(STRING)|/AddString_STRING_>
+
+=item *
+
+L<Clear()|/Clear_>
+
+=item *
+
+L<Count()|/Count_>
+
+=item *
+
+L<FindString(STRING, [INDEX])|/FindString_STRING_INDEX_>
+
+=item *
+
+L<FindStringExact(STRING, [INDEX])|/FindStringExact_STRING_INDEX_>
+
+=item *
+
+L<FirstVisibleItem([INDEX])|/FirstVisibleItem_INDEX_>
+
+=item *
+
+L<GetString(INDEX)|/GetString_INDEX_>
+
+=item *
+
+L<InsertItem(STRING, [INDEX])|/InsertItem_STRING_INDEX_>
+
+=item *
+
+L<ItemFromPoint(X, Y)|/ItemFromPoint_X_Y_>
+
+=item *
+
+L<ItemHeight([HEIGHT])|/ItemHeight_HEIGHT_>
+
+=item *
+
+L<ListIndex()|/ListIndex_>
+
+=item *
+
+L<RemoveItem(INDEX)|/RemoveItem_INDEX_>
+
+=item *
+
+L<Reset()|/Reset_>
+
+=item *
+
+L<Select(INDEX)|/Select_INDEX_>
+
+=item *
+
+L<SelectCount()|/SelectCount_>
+
+=item *
+
+L<SelectedItem()|/SelectedItem_>
+
+=item *
+
+L<SelectedItems()|/SelectedItems_>
+
+=item *
+
+L<SelectString(STRING, [INDEX])|/SelectString_STRING_INDEX_>
+
+=back
+
+=item *
+
+L<Events>
+
+=over
+
+=item *
+
+L<Click()|/Click_>
+
+=item *
+
+L<DblClick()|/DblClick_>
+
+=item *
+
+L<GotFocus()|/GotFocus_>
+
+=item *
+
+L<LostFocus()|/LostFocus_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_Listbox_PARENT_">
+
+=item new Win32::GUI::Listbox(PARENT, %OPTIONS)
+
+Creates a new Listbox object;
+can also be called as PARENT->AddListbox(%OPTIONS).
+Class specific %OPTIONS are:
+
+   -multisel => 0/1/2 (default 0)
+       specifies the selection type:
+           0 single selection
+           1 multiple selection
+           2 multiple selection ehnanced (with Shift, Control, etc.)
+   -sort     => 0/1 (default 0)
+       items are sorted alphabetically.
+
+=for html <P>
+
+=back
+
+=head3 Methods
+
+=over 4
+
+=for html <A NAME="Add_STRING_STRING_STRING_">
+
+=item Add(STRING, STRING .. STRING)
+
+Adds one or more items at the end of the control's list.
+
+=for html <P>
+
+=for html <A NAME="AddString_STRING_">
+
+=item AddString(STRING)
+
+Adds an item at the end of the Listbox.
+
+=for html <P>
+
+=for html <A NAME="Clear_">
+
+=item Clear()
+
+See  L<Reset()|/Reset_>.
+
+=for html <P>
+
+=for html <A NAME="Count_">
+
+=item Count()
+
+Returns the number of items in the Listbox.
+
+=for html <P>
+
+=for html <A NAME="FindString_STRING_INDEX_">
+
+=item FindString(STRING, [INDEX])
+
+Searches the Listbox for an item that begins with the specified STRING.
+The optional INDEX parameter tells to start the search from the
+specified position; if no parameter is given, the whole list is searched.
+Returns the zero-based index of the found item or -1 if no matching
+item was found.
+
+=for html <P>
+
+=for html <A NAME="FindStringExact_STRING_INDEX_">
+
+=item FindStringExact(STRING, [INDEX])
+
+Searches the Listbox for an item that exactly matches the specified
+STRING (case insensitively).
+The optional INDEX parameter tells to start the search from the
+specified position; if no parameter is given, the whole list is searched.
+Returns the zero-based index of the found item or -1 if no matching
+item was found.
+
+=for html <P>
+
+=for html <A NAME="FirstVisibleItem_INDEX_">
+
+=item FirstVisibleItem([INDEX])
+
+Gets the zero-based index of the first visible item in the Listbox,
+or sets it to the specified INDEX.
+
+=for html <P>
+
+=for html <A NAME="GetString_INDEX_">
+
+=item GetString(INDEX)
+
+Returns the string at the specified zero-based INDEX in the Listbox.
+
+=for html <P>
+
+=for html <A NAME="InsertItem_STRING_INDEX_">
+
+=item InsertItem(STRING, [INDEX])
+
+Inserts an item at the specified zero-based INDEX in the Listbox,
+or adds it at the end if INDEX is not specified.
+
+=for html <P>
+
+=for html <A NAME="ItemFromPoint_X_Y_">
+
+=item ItemFromPoint(X, Y)
+
+Returns the zero-based index of the item nearest to the specified
+point; if called in a list context, returns an additional element which
+is TRUE if the point is inside the Listbox area, FALSE if it's outside.
+
+=for html <P>
+
+=for html <A NAME="ItemHeight_HEIGHT_">
+
+=item ItemHeight([HEIGHT])
+
+Gets or sets the items height in a Listbox.
+
+=for html <P>
+
+=for html <A NAME="ListIndex_">
+
+=item ListIndex()
+
+See  L<SelectedItem()|/SelectedItem_>.
+
+=for html <P>
+
+=for html <A NAME="RemoveItem_INDEX_">
+
+=item RemoveItem(INDEX)
+
+Removes the zero-based INDEX item from the Listbox.
+
+=for html <P>
+
+=for html <A NAME="Reset_">
+
+=item Reset()
+
+Deletes the content of the Listbox.
+
+=for html <P>
+
+=for html <A NAME="Select_INDEX_">
+
+=item Select(INDEX)
+
+Selects the zero-based INDEX item in the Listbox.
+
+=for html <P>
+
+=for html <A NAME="SelectCount_">
+
+=item SelectCount()
+
+Returns the number of selected items in a multiple selection Listbox.
+
+=for html <P>
+
+=for html <A NAME="SelectedItem_">
+
+=item SelectedItem()
+
+Returns the zero-based index of the currently selected item, or -1 if
+no item is selected.
+
+=for html <P>
+
+=for html <A NAME="SelectedItems_">
+
+=item SelectedItems()
+
+Returns an array containing the zero-based indexes of the selected items
+in a multiple selection Listbox.
+
+=for html <P>
+
+=for html <A NAME="SelectString_STRING_INDEX_">
+
+=item SelectString(STRING, [INDEX])
+
+Searches the Listbox for an item that begins with the specified STRING
+and, if found, selects that item.
+The optional INDEX parameter tells to start the search from the
+specified position; if no parameter is given, the whole list is searched.
+Returns the zero-based index of the selected item or -1 if no matching
+item was found.
+
+=for html <P>
+
+=back
+
+=head3 Events
+
+=over 4
+
+=for html <A NAME="Click_">
+
+=item Click()
+
+[TBD]
+
+
+
+=for html <P>
+
+=for html <A NAME="DblClick_">
+
+=item DblClick()
+
+Sent when the user double clicks on the control.
+
+=for html <P>
+
+=for html <A NAME="GotFocus_">
+
+=item GotFocus()
+
+Sent when the control is activated.
+
+=for html <P>
+
+=for html <A NAME="LostFocus_">
+
+=item LostFocus()
+
+Sent when the control is deactivated.
+
+=for html <P>
+
+=back
+
+=cut

@@ -1,0 +1,332 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::Textfield</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_Textfield">Package Win32::GUI::Textfield</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Methods">Methods</A>
+			<LI><A HREF="#Events">Events</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_Textfield">Package Win32::GUI::Textfield</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_Textfield_PARENT">new Win32::GUI::Textfield(PARENT, %OPTIONS)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Methods">Methods</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#LineFromChar_INDEX_">LineFromChar(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#MaxLength_CHARS_">MaxLength([CHARS])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Modified_FLAG_">Modified([FLAG])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#PasswordChar_CHAR_">PasswordChar([CHAR])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ReadOnly_FLAG_">ReadOnly([FLAG])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ReplaceSel_STRING_FLAG_">ReplaceSel(STRING, [FLAG])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Select_START_END_">Select(START, END)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#SelectAll_">SelectAll()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Selection_">Selection()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Undo_">Undo()</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Events">Events</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Change_">Change()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#GotFocus_">GotFocus()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#LostFocus_">LostFocus()</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_Textfield_PARENT">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::Textfield(PARENT, %OPTIONS)</A></STRONG><DD>
+<P>
+Creates a new Textfield object; can also be called as
+PARENT-&gt;AddTextfield(%OPTIONS). Class specific <CODE>%OPTIONS</CODE>
+are:
+
+<P>
+<PRE>  -align         =&gt; left/center/right (default left)
+      aligns the text in the control accordingly.
+  -keepselection =&gt; 0/1 (default 0)
+      the selection is not hidden when the control loses focus.
+  -multiline     =&gt; 0/1 (default 0)
+      the control can have more than one line (note that newline
+      is &quot;\r\n&quot;, not &quot;\n&quot;!).
+  -password      =&gt; 0/1 (default 0)
+      masks the user input (like password prompts).
+  -passwordchar  =&gt; char (default '*')
+      the char that is shown instead of the text with -password =&gt; 1.
+  -prompt        =&gt; (see below)
+  -readonly      =&gt; 0/1 (default 0)
+      text can't be changed.
+</PRE>
+<P>
+The -prompt option is very special; if a string is passed, a
+Win32::GUI::Label object (with text set to the string passed) is created to
+the left of the Textfield. Example:
+
+<P>
+<PRE>    $Window-&gt;AddTextfield(
+        -name   =&gt; &quot;Username&quot;,
+        -left   =&gt; 75,
+        -top    =&gt; 150,
+        -prompt =&gt; &quot;Your name:&quot;,
+    );
+</PRE>
+<P>
+Furthermore, the value to -prompt can be a reference to a list containing
+the string and an additional parameter, which sets the width for the Label
+(eg. [ STRING, WIDTH ] ). If WIDTH is negative, it is calculated relative
+to the Textfield left coordinate. Example:
+
+<P>
+<PRE>    -left =&gt; 75,                          (Label left) (Textfield left)
+    -prompt =&gt; [ &quot;Your name:&quot;, 30 ],       75           105 (75+30)
+    -left =&gt; 75,
+    -prompt =&gt; [ &quot;Your name:&quot;, -30 ],      45 (75-30)   75
+</PRE>
+<P>
+Note that the Win32::GUI::Label object is named like the Textfield, with a
+``_Prompt'' suffix (in the example above, the Label is named
+``Username_Prompt'').
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Methods">Methods</A></H3>
+<A NAME="LineFromChar_INDEX_">
+
+<DL>
+<DT><STRONG><A NAME="item_LineFromChar">LineFromChar(INDEX)</A></STRONG><DD>
+<P>
+Returns the line where the zero-based INDEX char appears.
+
+<P>
+
+<A NAME="MaxLength_CHARS_">
+
+<DT><STRONG><A NAME="item_MaxLength">MaxLength([CHARS])</A></STRONG><DD>
+<P>
+Limits the number of characters that the Textfield accept to CHARS, or
+returns the current limit if no argument is given. To remove the limit (eg.
+set it to the maximum allowed which is 32k for a single-line Textfield and
+64k for a multiline one) set CHARS to 0.
+
+<P>
+
+<A NAME="Modified_FLAG_">
+
+<DT><STRONG><A NAME="item_Modified">Modified([FLAG])</A></STRONG><DD>
+<P>
+Gets or sets the modified flag on the textfield.
+
+<P>
+
+<A NAME="PasswordChar_CHAR_">
+
+<DT><STRONG><A NAME="item_PasswordChar">PasswordChar([CHAR])</A></STRONG><DD>
+<P>
+Gets or sets the character displayed in place of normal text; if the
+Textfield has been created with the -password option, the default character
+is an asterisk (*). Note that by setting this value the text in the
+textfield will be redrawn using the specified character; if the character
+is set to zero instead, text will be redrawn as normal
+
+<P>
+
+<A NAME="ReadOnly_FLAG_">
+
+<DT><STRONG><A NAME="item_ReadOnly">ReadOnly([FLAG])</A></STRONG><DD>
+<P>
+Gets or sets the readonly flag on the textfield.
+
+<P>
+
+<A NAME="ReplaceSel_STRING_FLAG_">
+
+<DT><STRONG><A NAME="item_ReplaceSel">ReplaceSel(STRING, [FLAG])</A></STRONG><DD>
+<P>
+Replaces the current selection in the Textfield with STRING.
+
+<P>
+
+<A NAME="Select_START_END_">
+
+<DT><STRONG><A NAME="item_Select">Select(START, END)</A></STRONG><DD>
+<P>
+Selects the specified range of characters.
+
+<P>
+
+<A NAME="SelectAll_">
+
+<DT><STRONG><A NAME="item_SelectAll">SelectAll()</A></STRONG><DD>
+<P>
+Selects all the text.
+
+<P>
+
+<A NAME="Selection_">
+
+<DT><STRONG><A NAME="item_Selection">Selection()</A></STRONG><DD>
+<P>
+Returns a two elements array containing the current selection start and
+end.
+
+<P>
+
+<A NAME="Undo_">
+
+<DT><STRONG><A NAME="item_Undo">Undo()</A></STRONG><DD>
+<P>
+Undoes the last change in the textfield.
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Events">Events</A></H3>
+<A NAME="Change_">
+
+<DL>
+<DT><STRONG><A NAME="item_Change">Change()</A></STRONG><DD>
+<P>
+Sent when the text in the field is changed by the user.
+
+<P>
+
+<A NAME="GotFocus_">
+
+<DT><STRONG><A NAME="item_GotFocus">GotFocus()</A></STRONG><DD>
+<P>
+Sent when the control is activated.
+
+<P>
+
+<A NAME="LostFocus_">
+
+<DT><STRONG><A NAME="item_LostFocus">LostFocus()</A></STRONG><DD>
+<P>
+Sent when the control is deactivated.
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

@@ -1,0 +1,799 @@
+=head1 Win32::GUI options
+
+=over 4
+
+=for HTML <HR><TT>
+
+=head2 -align => left/center/right  
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<center for Button, otherwise left>
+
+Aligns the text in the control accordingly. 
+
+
+
+
+B<Applies to>: L<Button|packages/Button>, L<Label|packages/Label>, L<Textfield|packages/Textfield>, L<RichEdit|packages/RichEdit>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -autoplay => 0/1 
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+Starts playing the animation as soon as an AVI clip is loaded.
+
+
+
+
+B<Applies to>: L<Animation|packages/Animation>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -bandborders => 0/1  
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+Display a border to separate bands. 
+
+
+
+
+B<Applies to>: L<Rebar|packages/Rebar>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -buttons => 0/1  
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<1 for TreeView, otherwise 0>
+
+For TreeViews, enables or disables the +/- buttons to expand/collapse tree
+items.
+
+For Headers, if enabled header items look like push buttons and can be clicked.
+
+For TabStrips, if enabled items look like push buttons.
+
+
+
+
+B<Applies to>: L<TreeView|packages/TreeView>, L<TabStrip|packages/TabStrip>, L<Header|packages/Header>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -cancel => 0/1  
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+If 1, the button will correspond to the CANCEL action of a dialog, and its Click
+event will be fired by pressing the ESC key.
+
+
+
+
+B<See also>: L</-dialogui>, L<-cancel|options/_cancel_0_1>
+
+B<Applies to>: L<Button|packages/Button>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -center => 0/1 
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+Centers the animation in the control area.
+
+
+
+
+B<Applies to>: L<Animation|packages/Animation>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -computeronly => 0/1 
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+Only enable computers to be selected.
+
+
+
+
+B<Applies to>: L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -default => 0/1  
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+Identify the item as the default one; a default Button has a black border drawn
+around it; a default MenuItem is printed with a bold font.
+
+
+
+
+B<Applies to>: L<Button|packages/Button>, L<MenuItem|packages/MenuItem>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -directory => STRING
+
+=for HTML </TT><BLOCKQUOTE>
+
+Specifies the initial directory.
+
+
+
+
+B<Applies to>: L<GetOpenFileName()|methods/GetOpenFileName_OPTIONS_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -domainonly => 0/1 
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+Only show computers in the current domain or workgroup.
+
+
+
+
+B<Applies to>: L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -driveonly => 0/1 
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+Only enable drives to be selected.
+
+
+
+
+B<Applies to>: L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -editbox => 0/1 
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+If 1, the dialog will include an edit field in which
+the user can type the name of an item.
+
+
+
+
+B<Applies to>: L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -file => STRING
+
+=for HTML </TT><BLOCKQUOTE>
+
+Specifies a name that will appear on the dialog's edit field.
+
+
+
+
+B<Applies to>: L<GetOpenFileName()|methods/GetOpenFileName_OPTIONS_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -fill => black/gray/white/none  
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<none>
+
+Fills the control rectangle ("black", "gray" and "white" are the window frame 
+color, the desktop color and the window background color respectively). 
+
+
+
+
+B<Applies to>: L<Label|packages/Label>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -filter => ARRAY REFERENCE
+
+=for HTML </TT><BLOCKQUOTE>
+
+[TBD]
+
+
+
+B<Applies to>: L<GetOpenFileName()|methods/GetOpenFileName_OPTIONS_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -fixedorder => 0/1  
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+Band position cannot be swapped.
+
+
+
+
+B<Applies to>: L<Rebar|packages/Rebar>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -folderonly => 0/1 
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+Only enable folders to be selected (eg. no computers or printers).
+
+
+
+
+B<Applies to>: L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -includefiles => 0/1 
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+The list will include files as well folders.
+
+
+
+
+B<Applies to>: L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -maxsize => [X, Y]
+
+=for HTML </TT><BLOCKQUOTE>
+
+Specifies the maximum size (width and height) in pixels; X and Y must be passed 
+in an array reference.
+
+Example:
+
+    $Window = new Win32::GUI::Window(
+        # ...
+        -maxsize => [ 200, 200 ],
+    );
+
+
+
+
+B<See also>: L</-maxwidth>, L</-maxheight>, L<-minsize|options/_minsize_X_Y_>
+
+B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -minsize => [X, Y]
+
+=for HTML </TT><BLOCKQUOTE>
+
+Specifies the minimum size (width and height) in pixels; X and Y must be passed 
+in an array reference.
+
+Example:
+
+    $Window = new Win32::GUI::Window(
+        # ...
+        -minsize => [ 100, 100 ],
+    );
+
+
+
+
+B<See also>: L</-minwidth>, L</-minheight>, L<-maxsize|options/_maxsize_X_Y_>
+
+B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -multiline => 0/1  
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+The control can have more than one line (note that in Textfield and RichEdit
+controls, newline is "\r\n", not "\n"!). 
+
+
+
+
+B<Applies to>: L<Textfield|packages/Textfield>, L<RichEdit|packages/RichEdit>, L<TabStrip|packages/TabStrip>, L<ToolBar|packages/ToolBar>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -multisel => 0/1/2  
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+Specifies the selection type: 
+
+    0 single selection
+    1 multiple selection
+    2 multiple selection ehnanced (with Shift, Control, etc.)
+
+
+
+
+B<Applies to>: L<Listbox|packages/Listbox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -name => STRING
+
+=for HTML </TT><BLOCKQUOTE>
+
+Defines the name for the control. The name is used to callback its events and 
+to access its methods, so it is absolutely B<necessary>, and each name must be 
+unique in your application. 
+
+Example: 
+
+    $Window->AddButton(
+        -name => "Button1",
+        # ...
+    );
+
+    # methods...
+    $Window->Button1->Hide();
+
+
+    # events...
+    sub Button1_Click {
+        # ...
+    }
+
+
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<NotifyIcon(*)|packages/NotifyIcon(*)>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Timer|packages/Timer>, L<Toolbar|packages/Toolbar>, L<Tooltip(*)|packages/Tooltip(*)>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -notify => 0/1  
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+Enables the Click(), DblClick(), etc. events. 
+
+
+
+
+B<Applies to>: L<Label|packages/Label>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -ok => 0/1  
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+If 1, the button will correspond to the OK action of a dialog, and its Click
+event will be fired by pressing the ENTER key.
+
+
+
+
+B<See also>: L</-dialogui>, L<-cancel|options/_cancel_0_1>
+
+B<Applies to>: L<Button|packages/Button>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -owner => WINDOW
+
+=for HTML </TT><BLOCKQUOTE>
+
+[TBD]
+
+
+
+
+B<Applies to>: L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>, L<GetOpenFileName()|methods/GetOpenFileName_OPTIONS_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -password => 0/1  
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+Masks the user input (like password prompts). 
+
+
+
+
+B<See also>: L<-passwordchar|options/_passwordchar_CHAR>
+
+B<Applies to>: L<Textfield|packages/Textfield>, L<RichEdit|packages/RichEdit>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -passwordchar => CHAR  
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<'*'>
+
+The specified CHAR that is shown instead of the text with C<-password => 1>.
+
+
+
+
+B<See also>: L<-password|options/_password_0_1>
+
+B<Applies to>: L<Textfield|packages/Textfield>, L<RichEdit|packages/RichEdit>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -printeronly => 0/1 
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+Only enable printers to be selected
+
+
+
+
+B<Applies to>: L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -prompt => STRING or [ STRING, WIDTH ]
+
+=for HTML </TT><BLOCKQUOTE>
+
+The -prompt option is very special; if a string is passed, a Win32::GUI::Label 
+object (with text set to the STRING passed) is created to the left of the 
+Textfield. 
+
+Example: 
+
+    $Window->AddTextfield(
+        -name   => "Username",
+        -left   => 75,
+        -top    => 150,
+        -prompt => "Your name:",
+    );
+
+Furthermore, the value to C<-prompt> can be a reference to a list containing the 
+string and an additional parameter, which sets the width for the Label. 
+If WIDTH is negative, it is calculated relative to the Textfield left coordinate. 
+
+Example: 
+
+                                        (Label left)    (Textfield left)
+    -left   => 75,
+    -prompt => [ "Your name:", 30 ],    75              105 (75+30)
+ 
+    -left   => 75,
+    -prompt => [ "Your name:", -30 ],   45 (75-30)      75    
+
+Note that the Win32::GUI::Label object is named like the Textfield, with a 
+"_Prompt" suffix (in the example above, the Label is named "Username_Prompt"). 
+
+
+
+
+B<Applies to>: L<Textfield|packages/Textfield>, L<RichEdit|packages/RichEdit>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -readonly => 0/1 
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+Text can't be changed.
+
+
+
+
+B<Applies to>: L<Textfield|packages/Textfield>, L<RichEdit|packages/RichEdit>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -root => PATH or CONSTANT
+
+=for HTML </TT><BLOCKQUOTE>
+
+The root directory for browsing; this can be either a path or one of the 
+CSIDL_* constants for special folders (see the Win32::FileOp module by Jenda for 
+a list of such constants).
+
+
+
+
+B<Applies to>: L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -smooth => 0/1  
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+Uses a smooth bar instead of the default segmented bar. 
+
+
+
+
+B<Applies to>: L<ProgressBar|packages/ProgressBar>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -sunken => 0/1  
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+Draws a half-sunken border around the control. 
+
+
+
+
+B<Applies to>: L<Label|packages/Label>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -text => STRING
+
+=for HTML </TT><BLOCKQUOTE>
+
+The text that will appear in the control or item.
+
+
+
+
+B<Applies to>: L<*|packages/*>, L<InsertBand()|methods/InsertBand_OPTIONS_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -tip => STRING 
+
+=for HTML </TT><BLOCKQUOTE>
+
+The text that will appear as tooltip when the mouse is on the NotifyIcon.
+
+
+
+
+B<Applies to>: L<NotifyIcon|packages/NotifyIcon>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -title => STRING
+
+=for HTML </TT><BLOCKQUOTE>
+
+The title for the window or dialog box.
+
+
+
+
+B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>, L<BrowseForFolder()|methods/BrowseForFolder_OPTIONS_>, L<GetOpenFileName()|methods/GetOpenFileName_OPTIONS_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -topmost => 0/1  
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+The window "stays on top" even when deactivated.
+
+
+
+
+B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -transparent => 0/1 
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+Draws the animation using a transparent background.
+
+
+
+
+B<Applies to>: L<Animation|packages/Animation>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -truncate => 0/1/word/path 
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<0>
+
+Specifies how the text is to be truncated:
+
+=over 4
+
+	   0	the text is not truncated
+	   1	the text is truncated at the end.
+	word	the text is truncated at the end of a word.
+	path	the text is truncated before the last "\" 
+	        (used to shorten paths).
+
+=back
+
+NOTE: this style does not seem to be working.
+
+
+
+
+B<Applies to>: L<Label|packages/Label>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -valign => top/center/bottom 
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<center>
+
+Defines the vertical alignment for the text in the Button.
+
+
+
+
+B<Applies to>: L<Button|packages/Button>, L<RadioButton|packages/RadioButton>, L<CheckBox|packages/CheckBox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 -wrap => 0/1  
+
+=for HTML </TT><BLOCKQUOTE>
+
+B<Default value>: C<1 for Label, 0 for UpDown>
+
+For Labels, the text wraps automatically to a new line.
+For UpDown controls, the counter wraps when it reaches the lower or upper
+limit.
+
+ 
+
+
+
+B<Applies to>: L<Label|packages/Label>, L<UpDown|packages/UpDown>
+
+=for HTML </BLOCKQUOTE>
+
+=back
+

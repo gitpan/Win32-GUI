@@ -1,0 +1,195 @@
+<HTML>
+<HEAD>
+<TITLE>Win32::GUI Tutorial - Part 2 - Adding functionality</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+
+<UL>
+
+	<LI><A HREF="#Win32_GUI_Tutorial_Part_2_A">Win32::GUI Tutorial - Part 2 - Adding functionality</A>
+	<UL>
+
+		<LI><A HREF="#Some_more_control_types">Some more control types</A>
+		<LI><A HREF="#Summary_of_the_Available_Control">Summary of the Available Controls</A>
+		<LI><A HREF="#Some_control_specific_issues">Some control-specific issues</A>
+	</UL>
+
+</UL>
+<!-- INDEX END -->
+
+<HR>
+<P>
+<H1><A NAME="Win32_GUI_Tutorial_Part_2_A">Win32::GUI Tutorial - Part 2 - Adding functionality</A></H1>
+<P>
+<HR>
+<H2><A NAME="Some_more_control_types">Some more control types</A></H2>
+<P>
+In part 1 of this tutorial, we covered the basics of Win32::GUI
+programming, using a simple label control to display information. But
+real-world applications don't just display information as labels. We need
+to be able to obtain information from the user, respond to mouse clicks,
+etc etc.
+
+<P>
+Some of the basic Windows controls supported by Win32::GUI include
+
+<UL>
+<LI>
+<P>
+Buttons, for taking actions.
+
+<LI>
+<P>
+Edit boxes, for data entry.
+
+<LI>
+<P>
+Checkboxes, for selecting options from a list.
+
+<LI>
+<P>
+Radio buttons, for choosing from mutually exclusive options.
+
+<LI>
+<P>
+Combo boxes and list boxes, for selection from lists.
+
+<LI>
+<P>
+And many other more complex controls, such as list views, tree views,
+status bars, tab strips, etc.
+
+</UL>
+<P>
+We have already covered nearly all of the programming techniques for using
+these controls in our discussion of the label control in part 1. The
+following section summarises the basic controls available, and any
+important issues regarding their use. Armed with this and the main
+Win32::GUI documentation, it should be possible to develop reasonably
+complex applications.
+
+<P>
+<HR>
+<H2><A NAME="Summary_of_the_Available_Control">Summary of the Available Controls</A></H2>
+<P>
+For this part of the tutorial, we will use a very basic ``framework''
+application, to which we can add functionality. We won't worry about issues
+like positioning, layout, resizing, etc, as these will only distract from
+the main point, which is the control handling.
+
+<P>
+So, our basic application is
+
+<P>
+<PRE>    use Win32::GUI;
+</PRE>
+<P>
+<PRE>    $main = Win32::GUI::Window-&gt;new(-name =&gt; 'Main', -text =&gt; 'Perl',
+                                    -width =&gt; 200, -height =&gt; 200);
+</PRE>
+<P>
+<PRE>    $main-&gt;Show();
+    Win32::GUI::Dialog();
+</PRE>
+<P>
+<PRE>    sub Main_Terminate {
+        -1;
+    }
+</PRE>
+<P>
+Now, the basic approach to adding any control to a window is the same. We
+saw it before, when we added a label. We simply use the window's
+<CODE>AddXXX()</CODE> method, where <CODE>XXX</CODE> is the control type we want to add. So, we have, <CODE>AddButton(),</CODE>
+<CODE>AddTextfield(),</CODE> <CODE>AddCheckbox(),</CODE>
+<CODE>AddCombobox(),</CODE> <CODE>AddListbox(),</CODE>
+<CODE>AddRadioButton(),</CODE> etc.
+
+<P>
+All of these methods work the same way, in that they take a series of
+options, which define the appearance and behaviour of the control. Many of
+the options are common to all Win32::GUI controls (such as <CODE>-width</CODE> and <CODE>-height</CODE>) but a few are control-specific.
+
+<P>
+The controls themselves support events, much like the main window with its
+<CODE>Terminate</CODE> event. Events are control-specific, but tend to be fairly general (many
+controls have a <CODE>Click</CODE> event, which occurs when the user clicks the mouse on the control, for
+example).
+
+<P>
+<HR>
+<H2><A NAME="Some_control_specific_issues">Some control-specific issues</A></H2>
+<DL>
+<DT><STRONG><A NAME="item_Labels">Labels</A></STRONG><DD>
+<P>
+None. We saw labels in some detail in the last part of this tutorial. Most
+of what we learnt applies equally to all other controls.
+
+<DT><STRONG><A NAME="item_Buttons">Buttons</A></STRONG><DD>
+<P>
+None. To make a button do something, add a handler for the <CODE>Click</CODE> event.
+
+<DT><STRONG><A NAME="item_Check">Check Boxes</A></STRONG><DD>
+<P>
+To get or set the ``checked'' state, use the <CODE>Checked()</CODE> method.
+There are three states - unchecked (0), checked (1) and indeterminate or
+grayed (2). Use the
+<CODE>Click</CODE> event to respond to changes in state.
+
+<DT><STRONG><A NAME="item_Text">Text Fields</A></STRONG><DD>
+<P>
+To get or set the contents of the text field, use the <CODE>-text</CODE> option. The
+<CODE>-multiline</CODE> option allows entry of more than one line of text (but beware - the <CODE>-text</CODE> option contains a CRLF sequence (``\r\n'') at the end of each line, not
+just LF (``\n'') as is normal for Perl. See the documentation for the
+<CODE>-prompt</CODE> option to automatically add a label to a text field.
+
+<DT><STRONG><A NAME="item_Progress">Progress Bars</A></STRONG><DD>
+<P>
+A display-only control. Set the parameters with the <CODE>SetRange()</CODE>
+and <CODE>SetStep()</CODE> methods, and update the display using the
+<CODE>SetPos()</CODE> or <CODE>StepIt()</CODE> methods.
+
+<DT><STRONG><A NAME="item_List">List Boxes</A></STRONG><DD>
+<P>
+By default, there are no items in the list. Fill the list box using the
+<CODE>AddString()</CODE> method. Get the selected item using the
+<CODE>SelectedItem()</CODE> method. Multiple-selection listboxes are
+created using the <CODE>-multisel</CODE> option -- in that case, use the <CODE>SelectedItems()</CODE> method to get
+a list of all the selected items.
+
+<DT><STRONG><A NAME="item_Combo">Combo Boxes</A></STRONG><DD>
+<P>
+Similar to single-selection list boxes (although they display differently).
+
+<DT><STRONG><A NAME="item_UpDown">UpDown Controls</A></STRONG><DD>
+<P>
+This is the little double-arrow control you often see attached to numeric
+text fields in dialog boxes. Clicking the up arrow increases the value of
+the text field, whereas clicking the down arrow decreases it.
+
+<P>
+The only significant complication with using an UpDown control is the need
+to associate it with a text box. This is done using the
+<CODE>Buddy()</CODE> method, as
+
+<P>
+<PRE>    $updown-&gt;Buddy($text)
+</PRE>
+<P>
+Methods exist to set the range of values for the control, and to explicitly
+set the value of the control. The control supports a <CODE>Scroll</CODE> event, which is fired when the control value changes (but not when the
+associated text box changes!) The UpDown control's size is ignored, as it
+is attached to its buddy when it is created.
+
+</DL>
+<P>
+This covers the basic controls available in Win32::GUI. In part 3, we will
+cover some of the subtleties of dialog boxes and main windows, and then in
+part 4, we will be ready to cover some of the more complex user interface
+options.
+</BODY>
+
+</HTML>

@@ -1,0 +1,1483 @@
+<HTML>
+<HEAD>
+<TITLE>Win32::GUI methods</TITLE>
+<LINK REV="made" HREF="mailto:">
+<LINK REL="stylesheet" TYPE="text/css" HREF="style.css"></HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+
+<UL>
+
+	<LI><A HREF="#Win32_GUI_methods">Win32::GUI methods</A></LI>
+	<UL>
+
+		<LI><A HREF="#AbsLeft_">AbsLeft()</A></LI>
+		<LI><A HREF="#AbsTop_">AbsTop()</A></LI>
+		<LI><A HREF="#BackColor_COLOR_">BackColor( [COLOR] )</A></LI>
+		<LI><A HREF="#BandCount_">BandCount()</A></LI>
+		<LI><A HREF="#BringWindowToTop_">BringWindowToTop()</A></LI>
+		<LI><A HREF="#BrowseForFolder_OPTIONS_">BrowseForFolder( OPTIONS )</A></LI>
+		<LI><A HREF="#Caption_TEXT_">Caption( [TEXT] )</A></LI>
+		<LI><A HREF="#ChangeCursor_CURSOR_">ChangeCursor( CURSOR )</A></LI>
+		<LI><A HREF="#ChangeIcon_ICON_">ChangeIcon( ICON )</A></LI>
+		<LI><A HREF="#ChangeSmallIcon_ICON_">ChangeSmallIcon( ICON )</A></LI>
+		<LI><A HREF="#Clear_">Clear()</A></LI>
+		<LI><A HREF="#ClipCursor_LEFT_TOP_RIGHT_B">ClipCursor( [LEFT, TOP, RIGHT, BOTTOM] )</A></LI>
+		<LI><A HREF="#Close_">Close()</A></LI>
+		<LI><A HREF="#CloseWindow_">CloseWindow()</A></LI>
+		<LI><A HREF="#CommDlgExtendedError_">CommDlgExtendedError()</A></LI>
+		<LI><A HREF="#Count_">Count()</A></LI>
+		<LI><A HREF="#DeleteBand_">DeleteBand()</A></LI>
+		<LI><A HREF="#Dialog_">Dialog()</A></LI>
+		<LI><A HREF="#Disable_">Disable()</A></LI>
+		<LI><A HREF="#DoEvents_">DoEvents()</A></LI>
+		<LI><A HREF="#DrawMenuBar_">DrawMenuBar()</A></LI>
+		<LI><A HREF="#Enable_FLAG_">Enable( [FLAG] )</A></LI>
+		<LI><A HREF="#Expand_NODE_FLAG_">Expand( NODE, [FLAG] )</A></LI>
+		<LI><A HREF="#FindWindow_CLASSNAME_TITLE_">FindWindow( CLASSNAME, TITLE )</A></LI>
+		<LI><A HREF="#GetActiveWindow_">GetActiveWindow()</A></LI>
+		<LI><A HREF="#GetClassName_">GetClassName()</A></LI>
+		<LI><A HREF="#GetClientRect_">GetClientRect()</A></LI>
+		<LI><A HREF="#GetCursor_">GetCursor()</A></LI>
+		<LI><A HREF="#GetCursorPos_">GetCursorPos()</A></LI>
+		<LI><A HREF="#GetFocus_">GetFocus()</A></LI>
+		<LI><A HREF="#GetFont_FONT_">GetFont(FONT)</A></LI>
+		<LI><A HREF="#GetFontName_">GetFontName()</A></LI>
+		<LI><A HREF="#GetMenu_">GetMenu()</A></LI>
+		<LI><A HREF="#GetMessage_MIN_MAX_">GetMessage( [MIN, MAX] )</A></LI>
+		<LI><A HREF="#GetOpenFileName_OPTIONS_">GetOpenFileName( OPTIONS )</A></LI>
+		<LI><A HREF="#GetPerlWindow_">GetPerlWindow()</A></LI>
+		<LI><A HREF="#GetStockObject_OBJECT_">GetStockObject( OBJECT )</A></LI>
+		<LI><A HREF="#HitTest_X_Y_">HitTest( X, Y )</A></LI>
+		<LI><A HREF="#Indent_VALUE_">Indent( [VALUE] )</A></LI>
+		<LI><A HREF="#InsertBand_OPTIONS_">InsertBand( OPTIONS )</A></LI>
+		<LI><A HREF="#Interval_ELAPSE_">Interval( [ELAPSE] )</A></LI>
+		<LI><A HREF="#InvertRect_LEFT_TOP_RIGHT_BO">InvertRect( LEFT, TOP, RIGHT, BOTTOM )</A></LI>
+		<LI><A HREF="#IsEnabled_">IsEnabled()</A></LI>
+		<LI><A HREF="#IsIconic_">IsIconic()</A></LI>
+		<LI><A HREF="#IsVisible_">IsVisible()</A></LI>
+		<LI><A HREF="#IsWindow_">IsWindow()</A></LI>
+		<LI><A HREF="#IsZoomed_">IsZoomed()</A></LI>
+		<LI><A HREF="#Kill_">Kill()</A></LI>
+		<LI><A HREF="#ListIndex_">ListIndex()</A></LI>
+		<LI><A HREF="#Load_FILENAME_FORMAT_">Load( FILENAME, [FORMAT] )</A></LI>
+		<LI><A HREF="#MaxLength_CHARS_">MaxLength( [CHARS] )</A></LI>
+		<LI><A HREF="#Minimize_">Minimize()</A></LI>
+		<LI><A HREF="#Move_X_Y_">Move( X, Y )</A></LI>
+		<LI><A HREF="#Open_FILE_">Open( FILE )</A></LI>
+		<LI><A HREF="#OpenIcon_">OpenIcon()</A></LI>
+		<LI><A HREF="#Play_FROM_TO_REPEAT_">Play( [FROM], [TO], [REPEAT] )</A></LI>
+		<LI><A HREF="#Rectangle_LEFT_TOP_RIGHT_BOT">Rectangle( LEFT, TOP, RIGHT, BOTTOM )</A></LI>
+		<LI><A HREF="#Reset_">Reset()</A></LI>
+		<LI><A HREF="#Restore_">Restore()</A></LI>
+		<LI><A HREF="#RowCount_">RowCount()</A></LI>
+		<LI><A HREF="#Save_FILENAME_FORMAT_">Save( FILENAME, [FORMAT] )</A></LI>
+		<LI><A HREF="#ScaleHeight_">ScaleHeight()</A></LI>
+		<LI><A HREF="#ScaleWidth_">ScaleWidth()</A></LI>
+		<LI><A HREF="#Seek_FRAME_">Seek( FRAME )</A></LI>
+		<LI><A HREF="#SelectAll_">SelectAll()</A></LI>
+		<LI><A HREF="#SelectedItem_">SelectedItem()</A></LI>
+		<LI><A HREF="#SetCursor_CURSOR_">SetCursor( CURSOR )</A></LI>
+		<LI><A HREF="#SetRange_MIN_MAX_">SetRange( [MIN], MAX )</A></LI>
+		<LI><A HREF="#Stop_">Stop()</A></LI>
+		<LI><A HREF="#Text_TEXT_">Text( [TEXT] )</A></LI>
+		<LI><A HREF="#TextOut_X_Y_TEXT_">TextOut( X, Y, TEXT )</A></LI>
+		<LI><A HREF="#View_MODE_">View( [MODE] )</A></LI>
+	</UL>
+
+</UL>
+<!-- INDEX END -->
+
+<HR>
+<P>
+<H1><A NAME="Win32_GUI_methods">Win32::GUI methods</A></H1>
+<HR><TT>
+
+<H2><A NAME="AbsLeft_">AbsLeft()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the absolute (screen) window x coordinate; use this to get the
+onscreen position of a child window, eg. a button or a label. This method
+returns -1 on errors.
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="#Left">Left</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Timer">Timer</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#Tooltip">Tooltip(*)</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="AbsTop_">AbsTop()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the absolute (screen) window y coordinate; use this to get the
+onscreen position of a child window, eg. a button or a label. This method
+returns -1 on errors.
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="#Top">Top</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Timer">Timer</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#Tooltip">Tooltip(*)</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="BackColor_COLOR_">BackColor( [COLOR] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Sets the background color of the RichEdit control; if no COLOR is
+specified, the background color is reset to the default system color.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#RichEdit">RichEdit</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="BandCount_">BandCount()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the number of bands in the Rebar control.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Rebar">Rebar</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="BringWindowToTop_">BringWindowToTop()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Brings the window to the foreground.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="BrowseForFolder_OPTIONS_">BrowseForFolder( OPTIONS )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Displays the standard ``Browse For Folder'' dialog box. Returns the
+selected item's name, or undef if no item was selected or an error
+occurred.
+
+</P>
+<P>
+Note that BrowseForFolder must be called as a standalone function, not as a
+method.
+
+</P>
+<P>
+Example:
+
+</P>
+<P>
+<PRE>        $folder = Win32::GUI::BrowseForFolder(
+                -root =&gt; &quot;C:\\Program Files&quot;,
+                -includefiles =&gt; 1,
+        );
+</PRE>
+</P>
+<P>
+<STRONG>Available options</STRONG>: <A HREF="././options.html#_computeronly_0_1">-computeronly</A>, <A HREF="././options.html#_domainonly_0_1">-domainonly</A>, <A HREF="././options.html#_driveonly_0_1">-driveonly</A>, <A HREF="././options.html#_editbox_0_1">-editbox</A>, <A HREF="././options.html#_folderonly_0_1">-folderonly</A>, <A HREF="././options.html#_includefiles_0_1">-includefiles</A>, <A HREF="././options.html#_owner_WINDOW">-owner</A>, <A HREF="././options.html#_printeronly_0_1">-printeronly</A>, <A HREF="././options.html#_root_PATH_or_CONSTANT">-root</A>, <A HREF="././options.html#_title_STRING">-title</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Caption_TEXT_">Caption( [TEXT] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+See <A HREF="#Text">Text</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="ChangeCursor_CURSOR_">ChangeCursor( CURSOR )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Changes the default cursor for a window to CURSOR (a Win32::GUI::Cursor
+object). Returns the handle of the previous default cursor.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="ChangeIcon_ICON_">ChangeIcon( ICON )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Changes the default icon for a window to ICON (a Win32::GUI::Icon object).
+Returns the handle of the previous default icon. 
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="ChangeSmallIcon_ICON_">ChangeSmallIcon( ICON )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Changes the default small icon for a window to ICON (a Win32::GUI::Icon
+object). Returns the handle of the previous default small icon. 
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Clear_">Clear()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+See <A HREF="#Reset">Reset</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="ClipCursor_LEFT_TOP_RIGHT_B">ClipCursor( [LEFT, TOP, RIGHT, BOTTOM] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Confines the cursor to the specified screen rectangle. Call it without
+parameters to release the cursor. Returns nonzero on success, zero on
+failure.
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Close_">Close()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Closes the opened AVI file.
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="././methods.html#Open_FILE_">Open()</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="CloseWindow_">CloseWindow()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Minimizes a window.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="CommDlgExtendedError_">CommDlgExtendedError()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the last common dialog library error code. 
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Count_">Count()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the number of items in the control.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="DeleteBand_">DeleteBand()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Deletes the zero-based INDEX band from the Rebar.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Rebar">Rebar</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Dialog_">Dialog()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Enter the GUI dialog phase: the script halts, the user can interact with
+the created windows and events subroutines are triggered as necessary; note
+that this function must be called without ANY parameter or instantiation
+(eg. don't call it as method of a created object):
+
+</P>
+<P>
+<PRE>    Win32::GUI::Dialog(); # correct
+    $Window-&gt;Dialog();    # !!!WRONG!!!
+</PRE>
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Disable_">Disable()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Disables a window. 
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="././methods.html#Enable_FLAG_">Enable()</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled()</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="DoEvents_">DoEvents()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Just like <CODE>Dialog(),</CODE> but returns when there are no more events
+to process.
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="DrawMenuBar_">DrawMenuBar()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Forces redrawing of the menu bar.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Enable_FLAG_">Enable( [FLAG] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Enables a window (or disables it if FLAG is FALSE). 
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="././methods.html#Disable_">Disable()</A>, <A HREF="././methods.html#IsEnabled_">IsEnabled()</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Expand_NODE_FLAG_">Expand( NODE, [FLAG] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Opens a NODE of the TreeView; the optional FLAG parameter can indicate
+different operations:
+
+</P>
+<P>
+<PRE>    1 expand (this is the default)
+    2 collapse
+    3 toggle (expand if it was collapsed and collapse if it was expanded)
+</PRE>
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#TreeView">TreeView</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="FindWindow_CLASSNAME_TITLE_">FindWindow( CLASSNAME, TITLE )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the handle of the window whose class name and window title match
+the specified strings; both strings can be empty. Note that the function
+does not search child windows, only top level windows. If no matching
+windows is found, the return value is zero. 
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="GetActiveWindow_">GetActiveWindow()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the handle of the active window. 
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="GetClassName_">GetClassName()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the classname of the specified window, or undef on errors.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="GetClientRect_">GetClientRect()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns a four elements array defining the windows client area rectangle
+(left, top, right, bottom) or undef on errors. 
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Class">Class</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="GetCursor_">GetCursor()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the handle of the current cursor. 
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="GetCursorPos_">GetCursorPos()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns a two elements array containing the x and y position of the cursor,
+or undef on errors. 
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="GetFocus_">GetFocus()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the handle of the window that has the keyboard focus. 
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="GetFont_FONT_">GetFont(FONT)</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Gets the font of the window (returns an handle; use 
+
+</P>
+<P>
+<PRE>  $Font = $W-&gt;GetFont();
+  %details = Win32::GUI::Font::Info( $Font );
+</PRE>
+</P>
+<P>
+to get font details). 
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="GetFontName_">GetFontName()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the name of the font used in the window.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="GetMenu_">GetMenu()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the handle of the menu associated with the window (note: the
+handle, not the Win32::GUI::Menu object).
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="GetMessage_MIN_MAX_">GetMessage( [MIN, MAX] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Retrieves a message sent to the window, optionally considering only
+messages identifiers in the range MIN..MAX; if a message is found, the
+function returns a 7 elements array containing: 
+
+</P>
+<UL>
+<LI><STRONG><A NAME="item_the">the result code of the message</A></STRONG>
+<LI><STRONG><A NAME="item_the">the message identifier</A></STRONG>
+<LI><STRONG><A NAME="item_the">the wParam argument</A></STRONG>
+<LI><STRONG><A NAME="item_the">the lParam argument</A></STRONG>
+<LI><STRONG><A NAME="item_the">the time when message occurred</A></STRONG>
+<LI><STRONG><A NAME="item_the">the x coordinate at which message occurred</A></STRONG>
+<LI><STRONG><A NAME="item_the">the y coordinate at which message occurred</A></STRONG>
+
+<P>
+If the result code of the message was -1 the function returns undef. Note
+that this function should not be normally used unless you know very well
+what you're doing. 
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="GetOpenFileName_OPTIONS_">GetOpenFileName( OPTIONS )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Displays the standard 'Open File' dialog box; the return value is the name
+of the choosen file or undef on errors.
+
+</P>
+<P>
+<STRONG>Available options</STRONG>: <A HREF="././options.html#_directory_STRING">-directory</A>, <A HREF="././options.html#_file_STRING">-file</A>, <A HREF="././options.html#_filter_ARRAY_REFERENCE">-filter</A>, <A HREF="././options.html#_owner_WINDOW">-owner</A>, <A HREF="././options.html#_title_STRING">-title</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="GetPerlWindow_">GetPerlWindow()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the handle of the DOS Prompt window your perl script is running in;
+if called in an array context, returns the handle and the HINSTANCE of your
+perl process.
+
+</P>
+<P>
+Example:
+
+</P>
+<P>
+<PRE>        $DosPrompt = Win32::GUI::GetPerlWindow();
+        Win32::GUI::Hide( $DosPrompt );
+</PRE>
+</P>
+<P>
+<PRE>        # your program goes here...
+</PRE>
+</P>
+<P>
+<PRE>        Win32::GUI::Show( $DosPrompt );
+</PRE>
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="GetStockObject_OBJECT_">GetStockObject( OBJECT )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the handle of the specified predefined system object (pen, brush or
+font). OBJECT can have one of the following values:
+
+</P>
+<P>
+<PRE>         0      WHITE_BRUSH
+         1      GRAY_BRUSH
+         2      LTGRAY_BRUSH
+         3      DKGRAY_BRUSH
+         4      BLACK_BRUSH
+         5      NULL_BRUSH (also HOLLOW_BRUSH)
+         6      WHITE_PEN
+         7      BLACK_PEN
+         8      NULL_PEN
+        10      OEM_FIXED_FONT
+        11      ANSI_FIXED_FONT
+        12      ANSI_VAR_FONT
+        13      SYSTEM_FONT
+        14      DEVICE_DEFAULT_FONT
+        15      DEFAULT_PALETTE
+        16      SYSTEM_FIXED_FONT
+        17      DEFAULT_GUI_FONT
+</PRE>
+</P>
+<P>
+The returned handle can be referenced as if it was a Win32::GUI object of
+the corresponding type (eg. a Win32::GUI::Brush or Win32::GUI::Font), but
+note that it is not blessed, so you can't directly invoke methods on it:
+
+</P>
+<P>
+<PRE>    $Font = Win32::GUI::GetStockObject(17);    # DEFAULT_GUI_FONT
+    print $Font-&gt;GetMetrics();                 # !!!WRONG!!!
+    print Win32::GUI::Font::GetMetrics($Font); # correct
+    $Window-&gt;SetFont($Font);                   # correct
+</PRE>
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="HitTest_X_Y_">HitTest( X, Y )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Checks if the specified point in the control area is occupied by an item;
+it returns the identifier of the found item or zero if none was found. If
+called in an array context, it returns an additional value containing more
+info about the position of the specified point [TBD].
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#TreeView">TreeView</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Indent_VALUE_">Indent( [VALUE] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Gets or sets the indentation width, in pixels, between parents and child
+nodes; if the VALUE is less than the system-defined minimum, it is set to
+the system-defined minimum.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#TreeView">TreeView</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="InsertBand_OPTIONS_">InsertBand( OPTIONS )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Inserts a new band in the Rebar control.
+
+</P>
+<P>
+<PRE>    #   -index =&gt; position or -1 to add it at the end, default -1
+    #   -image =&gt; index of an image from the associated ImageList
+    #   -bitmap =&gt; Win32::GUI::Bitmap object
+    #   -child =&gt; child control
+    #   -foreground =&gt; COLOR
+    #   -background  =&gt; COLOR
+    #   -width =&gt; pixels
+    #   -minwidth =&gt; pixels
+    #   -minheight =&gt; pixels
+    #   -text =&gt; string
+</PRE>
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Rebar">Rebar</A>
+
+
+
+</P>
+<P>
+<STRONG>Available options</STRONG>: <A HREF="././options.html#_index">-index</A>, <A HREF="././options.html#_image">-image</A>, <A HREF="././options.html#_bitmap">-bitmap</A>, <A HREF="././options.html#_child">-child</A>, <A HREF="././options.html#_foreground">-foreground</A>, <A HREF="././options.html#_background">-background</A>, <A HREF="././options.html#_width">-width</A>, <A HREF="././options.html#_minwidth">-minwidth</A>, <A HREF="././options.html#_minheight">-minheight</A>, <A HREF="././options.html#_text_STRING">-text</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Interval_ELAPSE_">Interval( [ELAPSE] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Changes the timeout value of the Timer to ELAPSE milliseconds, or returns
+the current timeout value if no parameter is specified. If ELAPSE is 0, the
+Timer is disabled; can also be used to resume a Timer after a
+<CODE>Kill().</CODE>
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="././methods.html#Kill_">Kill()</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Timer">Timer</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="InvertRect_LEFT_TOP_RIGHT_BO">InvertRect( LEFT, TOP, RIGHT, BOTTOM )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Inverts the content of the rectangle from LEFT, TOP to RIGHT, BOTTOM.
+Returns nonzero if succesful, zero on errors.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#DC">DC</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="IsEnabled_">IsEnabled()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns TRUE if the window is enabled, FALSE otherwise.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="IsIconic_">IsIconic()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns TRUE if the window is minimized, FALSE otherwise.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="IsVisible_">IsVisible()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns TRUE if the window is visible, FALSE otherwise.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="IsWindow_">IsWindow()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns TRUE if the window is a window, FALSE otherwise.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="IsZoomed_">IsZoomed()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns TRUE if the window is maximized, FALSE otherwise.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Kill_">Kill()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Disables the Timer.
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="././methods.html#Interval_ELAPSE_">Interval()</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Timer">Timer</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="ListIndex_">ListIndex()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+See <A HREF="#SelectedItem">SelectedItem</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Load_FILENAME_FORMAT_">Load( FILENAME, [FORMAT] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Loads a file named FILENAME into the RichEdit control. By default the file
+is a RTF (Rich Text Format) file; if you want to load a plain text file,
+you can set FORMAT to 1.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#RichEdit">RichEdit</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="MaxLength_CHARS_">MaxLength( [CHARS] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Limits the number of characters that the Textfield accept to CHARS, or
+returns the current limit if no argument is given. To remove the limit (eg.
+set it to the maximum allowed which is 32k for a single-line Textfield and
+64k for a multiline one) set CHARS to 0.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Minimize_">Minimize()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+See <A HREF="#CloseWindow">CloseWindow</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Move_X_Y_">Move( X, Y )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Moves the window to the specified position.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Open_FILE_">Open( FILE )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Opens the specified AVI file in the Animation control; note that the AVI
+file must not contain sound data.
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="././methods.html#Close_">Close()</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="OpenIcon_">OpenIcon()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Restores a minimized window.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Window">Window</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Play_FROM_TO_REPEAT_">Play( [FROM], [TO], [REPEAT] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Plays the animation (eventually from the FROM frame to the TO frame)
+looping it REPEAT times. Defaults are FROM 0 (the first frame) to -1 (the
+last frame) and REPEAT -1 (loop forever).
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Rectangle_LEFT_TOP_RIGHT_BOT">Rectangle( LEFT, TOP, RIGHT, BOTTOM )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Draws a rectangle from LEFT, TOP to RIGHT, BOTTOM; the rectangle is
+outlined with the current pen and filled with the current brush. Returns
+nonzero if succesful, zero on errors.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#DC">DC</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Reset_">Reset()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Deletes the content of the control.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Restore_">Restore()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+See <A HREF="#OpenIcon">OpenIcon</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="RowCount_">RowCount()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the number of rows in the Rebar control.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Rebar">Rebar</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Save_FILENAME_FORMAT_">Save( FILENAME, [FORMAT] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Saves the content of the RichEdit control in a file named FILENAME. By
+default the file is a RTF (Rich Text Format) file; if you want to save in a
+plain text file, you can set FORMAT to 1.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#RichEdit">RichEdit</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="ScaleHeight_">ScaleHeight()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the windows client area height.
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="././methods.html#ScaleWidth_">ScaleWidth()</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Timer">Timer</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="ScaleWidth_">ScaleWidth()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the windows client area width.
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="././methods.html#ScaleHeight_">ScaleHeight()</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>, <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Graphic">Graphic</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#ListView">ListView</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#ProgressBar">ProgressBar</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#Rebar">Rebar</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#Slider">Slider</A>, <A HREF="././packages.html#Splitter">Splitter</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#TabStrip">TabStrip</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Timer">Timer</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#TreeView">TreeView</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Seek_FRAME_">Seek( FRAME )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Positions the AVI file to the specified FRAME.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="SelectAll_">SelectAll()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Selects all the text.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="SelectedItem_">SelectedItem()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Returns the zero-based index of the currently selected item, or -1 if no
+item is selected.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="SetCursor_CURSOR_">SetCursor( CURSOR )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Draws the specified CURSOR (a Win32::GUI::Cursor object). Returns the
+handle of the previously displayed cursor. Note that the cursor will change
+back to the default one as soon as the mouse moves or a system command is
+performed. To change the cursor stablily, use <CODE>ChangeCursor()</CODE>
+instead.
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="././methods.html#ChangeCursor_CURSOR_">ChangeCursor()</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="SetRange_MIN_MAX_">SetRange( [MIN], MAX )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Sets the range of values (from MIN to MAX) for the control; if MIN is not
+specified, it defaults to 0.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#ProgressBar">ProgressBar</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Stop_">Stop()</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Stops the animation currently playing.
+
+</P>
+<P>
+<STRONG>See also</STRONG>: <A HREF="././methods.html#Play_FROM_TO_REPEAT_">Play()</A>
+
+
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Animation">Animation</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="Text_TEXT_">Text( [TEXT] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Gets or sets the text of a window. 
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#Button">Button</A>, <A HREF="././packages.html#Checkbox">Checkbox</A>, <A HREF="././packages.html#Combobox">Combobox</A>, <A HREF="././packages.html#ComboboxEx">ComboboxEx</A>, <A HREF="././packages.html#DateTime">DateTime</A>, <A HREF="././packages.html#DialogBox">DialogBox</A>, <A HREF="././packages.html#Groupbox">Groupbox</A>, <A HREF="././packages.html#Header">Header</A>, <A HREF="././packages.html#Label">Label</A>, <A HREF="././packages.html#Listbox">Listbox</A>, <A HREF="././packages.html#RadioButton">RadioButton</A>, <A HREF="././packages.html#RichEdit">RichEdit</A>, <A HREF="././packages.html#StatusBar">StatusBar</A>, <A HREF="././packages.html#Textfield">Textfield</A>, <A HREF="././packages.html#Toolbar">Toolbar</A>, <A HREF="././packages.html#UpDown">UpDown</A>, <A HREF="././packages.html#Window">Window</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="TextOut_X_Y_TEXT_">TextOut( X, Y, TEXT )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Draws the specified TEXT string at X, Y, using the currently selected font.
+Returns nonzero if succesful, zero on errors.
+
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#DC">DC</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+<HR><TT>
+
+<H2><A NAME="View_MODE_">View( [MODE] )</A></H2>
+</TT><BLOCKQUOTE>
+
+<P>
+Gets or sets the viewing mode of the ListView control; the returned or
+given MODE can have one of the following values:
+
+</P>
+<P>
+<PRE>    0  big icons
+    1  details
+    2  small icons
+    3  list
+</PRE>
+</P>
+<P>
+<STRONG>Applies to</STRONG>: <A HREF="././packages.html#ListView">ListView</A>
+
+
+
+</P>
+</BLOCKQUOTE>
+
+
+
+</BODY>
+
+</HTML>

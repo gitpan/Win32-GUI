@@ -1,0 +1,1134 @@
+Win32::GUI:: Packages
+	AcceleratorTable::
+	Animation::
+	Bitmap::
+	BitmapInline::
+	Brush::
+	Button::
+	Checkbox::
+	Class::
+	Combobox::
+	ComboboxEx::
+	Cursor::
+	DC::
+	DateTime::
+	DialogBox::
+	Font::
+	Graphic::
+	Groupbox::
+	Header::
+	Icon::
+	ImageList::
+	Label::
+	ListView::
+	Listbox::
+	MDI::
+	Menu::
+	MenuButton::
+	MenuItem::
+	NotifyIcon::
+	Pen::
+	ProgressBar::
+	RadioButton::
+	Rebar::
+	RichEdit::
+	Slider::
+	Splitter::
+	StatusBar::
+	TabStrip::
+	Textfield::
+	Timer::
+	Toolbar::
+	Tooltip::
+	Trackbar::
+	TreeView::
+	UpDown::
+	Window::
+	WindowProps::
+Win32::GUI:: Functions
+	AUTOLOAD()
+*	AbsLeft()
+*	AbsTop()
+	ArrangeIconicWindows()
+	AttachThreadInput()
+	BeginPaint()
+	BringWindowToTop()
+*	BrowseForFolder()
+	Caption()
+	Change()
+	ChangeCursor()
+	ChangeIcon()
+	ChangeSmallIcon()
+	ChooseColor()
+	ChooseFont()
+	Circle()
+	ClipCursor()
+	CloseEnhMetaFile()
+	CloseWindow()
+	CommDlgExtendedError()
+	Create()
+	CreateAcceleratorTable()
+	CreateEnhMetaFile()
+	CreateMenu()
+	CreatePopupMenu()
+	CreateWindowEx()
+	DS_MODALFRAME()
+	DeleteEnhMetaFile()
+	DeleteObject()
+	DestroyAcceleratorTable()
+	DestroyCursor()
+	DestroyIcon()
+	DestroyMenu()
+	DestroyWindow()
+	Dialog()
+	Disable()
+	DoEvents()
+	DrawMenuBar()
+	Enable()
+	EndPaint()
+	FindWindow()
+	FreeLibrary()
+	GetActiveWindow()
+	GetBkMode()
+	GetClassName()
+	GetClientRect()
+	GetCursor()
+	GetCursorPos()
+	GetDesktopWindow()
+	GetDlgItem()
+	GetEffectiveClientRect()
+	GetFocus()
+	GetFont()
+	GetFontName()
+	GetForegroundWindow()
+	GetMenu()
+	GetMessage()
+	GetOpenFileName()
+	GetPerlWindow()
+	GetStockObject()
+	GetSystemMetrics()
+	GetTextColor()
+	GetTextExtentPoint32()
+	GetTopWindow()
+	GetWindow()
+	GetWindowLong()
+	GetWindowRect()
+	GetWindowThreadProcessId()
+	Height()
+	Hide()
+	InvalidateRect()
+	IsEnabled()
+	IsIconic()
+	IsVisible()
+	IsWindow()
+	IsZoomed()
+	KillTimer()
+	Left()
+	LineTo()
+	LoadCursorFromFile()
+	LoadImage()
+	LoadLibrary()
+	MakeMenu()
+	Maximize()
+	MessageBox()
+	Minimize()
+	Move()
+	MoveTo()
+	OpenIcon()
+	PeekMessage()
+	PlayEnhMetaFile()
+	PlayWinMetaFile()
+	PostMessage()
+	PostQuitMessage()
+	RegisterClassEx()
+	ReleaseCapture()
+	Resize()
+	Restore()
+	SaveBMP()
+	ScaleHeight()
+	ScaleWidth()
+	SelectObject()
+	SendMessage()
+	SendMessageTimeout()
+	SetBkMode()
+	SetCapture()
+	SetCursor()
+	SetCursorPos()
+	SetFocus()
+	SetFont()
+	SetForegroundWindow()
+	SetIcon()
+	SetMenu()
+	SetRedraw()
+	SetTextColor()
+	SetTimer()
+	SetWindowLong()
+	Show()
+	Text()
+	TextOut()
+	Top()
+	TrackPopupMenu()
+	Update()
+	Version()
+	WS_BORDER()
+	WS_CAPTION()
+	WS_EX_CONTEXTHELP()
+	WS_EX_CONTROLPARENT()
+	WS_EX_DLGMODALFRAME()
+	WS_EX_WINDOWEDGE()
+	WS_POPUP()
+	WS_SYSMENU()
+	Width()
+	WindowFromPoint()
+	_new()
+	bootstrap()
+	constant()
+	oldDialog()
+Win32::GUI:: Scalars
+	$AUTOLOAD = Win32::GUI::WS_EX_CONTROLPARENT
+	$AcceleratorCounter = 9001
+	$GraphicWinClass = Win32::GUI::Class=HASH(0x653dac)
+	$InteractiveGraphicWinClass = Win32::GUI::Class=HASH(0x653dd0)
+	$MenuIdCounter = 27
+	$NotifyIconIdCounter = 1
+	$RICHED = 2140995584
+	$SplitterHorizontal = Win32::GUI::Class=HASH(0x653df4)
+	$SplitterVertical = Win32::GUI::Class=HASH(0x653e18)
+	$StandardWinClass = Win32::GUI::Class=HASH(0x66c568)
+	$StandardWinClassVisual = Win32::GUI::Class=HASH(0x66c580)
+	$TimerIdCounter = 1
+	$VERSION = 0.0.490
+Win32::GUI:: Lists
+	@EXPORT = (
+		BS_3STATE
+		BS_AUTO3STATE
+		BS_AUTOCHECKBOX
+		BS_AUTORADIOBUTTON
+		BS_BITMAP
+		BS_BOTTOM
+		BS_CENTER
+		BS_CHECKBOX
+		BS_DEFPUSHBUTTON
+		BS_GROUPBOX
+		BS_ICON
+		BS_LEFT
+		BS_LEFTTEXT
+		BS_MULTILINE
+		BS_NOTIFY
+		BS_OWNERDRAW
+		BS_PUSHBUTTON
+		BS_RADIOBUTTON
+		BS_RIGHT
+		BS_RIGHTBUTTON
+		BS_TEXT
+		BS_TOP
+		BS_USERBUTTON
+		BS_VCENTER
+		COLOR_3DFACE
+		COLOR_ACTIVEBORDER
+		COLOR_ACTIVECAPTION
+		COLOR_APPWORKSPACE
+		COLOR_BACKGROUND
+		COLOR_BTNFACE
+		COLOR_BTNSHADOW
+		COLOR_BTNTEXT
+		COLOR_CAPTIONTEXT
+		COLOR_GRAYTEXT
+		COLOR_HIGHLIGHT
+		COLOR_HIGHLIGHTTEXT
+		COLOR_INACTIVEBORDER
+		COLOR_INACTIVECAPTION
+		COLOR_MENU
+		COLOR_MENUTEXT
+		COLOR_SCROLLBAR
+		COLOR_WINDOW
+		COLOR_WINDOWFRAME
+		COLOR_WINDOWTEXT
+		DS_3DLOOK
+		DS_ABSALIGN
+		DS_CENTER
+		DS_CENTERMOUSE
+		DS_CONTEXTHELP
+		DS_CONTROL
+		DS_FIXEDSYS
+		DS_LOCALEDIT
+		DS_MODALFRAME
+		DS_NOFAILCREATE
+		DS_NOIDLEMSG
+		DS_RECURSE
+		DS_SETFONT
+		DS_SETFOREGROUND
+		DS_SYSMODAL
+		ES_AUTOHSCROLL
+		ES_AUTOVSCROLL
+		ES_CENTER
+		ES_LEFT
+		ES_LOWERCASE
+		ES_MULTILINE
+		ES_NOHIDESEL
+		ES_NUMBER
+		ES_OEMCONVERT
+		ES_PASSWORD
+		ES_READONLY
+		ES_RIGHT
+		ES_UPPERCASE
+		ES_WANTRETURN
+		GW_CHILD
+		GW_HWNDFIRST
+		GW_HWNDLAST
+		GW_HWNDNEXT
+		GW_HWNDPREV
+		GW_OWNER
+		IMAGE_BITMAP
+		IMAGE_CURSOR
+		IMAGE_ICON
+		LR_COLOR
+		LR_COPYDELETEORG
+		LR_COPYFROMRESOURCE
+		LR_COPYRETURNORG
+		LR_CREATEDIBSECTION
+		LR_DEFAULTCOLOR
+		LR_DEFAULTSIZE
+		LR_LOADFROMFILE
+		LR_LOADMAP3DCOLORS
+		LR_LOADTRANSPARENT
+		LR_MONOCHROME
+		LR_SHARED
+		MB_ABORTRETRYIGNORE
+		MB_APPLMODAL
+		MB_DEFAULT_DESKTOP_ONLY
+		MB_DEFBUTTON1
+		MB_DEFBUTTON2
+		MB_DEFBUTTON3
+		MB_DEFBUTTON4
+		MB_HELP
+		MB_ICONASTERISK
+		MB_ICONERROR
+		MB_ICONEXCLAMATION
+		MB_ICONHAND
+		MB_ICONINFORMATION
+		MB_ICONQUESTION
+		MB_ICONSTOP
+		MB_ICONWARNING
+		MB_OK
+		MB_OKCANCEL
+		MB_RETRYCANCEL
+		MB_RIGHT
+		MB_RTLREADING
+		MB_SERVICE_NOTIFICATION
+		MB_SERVICE_NOTIFICATION_NT3X
+		MB_SETFOREGROUND
+		MB_SYSTEMMODAL
+		MB_TASKMODAL
+		MB_TOPMOST
+		MB_YESNO
+		MB_YESNOCANCEL
+		MF_POPUP
+		MF_STRING
+		SM_ARRANGE
+		SM_CLEANBOOT
+		SM_CMOUSEBUTTONS
+		SM_CXBORDER
+		SM_CXCURSOR
+		SM_CXDLGFRAME
+		SM_CXDOUBLECLK
+		SM_CXDRAG
+		SM_CXEDGE
+		SM_CXFIXEDFRAME
+		SM_CXFRAME
+		SM_CXFULLSCREEN
+		SM_CXHSCROLL
+		SM_CXHTHUMB
+		SM_CXICON
+		SM_CXICONSPACING
+		SM_CXMAXIMIZED
+		SM_CXMAXTRACK
+		SM_CXMENUCHECK
+		SM_CXMENUSIZE
+		SM_CXMIN
+		SM_CXMINIMIZED
+		SM_CXMINSPACING
+		SM_CXMINTRACK
+		SM_CXSCREEN
+		SM_CXSIZE
+		SM_CXSIZEFRAME
+		SM_CXSMICON
+		SM_CXSMSIZE
+		SM_CXVSCROLL
+		SM_CYBORDER
+		SM_CYCAPTION
+		SM_CYCURSOR
+		SM_CYDLGFRAME
+		SM_CYDOUBLECLK
+		SM_CYDRAG
+		SM_CYEDGE
+		SM_CYFIXEDFRAME
+		SM_CYFRAME
+		SM_CYFULLSCREEN
+		SM_CYHSCROLL
+		SM_CYICON
+		SM_CYICONSPACING
+		SM_CYKANJIWINDOW
+		SM_CYMAXIMIZED
+		SM_CYMAXTRACK
+		SM_CYMENU
+		SM_CYMENUCHECK
+		SM_CYMENUSIZE
+		SM_CYMIN
+		SM_CYMINIMIZED
+		SM_CYMINSPACING
+		SM_CYMINTRACK
+		SM_CYSCREEN
+		SM_CYSIZE
+		SM_CYSIZEFRAME
+		SM_CYSMCAPTION
+		SM_CYSMICON
+		SM_CYSMSIZE
+		SM_CYVSCROLL
+		SM_CYVTHUMB
+		SM_DBCSENABLED
+		SM_DEBUG
+		SM_MENUDROPALIGNMENT
+		SM_MIDEASTENABLED
+		SM_MOUSEPRESENT
+		SM_MOUSEWHEELPRESENT
+		SM_NETWORK
+		SM_PENWINDOWS
+		SM_SECURE
+		SM_SHOWSOUNDS
+		SM_SLOWMACHINE
+		SM_SWAPBUTTON
+		WM_ACTIVATE
+		WM_COMMAND
+		WM_CREATE
+		WM_DESTROY
+		WM_ENABLE
+		WM_KEYDOWN
+		WM_KEYUP
+		WM_KILLFOCUS
+		WM_MOVE
+		WM_SETCURSOR
+		WM_SETFOCUS
+		WM_SETREDRAW
+		WM_SIZE
+		WS_BORDER
+		WS_CAPTION
+		WS_CHILD
+		WS_CHILDWINDOW
+		WS_CLIPCHILDREN
+		WS_CLIPSIBLINGS
+		WS_DISABLED
+		WS_DLGFRAME
+		WS_EX_ACCEPTFILES
+		WS_EX_APPWINDOW
+		WS_EX_CLIENTEDGE
+		WS_EX_CONTEXTHELP
+		WS_EX_CONTROLPARENT
+		WS_EX_DLGMODALFRAME
+		WS_EX_LEFT
+		WS_EX_LEFTSCROLLBAR
+		WS_EX_LTRREADING
+		WS_EX_MDICHILD
+		WS_EX_NOPARENTNOTIFY
+		WS_EX_OVERLAPPEDWINDOW
+		WS_EX_PALETTEWINDOW
+		WS_EX_RIGHT
+		WS_EX_RIGHTSCROLLBAR
+		WS_EX_RTLREADING
+		WS_EX_STATICEDGE
+		WS_EX_TOOLWINDOW
+		WS_EX_TOPMOST
+		WS_EX_TRANSPARENT
+		WS_EX_WINDOWEDGE
+		WS_GROUP
+		WS_HSCROLL
+		WS_ICONIC
+		WS_MAXIMIZE
+		WS_MAXIMIZEBOX
+		WS_MINIMIZE
+		WS_MINIMIZEBOX
+		WS_OVERLAPPED
+		WS_OVERLAPPEDWINDOW
+		WS_POPUP
+		WS_POPUPWINDOW
+		WS_SIZEBOX
+		WS_SYSMENU
+		WS_TABSTOP
+		WS_THICKFRAME
+		WS_TILED
+		WS_TILEDWINDOW
+		WS_VISIBLE
+		WS_VSCROLL
+	);
+	@ISA = (
+		DynaLoader
+		Exporter
+	);
+Win32::GUI:: Hashes
+	%Menus = (
+		1 => Win32::GUI::MenuButton=HASH(0x656fc0)
+		11 => Win32::GUI::MenuItem=HASH(0x6567dc)
+		12 => Win32::GUI::MenuItem=HASH(0x656830)
+		13 => Win32::GUI::MenuButton=HASH(0x6566ec)
+		14 => Win32::GUI::MenuItem=HASH(0x6568f0)
+		15 => Win32::GUI::MenuItem=HASH(0x656884)
+		16 => Win32::GUI::MenuButton=HASH(0x6568b4)
+		17 => Win32::GUI::MenuItem=HASH(0x6569a4)
+		18 => Win32::GUI::MenuButton=HASH(0x656edc)
+		19 => Win32::GUI::MenuItem=HASH(0x656f84)
+		2 => Win32::GUI::MenuItem=HASH(0x657020)
+		20 => Win32::GUI::MenuItem=HASH(0x656f24)
+		21 => Win32::GUI::MenuItem=HASH(0x6cdf18)
+		22 => Win32::GUI::MenuButton=HASH(0x6cd63c)
+		23 => Win32::GUI::MenuItem=HASH(0x6cdfd8)
+		24 => Win32::GUI::MenuItem=HASH(0x6cdf6c)
+		25 => Win32::GUI::MenuButton=HASH(0x6cdf9c)
+		26 => Win32::GUI::MenuItem=HASH(0x6ce0bc)
+		3 => Win32::GUI::MenuItem=HASH(0x657080)
+		4 => Win32::GUI::MenuItem=HASH(0x6565d8)
+		6 => Win32::GUI::MenuItem=HASH(0x656668)
+		7 => Win32::GUI::MenuButton=HASH(0x656650)
+		8 => Win32::GUI::MenuItem=HASH(0x656728)
+		9 => Win32::GUI::MenuItem=HASH(0x65677c)
+	);
+
+Win32::GUI::AcceleratorTable:: Functions
+	DESTROY()
+	new()
+
+Win32::GUI::Animation:: Functions
+	Close()
+	Open()
+	Play()
+	Seek()
+	Stop()
+	new()
+Win32::GUI::Animation:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::Bitmap:: Functions
+	Create()
+	DESTROY()
+	GetDIBits()
+	Info()
+	OldInfo()
+	OldInfoC()
+	new()
+Win32::GUI::Bitmap:: Lists
+	@ISA = (
+		Win32::GUI
+	);
+
+Win32::GUI::BitmapInline:: Functions
+	inline()
+	new()
+Win32::GUI::BitmapInline:: Scalars
+	$Counter = 1
+	$VERSION = 0.01
+Win32::GUI::BitmapInline:: Lists
+	@EXPORT = (
+		inline
+	);
+	@ISA = (
+		Exporter
+	);
+
+Win32::GUI::Brush:: Functions
+	Create()
+	DESTROY()
+	Info()
+	new()
+
+Win32::GUI::Button:: Functions
+	SetImage()
+	new()
+Win32::GUI::Button:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::Checkbox:: Functions
+	Checked()
+	GetCheck()
+	SetCheck()
+	new()
+Win32::GUI::Checkbox:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::Class:: Functions
+	new()
+Win32::GUI::Class:: Lists
+	@ISA = (
+		Win32::GUI
+	);
+
+Win32::GUI::Combobox:: Functions
+	Add()
+	AddString()
+	Clear()
+	Count()
+	FindString()
+	FindStringExact()
+	FirstVisibleItem()
+	GetString()
+	InsertItem()
+	ItemHeight()
+	ListIndex()
+	RemoveItem()
+	Reset()
+	Select()
+	SelectedItem()
+	new()
+Win32::GUI::Combobox:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::ComboboxEx:: Functions
+	InsertItem()
+	new()
+Win32::GUI::ComboboxEx:: Lists
+	@ISA = (
+		Win32::GUI::Combobox
+	);
+
+Win32::GUI::Cursor:: Functions
+	DESTROY()
+	new()
+Win32::GUI::Cursor:: Lists
+	@ISA = (
+		Win32::GUI
+	);
+
+Win32::GUI::DC:: Functions
+	AbortPath()
+	Arc()
+	BackColor()
+	BeginPath()
+	BkMode()
+	Circle()
+	CloseFigure()
+	CreateDC()
+	DESTROY()
+	DeleteDC()
+	DrawEdge()
+	Ellipse()
+	EndPath()
+	Fill()
+	FillPath()
+	GetDC()
+	GetPixel()
+	GetUpdateRect()
+	InvertRect()
+	LineTo()
+	MapMode()
+	MoveTo()
+	PaintDesktop()
+	Pie()
+	Rectangle()
+	ReleaseDC()
+	Restore()
+	Save()
+	SelectObject()
+	SetPixel()
+	StrokeAndFillPath()
+	StrokePath()
+	TextColor()
+	TextOut()
+	Validate()
+	new()
+
+Win32::GUI::DateTime:: Functions
+	Format()
+	GetDate()
+	SetDate()
+	new()
+Win32::GUI::DateTime:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::DialogBox:: Functions
+	new()
+Win32::GUI::DialogBox:: Lists
+	@ISA = (
+		Win32::GUI::Window
+	);
+
+Win32::GUI::Font:: Functions
+	Create()
+	DESTROY()
+	GetMetrics()
+	Info()
+	new()
+Win32::GUI::Font:: Lists
+	@ISA = (
+		Win32::GUI
+	);
+
+Win32::GUI::Graphic:: Functions
+	GetDC()
+	new()
+Win32::GUI::Graphic:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::Groupbox:: Functions
+	new()
+Win32::GUI::Groupbox:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::Header:: Functions
+	ChangeItem()
+	Clear()
+	Count()
+	DeleteItem()
+	HitTest()
+	InsertItem()
+	ItemRect()
+	Reset()
+	new()
+Win32::GUI::Header:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::Icon:: Functions
+	DESTROY()
+	new()
+Win32::GUI::Icon:: Lists
+	@ISA = (
+		Win32::GUI
+	);
+
+Win32::GUI::ImageList:: Functions
+	Add()
+	AddBitmap()
+	BackColor()
+	Clear()
+	Count()
+	Create()
+	DESTROY()
+	Remove()
+	Replace()
+	Size()
+	new()
+Win32::GUI::ImageList:: Scalars
+	$self = Win32::GUI::ImageList=HASH(0x656d80)
+Win32::GUI::ImageList:: Lists
+	@ISA = (
+		Win32::GUI
+	);
+
+Win32::GUI::Label:: Functions
+	SetImage()
+	new()
+Win32::GUI::Label:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::ListView:: Packages
+	Item::
+	SubItem::
+Win32::GUI::ListView:: Functions
+	Add()
+	Arrange()
+	ChangeItem()
+	Clear()
+	ColumnWidth()
+	Count()
+	DeleteColumn()
+	DeleteItem()
+	EditLabel()
+	EnsureVisible()
+	GetFirstVisible()
+	GetItem()
+	GetStringWidth()
+	HitTest()
+	InsertColumn()
+	InsertItem()
+	Item()
+	ItemCheck()
+	ItemInfo()
+	ItemPosition()
+	MoveItem()
+	Select()
+	SelectCount()
+	SelectedItems()
+	SetImageList()
+	SetItem()
+	TextBkColor()
+	TextColor()
+	View()
+	VisibleCount()
+	new()
+Win32::GUI::ListView:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::ListView::Item:: Functions
+	Remove()
+	Select()
+	SubItem()
+	Text()
+	new()
+
+Win32::GUI::ListView::SubItem:: Functions
+	Text()
+	new()
+
+Win32::GUI::Listbox:: Packages
+	Item::
+Win32::GUI::Listbox:: Functions
+	Add()
+	AddString()
+	Clear()
+	Count()
+	FindString()
+	FindStringExact()
+	FirstVisibleItem()
+	GetString()
+	InsertItem()
+	Item()
+	ItemFromPoint()
+	ItemHeight()
+	List()
+	ListIndex()
+	RemoveItem()
+	Reset()
+	Select()
+	SelectCount()
+	SelectString()
+	SelectedItem()
+	SelectedItems()
+	new()
+Win32::GUI::Listbox:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::Listbox::Item:: Functions
+	Remove()
+	Select()
+	new()
+
+Win32::GUI::MDI:: Functions
+	new()
+Win32::GUI::MDI:: Lists
+	@ISA = (
+		Win32::GUI::Window
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::Menu:: Functions
+	AddMenuButton()
+	DESTROY()
+	new()
+Win32::GUI::Menu:: Lists
+	@ISA = (
+		Win32::GUI
+	);
+
+Win32::GUI::MenuButton:: Functions
+	AddMenuItem()
+	InsertMenuItem()
+	new()
+Win32::GUI::MenuButton:: Lists
+	@ISA = (
+		Win32::GUI
+	);
+
+Win32::GUI::MenuItem:: Functions
+	Change()
+	Checked()
+	Enabled()
+	new()
+Win32::GUI::MenuItem:: Lists
+	@ISA = (
+		Win32::GUI
+	);
+
+Win32::GUI::NotifyIcon:: Functions
+	Add()
+	DESTROY()
+	Delete()
+	Modify()
+	new()
+
+Win32::GUI::Pen:: Functions
+	Create()
+	DESTROY()
+	Info()
+	new()
+
+Win32::GUI::ProgressBar:: Functions
+	SetPos()
+	SetRange()
+	SetStep()
+	StepIt()
+	new()
+Win32::GUI::ProgressBar:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::RadioButton:: Functions
+	Checked()
+	new()
+Win32::GUI::RadioButton:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::Rebar:: Functions
+	BandCount()
+	DeleteBand()
+	InsertBand()
+	RowCount()
+	new()
+Win32::GUI::Rebar:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::RichEdit:: Functions
+	BackColor()
+	CharFromPos()
+	FirstVisibleLine()
+	GetCharFormat()
+	LineFromChar()
+	Load()
+	PosFromChar()
+	ReplaceSel()
+	Save()
+	Select()
+	Selection()
+	SetCharFormat()
+	SetParaFormat()
+	new()
+Win32::GUI::RichEdit:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::Slider:: Lists
+	@ISA = (
+		Win32::GUI::Trackbar
+	);
+
+Win32::GUI::Splitter:: Functions
+	new()
+Win32::GUI::Splitter:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::StatusBar:: Functions
+	new()
+Win32::GUI::StatusBar:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::TabStrip:: Functions
+	ChangeItem()
+	Count()
+	DeleteItem()
+	GetString()
+	InsertItem()
+	Reset()
+	Select()
+	SelectedItem()
+	new()
+Win32::GUI::TabStrip:: Lists
+	@ISA = (
+		Win32::GUI::Window
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::Textfield:: Functions
+	LineFromChar()
+	MaxLength()
+	Modified()
+	PasswordChar()
+	ReadOnly()
+	ReplaceSel()
+	Select()
+	SelectAll()
+	Selection()
+	Undo()
+	new()
+Win32::GUI::Textfield:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::Timer:: Functions
+	DESTROY()
+	Interval()
+	Kill()
+	new()
+Win32::GUI::Timer:: Lists
+	@ISA = (
+		Win32::GUI
+	);
+
+Win32::GUI::Toolbar:: Functions
+	AddBitmap()
+	AddButtons()
+	AddString()
+	ButtonStructSize()
+	SetBitmapSize()
+	new()
+Win32::GUI::Toolbar:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::Tooltip:: Functions
+	Add()
+	Count()
+	new()
+Win32::GUI::Tooltip:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::Trackbar:: Functions
+	Max()
+	Min()
+	Pos()
+	SetRange()
+	TicFrequency()
+	new()
+Win32::GUI::Trackbar:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::TreeView:: Functions
+	BackColor()
+	ChangeItem()
+	Clear()
+	Collapse()
+	Count()
+	DeleteItem()
+	EnsureVisible()
+	Expand()
+	FirstVisible()
+	GetChild()
+	GetItem()
+	GetLastVisible()
+	GetNextSibling()
+	GetNextVisible()
+	GetParent()
+	GetPrevSibling()
+	GetPrevVisible()
+	GetRoot()
+	HitTest()
+	Indent()
+	InsertItem()
+	ItemCheck()
+	ItemInfo()
+	Reset()
+	Select()
+	SelectedItem()
+	SetImageList()
+	Sort()
+	TextColor()
+	VisibleCount()
+	new()
+Win32::GUI::TreeView:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::UpDown:: Functions
+	Base()
+	Buddy()
+	Pos()
+	Range()
+	new()
+Win32::GUI::UpDown:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::Window:: Functions
+	AUTOLOAD()
+	AddAnimation()
+	AddButton()
+	AddCheckbox()
+	AddCombobox()
+	AddComboboxEx()
+	AddGroupbox()
+	AddHeader()
+	AddLabel()
+	AddListView()
+	AddListbox()
+	AddMenu()
+	AddNotifyIcon()
+	AddProgressBar()
+	AddRadioButton()
+	AddRebar()
+	AddRichEdit()
+	AddSlider()
+	AddStatusBar()
+	AddTabStrip()
+	AddTextfield()
+	AddTimer()
+	AddToolbar()
+	AddTrackbar()
+	AddTreeView()
+	AddUpDown()
+	DESTROY()
+	GetDC()
+	new()
+Win32::GUI::Window:: Scalars
+	$AUTOLOAD = ModuleName
+Win32::GUI::Window:: Lists
+	@ISA = (
+		Win32::GUI
+		Win32::GUI::WindowProps
+	);
+
+Win32::GUI::WindowProps:: Functions
+	EXISTS()
+	FETCH()
+	FIRSTKEY()
+	NEXTKEY()
+	STORE()
+	TIEHASH()
+

@@ -1,0 +1,1205 @@
+=head1 Win32::GUI methods
+
+=over 4
+
+=for HTML <HR><TT>
+
+=head2 AbsLeft()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the absolute (screen) window x coordinate; use this to get the
+onscreen position of a child window, eg. a button or a label.
+This method returns -1 on errors.
+
+
+
+
+B<See also>: L</Left()>
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Timer|packages/Timer>, L<Toolbar|packages/Toolbar>, L<Tooltip(*)|packages/Tooltip(*)>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 AbsTop()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the absolute (screen) window y coordinate; use this to get the
+onscreen position of a child window, eg. a button or a label.
+This method returns -1 on errors.
+
+
+
+
+B<See also>: L</Top()>
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Timer|packages/Timer>, L<Toolbar|packages/Toolbar>, L<Tooltip(*)|packages/Tooltip(*)>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 BackColor( [COLOR] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Sets the background color of the RichEdit control; if no COLOR is
+specified, the background color is reset to the default system color.
+
+
+
+
+B<Applies to>: L<RichEdit|packages/RichEdit>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 BandCount()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the number of bands in the Rebar control.
+
+
+
+
+B<Applies to>: L<Rebar|packages/Rebar>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 BringWindowToTop()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Brings the window to the foreground.
+
+
+
+
+B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 BrowseForFolder( OPTIONS )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Displays the standard "Browse For Folder" dialog box.
+Returns the selected item's name, or undef if no item was selected
+or an error occurred.
+
+Note that BrowseForFolder must be called as a standalone function, not as
+a method.
+
+Example:
+
+	$folder = Win32::GUI::BrowseForFolder(
+		-root => "C:\\Program Files",
+		-includefiles => 1,
+	);
+
+
+
+B<Available options>: L<-computeronly|options/_computeronly_0_1>, L<-domainonly|options/_domainonly_0_1>, L<-driveonly|options/_driveonly_0_1>, L<-editbox|options/_editbox_0_1>, L<-folderonly|options/_folderonly_0_1>, L<-includefiles|options/_includefiles_0_1>, L<-owner|options/_owner_WINDOW>, L<-printeronly|options/_printeronly_0_1>, L<-root|options/_root_PATH_or_CONSTANT>, L<-title|options/_title_STRING>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Caption( [TEXT] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+See L</Text().>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 ChangeCursor( CURSOR )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Changes the default cursor for a window to CURSOR (a Win32::GUI::Cursor
+object). Returns the handle of the previous default cursor.
+
+
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 ChangeIcon( ICON )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Changes the default icon for a window to ICON (a Win32::GUI::Icon object). 
+Returns the handle of the previous default icon. 
+
+
+
+
+B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 ChangeSmallIcon( ICON )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Changes the default small icon for a window to ICON (a Win32::GUI::Icon object). 
+Returns the handle of the previous default small icon. 
+
+
+
+
+B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Clear()
+
+=for HTML </TT><BLOCKQUOTE>
+
+See L</Reset().>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 ClipCursor( [LEFT, TOP, RIGHT, BOTTOM] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Confines the cursor to the specified screen rectangle.
+Call it without parameters to release the cursor.
+Returns nonzero on success, zero on failure.
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Close()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Closes the opened AVI file.
+
+
+
+
+
+B<See also>: L<Open()|methods/Open_FILE_>
+
+B<Applies to>: L<Animation|packages/Animation>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 CloseWindow()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Minimizes a window.
+
+
+
+
+B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 CommDlgExtendedError()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the last common dialog library error code. 
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Count()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the number of items in the control.
+
+
+
+
+B<Applies to>: L<Listbox|packages/Listbox>, L<Combobox|packages/Combobox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 DeleteBand()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Deletes the zero-based INDEX band from the Rebar.
+
+
+
+
+B<Applies to>: L<Rebar|packages/Rebar>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Dialog()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Enter the GUI dialog phase: the script halts, the user can interact
+with the created windows and events subroutines are triggered
+as necessary; note that this function must be called
+without ANY parameter or instantiation (eg. don't call it as method
+of a created object):
+
+    Win32::GUI::Dialog(); # correct
+    $Window->Dialog();    # !!!WRONG!!!
+
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Disable()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Disables a window. 
+
+
+
+
+B<See also>: L<Enable()|methods/Enable_FLAG_>, L<IsEnabled()|methods/IsEnabled_>
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 DoEvents()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Just like Dialog(), but returns when there are no more events to process.
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 DrawMenuBar()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Forces redrawing of the menu bar.
+
+
+
+
+B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Enable( [FLAG] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Enables a window (or disables it if FLAG is FALSE). 
+
+
+
+
+B<See also>: L<Disable()|methods/Disable_>, L<IsEnabled()|methods/IsEnabled_>
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Expand( NODE, [FLAG] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Opens a NODE of the TreeView; the optional FLAG parameter can indicate 
+different operations:
+
+    1 expand (this is the default)
+    2 collapse
+    3 toggle (expand if it was collapsed and collapse if it was expanded)
+
+
+
+
+B<Applies to>: L<TreeView|packages/TreeView>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 FindWindow( CLASSNAME, TITLE )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the handle of the window whose class name and window title match the 
+specified strings; both strings can be empty. Note that the function does 
+not search child windows, only top level windows. If no matching windows 
+is found, the return value is zero. 
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 GetActiveWindow()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the handle of the active window. 
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 GetClassName()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the classname of the specified window, or undef on errors.
+
+
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 GetClientRect()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns a four elements array defining the windows client area rectangle 
+(left, top, right, bottom) or undef on errors. 
+
+
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Class|packages/Class>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 GetCursor()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the handle of the current cursor. 
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 GetCursorPos()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns a two elements array containing the x and y position of the cursor, 
+or undef on errors. 
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 GetFocus()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the handle of the window that has the keyboard focus. 
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 GetFont(FONT)
+
+=for HTML </TT><BLOCKQUOTE>
+
+Gets the font of the window (returns an handle; use 
+
+
+  $Font = $W->GetFont();
+  %details = Win32::GUI::Font::Info( $Font );
+
+to get font details). 
+
+
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 GetFontName()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the name of the font used in the window.
+
+
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 GetMenu()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the handle of the menu associated with the window (note: the handle,
+not the Win32::GUI::Menu object).
+
+
+
+
+
+B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 GetMessage( [MIN, MAX] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Retrieves a message sent to the window, optionally considering only messages 
+identifiers in the range MIN..MAX; if a message is found, the function returns 
+a 7 elements array containing: 
+
+=over 4
+
+=item * the result code of the message
+
+=item * the message identifier
+
+=item * the wParam argument
+
+=item * the lParam argument
+
+=item * the time when message occurred
+
+=item * the x coordinate at which message occurred
+
+=item * the y coordinate at which message occurred
+
+=back
+
+If the result code of the message was -1 the function returns undef. 
+Note that this function should not be normally used unless you know very 
+well what you're doing. 
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 GetOpenFileName( OPTIONS )
+
+=for HTML </TT><BLOCKQUOTE>
+
+
+Displays the standard 'Open File' dialog box; the return value is the
+name of the choosen file or undef on errors.
+
+
+
+
+B<Available options>: L<-directory|options/_directory_STRING>, L<-file|options/_file_STRING>, L<-filter|options/_filter_ARRAY_REFERENCE>, L<-owner|options/_owner_WINDOW>, L<-title|options/_title_STRING>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 GetPerlWindow()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the handle of the DOS Prompt window your perl script
+is running in; if called in an array context, returns the
+handle and the HINSTANCE of your perl process.
+
+Example:
+
+	$DosPrompt = Win32::GUI::GetPerlWindow();
+	Win32::GUI::Hide( $DosPrompt );
+
+	# your program goes here...
+
+	Win32::GUI::Show( $DosPrompt );
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 GetStockObject( OBJECT )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the handle of the specified predefined system object (pen,
+brush or font). OBJECT can have one of the following values:
+
+	 0	WHITE_BRUSH
+	 1	GRAY_BRUSH
+	 2	LTGRAY_BRUSH
+	 3	DKGRAY_BRUSH
+	 4	BLACK_BRUSH
+	 5	NULL_BRUSH (also HOLLOW_BRUSH)
+	 6	WHITE_PEN
+	 7	BLACK_PEN
+	 8	NULL_PEN
+	10	OEM_FIXED_FONT
+	11	ANSI_FIXED_FONT
+	12	ANSI_VAR_FONT
+	13	SYSTEM_FONT
+	14	DEVICE_DEFAULT_FONT
+	15	DEFAULT_PALETTE
+	16	SYSTEM_FIXED_FONT
+	17	DEFAULT_GUI_FONT
+
+The returned handle can be referenced as if it was a Win32::GUI
+object of the corresponding type (eg. a Win32::GUI::Brush or 
+Win32::GUI::Font), but note that it is not blessed, so you can't 
+directly invoke methods on it:
+
+    $Font = Win32::GUI::GetStockObject(17);    # DEFAULT_GUI_FONT
+    print $Font->GetMetrics();                 # !!!WRONG!!!
+    print Win32::GUI::Font::GetMetrics($Font); # correct
+    $Window->SetFont($Font);                   # correct
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 HitTest( X, Y )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Checks if the specified point in the control area is occupied by an item;
+it returns the identifier of the found item or zero if none was found.
+If called in an array context, it returns an additional value containing
+more info about the position of the specified point [TBD].
+
+
+
+
+B<Applies to>: L<ListView|packages/ListView>, L<TreeView|packages/TreeView>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Indent( [VALUE] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Gets or sets the indentation width, in pixels, between parents and child
+nodes; if the VALUE is less than the system-defined minimum, it is set to
+the system-defined minimum.
+
+
+
+
+
+B<Applies to>: L<TreeView|packages/TreeView>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 InsertBand( OPTIONS )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Inserts a new band in the Rebar control.
+
+    #   -index => position or -1 to add it at the end, default -1
+    #   -image => index of an image from the associated ImageList
+    #   -bitmap => Win32::GUI::Bitmap object
+    #   -child => child control
+    #   -foreground => COLOR
+    #   -background  => COLOR
+    #   -width => pixels
+    #   -minwidth => pixels
+    #   -minheight => pixels
+    #   -text => string
+
+
+
+B<Applies to>: L<Rebar|packages/Rebar>
+
+B<Available options>: L<-index|options/-index>, L<-image|options/-image>, L<-bitmap|options/-bitmap>, L<-child|options/-child>, L<-foreground|options/-foreground>, L<-background|options/-background>, L<-width|options/-width>, L<-minwidth|options/-minwidth>, L<-minheight|options/-minheight>, L<-text|options/_text_STRING>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Interval( [ELAPSE] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Changes the timeout value of the Timer to ELAPSE milliseconds, or returns
+the current timeout value if no parameter is specified.
+If ELAPSE is 0, the Timer is disabled; can also be used to resume a Timer 
+after a Kill().
+
+
+
+
+
+B<See also>: L<Kill()|methods/Kill_>
+
+B<Applies to>: L<Timer|packages/Timer>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 InvertRect( LEFT, TOP, RIGHT, BOTTOM )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Inverts the content of the rectangle from LEFT, TOP to RIGHT, BOTTOM.
+Returns nonzero if succesful, zero on errors.
+
+
+
+
+B<Applies to>: L<DC|packages/DC>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 IsEnabled()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns TRUE if the window is enabled, FALSE otherwise.
+
+
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 IsIconic()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns TRUE if the window is minimized, FALSE otherwise.
+
+
+
+
+B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 IsVisible()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns TRUE if the window is visible, FALSE otherwise.
+
+
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 IsWindow()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns TRUE if the window is a window, FALSE otherwise.
+
+
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 IsZoomed()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns TRUE if the window is maximized, FALSE otherwise.
+
+
+
+
+B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Kill()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Disables the Timer.
+
+
+
+
+
+B<See also>: L<Interval()|methods/Interval_ELAPSE_>
+
+B<Applies to>: L<Timer|packages/Timer>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 ListIndex()
+
+=for HTML </TT><BLOCKQUOTE>
+
+See L</SelectedItem()>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Load( FILENAME, [FORMAT] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Loads a file named FILENAME into the RichEdit control.
+By default the file is a RTF (Rich Text Format) file; if you want to load
+a plain text file, you can set FORMAT to 1.
+
+
+
+
+B<Applies to>: L<RichEdit|packages/RichEdit>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 MaxLength( [CHARS] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Limits the number of characters that the Textfield accept to CHARS,
+or returns the current limit if no argument is given.
+To remove the limit (eg. set it to the maximum allowed which is 32k
+for a single-line Textfield and 64k for a multiline one) set CHARS
+to 0.
+
+
+
+
+B<Applies to>: L<Textfield|packages/Textfield>, L<RichEdit|packages/RichEdit>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Minimize()
+
+=for HTML </TT><BLOCKQUOTE>
+
+See L</CloseWindow()>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Move( X, Y )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Moves the window to the specified position.
+
+
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Open( FILE )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Opens the specified AVI file in the Animation control;
+note that the AVI file must not contain sound data.
+
+
+
+
+
+B<See also>: L<Close()|methods/Close_>
+
+B<Applies to>: L<Animation|packages/Animation>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 OpenIcon()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Restores a minimized window.
+
+
+
+
+B<Applies to>: L<Window|packages/Window>, L<DialogBox|packages/DialogBox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Play( [FROM], [TO], [REPEAT] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Plays the animation (eventually from the FROM frame to the TO frame)
+looping it REPEAT times.
+Defaults are FROM 0 (the first frame) to -1 (the last frame)
+and REPEAT -1 (loop forever).
+
+
+
+
+B<Applies to>: L<Animation|packages/Animation>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Rectangle( LEFT, TOP, RIGHT, BOTTOM )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Draws a rectangle from LEFT, TOP to RIGHT, BOTTOM; the rectangle is
+outlined with the current pen and filled with the current brush.
+Returns nonzero if succesful, zero on errors.
+
+
+
+
+B<Applies to>: L<DC|packages/DC>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Reset()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Deletes the content of the control.
+
+
+
+
+B<Applies to>: L<Listbox|packages/Listbox>, L<Combobox|packages/Combobox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Restore()
+
+=for HTML </TT><BLOCKQUOTE>
+
+See L</OpenIcon()>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 RowCount()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the number of rows in the Rebar control.
+
+
+
+
+B<Applies to>: L<Rebar|packages/Rebar>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Save( FILENAME, [FORMAT] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Saves the content of the RichEdit control in a file named FILENAME.
+By default the file is a RTF (Rich Text Format) file; if you want to save
+in a plain text file, you can set FORMAT to 1.
+
+
+
+
+B<Applies to>: L<RichEdit|packages/RichEdit>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 ScaleHeight()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the windows client area height.
+
+
+
+
+B<See also>: L<ScaleWidth()|methods/ScaleWidth_>
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Timer|packages/Timer>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 ScaleWidth()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the windows client area width.
+
+
+
+
+B<See also>: L<ScaleHeight()|methods/ScaleHeight_>
+
+B<Applies to>: L<Animation|packages/Animation>, L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Graphic|packages/Graphic>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<ListView|packages/ListView>, L<Listbox|packages/Listbox>, L<ProgressBar|packages/ProgressBar>, L<RadioButton|packages/RadioButton>, L<Rebar|packages/Rebar>, L<RichEdit|packages/RichEdit>, L<Slider|packages/Slider>, L<Splitter|packages/Splitter>, L<StatusBar|packages/StatusBar>, L<TabStrip|packages/TabStrip>, L<Textfield|packages/Textfield>, L<Timer|packages/Timer>, L<Toolbar|packages/Toolbar>, L<TreeView|packages/TreeView>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Seek( FRAME )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Positions the AVI file to the specified FRAME.
+
+
+
+
+B<Applies to>: L<Animation|packages/Animation>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 SelectAll()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Selects all the text.
+
+
+
+
+B<Applies to>: L<Textfield|packages/Textfield>, L<RichEdit|packages/RichEdit>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 SelectedItem()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Returns the zero-based index of the currently selected item, or -1 if
+no item is selected.
+
+
+
+
+B<Applies to>: L<Listbox|packages/Listbox>, L<Combobox|packages/Combobox>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 SetCursor( CURSOR )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Draws the specified CURSOR (a Win32::GUI::Cursor object). Returns the
+handle of the previously displayed cursor. Note that the cursor will
+change back to the default one as soon as the mouse moves or a
+system command is performed. To change the cursor stablily, use ChangeCursor()
+instead.
+
+
+
+
+
+B<See also>: L<ChangeCursor()|methods/ChangeCursor_CURSOR_>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 SetRange( [MIN], MAX )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Sets the range of values (from MIN to MAX) for the control; if MIN
+is not specified, it defaults to 0.
+
+
+
+
+B<Applies to>: L<ProgressBar|packages/ProgressBar>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Stop()
+
+=for HTML </TT><BLOCKQUOTE>
+
+Stops the animation currently playing.
+
+
+
+
+
+
+B<See also>: L<Play()|methods/Play_FROM_TO_REPEAT_>
+
+B<Applies to>: L<Animation|packages/Animation>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Text( [TEXT] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Gets or sets the text of a window. 
+
+
+
+B<Applies to>: L<Button|packages/Button>, L<Checkbox|packages/Checkbox>, L<Combobox|packages/Combobox>, L<ComboboxEx|packages/ComboboxEx>, L<DateTime|packages/DateTime>, L<DialogBox|packages/DialogBox>, L<Groupbox|packages/Groupbox>, L<Header|packages/Header>, L<Label|packages/Label>, L<Listbox|packages/Listbox>, L<RadioButton|packages/RadioButton>, L<RichEdit|packages/RichEdit>, L<StatusBar|packages/StatusBar>, L<Textfield|packages/Textfield>, L<Toolbar|packages/Toolbar>, L<UpDown|packages/UpDown>, L<Window|packages/Window>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 TextOut( X, Y, TEXT )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Draws the specified TEXT string at X, Y, using the currently selected font.
+Returns nonzero if succesful, zero on errors.
+
+
+
+
+B<Applies to>: L<DC|packages/DC>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 View( [MODE] )
+
+=for HTML </TT><BLOCKQUOTE>
+
+Gets or sets the viewing mode of the ListView control; the returned or given 
+MODE can have one of the following values:
+
+    0  big icons
+    1  details
+    2  small icons
+    3  list
+
+
+
+B<Applies to>: L<ListView|packages/ListView>
+
+=for HTML </BLOCKQUOTE>
+
+=back
+

@@ -1,0 +1,134 @@
+<HTML>
+<HEAD>
+<TITLE>Win32::GUI Tutorial - Part 3 - Dialog Boxes and Main Windows</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+
+<UL>
+
+	<LI><A HREF="#Win32_GUI_Tutorial_Part_3_D">Win32::GUI Tutorial - Part 3 - Dialog Boxes and Main Windows</A>
+	<UL>
+
+		<LI><A HREF="#What_is_a_Dialog_Box_">What is a Dialog Box?</A>
+		<LI><A HREF="#Keyboard_handling">Keyboard handling</A>
+		<LI><A HREF="#Other_Differences">Other Differences</A>
+	</UL>
+
+</UL>
+<!-- INDEX END -->
+
+<HR>
+<P>
+<H1><A NAME="Win32_GUI_Tutorial_Part_3_D">Win32::GUI Tutorial - Part 3 - Dialog Boxes and Main Windows</A></H1>
+<P>
+<HR>
+<H2><A NAME="What_is_a_Dialog_Box_">What is a Dialog Box?</A></H2>
+<P>
+So far, in this tutorial, we have been creating our main window using the
+Win32::GUI::Window-&gt;new() constructor. While this works fine, Win32::GUI
+actually offers <EM>two</EM> classes of main window.
+
+<P>
+The first of these is the Win32::GUI::Window we have been using all along,
+and the second is Win32::GUI::DialogBox.
+
+<P>
+``Why two classes?'', you may ask. Basically, the reason is that a
+DialogBox adds extra functionality to the window which is not available
+with a simple Window. But the extra functionality has a cost, which means
+that we still make WIndow available for people who don't want the extra
+functionality of a DialogBox, or who don't want to pay the extra cost.
+(Actually, there's a further reason, which is that a Win32::GUI::DialogBox
+loses some of the flexibility which a Win32::GUI::Window has - this is a
+limitation of Win32::GUI, not of Windows itself, and may go away in a
+future version - there may even be workarounds available already. See below
+for a more complete picture.
+
+<P>
+<HR>
+<H2><A NAME="Keyboard_handling">Keyboard handling</A></H2>
+<P>
+The main advantage that a DialogBox has over a basic Window, is that
+Win32::GUI automatically performs certain types of keyboard handling for
+you if you use a DialogBox. (The handling in question is the standard
+Windows actions - Tab moves between controls, Shift-Tab moves backwards,
+Escape cancels the dialog, and Return does the ``default'' action).
+
+<P>
+To make the keyboard handling work properly, you need to add a number of
+options to your controls.
+
+<DL>
+<DT><STRONG><A NAME="item_Tab">Tab and Shift-Tab</A></STRONG><DD>
+<P>
+To make the tab keys work as expected, you need to add the <CODE>-tabstop =&amp;gt;
+1</CODE> option to your controls. The tab keys move the focus between the controls
+with the <CODE>-tabstop</CODE> option set. Other controls will be ignored when tabbing.
+
+<DT><STRONG><A NAME="item_Escape">Escape</A></STRONG><DD>
+<P>
+To make the escape key work as expected, you need to define a button with
+the
+<CODE>-cancel =&amp;gt; 1</CODE> option. When the user presses the escape key, Windows will translate that
+action into a <CODE>Click</CODE> event on the cancel button. It is normal to give this button a caption of <CODE>&quot;Cancel&quot;</CODE> and to make its click event handler close the window without applying any
+changes - but this is up to you to implement. Windows just fires the
+relevant event.
+
+<DT><STRONG><A NAME="item_Return">Return</A></STRONG><DD>
+<P>
+To make the return key work as expected, you need to give one of your
+dialog's buttons the <CODE>-default =&amp;gt; 1</CODE> option. When the return key is pressed, it is translated into a click event
+on the default button. The default button is also highlighted differently
+from the other buttons (it has a dark border).
+<STRONG>Note:</STRONG> There is a related option, <CODE>-ok =&amp;gt; 1</CODE>, which has a similar effect as <CODE>-default</CODE>. However, the two seem to conflict in their effects. I would recommend
+that if your default button has the caption <CODE>&quot;OK&quot;</CODE>, you should set both the <CODE>-ok</CODE> and <CODE>-default</CODE> options. Otherwise, stick with just
+<CODE>-default</CODE>.
+
+</DL>
+<P>
+There are other default keyboard actions which occur, but you either don't
+need to, or can't, write code to handle them.
+
+<P>
+<HR>
+<H2><A NAME="Other_Differences">Other Differences</A></H2>
+<P>
+As well as the keyboard handling, the main difference between a DialogBox
+and a basic Window is that a DialogBox has a much more limited set of
+options available for controlling its appearance. Specifically
+
+<UL>
+<LI>
+<P>
+A DialogBox has no Minimize or Maximize icons.
+
+<LI>
+<P>
+A DialogBox has a ``?'' (help) icon.
+
+<LI>
+<P>
+A DialogBox has a slightly different look.
+
+<LI>
+<P>
+A DialogBox cannot be resized.
+
+</UL>
+<P>
+In most cases, the key issues will be whether you need the keyboard
+handling, and whether you need the user to be able to resize your windows.
+Otherwise, the choice is arbitrary. To switch types, the only change you
+need to make is the name of the constructor you use to create your
+application's main window.
+
+<P>
+In the next part, we will cover some further ways in which you can increase
+your application's functionality.
+</BODY>
+
+</HTML>

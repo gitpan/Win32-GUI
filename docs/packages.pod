@@ -1,0 +1,330 @@
+=head1 Win32::GUI packages
+
+=over 4
+
+=for HTML <HR><TT>
+
+=head2 Animation
+
+=for HTML </TT><BLOCKQUOTE>
+
+
+
+
+B<Available options>: L<-autoplay|options/_autoplay_0_1>, L<-center|options/_center_0_1>, L<-transparent|options/_transparent_0_1>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Checkbox
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Class
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Combobox
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 ComboboxEx
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 DateTime
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 DialogBox
+
+=for HTML </TT><BLOCKQUOTE>
+
+Just like Window, but with a predefined dialog box look: by default, a DialogBox
+can not be sized, has no maximize box and has C<-dialogui> enabled (eg. 
+interprets tab/enter/esc).
+
+
+
+B<Available options>: L<-text|options/_text_STRING>, L<-caption|options/-caption>, L<-title|options/_title_STRING>, L<-left|options/-left>, L<-top|options/-top>, L<-width|options/-width>, L<-height|options/-height>, L<-menu|options/-menu>, L<-font|options/-font>, L<-foreground|options/-foreground>, L<-background|options/-background>, L<-hscroll|options/-hscroll>, L<-vscroll|options/-vscroll>, L<-size|options/-size>, L<-pos|options/-pos>, L<-minsize|options/_minsize_X_Y_>, L<-maxsize|options/_maxsize_X_Y_>, L<-minwidth|options/-minwidth>, L<-minheight|options/-minheight>, L<-maxwidth|options/-maxwidth>, L<-maxheight|options/-maxheight>, L<-topmost|options/_topmost_0_1>, L<-maximizebox|options/-maximizebox>, L<-minimizebox|options/-minimizebox>, L<-sizable|options/-sizable>, L<-sysmenu|options/-sysmenu>, L<-accel|options/-accel>, L<-accelerators|options/-accelerators>, L<-acceleratortable|options/-acceleratortable>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Graphic
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Groupbox
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Header
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 ListView
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 ProgressBar
+
+=for HTML </TT><BLOCKQUOTE>
+
+
+
+
+B<Available options>: L<-smooth|options/_smooth_0_1>, L<-vertical|options/-vertical>
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 RadioButton
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Rebar
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Slider
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Splitter
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 StatusBar
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Timer
+
+=for HTML </TT><BLOCKQUOTE>
+
+The Timer object is a special kind of control: it has no appearance, its only 
+purpose is to trigger an event every specified amount of time.
+
+The synopsis to create a Timer object is:
+
+	new Win32::GUI::Timer( PARENT, NAME, ELAPSE )
+
+	PARENT->AddTimer( NAME, ELAPSE )
+
+=over 4
+
+=item C<NAME>
+
+the name for the Timer object (used to lookup the associated event).
+
+=item C<ELAPSE>
+
+the number of milliseconds after which the Timer() event will
+be triggered.
+
+=back
+
+Once you've created the Timer object, you can change the ELAPSE parameter 
+with the Interval() method, or disables it with the Kill() method.
+Note that Kill(), despite of its name, does not destroy the Timer object, 
+so you can re-enable it later with Interval().
+
+Example:
+
+	# creates a Timer that is called every 1 second
+	
+	$Window->AddTimer( "Clock", 1000 );
+
+	sub Clock_Timer {
+		print "one second passed.\n";
+	}
+
+=METHODS Interval(), Kill()
+
+=EVENTS Timer()
+
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Toolbar
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Tooltip
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 TreeView
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 UpDown
+
+=for HTML </TT><BLOCKQUOTE>
+
+x
+
+
+
+=for HTML </BLOCKQUOTE>
+
+=for HTML <HR><TT>
+
+=head2 Window
+
+=for HTML </TT><BLOCKQUOTE>
+
+This is the main container of a regular GUI; also known as "top level window".
+
+
+
+B<Available options>: L<-text|options/_text_STRING>, L<-caption|options/-caption>, L<-title|options/_title_STRING>, L<-left|options/-left>, L<-top|options/-top>, L<-width|options/-width>, L<-height|options/-height>, L<-menu|options/-menu>, L<-font|options/-font>, L<-foreground|options/-foreground>, L<-background|options/-background>, L<-hscroll|options/-hscroll>, L<-vscroll|options/-vscroll>, L<-size|options/-size>, L<-pos|options/-pos>, L<-minsize|options/_minsize_X_Y_>, L<-maxsize|options/_maxsize_X_Y_>, L<-minwidth|options/-minwidth>, L<-minheight|options/-minheight>, L<-maxwidth|options/-maxwidth>, L<-maxheight|options/-maxheight>, L<-topmost|options/_topmost_0_1>, L<-maximizebox|options/-maximizebox>, L<-minimizebox|options/-minimizebox>, L<-sizable|options/-sizable>, L<-sysmenu|options/-sysmenu>, L<-accel|options/-accel>, L<-accelerators|options/-accelerators>, L<-acceleratortable|options/-acceleratortable>
+
+=for HTML </BLOCKQUOTE>
+
+=back
+

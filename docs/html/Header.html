@@ -1,0 +1,318 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::Header</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_Header">Package Win32::GUI::Header</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Methods">Methods</A>
+			<LI><A HREF="#Events">Events</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_Header">Package Win32::GUI::Header</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_Header_PARENT_">new Win32::GUI::Header(PARENT, %OPTIONS)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Methods">Methods</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#ChangeItem_INDEX_OPTIONS_">ChangeItem(INDEX, %OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Clear_">Clear()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Count_">Count()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#DeleteItem_INDEX_">DeleteItem(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#HitTest_X_Y_">HitTest(X, Y)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#InsertItem_OPTIONS_">InsertItem(%OPTIONS)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ItemRect_INDEX_">ItemRect(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Reset_">Reset()</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Events">Events</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#BeginTrack_INDEX_WIDTH_">BeginTrack(INDEX, WIDTH)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#DividerDblClick_INDEX_">DividerDblClick(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#EndTrack_INDEX_WIDTH_">EndTrack(INDEX, WIDTH)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ItemClick_INDEX_">ItemClick(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#ItemDblClick_INDEX_">ItemDblClick(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Track_INDEX_WIDTH_">Track(INDEX, WIDTH)</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_Header_PARENT_">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::Header(PARENT, %OPTIONS)</A></STRONG><DD>
+<P>
+Creates a new Header object; can also be called as
+PARENT-&gt;AddHeader(%OPTIONS). Class specific <CODE>%OPTIONS</CODE> are:
+
+<P>
+<PRE>  -buttons =&gt; 0/1 (default 0)
+    header items look like push buttons and can be clicked.
+  -hottrack =&gt; 0/1 (default 0)
+  -imagelist =&gt; Win32::GUI::ImageList object
+</PRE>
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Methods">Methods</A></H3>
+<A NAME="ChangeItem_INDEX_OPTIONS_">
+
+<DL>
+<DT><STRONG><A NAME="item_ChangeItem">ChangeItem(INDEX, %OPTIONS)</A></STRONG><DD>
+<P>
+Changes the options for an item in the Header control. Returns nonzero if
+successful, zero otherwise. For a list of the available options see  <A HREF="#InsertItem_OPTIONS_">InsertItem()</A>.
+
+<P>
+
+<A NAME="Clear_">
+
+<DT><STRONG><A NAME="item_Clear">Clear()</A></STRONG><DD>
+<P>
+Deletes all items from the control.
+
+<P>
+
+<A NAME="Count_">
+
+<DT><STRONG><A NAME="item_Count">Count()</A></STRONG><DD>
+<P>
+Returns the number of items in the Header control.
+
+<P>
+
+<A NAME="DeleteItem_INDEX_">
+
+<DT><STRONG><A NAME="item_DeleteItem">DeleteItem(INDEX)</A></STRONG><DD>
+<P>
+Deletes the zero-based INDEX item from the Header.
+
+<P>
+
+<A NAME="HitTest_X_Y_">
+
+<DT><STRONG><A NAME="item_HitTest">HitTest(X, Y)</A></STRONG><DD>
+<P>
+Checks if the specified point is on an Header item; it returns the index of
+the found item or -1 if none was found. If called in an array context, it
+returns an additional value containing more info about the position of the
+specified point.
+
+<P>
+
+<A NAME="InsertItem_OPTIONS_">
+
+<DT><STRONG><A NAME="item_InsertItem">InsertItem(%OPTIONS)</A></STRONG><DD>
+<P>
+Inserts a new item in the Header control. Returns the newly created item
+zero-based index or -1 on errors. <CODE>%OPTIONS</CODE> can be:
+
+<P>
+<PRE>  -index =&gt; position
+  -image =&gt; index of an image from the associated ImageList
+  -bitmap =&gt; Win32::GUI::Bitmap object
+  -width =&gt; pixels
+  -height =&gt; pixels
+  -text =&gt; string
+  -align =&gt; left|center|right
+</PRE>
+<P>
+
+<A NAME="ItemRect_INDEX_">
+
+<DT><STRONG><A NAME="item_ItemRect">ItemRect(INDEX)</A></STRONG><DD>
+<P>
+Returns a four element array defining the rectangle of the specified
+zero-based INDEX item; the array contains (left, top, right, bottom). If
+not succesful returns undef.
+
+<P>
+
+<A NAME="Reset_">
+
+<DT><STRONG><A NAME="item_Reset">Reset()</A></STRONG><DD>
+<P>
+See  <A HREF="#Clear_">Clear()</A>.
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Events">Events</A></H3>
+<A NAME="BeginTrack_INDEX_WIDTH_">
+
+<DL>
+<DT><STRONG><A NAME="item_BeginTrack">BeginTrack(INDEX, WIDTH)</A></STRONG><DD>
+<P>
+Sent when a divider of the Header control is being moved; the event must
+return 0 to prevent moving the divider, 1 to allow it. Passes the
+zero-based INDEX of the item being resized and its current WIDTH.
+
+<P>
+
+<A NAME="DividerDblClick_INDEX_">
+
+<DT><STRONG><A NAME="item_DividerDblClick">DividerDblClick(INDEX)</A></STRONG><DD>
+<P>
+Sent when the user double-clicked on a divider of the Header control.
+
+<P>
+
+<A NAME="EndTrack_INDEX_WIDTH_">
+
+<DT><STRONG><A NAME="item_EndTrack">EndTrack(INDEX, WIDTH)</A></STRONG><DD>
+<P>
+Sent when a divider of the Header control has been moved. Passes the
+zero-based INDEX of the item being resized and its current WIDTH.
+
+<P>
+
+<A NAME="ItemClick_INDEX_">
+
+<DT><STRONG><A NAME="item_ItemClick">ItemClick(INDEX)</A></STRONG><DD>
+<P>
+Sent when the user clicked on a Header item.
+
+<P>
+
+<A NAME="ItemDblClick_INDEX_">
+
+<DT><STRONG><A NAME="item_ItemDblClick">ItemDblClick(INDEX)</A></STRONG><DD>
+<P>
+Sent when the user double-clicked on a Header item.
+
+<P>
+
+<A NAME="Track_INDEX_WIDTH_">
+
+<DT><STRONG><A NAME="item_Track">Track(INDEX, WIDTH)</A></STRONG><DD>
+<P>
+Sent while a divider of the Header control is being moved; the event must
+return 1 to continue moving the divider, 0 to end its movement. Passes the
+zero-based INDEX of the item being resized and its current WIDTH.
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

@@ -1,0 +1,17 @@
+GUI.pm
+GUI.xs
+constants.c
+resource.h
+GUI.rc
+guiperl.ico
+hsplit.cur
+vsplit.cur
+TYPEMAP
+Makefile.PL
+TODO
+MANIFEST
+BUGS
+README
+README.txt
+BitmapInline.pm
+GridLayout.pm

@@ -1,0 +1,134 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::NotifyIcon</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_NotifyIcon">Package Win32::GUI::NotifyIcon</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Events">Events</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_NotifyIcon">Package Win32::GUI::NotifyIcon</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_NotifyIcon_PAREN">new Win32::GUI::NotifyIcon(PARENT, %OPTIONS)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Events">Events</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Click_">Click()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#MouseEvent_MSG_">MouseEvent(MSG)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#RightClick_">RightClick()</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_NotifyIcon_PAREN">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::NotifyIcon(PARENT, %OPTIONS)</A></STRONG><DD>
+<P>
+Creates a new NotifyIcon (also known as system tray icon) object; can also
+be called as PARENT-&gt;AddNotifyIcon(%OPTIONS). <CODE>%OPTIONS</CODE> are:
+
+<P>
+<PRE>    -icon =&gt; Win32::GUI::Icon object
+    -id =&gt; NUMBER
+        a unique identifier for the NotifyIcon object
+    -name =&gt; STRING
+        the name for the object
+    -tip =&gt; STRING
+        the text that will appear as tooltip when the mouse is
+        on the NotifyIcon
+</PRE>
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Events">Events</A></H3>
+<A NAME="Click_">
+
+<DL>
+<DT><STRONG><A NAME="item_Click">Click()</A></STRONG><DD>
+<P>
+Sent when the user clicks the left mouse button on a NotifyIcon.
+
+<P>
+
+<A NAME="MouseEvent_MSG_">
+
+<DT><STRONG><A NAME="item_MouseEvent">MouseEvent(MSG)</A></STRONG><DD>
+<P>
+Sent when the user performs a mouse event on a NotifyIcon; MSG is the
+message code.
+
+<P>
+
+<A NAME="RightClick_">
+
+<DT><STRONG><A NAME="item_RightClick">RightClick()</A></STRONG><DD>
+<P>
+Sent when the user clicks the right mouse button on a NotifyIcon.
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

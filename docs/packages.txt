@@ -1,0 +1,217 @@
+================================================================================
+Animation
+
+=OPTIONS -autoplay, -center, -transparent
+
+================================================================================
+Button
+
+=OPTIONS
+-align, -valign, -ok, -cancel, -default, -bitmap, -picture, -icon
+=END_OPTIONS
+
+================================================================================
+Checkbox
+
+x
+
+================================================================================
+Class
+
+x
+
+================================================================================
+Combobox
+
+x
+
+================================================================================
+ComboboxEx
+
+x
+
+================================================================================
+DateTime
+
+x
+
+================================================================================
+DialogBox
+
+Just like Window, but with a predefined dialog box look: by default, a DialogBox
+can not be sized, has no maximize box and has C<-dialogui> enabled (eg. 
+interprets tab/enter/esc).
+
+=OPTIONS
+-text, -caption, -title, -left, -top, -width, -height, -menu, -font, -foreground,
+-background, -hscroll, -vscroll, -size, -pos, -minsize, -maxsize, -minwidth,
+-minheight, -maxwidth, -maxheight, -topmost, -maximizebox, -minimizebox,
+-sizable, -sysmenu, -accel, -accelerators, -acceleratortable
+=END_OPTIONS
+
+
+================================================================================
+Graphic
+
+x
+
+================================================================================
+Groupbox
+
+x
+
+================================================================================
+Header
+
+x
+
+================================================================================
+Label
+
+=OPTIONS
+-align, -bitmap, -picture, -truncate, -frame, -fill, -sunken, -wrap, -notify
+=END_OPTIONS
+
+================================================================================
+ListView
+
+x
+
+================================================================================
+Listbox
+
+=OPTIONS
+-multisel, -sort
+=END_OPTIONS
+
+
+================================================================================
+ProgressBar
+
+=OPTIONS -smooth, -vertical
+
+================================================================================
+RadioButton
+
+x
+
+================================================================================
+Rebar
+
+x
+
+================================================================================
+RichEdit
+
+=OPTIONS
+-align, -multiline, -keepselection, -readonly, -password, -lowercase, -uppercase, 
+-autohscroll, -autovscroll, -number
+=END_OPTIONS
+
+================================================================================
+Slider
+
+x
+
+================================================================================
+Splitter
+
+x
+
+================================================================================
+StatusBar
+
+x
+
+================================================================================
+TabStrip
+
+=OPTIONS
+-imagelist, -multiline, -vertical, -bottom, -right, -hottrack, -buttons,
+-justify, -flat
+=END_OPTIONS
+
+================================================================================
+Textfield 
+
+=OPTIONS
+-align, -multiline, -keepselection, -readonly, -password, -lowercase, -uppercase, 
+-autohscroll, -autovscroll, -number
+=END_OPTIONS
+
+================================================================================
+Timer
+
+The Timer object is a special kind of control: it has no appearance, its only 
+purpose is to trigger an event every specified amount of time.
+
+The synopsis to create a Timer object is:
+
+	new Win32::GUI::Timer( PARENT, NAME, ELAPSE )
+
+	PARENT->AddTimer( NAME, ELAPSE )
+
+=over 4
+
+=item C<NAME>
+
+the name for the Timer object (used to lookup the associated event).
+
+=item C<ELAPSE>
+
+the number of milliseconds after which the Timer() event will
+be triggered.
+
+=back
+
+Once you've created the Timer object, you can change the ELAPSE parameter 
+with the Interval() method, or disables it with the Kill() method.
+Note that Kill(), despite of its name, does not destroy the Timer object, 
+so you can re-enable it later with Interval().
+
+Example:
+
+	# creates a Timer that is called every 1 second
+	
+	$Window->AddTimer( "Clock", 1000 );
+
+	sub Clock_Timer {
+		print "one second passed.\n";
+	}
+
+=METHODS Interval(), Kill()
+
+=EVENTS Timer()
+
+
+================================================================================
+Toolbar
+
+x
+
+================================================================================
+Tooltip
+
+x
+
+================================================================================
+TreeView
+
+x
+
+================================================================================
+UpDown
+
+x
+
+================================================================================
+Window
+
+This is the main container of a regular GUI; also known as "top level window".
+
+=OPTIONS
+-text, -caption, -title, -left, -top, -width, -height, -menu, -font, -foreground,
+-background, -hscroll, -vscroll, -size, -pos, -minsize, -maxsize, -minwidth,
+-minheight, -maxwidth, -maxheight, -topmost, -maximizebox, -minimizebox,
+-sizable, -sysmenu, -accel, -accelerators, -acceleratortable
+=END_OPTIONS

@@ -1,0 +1,484 @@
+=head2 Package Win32::GUI::DC
+
+L<Back to the Packages|guipacks/>
+
+=over
+
+=item *
+
+L<Constructor>
+
+=over
+
+=item *
+
+L<new Win32::GUI::DC(WINDOW &#124; DRIVER, DEVICE)|/new_Win32_GUI_DC_WINDOW_DRIV>
+
+=back
+
+=item *
+
+L<Methods>
+
+=over
+
+=item *
+
+L<AbortPath()|/AbortPath_>
+
+=item *
+
+L<Arc(X, Y, RADIUS, START, SWEEP)|/Arc_X_Y_RADIUS_START_SWEEP_>
+
+=item *
+
+L<BackColor([COLOR])|/BackColor_COLOR_>
+
+=item *
+
+L<BeginPath()|/BeginPath_>
+
+=item *
+
+L<BkMode([MODE])|/BkMode_MODE_>
+
+=item *
+
+L<Circle(X, Y, (WIDTH, HEIGHT &#124; RADIUS))|/Circle_X_Y_WIDTH_HEIGHT_RA>
+
+=item *
+
+L<CloseFigure()|/CloseFigure_>
+
+=item *
+
+L<DrawEdge(LEFT, TOP, RIGHT, BOTTOM, [EDGE, FLAGS])|/DrawEdge_LEFT_TOP_RIGHT_BOTTO>
+
+=item *
+
+L<Ellipse(LEFT, TOP, RIGHT, BOTTOM)|/Ellipse_LEFT_TOP_RIGHT_BOTTOM>
+
+=item *
+
+L<EndPath()|/EndPath_>
+
+=item *
+
+L<Fill(X, Y, [COLOR], [TYPE])|/Fill_X_Y_COLOR_TYPE_>
+
+=item *
+
+L<FillPath()|/FillPath_>
+
+=item *
+
+L<GetPixel(X, Y)|/GetPixel_X_Y_>
+
+=item *
+
+L<GetUpdateRect([ERASE])|/GetUpdateRect_ERASE_>
+
+=item *
+
+L<InvertRect(LEFT, TOP, RIGHT, BOTTOM)|/InvertRect_LEFT_TOP_RIGHT_BOT>
+
+=item *
+
+L<LineTo(X, Y)|/LineTo_X_Y_>
+
+=item *
+
+L<MapMode([MODE])|/MapMode_MODE_>
+
+=item *
+
+L<MoveTo(X, Y)|/MoveTo_X_Y_>
+
+=item *
+
+L<PaintDesktop()|/PaintDesktop_>
+
+=item *
+
+L<Pie(LEFT, TOP, RIGHT, BOTTOM, XF, YF, XS, YS)|/Pie_LEFT_TOP_RIGHT_BOTTOM_XF>
+
+=item *
+
+L<Rectangle(LEFT, TOP, RIGHT, BOTTOM)|/Rectangle_LEFT_TOP_RIGHT_BOTT>
+
+=item *
+
+L<Restore([STATE])|/Restore_STATE_>
+
+=item *
+
+L<Save()|/Save_>
+
+=item *
+
+L<SelectObject(OBJECT)|/SelectObject_OBJECT_>
+
+=item *
+
+L<SetPixel(X, Y, [COLOR])|/SetPixel_X_Y_COLOR_>
+
+=item *
+
+L<StrokeAndFillPath()|/StrokeAndFillPath_>
+
+=item *
+
+L<StrokePath()|/StrokePath_>
+
+=item *
+
+L<TextColor([COLOR])|/TextColor_COLOR_>
+
+=item *
+
+L<TextOut(X, Y, TEXT)|/TextOut_X_Y_TEXT_>
+
+=item *
+
+L<Validate()|/Validate_>
+
+=back
+
+=back
+
+=head3 Constructor
+
+=over 4
+
+=for html <A NAME="new_Win32_GUI_DC_WINDOW_DRIV">
+
+=item new Win32::GUI::DC(WINDOW | DRIVER, DEVICE)
+
+Creates a new DC object; the first form (WINDOW is a Win32::GUI object)
+gets the DC for the specified window (can also be called as
+WINDOW->GetDC). The second form creates a DC for the specified DEVICE;
+actually, the only supported DRIVER is the display driver (eg. the
+screen). To get the DC for the entire screen use:
+
+    $Screen = new Win32::GUI::DC("DISPLAY");
+
+=for html <P>
+
+=back
+
+=head3 Methods
+
+=over 4
+
+=for html <A NAME="AbortPath_">
+
+=item AbortPath()
+
+[TBD]
+
+
+
+=for html <P>
+
+=for html <A NAME="Arc_X_Y_RADIUS_START_SWEEP_">
+
+=item Arc(X, Y, RADIUS, START, SWEEP)
+
+[TBD]
+
+
+
+=for html <P>
+
+=for html <A NAME="BackColor_COLOR_">
+
+=item BackColor([COLOR])
+
+Gets or sets the background color.
+
+=for html <P>
+
+=for html <A NAME="BeginPath_">
+
+=item BeginPath()
+
+[TBD]
+
+
+
+=for html <P>
+
+=for html <A NAME="BkMode_MODE_">
+
+=item BkMode([MODE])
+
+Gets or sets the current background mix mode for the DC;
+possible values are:
+
+ 1 TRANSPARENT
+ 2 OPAQUE
+
+=for html <P>
+
+=for html <A NAME="Circle_X_Y_WIDTH_HEIGHT_RA">
+
+=item Circle(X, Y, (WIDTH, HEIGHT | RADIUS))
+
+Draws a circle or an ellipse; X, Y, RADIUS specifies the center point
+and the radius of the circle, while X, Y, WIDTH, HEIGHT specifies the
+center point and the size of the ellipse.
+Returns nonzero if succesful, zero on errors.
+
+=for html <P>
+
+=for html <A NAME="CloseFigure_">
+
+=item CloseFigure()
+
+[TBD]
+
+
+
+=for html <P>
+
+=for html <A NAME="DrawEdge_LEFT_TOP_RIGHT_BOTTO">
+
+=item DrawEdge(LEFT, TOP, RIGHT, BOTTOM, [EDGE, FLAGS])
+
+[TBD]
+
+
+
+=for html <P>
+
+=for html <A NAME="Ellipse_LEFT_TOP_RIGHT_BOTTOM">
+
+=item Ellipse(LEFT, TOP, RIGHT, BOTTOM)
+
+[TBD]
+
+
+
+=for html <P>
+
+=for html <A NAME="EndPath_">
+
+=item EndPath()
+
+[TBD]
+
+
+
+=for html <P>
+
+=for html <A NAME="Fill_X_Y_COLOR_TYPE_">
+
+=item Fill(X, Y, [COLOR], [TYPE])
+
+[TBD]
+
+
+
+=for html <P>
+
+=for html <A NAME="FillPath_">
+
+=item FillPath()
+
+[TBD]
+
+
+
+=for html <P>
+
+=for html <A NAME="GetPixel_X_Y_">
+
+=item GetPixel(X, Y)
+
+Returns the color of the pixel at X, Y.
+
+=for html <P>
+
+=for html <A NAME="GetUpdateRect_ERASE_">
+
+=item GetUpdateRect([ERASE])
+
+Returns the rectangle (as a four-element array containing left, top,
+right, bottom coordinates) that needs to be updated.
+If the update region is empty (eg. no need to update, the function
+returns undef).
+The optional ERASE parameter can be set to 1 to force an erase of
+the update region, if there is any; by default, no erase action is
+performed.
+This function is intended to be used in a Paint event;
+see  Win32::GUI::Graphic::Paint().
+
+=for html <P>
+
+=for html <A NAME="InvertRect_LEFT_TOP_RIGHT_BOT">
+
+=item InvertRect(LEFT, TOP, RIGHT, BOTTOM)
+
+Inverts the content of the rectangle from LEFT, TOP to RIGHT, BOTTOM.
+Returns nonzero if succesful, zero on errors.
+
+=for html <P>
+
+=for html <A NAME="LineTo_X_Y_">
+
+=item LineTo(X, Y)
+
+Draws a line from the current drawing position up to, but not including,
+the point specified by X, Y.
+Returns nonzero if succesful, zero on errors.
+
+=for html <P>
+
+=for html <A NAME="MapMode_MODE_">
+
+=item MapMode([MODE])
+
+[TBD]
+
+
+
+=for html <P>
+
+=for html <A NAME="MoveTo_X_Y_">
+
+=item MoveTo(X, Y)
+
+Moves the current drawing position to the point specified by X, Y.
+Returns nonzero if succesful, zero on errors.
+
+=for html <P>
+
+=for html <A NAME="PaintDesktop_">
+
+=item PaintDesktop()
+
+Fills the DC content with the desktop pattern or wallpaper.
+Returns nonzero if succesful, zero on errors.
+
+=for html <P>
+
+=for html <A NAME="Pie_LEFT_TOP_RIGHT_BOTTOM_XF">
+
+=item Pie(LEFT, TOP, RIGHT, BOTTOM, XF, YF, XS, YS)
+
+[TBD]
+
+
+
+=for html <P>
+
+=for html <A NAME="Rectangle_LEFT_TOP_RIGHT_BOTT">
+
+=item Rectangle(LEFT, TOP, RIGHT, BOTTOM)
+
+Draws a rectangle from LEFT, TOP to RIGHT, BOTTOM; the rectangle is
+outlined with the current pen and filled with the current brush.
+Returns nonzero if succesful, zero on errors.
+
+=for html <P>
+
+=for html <A NAME="Restore_STATE_">
+
+=item Restore([STATE])
+
+Restores the state of the DC saved by Save(). STATE can identify a state
+from the saved stack (use the identifier returned by the corresponding
+Save() call) or a negative number that specifies how many steps backwards
+in the stack to recall (eg. -1 recalls the last saved state).
+The default if STATE is not specified is -1.
+Note that the restored state is removed from the stack, and if you restore
+an early one, all the subsequent states will be removed too.
+Returns nonzero if succesful, zero on errors.
+See also  L<Save()|/Save_>.
+
+=for html <P>
+
+=for html <A NAME="Save_">
+
+=item Save()
+
+Saves the current state of the DC (this means the currently selected
+colors, brushes, pens, drawing modes, etc.) to an internal stack.
+The function returns a number identifying the saved state; this number
+can then be passed to the Restore() function to load it back.
+If the return value is zero, an error occurred.
+See also  L<Restore()|/Restore_STATE_>.
+
+=for html <P>
+
+=for html <A NAME="SelectObject_OBJECT_">
+
+=item SelectObject(OBJECT)
+
+[TBD]
+
+
+
+=for html <P>
+
+=for html <A NAME="SetPixel_X_Y_COLOR_">
+
+=item SetPixel(X, Y, [COLOR])
+
+Sets the pixel at X, Y to the specified COLOR
+(or to the current TextColor() if COLOR is not specified).
+
+=for html <P>
+
+=for html <A NAME="StrokeAndFillPath_">
+
+=item StrokeAndFillPath()
+
+[TBD]
+
+
+
+=for html <P>
+
+=for html <A NAME="StrokePath_">
+
+=item StrokePath()
+
+[TBD]
+
+
+
+=for html <P>
+
+=for html <A NAME="TextColor_COLOR_">
+
+=item TextColor([COLOR])
+
+Gets or sets the text color.
+
+=for html <P>
+
+=for html <A NAME="TextOut_X_Y_TEXT_">
+
+=item TextOut(X, Y, TEXT)
+
+Draws the specified TEXT string at X, Y, using the currently selected
+font.
+Returns nonzero if succesful, zero on errors.
+
+=for html <P>
+
+=for html <A NAME="Validate_">
+
+=item Validate()
+
+Validates (removes from the update region) the whole DC area.
+This function is intended to be used in a Paint event;
+see  Win32::GUI::Graphic::Paint().
+Returns nonzero if succesful, zero on errors.
+
+=for html <P>
+
+=back
+
+=cut

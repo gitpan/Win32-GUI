@@ -1,0 +1,13 @@
+[BEGIN]
+ Name:           ____________________ 
+ Type:           ____________________ 
+ Software house: ____________________ 
+ Year:           ____
+ { } Command:    ____________________ 
+ Vote:           __
+
+      {   OK   } { Cancel }
+
+[END]
+Fields = Name, Type, Softhouse, Year, Command, Vote
+Buttons = OK, Cancel

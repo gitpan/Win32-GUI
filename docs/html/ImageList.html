@@ -1,0 +1,200 @@
+<HTML>
+<HEAD>
+<TITLE>Package Win32::GUI::ImageList</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+<!--
+
+<UL>
+
+	<UL>
+
+		<LI><A HREF="#Package_Win32_GUI_ImageList">Package Win32::GUI::ImageList</A>
+		<UL>
+
+			<LI><A HREF="#Constructor">Constructor</A>
+			<LI><A HREF="#Methods">Methods</A>
+		</UL>
+
+	</UL>
+
+</UL>
+-->
+<!-- INDEX END -->
+
+<P>
+<H2><A NAME="Package_Win32_GUI_ImageList">Package Win32::GUI::ImageList</A></H2>
+<P>
+<A HREF="././guipacks.html#">Back to the Packages</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Constructor">Constructor</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#new_Win32_GUI_ImageList_X_Y_">new Win32::GUI::ImageList(X, Y, FLAGS, INITAL, GROW)</A>
+
+
+
+</UL>
+<LI>
+<P>
+<A HREF="#Methods">Methods</A>
+
+
+
+<UL>
+<LI>
+<P>
+<A HREF="#Add_BITMAP_BITMAPMASK_">Add(BITMAP, [BITMAPMASK])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#AddBitmap_BITMAP_BITMAPMASK_">AddBitmap(BITMAP, [BITMAPMASK])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#BackColor_COLOR_">BackColor([COLOR])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Clear_">Clear()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Count_">Count()</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Remove_INDEX_">Remove(INDEX)</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Replace_INDEX_BITMAP_BITMAPMA">Replace(INDEX, BITMAP, [BITMAPMASK])</A>
+
+
+
+<LI>
+<P>
+<A HREF="#Size_X_Y_">Size([X, Y])</A>
+
+
+
+</UL>
+</UL>
+<P>
+<HR>
+<H3><A NAME="Constructor">Constructor</A></H3>
+<A NAME="new_Win32_GUI_ImageList_X_Y_">
+
+<DL>
+<DT><STRONG><A NAME="item_new">new Win32::GUI::ImageList(X, Y, FLAGS, INITAL, GROW)</A></STRONG><DD>
+<P>
+Creates an ImageList object; X and Y specify the size of the images, FLAGS
+[TBD]. INITIAL and GROW specify the number of images the ImageList actually
+contains (INITIAL) and the number of images for which memory is allocated
+(GROW).
+
+<P>
+
+</DL>
+<P>
+<HR>
+<H3><A NAME="Methods">Methods</A></H3>
+<A NAME="Add_BITMAP_BITMAPMASK_">
+
+<DL>
+<DT><STRONG><A NAME="item_Add">Add(BITMAP, [BITMAPMASK])</A></STRONG><DD>
+<P>
+Adds a bitmap to the ImageList; both BITMAP and BITMAPMASK can be either
+Win32::GUI::Bitmap objects or filenames.
+
+<P>
+
+<A NAME="AddBitmap_BITMAP_BITMAPMASK_">
+
+<DT><STRONG><A NAME="item_AddBitmap">AddBitmap(BITMAP, [BITMAPMASK])</A></STRONG><DD>
+<P>
+Adds a Win32::GUI::Bitmap object to the ImageList. BITMAPMASK is optional.
+See also  <A HREF="#Add_BITMAP_BITMAPMASK_">Add()</A>.
+
+<P>
+
+<A NAME="BackColor_COLOR_">
+
+<DT><STRONG><A NAME="item_BackColor">BackColor([COLOR])</A></STRONG><DD>
+<P>
+Gets or sets the background color for the ImageList.
+
+<P>
+
+<A NAME="Clear_">
+
+<DT><STRONG><A NAME="item_Clear">Clear()</A></STRONG><DD>
+<P>
+Removes all the images from the ImageList.
+
+<P>
+
+<A NAME="Count_">
+
+<DT><STRONG><A NAME="item_Count">Count()</A></STRONG><DD>
+<P>
+Returns the number of images in the ImageList.
+
+<P>
+
+<A NAME="Remove_INDEX_">
+
+<DT><STRONG><A NAME="item_Remove">Remove(INDEX)</A></STRONG><DD>
+<P>
+Removes the specified zero-based INDEX image from the ImageList.
+
+<P>
+
+<A NAME="Replace_INDEX_BITMAP_BITMAPMA">
+
+<DT><STRONG><A NAME="item_Replace">Replace(INDEX, BITMAP, [BITMAPMASK])</A></STRONG><DD>
+<P>
+Replaces the specified zero-based INDEX image with the image specified by
+BITMAP (must be a Win32::GUI::Bitmap object). BITMAPMASK is optional.
+
+<P>
+
+<A NAME="Size_X_Y_">
+
+<DT><STRONG><A NAME="item_Size">Size([X, Y])</A></STRONG><DD>
+<P>
+Gets or sets the size of the images in the ImageList; if no parameter is
+given, returns a 2 element array (X, Y), otherwise sets the size to the
+given parameters.
+
+<P>
+
+</DL>
+</BODY>
+
+</HTML>

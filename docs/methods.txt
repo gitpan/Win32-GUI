@@ -1,0 +1,744 @@
+================================================================================
+AbsLeft()
+
+Returns the absolute (screen) window x coordinate; use this to get the
+onscreen position of a child window, eg. a button or a label.
+This method returns -1 on errors.
+
+=SEE_ALSO Left()
+
+=APPLY
+Animation, Button, Checkbox, Class, Combobox, ComboboxEx, DateTime, DialogBox,
+Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
+RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
+Timer, Toolbar, Tooltip(*), TreeView, UpDown, Window
+=END_APPLY
+
+================================================================================
+AbsTop()
+
+Returns the absolute (screen) window y coordinate; use this to get the
+onscreen position of a child window, eg. a button or a label.
+This method returns -1 on errors.
+
+=SEE_ALSO Top()
+
+=APPLY
+Animation, Button, Checkbox, Class, Combobox, ComboboxEx, DateTime, DialogBox,
+Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
+RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
+Timer, Toolbar, Tooltip(*), TreeView, UpDown, Window
+=END_APPLY
+
+================================================================================
+BackColor( [COLOR] )
+
+Sets the background color of the RichEdit control; if no COLOR is
+specified, the background color is reset to the default system color.
+
+=APPLY RichEdit
+
+================================================================================
+BandCount()
+
+Returns the number of bands in the Rebar control.
+
+=APPLY Rebar
+
+================================================================================
+BringWindowToTop()
+
+Brings the window to the foreground.
+
+=APPLY Window, DialogBox
+
+================================================================================
+BrowseForFolder( OPTIONS )
+
+Displays the standard "Browse For Folder" dialog box.
+Returns the selected item's name, or undef if no item was selected
+or an error occurred.
+
+Note that BrowseForFolder must be called as a standalone function, not as
+a method.
+
+Example:
+
+	$folder = Win32::GUI::BrowseForFolder(
+		-root => "C:\\Program Files",
+		-includefiles => 1,
+	);
+
+=OPTIONS 
+-computeronly, -domainonly, -driveonly, -editbox, -folderonly,
+-includefiles, -owner, -printeronly, -root, -title
+=END_OPTIONS
+
+
+================================================================================
+Caption( [TEXT] )
+
+=AKA Text().
+
+================================================================================
+ChangeCursor( CURSOR )
+
+Changes the default cursor for a window to CURSOR (a Win32::GUI::Cursor
+object). Returns the handle of the previous default cursor.
+
+=APPLY
+Animation, Button, Checkbox, Class, Combobox, ComboboxEx, DateTime, DialogBox,
+Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
+RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
+Toolbar, TreeView, UpDown, Window
+=END_APPLY
+
+================================================================================
+ChangeIcon( ICON )
+
+Changes the default icon for a window to ICON (a Win32::GUI::Icon object). 
+Returns the handle of the previous default icon. 
+
+=APPLY Window, DialogBox
+
+================================================================================
+ChangeSmallIcon( ICON )
+
+Changes the default small icon for a window to ICON (a Win32::GUI::Icon object). 
+Returns the handle of the previous default small icon. 
+
+=APPLY Window, DialogBox
+
+================================================================================
+Clear()
+
+=AKA Reset().
+
+================================================================================
+ClipCursor( [LEFT, TOP, RIGHT, BOTTOM] )
+
+Confines the cursor to the specified screen rectangle.
+Call it without parameters to release the cursor.
+Returns nonzero on success, zero on failure.
+
+================================================================================
+Close()
+
+Closes the opened AVI file.
+
+=SEE_ALSO Open()
+
+=APPLY Animation
+
+================================================================================
+CloseWindow()
+
+Minimizes a window.
+
+=APPLY Window, DialogBox
+
+================================================================================
+CommDlgExtendedError()
+
+Returns the last common dialog library error code. 
+
+================================================================================
+Count()
+
+Returns the number of items in the control.
+
+=APPLY Listbox, Combobox
+
+================================================================================
+DeleteBand()
+
+Deletes the zero-based INDEX band from the Rebar.
+
+=APPLY Rebar
+
+================================================================================
+Dialog()
+
+Enter the GUI dialog phase: the script halts, the user can interact
+with the created windows and events subroutines are triggered
+as necessary; note that this function must be called
+without ANY parameter or instantiation (eg. don't call it as method
+of a created object):
+
+    Win32::GUI::Dialog(); # correct
+    $Window->Dialog();    # !!!WRONG!!!
+
+
+================================================================================
+Disable()
+
+Disables a window. 
+
+=SEE_ALSO Enable(), IsEnabled()
+
+=APPLY
+Animation, Button, Checkbox, Class, Combobox, ComboboxEx, DateTime, DialogBox,
+Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
+RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
+Toolbar, TreeView, UpDown, Window
+=END_APPLY
+
+================================================================================
+DoEvents()
+
+Just like Dialog(), but returns when there are no more events to process.
+
+================================================================================
+DrawMenuBar()
+
+Forces redrawing of the menu bar.
+
+=APPLY Window, DialogBox
+
+================================================================================
+Enable( [FLAG] )
+
+Enables a window (or disables it if FLAG is FALSE). 
+
+=SEE_ALSO Disable(), IsEnabled()
+
+=APPLY
+Animation, Button, Checkbox, Class, Combobox, ComboboxEx, DateTime, DialogBox,
+Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
+RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
+Toolbar, TreeView, UpDown, Window
+=END_APPLY
+
+================================================================================
+Expand( NODE, [FLAG] )
+
+Opens a NODE of the TreeView; the optional FLAG parameter can indicate 
+different operations:
+
+    1 expand (this is the default)
+    2 collapse
+    3 toggle (expand if it was collapsed and collapse if it was expanded)
+
+=APPLY TreeView
+
+================================================================================
+FindWindow( CLASSNAME, TITLE )
+
+Returns the handle of the window whose class name and window title match the 
+specified strings; both strings can be empty. Note that the function does 
+not search child windows, only top level windows. If no matching windows 
+is found, the return value is zero. 
+
+================================================================================
+GetActiveWindow()
+
+Returns the handle of the active window. 
+
+================================================================================
+GetClassName()
+
+Returns the classname of the specified window, or undef on errors.
+
+=APPLY
+Animation, Button, Checkbox, Class, Combobox, ComboboxEx, DateTime, DialogBox,
+Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
+RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
+Toolbar, TreeView, UpDown, Window
+=END_APPLY
+
+================================================================================
+GetClientRect()
+
+Returns a four elements array defining the windows client area rectangle 
+(left, top, right, bottom) or undef on errors. 
+
+=APPLY
+Animation, Button, Checkbox, Class, Combobox, ComboboxEx, DateTime, DialogBox,
+Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
+RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
+Toolbar, TreeView, UpDown, Window
+=END_APPLY
+
+================================================================================
+GetCursor()
+
+Returns the handle of the current cursor. 
+
+================================================================================
+GetCursorPos()
+
+Returns a two elements array containing the x and y position of the cursor, 
+or undef on errors. 
+
+================================================================================
+GetFocus()
+
+Returns the handle of the window that has the keyboard focus. 
+
+================================================================================
+GetFont(FONT)
+
+Gets the font of the window (returns an handle; use 
+
+
+  $Font = $W->GetFont();
+  %details = Win32::GUI::Font::Info( $Font );
+
+to get font details). 
+
+=APPLY
+Animation, Button, Checkbox, Combobox, ComboboxEx, DateTime, DialogBox,
+Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
+RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
+Toolbar, TreeView, UpDown, Window
+=END_APPLY
+
+================================================================================
+GetFontName()
+
+Returns the name of the font used in the window.
+
+=APPLY
+Animation, Button, Checkbox, Combobox, ComboboxEx, DateTime, DialogBox,
+Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
+RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
+Toolbar, TreeView, UpDown, Window
+=END_APPLY
+
+================================================================================
+GetMenu()
+
+Returns the handle of the menu associated with the window (note: the handle,
+not the Win32::GUI::Menu object).
+
+=APPLY Window, DialogBox
+
+
+================================================================================
+GetMessage( [MIN, MAX] )
+
+Retrieves a message sent to the window, optionally considering only messages 
+identifiers in the range MIN..MAX; if a message is found, the function returns 
+a 7 elements array containing: 
+
+=over 4
+
+=item * the result code of the message
+
+=item * the message identifier
+
+=item * the wParam argument
+
+=item * the lParam argument
+
+=item * the time when message occurred
+
+=item * the x coordinate at which message occurred
+
+=item * the y coordinate at which message occurred
+
+=back
+
+If the result code of the message was -1 the function returns undef. 
+Note that this function should not be normally used unless you know very 
+well what you're doing. 
+
+================================================================================
+GetOpenFileName( OPTIONS )
+
+
+Displays the standard 'Open File' dialog box; the return value is the
+name of the choosen file or undef on errors.
+
+=OPTIONS -directory, -file, -filter, -owner, -title
+
+================================================================================
+GetPerlWindow()
+
+Returns the handle of the DOS Prompt window your perl script
+is running in; if called in an array context, returns the
+handle and the HINSTANCE of your perl process.
+
+Example:
+
+	$DosPrompt = Win32::GUI::GetPerlWindow();
+	Win32::GUI::Hide( $DosPrompt );
+
+	# your program goes here...
+
+	Win32::GUI::Show( $DosPrompt );
+
+================================================================================
+GetStockObject( OBJECT )
+
+Returns the handle of the specified predefined system object (pen,
+brush or font). OBJECT can have one of the following values:
+
+	 0	WHITE_BRUSH
+	 1	GRAY_BRUSH
+	 2	LTGRAY_BRUSH
+	 3	DKGRAY_BRUSH
+	 4	BLACK_BRUSH
+	 5	NULL_BRUSH (also HOLLOW_BRUSH)
+	 6	WHITE_PEN
+	 7	BLACK_PEN
+	 8	NULL_PEN
+	10	OEM_FIXED_FONT
+	11	ANSI_FIXED_FONT
+	12	ANSI_VAR_FONT
+	13	SYSTEM_FONT
+	14	DEVICE_DEFAULT_FONT
+	15	DEFAULT_PALETTE
+	16	SYSTEM_FIXED_FONT
+	17	DEFAULT_GUI_FONT
+
+The returned handle can be referenced as if it was a Win32::GUI
+object of the corresponding type (eg. a Win32::GUI::Brush or 
+Win32::GUI::Font), but note that it is not blessed, so you can't 
+directly invoke methods on it:
+
+    $Font = Win32::GUI::GetStockObject(17);    # DEFAULT_GUI_FONT
+    print $Font->GetMetrics();                 # !!!WRONG!!!
+    print Win32::GUI::Font::GetMetrics($Font); # correct
+    $Window->SetFont($Font);                   # correct
+
+================================================================================
+HitTest( X, Y )
+
+Checks if the specified point in the control area is occupied by an item;
+it returns the identifier of the found item or zero if none was found.
+If called in an array context, it returns an additional value containing
+more info about the position of the specified point [TBD].
+
+=APPLY ListView, TreeView
+
+================================================================================
+Indent( [VALUE] )
+
+Gets or sets the indentation width, in pixels, between parents and child
+nodes; if the VALUE is less than the system-defined minimum, it is set to
+the system-defined minimum.
+
+=APPLY TreeView
+
+
+================================================================================
+InsertBand( OPTIONS )
+
+Inserts a new band in the Rebar control.
+
+    #   -index => position or -1 to add it at the end, default -1
+    #   -image => index of an image from the associated ImageList
+    #   -bitmap => Win32::GUI::Bitmap object
+    #   -child => child control
+    #   -foreground => COLOR
+    #   -background  => COLOR
+    #   -width => pixels
+    #   -minwidth => pixels
+    #   -minheight => pixels
+    #   -text => string
+
+=OPTIONS
+-index, -image, -bitmap, -child, -foreground, -background, -width,
+-minwidth, -minheight, -text
+=END_OPTIONS
+
+=APPLY Rebar
+
+================================================================================
+Interval( [ELAPSE] )
+
+Changes the timeout value of the Timer to ELAPSE milliseconds, or returns
+the current timeout value if no parameter is specified.
+If ELAPSE is 0, the Timer is disabled; can also be used to resume a Timer 
+after a Kill().
+
+=SEE_ALSO Kill()
+
+=APPLY Timer
+
+================================================================================
+InvertRect( LEFT, TOP, RIGHT, BOTTOM )
+
+Inverts the content of the rectangle from LEFT, TOP to RIGHT, BOTTOM.
+Returns nonzero if succesful, zero on errors.
+
+=APPLY DC
+
+================================================================================
+IsEnabled()
+
+Returns TRUE if the window is enabled, FALSE otherwise.
+
+=APPLY
+Animation, Button, Checkbox, Combobox, ComboboxEx, DateTime, DialogBox,
+Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
+RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
+Toolbar, TreeView, UpDown, Window
+=END_APPLY
+
+================================================================================
+IsIconic()
+
+Returns TRUE if the window is minimized, FALSE otherwise.
+
+=APPLY Window, DialogBox
+
+================================================================================
+IsVisible()
+
+Returns TRUE if the window is visible, FALSE otherwise.
+
+=APPLY
+Animation, Button, Checkbox, Combobox, ComboboxEx, DateTime, DialogBox,
+Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
+RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
+Toolbar, TreeView, UpDown, Window
+=END_APPLY
+
+================================================================================
+IsWindow()
+
+Returns TRUE if the window is a window, FALSE otherwise.
+
+=APPLY
+Animation, Button, Checkbox, Combobox, ComboboxEx, DateTime, DialogBox,
+Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
+RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
+Toolbar, TreeView, UpDown, Window
+=END_APPLY
+
+================================================================================
+IsZoomed()
+
+Returns TRUE if the window is maximized, FALSE otherwise.
+
+=APPLY Window, DialogBox
+
+================================================================================
+Kill()
+
+Disables the Timer.
+
+=SEE_ALSO Interval()
+
+=APPLY Timer
+
+================================================================================
+ListIndex()
+
+=AKA SelectedItem()
+
+================================================================================
+Load( FILENAME, [FORMAT] )
+
+Loads a file named FILENAME into the RichEdit control.
+By default the file is a RTF (Rich Text Format) file; if you want to load
+a plain text file, you can set FORMAT to 1.
+
+=APPLY RichEdit
+
+================================================================================
+MaxLength( [CHARS] )
+
+Limits the number of characters that the Textfield accept to CHARS,
+or returns the current limit if no argument is given.
+To remove the limit (eg. set it to the maximum allowed which is 32k
+for a single-line Textfield and 64k for a multiline one) set CHARS
+to 0.
+
+=APPLY Textfield, RichEdit
+
+================================================================================
+Minimize()
+
+=AKA CloseWindow()
+
+================================================================================
+Move( X, Y )
+
+Moves the window to the specified position.
+
+=APPLY
+Animation, Button, Checkbox, Combobox, ComboboxEx, DateTime, DialogBox,
+Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
+RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
+Toolbar, TreeView, UpDown, Window
+=END_APPLY
+
+================================================================================
+Open( FILE )
+
+Opens the specified AVI file in the Animation control;
+note that the AVI file must not contain sound data.
+
+=SEE_ALSO Close()
+
+=APPLY Animation
+
+================================================================================
+OpenIcon()
+
+Restores a minimized window.
+
+=APPLY Window, DialogBox
+
+================================================================================
+Play( [FROM], [TO], [REPEAT] )
+
+Plays the animation (eventually from the FROM frame to the TO frame)
+looping it REPEAT times.
+Defaults are FROM 0 (the first frame) to -1 (the last frame)
+and REPEAT -1 (loop forever).
+
+=APPLY Animation
+
+================================================================================
+Rectangle( LEFT, TOP, RIGHT, BOTTOM )
+
+Draws a rectangle from LEFT, TOP to RIGHT, BOTTOM; the rectangle is
+outlined with the current pen and filled with the current brush.
+Returns nonzero if succesful, zero on errors.
+
+=APPLY DC
+
+================================================================================
+Reset()
+
+Deletes the content of the control.
+
+=APPLY Listbox, Combobox
+
+================================================================================
+Restore()
+
+=AKA OpenIcon()
+
+================================================================================
+RowCount()
+
+Returns the number of rows in the Rebar control.
+
+=APPLY Rebar
+
+================================================================================
+Save( FILENAME, [FORMAT] )
+
+Saves the content of the RichEdit control in a file named FILENAME.
+By default the file is a RTF (Rich Text Format) file; if you want to save
+in a plain text file, you can set FORMAT to 1.
+
+=APPLY RichEdit
+
+================================================================================
+ScaleHeight()
+
+Returns the windows client area height.
+
+=SEE_ALSO ScaleWidth()
+
+=APPLY
+Animation, Button, Checkbox, Combobox, ComboboxEx, DateTime, DialogBox,
+Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
+RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
+Timer, Toolbar, TreeView, UpDown, Window
+=END_APPLY
+
+================================================================================
+ScaleWidth()
+
+Returns the windows client area width.
+
+=SEE_ALSO ScaleHeight()
+
+=APPLY
+Animation, Button, Checkbox, Combobox, ComboboxEx, DateTime, DialogBox,
+Graphic, Groupbox, Header, Label, ListView, Listbox, ProgressBar,
+RadioButton, Rebar, RichEdit, Slider, Splitter, StatusBar, TabStrip, Textfield, 
+Timer, Toolbar, TreeView, UpDown, Window
+=END_APPLY
+
+================================================================================
+Seek( FRAME )
+
+Positions the AVI file to the specified FRAME.
+
+=APPLY Animation
+
+================================================================================
+SelectAll()
+
+Selects all the text.
+
+=APPLY Textfield, RichEdit
+
+================================================================================
+SelectedItem()
+
+Returns the zero-based index of the currently selected item, or -1 if
+no item is selected.
+
+=APPLY Listbox, Combobox
+
+================================================================================
+SetCursor( CURSOR )
+
+Draws the specified CURSOR (a Win32::GUI::Cursor object). Returns the
+handle of the previously displayed cursor. Note that the cursor will
+change back to the default one as soon as the mouse moves or a
+system command is performed. To change the cursor stablily, use ChangeCursor()
+instead.
+
+=SEE_ALSO ChangeCursor()
+
+
+================================================================================
+SetRange( [MIN], MAX )
+
+Sets the range of values (from MIN to MAX) for the control; if MIN
+is not specified, it defaults to 0.
+
+=APPLY ProgressBar
+
+================================================================================
+Stop()
+
+Stops the animation currently playing.
+
+=SEE_ALSO Play()
+
+=APPLY Animation
+
+
+================================================================================
+Text( [TEXT] )
+
+Gets or sets the text of a window. 
+
+=APPLY
+Button, Checkbox, Combobox, ComboboxEx, DateTime, DialogBox,
+Groupbox, Header, Label, Listbox, RadioButton, 
+RichEdit, StatusBar, Textfield, Toolbar, UpDown, Window
+=END_APPLY
+
+
+================================================================================
+TextOut( X, Y, TEXT )
+
+Draws the specified TEXT string at X, Y, using the currently selected font.
+Returns nonzero if succesful, zero on errors.
+
+=APPLY DC
+
+================================================================================
+View( [MODE] )
+
+Gets or sets the viewing mode of the ListView control; the returned or given 
+MODE can have one of the following values:
+
+    0  big icons
+    1  details
+    2  small icons
+    3  list
+
+=APPLY ListView
