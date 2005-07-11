@@ -2,7 +2,7 @@
     ###########################################################################
     # Win32::GUI Mutiple Document Interface
     #
-    # $Id: MDI.xs,v 1.2 2004/04/30 18:05:56 lrocher Exp $
+    # $Id: MDI.xs,v 1.3 2005/06/26 16:40:59 robertemay Exp $
     #
     ###########################################################################
     */
@@ -257,6 +257,7 @@ MDIChild_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
          * SB_THUMBTRACK, SB_TOP, SB_LEFT, SB_BOTTOM, SB_RIGHT, SB_ENDSCROLL
          *
          * Related messages: WM_HSCROLL, WM_VSCROLL
+         * (@)APPLIES_TO:Window, DialogBox
          */
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL7, "Scroll",
                              PERLWIN32GUI_ARGTYPE_INT, (uMsg == WM_HSCROLL ? 0 : 1),

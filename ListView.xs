@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::ListView
     #
-    # $Id: ListView.xs,v 1.4 2004/10/01 19:36:57 lrocher Exp $
+    # $Id: ListView.xs,v 1.8 2005/07/10 11:24:29 robertemay Exp $
     #
     ###########################################################################
     */
@@ -60,7 +60,7 @@ ListView_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATES
     } else if BitmaskOptionValueMask("-flatsb",           perlcs->dwFlags,  LVS_EX_FLATSB)
     } else if BitmaskOptionValueMask("-regional",         perlcs->dwFlags,  LVS_EX_REGIONAL)
     } else if BitmaskOptionValueMask("-infotip",          perlcs->dwFlags,  LVS_EX_INFOTIP)
-    } else if BitmaskOptionValueMask("-labeltip",         perlcs->dwFlags,  LVS_EX_LABELTIP)
+    } else if BitmaskOptionValueMask("-labeltip",         perlcs->dwFlags,  LVS_EX_LABELTIP) // Version 5.80
     } else if BitmaskOptionValueMask("-underlinehot",     perlcs->dwFlags,  LVS_EX_UNDERLINEHOT)
     } else if BitmaskOptionValueMask("-underlinecold",    perlcs->dwFlags,  LVS_EX_UNDERLINECOLD)
     } else if BitmaskOptionValueMask("-multiworkareas",   perlcs->dwFlags,  LVS_EX_MULTIWORKAREAS)
@@ -80,7 +80,7 @@ ListView_onPostCreate(NOTXSPROC HWND myhandle, LPPERLWIN32GUI_CREATESTRUCT perlc
         ListView_SetImageList(myhandle, perlcs->hImageList, LVSIL_SMALL);
     }
     if(perlcs->clrBackground != CLR_INVALID) {
-        SendMessage(myhandle, LVM_SETBKCOLOR, (WPARAM) 0, (LPARAM) perlcs->clrBackground);
+        SendMessage((HWND)myhandle, LVM_SETBKCOLOR, (WPARAM) 0, (LPARAM) perlcs->clrBackground);
         perlcs->clrBackground = CLR_INVALID;  // Don't store  
     }
 }
@@ -97,6 +97,7 @@ ListView_onParseEvent(NOTXSPROC char *name, int* eventID) {
     else if Parse_Event("ColumnClick",    PERLWIN32GUI_NEM_CONTROL5)
     else if Parse_Event("BeginLabelEdit", PERLWIN32GUI_NEM_CONTROL6)
     else if Parse_Event("EndLabelEdit",   PERLWIN32GUI_NEM_CONTROL7)
+    else if Parse_Event("BeginDrag",      PERLWIN32GUI_NEM_CONTROL8)
     else if Parse_Event("KeyDown",        PERLWIN32GUI_NEM_KEYDOWN)
     else retval = FALSE;
 
@@ -117,7 +118,16 @@ ListView_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
         switch(lv_notify->hdr.code) {
 
         // TODO :  case LVN_INSERTITEM :
-
+        case LVN_BEGINDRAG:
+        /*
+         * (@)EVENT:BeginDrag(ITEM)
+         * Notifies a list-view control that a drag-and-drop operation involving the left mouse 
+         * button is being initiated. Passes the item being dragged.
+         * (@)APPLIES_TO:ListView
+         */        
+          PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL8, "BeginDrag",
+                       PERLWIN32GUI_ARGTYPE_LONG, (LONG) lv_notify->iItem,-1);
+        break;
         /*
          * (@)EVENT:ItemChanging(ITEM, NEWSTATE, OLDSTATE, CHANGED)
          * Sent when the item is about to change state.
@@ -320,6 +330,25 @@ OUTPUT:
 
     # TODO : ListView_CreateDragImage
 
+    ###########################################################################
+    # (@)METHOD:CreateDragImage(index, xcor, ycor)
+    # Creates a transparent version of an item image. The xcor and ycor are the 
+    # initial location of the  upper-left corner of the image.
+HIMAGELIST
+CreateDragImage(handle, index, xcor, ycor)
+    HWND handle
+    int index
+    int xcor
+    int ycor
+PREINIT:
+    POINT pt;
+CODE:
+    pt.x=xcor;
+    pt.y=ycor;
+    RETVAL = (HIMAGELIST) ListView_CreateDragImage(handle, index, &pt);
+OUTPUT:
+    RETVAL
+    
     ###########################################################################
     # (@)METHOD:DeleteAllItems()
     # (@)METHOD:Clear()
@@ -853,7 +882,7 @@ OUTPUT:
     # (@)METHOD:GetOrigin()
     # Retrieves the current view origin for a ListView.
 void
-GetOrigin(handle,index)
+GetOrigin(handle)
     HWND handle
 PREINIT:
     POINT pt;
@@ -1367,6 +1396,13 @@ OUTPUT:
     ###########################################################################
     # (@)METHOD:SetImageList(IMAGELIST, [TYPE=LVSIL_NORMAL])
     # Assigns an image list to a ListView.
+    #
+    #Type of image list. This parameter can be one of the following values: 
+    #
+    #  LVSIL_NORMAL (0) Image list with large icons.
+    #  LVSIL_SMALL  (1) Image list with small icons.
+    #  LVSIL_STATE  (2) Image list with state images.
+    #
 HIMAGELIST
 SetImageList(handle,imagelist,type=LVSIL_NORMAL)
     HWND handle
@@ -1528,7 +1564,11 @@ SetToolTips(handle,tooltip)
     HWND handle
     HWND tooltip
 CODE:
-    RETVAL = ListView_SetToolTips(handle, tooltip);
+    if (handle && tooltip) {
+			RETVAL = ListView_SetToolTips(handle, (LPARAM)(tooltip));
+		} else {
+			RETVAL = NULL;
+		}
 OUTPUT:
     RETVAL
 

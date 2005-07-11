@@ -1,4 +1,10 @@
-=head1 Win32::GUI Tutorial - Part 3 - Dialog Boxes and Main Windows
+=for comment $Id: Part3.pod,v 1.1 2005/06/26 16:41:01 robertemay Exp $
+
+=head1 NAME
+
+Win32::GUI::Tutorial::Part3 - Dialog Boxes and Main Windows
+
+=head1 Win32::GUI Tutorial - Part 3
 
 =head2 What is a Dialog Box?
 
@@ -17,7 +23,7 @@ DialogBox, or who don't want to pay the extra cost. (Actually, there's a
 further reason, which is that a Win32::GUI::DialogBox loses some of the
 flexibility which a Win32::GUI::Window has - this is a limitation of
 Win32::GUI, not of Windows itself, and may go away in a future version - there
-may even be workarounds available already. See below for a more complete
+may even be workarounds available already.) See below for a more complete
 picture.
 
 =head2 Keyboard handling
@@ -35,14 +41,15 @@ options to your controls.
 
 =item Tab and Shift-Tab
 
-To make the tab keys work as expected, you need to add the C<-tabstop =E<gt>
-1> option to your controls. The tab keys move the focus between the controls
-with the C<-tabstop> option set. Other controls will be ignored when tabbing.
+To make the tab keys work as expected, you need to add the
+C<< -tabstop => 1 >> option to your controls. The tab keys move the focus
+between the controls with the C<-tabstop> option set. Other controls will
+be ignored when tabbing.
 
 =item Escape
 
 To make the escape key work as expected, you need to define a button with the
-C<-cancel =E<gt> 1> option. When the user presses the escape key, Windows will
+C<< -cancel => 1 >> option. When the user presses the escape key, Windows will
 translate that action into a C<Click> event on the cancel button. It is normal
 to give this button a caption of C<"Cancel"> and to make its click event
 handler close the window without applying any changes - but this is up to you
@@ -51,10 +58,10 @@ to implement. Windows just fires the relevant event.
 =item Return
 
 To make the return key work as expected, you need to give one of your dialog's
-buttons the C<-default =E<gt> 1> option. When the return key is pressed, it is
+buttons the C<< -default => 1 >> option. When the return key is pressed, it is
 translated into a click event on the default button. The default button is
 also highlighted differently from the other buttons (it has a dark border).
-B<Note:> There is a related option, C<-ok =E<gt> 1>, which has a similar
+B<Note:> There is a related option, C<< -ok => 1 >>, which has a similar
 effect as C<-default>. However, the two seem to conflict in their effects. I
 would recommend that if your default button has the caption C<"OK">, you
 should set both the C<-ok> and C<-default> options. Otherwise, stick with just
@@ -73,21 +80,13 @@ available for controlling its appearance. Specifically
 
 =over 4
 
-=item *
+=item * A DialogBox has no Minimize or Maximize icons.
 
-A DialogBox has no Minimize or Maximize icons.
+=item * A DialogBox has a "?" (help) icon.
 
-=item *
+=item * A DialogBox has a slightly different look.
 
-A DialogBox has a "?" (help) icon.
-
-=item *
-
-A DialogBox has a slightly different look.
-
-=item *
-
-A DialogBox cannot be resized.
+=item * A DialogBox cannot be resized.
 
 =back
 
@@ -96,5 +95,7 @@ and whether you need the user to be able to resize your windows. Otherwise,
 the choice is arbitrary. To switch types, the only change you need to make is
 the name of the constructor you use to create your application's main window.
 
-In the next part, we will cover some further ways in which you can increase
+In the L<next part|Win32::GUI::Tutorial::Part4>, we will cover some further ways in which you can increase
 your application's functionality.
+
+__W32G_POSTAMBLE__

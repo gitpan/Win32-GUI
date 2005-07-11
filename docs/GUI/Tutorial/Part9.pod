@@ -1,4 +1,10 @@
-=head1 Win32::GUI Tutorial - Part 9 - Some peripheral issues
+=for comment $Id: Part9.pod,v 1.1 2005/06/26 16:41:01 robertemay Exp $
+
+=head1 NAME
+
+Win32::GUI::Tutorial::Part9 - Some peripheral issues
+
+=head1 Win32::GUI Tutorial - Part 9
 
 =head2 What about that console window?
 
@@ -6,7 +12,7 @@ One thing I have glossed over in all of the above is precisely how we run our
 Win32::GUI Perl program. There are a number of possibilities you might have
 used.
 
-=over 4
+=over
 
 =item *
 
@@ -40,7 +46,7 @@ to do this is
     editbin /subsystem:windows perlw.exe
 
 There is also an all-perl way to achieve the same result on Jenda's site:
-http://jenda.krynicky.cz/perl/GUIscripts.html
+L<http://jenda.krynicky.cz/perl/GUIscripts.html>
 
 If you can't (or don't want to) create a perlw.exe, then a compromise is to hide 
 the console window while your application is running. This is reasonable for the 
@@ -62,3 +68,5 @@ To do this, we need to put
 
 just before our program terminates. After the Win32::GUI::Dialog() call is
 usually the right place.
+
+__W32G_POSTAMBLE__

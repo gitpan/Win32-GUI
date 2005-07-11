@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Textfield
     #
-    # $Id: Textfield.xs,v 1.5 2004/09/29 21:18:44 lrocher Exp $
+    # $Id: Textfield.xs,v 1.6 2005/06/26 16:40:59 robertemay Exp $
     #
     ###########################################################################
     */
@@ -370,9 +370,9 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:GetSel()
-    #  
     # (@)METHOD:Selection()
-    # See GetSel.
+    # Returns a 2 item list giving the index of the start and end of the current
+    # selection
     
 void
 GetSel(handle)

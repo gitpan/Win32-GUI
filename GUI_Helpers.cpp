@@ -2,7 +2,7 @@
     ###########################################################################
     # helper routines
     #
-    # $Id: GUI_Helpers.cpp,v 1.10 2004/09/29 21:18:44 lrocher Exp $
+    # $Id: GUI_Helpers.cpp,v 1.13 2005/06/30 22:36:21 robertemay Exp $
     #
     ###########################################################################
         */
@@ -65,7 +65,7 @@ void Perlud_Free(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud) {
 
     // Check perlpud
     if (perlud != NULL) {
-        
+
         // printf ("Free Perlud = %s\n", perlud->szWindowName);
         // Free event hash
         if (perlud->hvEvents != NULL) {
@@ -101,7 +101,7 @@ void Perlud_Free(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud) {
 SV *
 SV_SELF_FROM_WINDOW(HWND hwnd) {
     LPPERLWIN32GUI_USERDATA perlud;
-    
+
     perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(hwnd, GWL_USERDATA);
     if( ValidUserData(perlud) ) {
         return perlud->svSelf;
@@ -215,7 +215,7 @@ WNDPROC GetDefClassProc (NOTXSPROC const char *Name) {
      */
 BOOL SetDefClassProc (NOTXSPROC const char *Name, WNDPROC DefClassProc) {
 
-    HV* hash    = perl_get_hv("Win32::GUI::DefClassProc", FALSE);    
+    HV* hash    = perl_get_hv("Win32::GUI::DefClassProc", FALSE);
     return (hv_store_mg(NOTXSCALL hash, (char*) Name, strlen(Name), newSViv((LONG) DefClassProc), 0) != NULL);
 }
 
@@ -233,7 +233,7 @@ COLORREF SvCOLORREF(NOTXSPROC SV* c) {
     int b;
     char html_color[8];
     char html_color_component[3];
-    
+
     ZeroMemory(html_color, 8);
     ZeroMemory(html_color_component, 3);
     r = 0;
@@ -287,14 +287,14 @@ HWND CreateTooltip(
     HWND hTooltip;
     HWND hParent;
     SV** t;
-    
+
     t = hv_fetch_mg(NOTXSCALL parent, "-handle", 7, 0);
     if(t != NULL) {
         hParent = (HWND) SvIV(*t);
     } else {
         return NULL;
     }
-    
+
     hTooltip = CreateWindowEx(
         0, TOOLTIPS_CLASS, NULL,
         WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP,
@@ -410,7 +410,7 @@ SV* CreateObjectWithHandle(NOTXSPROC char* class_name, HWND handle) {
     SV* cv = sv_2mortal(newRV((SV*)hv));
     sv_bless(cv, gv_stashpv(class_name, 0));
     SvREFCNT_dec(hv);
-    return cv; 
+    return cv;
 }
 
     /*
@@ -595,7 +595,7 @@ void DrawSplitter(NOTXSPROC HWND hwnd) {
     HDC hdc;
     HBRUSH oldBrush;
     HPEN oldPen;
-    
+
     hdc = GetDC(hwnd);
     oldBrush = (HBRUSH) SelectObject(hdc, GetStockObject(GRAY_BRUSH));
     oldPen   = (HPEN)   SelectObject(hdc, GetStockObject(NULL_PEN));
@@ -611,20 +611,14 @@ void DrawSplitter(NOTXSPROC HWND hwnd) {
      # (@)INTERNAL:EnumMyWindowsProc(hwnd, lparam)
      */
 BOOL CALLBACK EnumMyWindowsProc(HWND hwnd, LPARAM lparam) {
-
+    dTHX;       /* fetch context */
     AV* ary;
     DWORD pid;
-    DWORD style;
-
-    PERL_OBJECT_FROM_WINDOW(hwnd);
 
     ary = (AV*) lparam;
     GetWindowThreadProcessId(hwnd, &pid);
     if(pid == GetCurrentProcessId()) {
-        style = (DWORD) GetWindowLong(hwnd, GWL_STYLE);
-        if(!(style & GW_CHILD)) {
-            av_push(ary, newSViv((long)hwnd));
-        }
+			av_push(ary, newSViv((long)hwnd));
     }
     return TRUE;
 }
@@ -669,9 +663,9 @@ BOOL CALLBACK FindChildWindowsProc(HWND hwnd, LPARAM lParam) {
     st_FindChildWindow * st = (st_FindChildWindow*) lParam;
 
     LPPERLWIN32GUI_USERDATA perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(hwnd, GWL_USERDATA);
-    if( !ValidUserData(perlud) ) 
+    if( !ValidUserData(perlud) )
         return TRUE;
-    
+
     if (strcmp (perlud->szWindowName, st->Name) == 0) {
         st->perlchild = perlud;
         return FALSE;
@@ -680,3 +674,85 @@ BOOL CALLBACK FindChildWindowsProc(HWND hwnd, LPARAM lParam) {
     return TRUE;
 }
 
+    /*
+     ##########################################################################
+     # (@)INTERNAL:WindowsHookMsgProc(code, wparam, lparam)
+     # Callback set by SetWindowsHookEx in TrackPopupMenu()
+     */
+LRESULT CALLBACK WindowsHookMsgProc(int code, WPARAM wParam, LPARAM lParam) {
+
+  SV* perlsub;
+  SV** arrayref;
+  SV** arrayval;
+  AV* array;
+  MSG* pmsg;
+  LPPERLWIN32GUI_USERDATA perlud;
+  I32 count;
+  int PerlResult;
+  int i;
+
+  if(code == MSGF_MENU) {
+    dTHX;       /* fetch context */
+
+    PerlResult = 1;
+    pmsg = (MSG *)lParam;
+    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(pmsg->hwnd, GWL_USERDATA);
+
+    if(ValidUserData(perlud)) {
+
+      arrayref = av_fetch(perlud->avHooks, WM_TRACKPOPUP_MSGHOOK, 0);
+      if(arrayref != NULL) {
+        array = (AV*) SvRV(*arrayref);
+        SvREFCNT_inc((SV*) array);
+        for(i = 0; i <= (int) av_len(array); i++) {
+          arrayval = av_fetch(array,(I32) i,0);
+
+          if(arrayval != NULL) {
+            perlsub = *arrayval;
+            SvREFCNT_inc(perlsub);
+            dSP;
+            ENTER;
+            SAVETMPS;
+            PUSHMARK(SP);
+              XPUSHs(perlud->svSelf);
+              XPUSHs(sv_2mortal(newSViv(pmsg->message)));
+              XPUSHs(sv_2mortal(newSViv(pmsg->wParam)));
+              XPUSHs(sv_2mortal(newSViv(pmsg->lParam)));
+            PUTBACK;
+
+            count = call_sv(perlsub, G_ARRAY|G_EVAL);
+            SPAGAIN;
+
+            if(SvTRUE(ERRSV)) {
+              ProcessEventError(NOTXSCALL "TrackPopupMenu(WindowsHookMsgProc)", &PerlResult);
+            } else {
+              if(count > 0) { PerlResult = POPi; }
+            }
+
+            PUTBACK;
+            FREETMPS;
+            LEAVE;
+            SvREFCNT_dec(perlsub);
+          }
+        }
+        SvREFCNT_dec((SV*) array);
+
+        // PerlResult = 0: do not pass event to rest of chain or target windows procedure
+        // PerlResult = -1: as 0, and terminate application
+        // PerlResult = anything else, pass event on
+        if(PerlResult == 0) {
+          return 1;  // stops message being passed along hook chain and to target windows procedure
+        } else if (PerlResult == -1) {
+          //send a WM_CANCELMODE to get menu to close
+          SendMessage(pmsg->hwnd, WM_CANCELMODE, 0, 0);
+          //post a message to get the main loop to exit
+          PostMessage(pmsg->hwnd, WM_EXITLOOP, (WPARAM) -1, 0);
+          return 1;  // stops message being passed along hook chain and to target windows procedure
+        }
+      }
+    }
+  }
+
+  // pass message along hook chain
+  return CallNextHookEx(0, code, wParam, lParam);
+}

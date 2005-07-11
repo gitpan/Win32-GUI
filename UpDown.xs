@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::UpDown
     #
-    # $Id: UpDown.xs,v 1.2 2004/03/28 19:16:48 lrocher Exp $
+    # $Id: UpDown.xs,v 1.4 2005/06/26 16:41:00 robertemay Exp $
     #
     ###########################################################################
     */
@@ -109,14 +109,16 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:GetBuddy()
-HV*
+    # Returns the handle of the buddy.
+HWND
 GetBuddy(handle)
     HWND handle
 PREINIT:
     HWND oldbuddy;
 CODE:
     oldbuddy = (HWND) SendMessage(handle, UDM_GETBUDDY, 0, 0);
-    RETVAL = (HV*) GetWindowLong(oldbuddy, GWL_USERDATA);
+    //RETVAL = (HV*) GetWindowLong(oldbuddy, GWL_USERDATA);
+    RETVAL = oldbuddy;
 OUTPUT:
     RETVAL
 
@@ -182,8 +184,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:SetBuddy(OBJECT)
-    # Sets the buddy window for the UpDown control.
-HV*
+    # Sets the buddy window for the UpDown control. Returns the handle of the previous buddy.
+HWND
 SetBuddy(handle,buddy)
     HWND handle
     HWND buddy
@@ -191,12 +193,12 @@ PREINIT:
     HWND oldbuddy;
 CODE:
     oldbuddy = (HWND) SendMessage(handle, UDM_SETBUDDY, (WPARAM) buddy, 0);
-    RETVAL = (HV*) GetWindowLong(oldbuddy, GWL_USERDATA);
+    RETVAL = oldbuddy;
 OUTPUT:
     RETVAL
 
     ###########################################################################
-    # (@)METHOD:Pos([VALUE])
+    # (@)METHOD:SetPos(VALUE)
     # Sets the current position of the UpDown control.
 LRESULT
 SetPos(handle,pos)
@@ -257,8 +259,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:Buddy([OBJECT])
-    # Gets or sets the buddy window for the UpDown control.
-HV*
+    # Gets or sets the buddy window for the UpDown control. Returns the handle of the buddy.
+HWND
 Buddy(handle,buddy=NULL)
     HWND handle
     HWND buddy
@@ -267,11 +269,12 @@ PREINIT:
 CODE:
     if(items == 1) {
         oldbuddy = (HWND) SendMessage(handle, UDM_GETBUDDY, 0, 0);
-        RETVAL = (HV*) GetWindowLong(oldbuddy, GWL_USERDATA);
+        //RETVAL = (HV*) GetWindowLong(oldbuddy, GWL_USERDATA);
     } else {
         oldbuddy = (HWND) SendMessage(handle, UDM_SETBUDDY, (WPARAM) buddy, 0);
-        RETVAL = (HV*) GetWindowLong(oldbuddy, GWL_USERDATA);
+        //RETVAL = (HV*) GetWindowLong(oldbuddy, GWL_USERDATA);
     }
+    RETVAL = oldbuddy;
 OUTPUT:
     RETVAL
 

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------
-// $Id: GUI.h,v 1.11 2004/05/08 17:31:21 lrocher Exp $
+// $Id: GUI.h,v 1.16 2005/07/01 23:46:27 robertemay Exp $
 // --------------------------------------------------------------------
 // #### Uncomment the next two lines (in increasing verbose order)
 // #### for debugging info
@@ -8,11 +8,10 @@
 
 #define  WIN32_LEAN_AND_MEAN
 #define _WIN32_IE 0x0501
-#define _WIN32_WINNT 0x0400
+// #define _WIN32_WINNT 0x0400
 #undef NOTRACKMOUSEEVENT
 #include <stdarg.h>
 #include <windows.h>
-#include <winuser.h>
 #include <commctrl.h>
 #include <commdlg.h>
 #include <wtypes.h>
@@ -20,33 +19,44 @@
 #include <shellapi.h>
 #include <shlobj.h>
 
-// #include <ctl3d.h>
-
 #include "resource.h"
 
 #define __TEMP_WORD  WORD   /* perl defines a WORD, yikes! */
 
 #if defined(PERL_OBJECT)
-#define NO_XSLOCKS
+	#define NO_XSLOCKS
 #endif
+
+#ifdef __CYGWIN__
+  #ifdef __cplusplus
+		extern "C"
+	#endif
+  /* This is no strict ANSI definition, and not in newlib */
+	char* itoa (int, char*, int);
+#endif /* __CYGWIN__ */
 
 /*
  * Perl includes
  */
-#if defined(__cplusplus) && !defined(PERL_OBJECT) && !defined(PERL_IMPLICIT_CONTEXT)
+
+/* we need to find out under what conditions we really need this
+ * extern "C" declaration
+ */
+#if defined(__cplusplus) && (( !defined(PERL_OBJECT) && !defined(PERL_IMPLICIT_CONTEXT) ) || defined(__CYGWIN__) )
 extern "C" {
+#define GUI_H_EXTERN_END /* make sure we put a matching end brace */
 #endif
 
 /* we want manage context if possible, See perlguts */
-#if defined(PERL_IMPLICIT_CONTEXT)    
-    #define PERL_NO_GET_CONTEXT
+#if defined(PERL_IMPLICIT_CONTEXT)
+	#define PERL_NO_GET_CONTEXT
 #endif
 
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
 
-#if defined(__cplusplus) && !defined(PERL_OBJECT) && !defined(PERL_IMPLICIT_CONTEXT)
+#ifdef GUI_H_EXTERN_END
 }
 #endif
 
@@ -77,10 +87,10 @@ extern "C" {
 #         define PERLUD_DECLARE struct perl_thread *aTHX
 #       else
 #         define PERLUD_DECLARE PerlInterpreter *aTHX
-#       endif 
+#       endif
 #       define PERLUD_STORE   perlud->aTHX = aTHX;
 #       define PERLUD_FETCH   PERLUD_DECLARE = perlud->aTHX;
-#   else 
+#   else
 #       pragma message( "\n*** Using an implicite Perl context.\n" )
 #       define NOTXSPROC
 #       define NOTXSCALL
@@ -97,6 +107,7 @@ extern "C" {
 
 #define WM_EXITLOOP   (WM_APP+1)    /* custom message to exit from the Dialog() function */
 #define WM_NOTIFYICON (WM_APP+2)    /* custom message to process NotifyIcon events */
+#define WM_TRACKPOPUP_MSGHOOK  (WM_APP + 0x3FFF) /* otherwise unused message to push a callback into the hooks array */
 
 // dwFlags & dwFlagsMask use for Parsing option purpose (Not save in control)
 // Checkbox
@@ -114,7 +125,7 @@ extern "C" {
 #define PERLWIN32GUI_MDIFRAME                           0x0100
 #define PERLWIN32GUI_MDICHILD                           0x0200
 
-// dwPlStyle Control specific 
+// dwPlStyle Control specific
 // Splitter
 #define PERLWIN32GUI_TRACKING                           0x8000
 #define PERLWIN32GUI_HORIZONTAL                         0x4000
@@ -125,11 +136,11 @@ extern "C" {
 // MDIFrame
 #define PERLWIN32GUI_HAVECHILDWINDOW                    0x8000
 
-// dwEventMask 
+// dwEventMask
 // Common Event (All control)
 #define PERLWIN32GUI_NEM_MOUSEMOVE                      0x00000001
 #define PERLWIN32GUI_NEM_MOUSEOUT                       0x00000002
-#define PERLWIN32GUI_NEM_MOUSEOVER                      0x00000004 
+#define PERLWIN32GUI_NEM_MOUSEOVER                      0x00000004
 #define PERLWIN32GUI_NEM_LMOUSEUP                       0x00000008
 #define PERLWIN32GUI_NEM_LMOUSEDOWN                     0x00000010
 #define PERLWIN32GUI_NEM_LMOUSEDBLCLK                   0x00000020
@@ -285,10 +296,10 @@ typedef struct tagPERLWIN32GUI_MENUITEMDATA {
 #define ValidUserData(ptr) (ptr != NULL && ptr->dwSize == sizeof(PERLWIN32GUI_USERDATA))
 #define PERLUD_FROM_WND(hwnd) \
     LPPERLWIN32GUI_USERDATA perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(hwnd, GWL_USERDATA); \
-    if( !ValidUserData(perlud) ) return 0; 
+    if( !ValidUserData(perlud) ) return 0;
 #define PERL_OBJECT_FROM_WINDOW(hwnd) \
         PERLUD_FROM_WND(hwnd) \
-        PERLUD_FETCH      
+        PERLUD_FETCH
 #define HV_SELF_FROM_WINDOW(x) (SV_SELF_FROM_WINDOW(x) ? (HV*)SvRV(SV_SELF_FROM_WINDOW(x)) : NULL)
 #undef WORD
 #define WORD __TEMP_WORD
@@ -401,6 +412,7 @@ BOOL CALLBACK CountMyWindowsProc(HWND hwnd, LPARAM lparam);
 BOOL CALLBACK EnableWindowsProc(HWND hwnd, LPARAM lParam);
 typedef struct { LPPERLWIN32GUI_USERDATA perlchild; char * Name; } st_FindChildWindow;
 BOOL CALLBACK FindChildWindowsProc(HWND hwnd, LPARAM lParam);
+LRESULT CALLBACK WindowsHookMsgProc(int code, WPARAM wParam, LPARAM lParam);
 
 /* GUI_Events.cpp */
 int DoEvent(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, int iEventId, char *Name, ...);
@@ -411,6 +423,7 @@ int DoEvent_Timer (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, int iTimerId, int i
 int DoEvent_NotifyIcon (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, int iNotifyId, char* Name, ...);
 int DoEvent_Paint (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud);
 void DoHook(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wParam, LPARAM lParam, int* PerlResult, int notify = 0);
+BOOL ProcessEventError(NOTXSPROC char *Name, int* PerlResult);
 
 /* GUI_Options.cpp */
 void ParseNEMEvent(NOTXSPROC LPPERLWIN32GUI_CREATESTRUCT perlcs, char *name, SV* event);
@@ -656,8 +669,9 @@ BOOL MonthCal_onParseEvent(NOTXSPROC char *name, int* eventID);
 int  MonthCal_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 // MinGW patch
-#ifdef __MINGW__
+#if defined(__MINGW__) || defined(__CYGWIN__)
   #define WNDPROC_CAST WNDPROC
+  #define LWNDPROC_CAST WNDPROC
   #ifndef HDHITTESTINFO
     #define HDHITTESTINFO HD_HITTESTINFO
   #endif
@@ -725,6 +739,90 @@ int  MonthCal_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPAR
   #endif
   #undef MonthCal_SetRange
   #define MonthCal_SetRange(w,f,st) (BOOL)SNDMSG((w),MCM_SETRANGE,(WPARAM)(f),(LPARAM)(st))
+  #ifndef RBN_CHEVRONPUSHED
+    #define RBN_CHEVRONPUSHED (RBN_FIRST - 10)
+  #endif
+  #ifndef TB_GETSTRING
+    #define TB_GETSTRINGW (WM_USER+91)
+    #define TB_GETSTRINGA (WM_USER+92)
+
+    #ifdef UNICODE
+    # define TB_GETSTRING TB_GETSTRINGW
+    #else
+    # define TB_GETSTRING TB_GETSTRINGA
+    #endif
+  #endif
 #else
   #define WNDPROC_CAST FARPROC
+  #define LWNDPROC_CAST LRESULT (__stdcall *)(HWND, UINT, WPARAM, LPARAM)
 #endif
+
+
+// MSVC6 patches
+#if defined(_MSC_VER) && (_MSC_VER <= 1200) && (WINVER < 0x0500)
+/*
+ * MSVC6 falsely misses these definitions.
+ */
+typedef struct tagWINDOWINFO
+{
+    DWORD cbSize;
+    RECT  rcWindow;
+    RECT  rcClient;
+    DWORD dwStyle;
+    DWORD dwExStyle;
+    DWORD dwOtherStuff;
+    UINT  cxWindowBorders;
+    UINT  cyWindowBorders;
+    ATOM  atomWindowType;
+    WORD  wCreatorVersion;
+} WINDOWINFO, *PWINDOWINFO, *LPWINDOWINFO;
+
+#define WS_ACTIVECAPTION    0x0001
+
+extern "C" BOOL WINAPI
+GetWindowInfo(
+    HWND hwnd,
+    PWINDOWINFO pwi
+);
+
+// These require at least comctl32.dll Version 5.80
+#ifndef LVS_EX_LABELTIP
+	#define LVS_EX_LABELTIP 0x00004000
+#endif /* ndef LVS_EX_LABELTIP */
+
+#ifndef RBN_CHEVRONPUSHED
+	#define RBN_CHEVRONPUSHED (RBN_FIRST - 10)
+#endif
+
+typedef struct tagNMREBARCHEVRON {
+    NMHDR hdr;
+    UINT uBand;
+    UINT wID;
+    LPARAM lParam;
+    RECT rc;
+    LPARAM lParamNM;
+} NMREBARCHEVRON, *LPNMREBARCHEVRON;
+
+/* needed RichEdit 2.0 messages */
+#ifndef EM_GETEDITSTYLE
+	#define EM_SHOWSCROLLBAR	(WM_USER+96)
+	#define EM_SETTYPOGRAPHYOPTIONS	(WM_USER+202)
+	#define EM_GETTYPOGRAPHYOPTIONS	(WM_USER+203)
+	#define EM_SETEDITSTYLE	(WM_USER + 204)
+	#define EM_GETEDITSTYLE	(WM_USER + 205)
+	#define EM_GETSCROLLPOS	(WM_USER+221)
+	#define EM_SETSCROLLPOS	(WM_USER+222)
+	#define EM_SETFONTSIZE	(WM_USER+223)
+	#define EM_GETZOOM	(WM_USER+224)
+	#define EM_SETZOOM	(WM_USER+225)
+#endif
+
+#ifndef TB_GETSTRING
+	#define TB_GETSTRING		(WM_USER+91)
+#endif
+
+#ifndef TTS_BALLOON
+	#define TTS_BALLOON	0x40
+#endif
+
+#endif /* defined(_MSC_VER) && (_MSC_VER <= 1200) && (WINVER < 0x0500) */

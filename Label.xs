@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Label
     #
-    # $Id: Label.xs,v 1.4 2004/04/17 08:34:10 lrocher Exp $
+    # $Id: Label.xs,v 1.5 2005/06/13 17:35:52 robertemay Exp $
     #
     ###########################################################################
     */
@@ -128,7 +128,7 @@ void
 Label_onPostCreate(NOTXSPROC HWND myhandle, LPPERLWIN32GUI_CREATESTRUCT perlcs) {
 
     if(perlcs->hImageList != NULL) {
-        if(perlcs->cs.style & SS_ICON)
+        if((perlcs->cs.style & SS_ICON) == SS_ICON)
             SendMessage(myhandle, STM_SETIMAGE, (WPARAM) IMAGE_ICON, (LPARAM) perlcs->hImageList);
         else
             SendMessage(myhandle, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) perlcs->hImageList);

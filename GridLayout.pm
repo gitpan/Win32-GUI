@@ -1,6 +1,6 @@
 package Win32::GUI::GridLayout;
 
-$VERSION = "0.03";
+$Win32::GUI::GridLayout::VERSION = "0.05";
 
 sub new {
     my($class, $c, $r, $w, $h, $xpad, $ypad) = @_;
@@ -28,6 +28,7 @@ sub apply {
         "xPad"   => $xpad,
         "yPad"   => $ypad,
         "source" => $to,
+        "content" => [],
     };
     bless $r_grid, $class;
     return $r_grid;
@@ -36,18 +37,67 @@ sub apply {
 sub add {
     my($grid, $o, $c, $r, $align) = @_;    
     my @content = @{$grid->{'content'}};
-    my($halign, $valign) = split(/(\s*|\s*,\s*)/, $align);
+    my($halign, $valign) = split(/\s*,\s*|\s+/, $align);
     push(@content, [$o, $c, $r, $halign, $valign] );
-    $grid->{'content'} = [ @content ];
+    $grid->{'content'} = [@content];
 }
 
 sub recalc {
     my($grid) = @_;    
     $grid->{'width'}  = $grid->{'source'}->ScaleWidth();
     $grid->{'height'} = $grid->{'source'}->ScaleHeight();
-    foreach $inside (@{$grid->{'content'}}) {       
-        $widgetWidth  = $inside->[0]->Width();
-        $widgetHeight = $inside->[0]->Height();
+
+    if(ref $grid->{'cols'} eq 'ARRAY') {
+        my @colw = @{$grid->{'cols'}};
+        my @absw = grep(/^\d+$/, @colw);
+        my $absw = 0;
+        map($absw+=$_, @absw);
+        my $relw = int(($grid->{'width'}-$absw)/($#colw-$#absw));
+        for my $i (0..$#colw) {
+            $grid->{'_cols_w'}[$i] = ($colw[$i] eq '*') ? $relw : $colw[$i];
+        }
+    }
+    else {
+        my $relw = int($grid->{'width'}/$grid->{'cols'});
+        for my $i (0..($grid->{'cols'}-1)) {
+            $grid->{'_cols_w'}[$i] = $relw;
+        }
+    }
+
+    if(ref $grid->{'rows'} eq 'ARRAY') {
+        my @rowh = @{$grid->{'rows'}};
+        my @absh = grep(/^\d+$/, @rowh);
+        my $absh = 0;
+        map($absh+=$_, @absh);
+        my $relh = int(($grid->{'height'}-$absh)/($#rowh-$#absh));
+        for my $i (0..$#rowh) {
+            $grid->{'_rows_h'}[$i] = ($rowh[$i] eq '*') ? $relh : $rowh[$i];
+        }
+    }
+    else {
+        my $relh = int($grid->{'height'}/$grid->{'rows'});
+        for my $i (0..($grid->{'rows'}-1)) {
+            $grid->{'_rows_h'}[$i] = $relh;
+        }
+    }
+
+    foreach my $inside (@{$grid->{'content'}}) {       
+        $grid->{'widgetWidth'} = $inside->[0]->Width();
+        $grid->{'widgetHeight'} = $inside->[0]->Height();
+        if($inside->[3] =~ /^j/i) {
+            $inside->[0]->Resize(
+                $grid->col_w($inside->[1]),
+                $inside->[0]->Height,
+            );
+        }
+        
+        if($inside->[4] =~ /^j/i) {
+            $inside->[0]->Resize(
+                $inside->[0]->Width,
+                $grid->row_h($inside->[2]),
+            );
+        }
+        
         $inside->[0]->Move(
             $grid->col($inside->[1], $inside->[3]),
             $grid->row($inside->[2], $inside->[4]),
@@ -61,54 +111,115 @@ sub draw {
     my $DC = $grid->{'source'}->GetDC();
     my $colWidth = int($grid->{'width'} / $grid->{'cols'});
     my $rowHeight = int($grid->{'height'} / $grid->{'rows'});
-    my $i;
-    for $i (0..$grid->{'cols'}) {
-        $DC->MoveTo($i*$colWidth, 0);
-        $DC->LineTo($i*$colWidth, $grid->{'height'});
+    my($i, $s);
+    $s = 0;
+    for my $i (@{$grid->{'_cols_w'}}) {
+        $s += $i;
+        $DC->MoveTo($s, 0);
+        $DC->LineTo($s, $grid->{'height'});
     }
-    for $i (0..$grid->{'rows'}) {
-        $DC->MoveTo(0, $i*$rowHeight);
-        $DC->LineTo($grid->{'width'}, $i*$rowHeight);
+    $s = 0;
+    for my $i (@{$grid->{'_rows_h'}}) {
+        $s += $i;
+        $DC->MoveTo(0, $s);
+        $DC->LineTo($grid->{'width'}, $s);
     }
 }
 
 sub column {
-    my ($grid_param, $col, $align) = @_;
-    $col--;
-    $colWidth = int($grid_param->{'width'} / $grid_param->{'cols'});
-    $x = ($col * $colWidth) + ($grid_param->{'xPad'});
-    $x = int((($colWidth - $widgetWidth) / 2) + $x) 
+    my($grid_param, $col, $align) = @_;
+    $col = [$col] unless(ref $col);
+    $col = [map($_-1, @$col)];
+    my $x = 0;
+    my $colWidth = 0;
+    if($grid_param->{'_cols_w'}) {
+        my @colw = @{$grid_param->{'_cols_w'}};
+        for(@$col) {
+            $colWidth += $colw[$_];
+        }
+        for(my $i=0; $i<=$col->[0]-1; $i++) {
+            $x += $colw[$i];
+        }
+        $x += $grid_param->{'xPad'};
+    }
+    else {
+        $colWidth = int($grid_param->{'width'} / $grid_param->{'cols'}
+            *($#$col+1));
+        $x = ($col->[0] * $colWidth) + ($grid_param->{'xPad'});
+    }
+    $x += int(($colWidth - $grid_param->{'widgetWidth'}) / 2)
         if $align =~ /^c/i;
-    $x = int((($colWidth - $widgetWidth) - $grid_param->{'xPad'}) + $x) 
+    $x += ($colWidth - $grid_param->{'widgetWidth'}) - 2*$grid_param->{'xPad'}
         if $align =~ /^r/i;
-    $widgetWidth=0; # in case a width declaration is missed or not used
+    $grid_param->{'widgetWidth'} = 0; # in case a width declaration is missed or not used
     return $x;
 }
 sub col { column @_; }
 
 sub row {
-    my ($grid_param,$row, $align) = @_;
-    $row--;
-    $rowHeight = int($grid_param->{'height'} / $grid_param->{'rows'});
-    $y = ($row * $rowHeight) + ($grid_param->{'yPad'});
-    $y = int((($rowHeight - $widgetHeight) / 2) + $y) 
+    my($grid_param, $row, $align) = @_;
+    $row = [$row] unless(ref $row);
+    $row = [map($_-1, @$row)];
+    my $y = 0;
+    my $rowHeight = 0;
+    if($grid_param->{'_rows_h'}) {
+        my @rowh = @{$grid_param->{'_rows_h'}};
+        for(@$row) {
+            $rowHeight = $rowh[$_];
+        }
+        for(my $i=0; $i<=$row->[0]-1; $i++) {
+            $y += $rowh[$i];
+        }
+        $y += $grid_param->{'yPad'};
+    }
+    else {
+        $rowHeight = int($grid_param->{'height'} / $grid_param->{'rows'})
+            *($#$row+1);
+        $y = ($row->[0] * $rowHeight) + ($grid_param->{'yPad'});
+    }
+
+    $y += int(($rowHeight - $grid_param->{'widgetHeight'}) / 2)
         if $align =~ /^c/i;
-    $y = int((($rowHeight - $widgetHeight) - ($grid_param->{'yPad'})) + $y) 
+    $y += ($rowHeight - $grid_param->{'widgetHeight'}) - 2*$grid_param->{'yPad'}
         if $align =~ /^b/i;
-    $widgetHeight=0; # same reason as coment in &column
+    $grid_param->{'widgetHeight'} = 0; # same reason as coment in &column
     return $y;
 }
 
 sub width {
     my ($grid_param,$w) = @_;
-    $widgetWidth = $w;
-    return $widgetWidth;
+    $grid_param->{'widgetWidth'} = $w;
+    return $grid_param->{'widgetWidth'};
 }
 
 sub height {
     my ($grid_param,$h) = @_;
-    $widgetHeight = $h;
-    return $widgetHeight;
+    $grid_param->{'widgetHeight'} = $h;
+    return $grid_param->{'widgetHeight'};
+}
+
+sub col_w {
+    my($grid_param, $col) = @_;
+    $col = [$col] unless(ref $col);
+    my $w = 0;
+    for my $col (@$col) {
+        $w += $grid_param->{'_cols_w'}[$col-1];
+    }
+    
+    $w -= 2*$grid_param->{'xPad'};
+    return $w;
+}
+
+sub row_h {
+    my($grid_param, $row) = @_;
+    $row = [$row] unless(ref $row);
+    my $h = 0;
+    for my $row (@$row) {
+        $h += $grid_param->{'_rows_h'}[$row-1];
+    }
+    
+    $h -= 2*$grid_param->{'yPad'};
+    return $h;
 }
 
 1;
@@ -140,12 +251,19 @@ Win32::GUI::GridLayout - Grid layout support for Win32::GUI
     
     # 2. make a "dynamic" grid
     $grid = apply Win32::GUI::GridLayout($win, 3, 3, 0, 0);
+        or
+    $grid = apply Win32::GUI::GridLayout($win,
+        [qw(10 * * 10)],
+        [qw(10 * 40)],
+        0, 0);
     
     $win->AddLabel(
         -name => "label1",
         -text => "Label 1",
     );
     $grid->add($win->label1, 1, 1, "left top");
+       or
+    $grid->add($win->label1, [2..3], 1, "justify justify");
 
     $grid->recalc();
 
@@ -160,6 +278,10 @@ Win32::GUI::GridLayout - Grid layout support for Win32::GUI
 =item new Win32::GUI::GridLayout(WIDTH, HEIGHT, COLS, ROWS, XPAD, YPAD)
 
 =item apply Win32::GUI::GridLayout(WINDOW, COLS, ROWS, XPAD, YPAD)
+
+COLS - quantity of columns or arrayref of width colomns (number - absolute width, * - relative width)
+
+ROWS - quantity of rows or arrayref of height rows (number - absolute height, * - relative height)
 
 =back
 
@@ -177,6 +299,12 @@ separated by at least one blank and/or a comma.
 Example:
 
     $grid->add($win->label1, 1, 1, "left top");
+        or
+    $grid->add($win->label1, [2..3], 1, "justify top");
+
+COL and ROW may be arrayref for adds CONTROL into more than one cell.
+If ALIGN is justify (j) than CONTROL expands up to cell.
+
 
 =item col(N, ALIGN)
 
@@ -258,11 +386,13 @@ Example: see col().
 
 =head1 VERSION
 
+Win32::GUI::GridLayout version 0.04, 24 June  2005.
+Win32::GUI::GridLayout version 0.04, 06 April 2005.
 Win32::GUI::GridLayout version 0.03, 13 April 1999.
 
 =head1 AUTHOR
 
 Mike Kangas ( C<kangas@anlon.com> );
 additional coding by Aldo Calpini ( C<dada@perl.it> ).
-
+additional coding Alexander Romanenko ( C<alex@parom.biz> ).
 =cut

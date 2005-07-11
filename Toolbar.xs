@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Toolbar
     #
-    # $Id: Toolbar.xs,v 1.3 2004/04/04 18:01:34 lrocher Exp $
+    # $Id: Toolbar.xs,v 1.5 2005/06/26 16:41:00 robertemay Exp $
     #
     ###########################################################################
     */
@@ -86,7 +86,7 @@ Toolbar_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wPa
         {        
             LPNMTOOLBAR tbn = (LPNMTOOLBAR) lParam;
 
-            switch(HIWORD(wParam)) {
+            switch(tbn->hdr.code) {
             case TBN_DROPDOWN:
                 PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL1, "ButtonClick",
                     PERLWIN32GUI_ARGTYPE_LONG, (LONG) tbn->iItem,
@@ -147,6 +147,7 @@ OUTPUT:
     ###########################################################################
     # (@)METHOD:AddButtons(NUMBER, (BITMAP, COMMAND, STATE, STYLE, STRING) ...)
     # Adds buttons to the toolbar. Note that BITMAP, COMMAND, STATE, STYLE and
+
     # STRING are all integers. BITMAP specifies the bitmap index to use for the
     # button (see AddBitmap() or SetImageList()), COMMAND specifies the value
     # sent to the ButtonClick event when the button is clicked, STATE sets state
@@ -410,8 +411,8 @@ OUTPUT:
     RETVAL
 
     ###########################################################################
-    # (@)METHOD:GetBitmap(BUTTON)
-    # Retrieves the index of the bitmap associated with a button in a toolbar. 
+    # (@)METHOD:GetBitmap(COMMAND)
+    # Retrieves the index of the bitmap associated with the specified command identifier.
 LRESULT
 GetBitmap(handle, button)
     HWND  handle
@@ -458,8 +459,8 @@ PPCODE:
         XSRETURN_UNDEF;
 
     ###########################################################################
-    # (@)METHOD:GetButtonInfo(BUTTON)
-    # Retrieves information about the specified button in a toolbar.
+    # (@)METHOD:GetButtonInfo(COMMAND)
+    # Retrieves information about the button associated with the specified command identifier.
 void
 GetButtonInfo(handle, index)
     HWND handle
@@ -474,7 +475,7 @@ PPCODE:
     button.dwMask = TBIF_COMMAND | TBIF_IMAGE | TBIF_LPARAM | TBIF_SIZE | TBIF_STATE | TBIF_STYLE | TBIF_TEXT;
     button.pszText = Text;
     button.cchText = 1024;
-    if (SendMessage(handle, TB_GETBUTTONINFO, (WPARAM) index, (LPARAM) &button)) {
+    if (SendMessage(handle, TB_GETBUTTONINFO, (WPARAM) index, (LPARAM) &button) != -1) {
         EXTEND(SP, 28);   
         XST_mPV( 0, "-command");
         XST_mIV( 1, button.idCommand);
@@ -489,21 +490,21 @@ PPCODE:
         XST_mPV(10, "-width");
         XST_mIV(11, button.cx);
         XST_mPV(12, "-checked");
-        XST_mIV(13, (button.fsState & TBSTATE_CHECKED));
+        XST_mIV(13, (button.fsState & TBSTATE_CHECKED)==TBSTATE_CHECKED);
         XST_mPV(14, "-ellipses");
-        XST_mIV(15, (button.fsState & TBSTATE_ELLIPSES));
+        XST_mIV(15, (button.fsState & TBSTATE_ELLIPSES)==TBSTATE_ELLIPSES);
         XST_mPV(16, "-enabled");
-        XST_mIV(17, (button.fsState & TBSTATE_ENABLED));
+        XST_mIV(17, (button.fsState & TBSTATE_ENABLED)==TBSTATE_ENABLED);
         XST_mPV(18, "-hidden");
-        XST_mIV(19, (button.fsState & TBSTATE_HIDDEN));
+        XST_mIV(19, (button.fsState & TBSTATE_HIDDEN)==TBSTATE_HIDDEN);
         XST_mPV(20, "-grayed");
-        XST_mIV(21, (button.fsState & TBSTATE_INDETERMINATE));
+        XST_mIV(21, (button.fsState & TBSTATE_INDETERMINATE)==TBSTATE_INDETERMINATE);
         XST_mPV(22, "-marked");
-        XST_mIV(23, (button.fsState & TBSTATE_MARKED));
+        XST_mIV(23, (button.fsState & TBSTATE_MARKED)==TBSTATE_MARKED);
         XST_mPV(24, "-pressed");
-        XST_mIV(25, (button.fsState & TBSTATE_PRESSED));
+        XST_mIV(25, (button.fsState & TBSTATE_PRESSED)==TBSTATE_PRESSED);
         XST_mPV(26, "-wrap");
-        XST_mIV(27, (button.fsState & TBSTATE_WRAP));
+        XST_mIV(27, (button.fsState & TBSTATE_WRAP)==TBSTATE_WRAP);
         XSRETURN(28);
     }
     else
@@ -751,6 +752,27 @@ CODE:
     RETVAL = SendMessage(handle, TB_GETSTATE, button, 0);
 OUTPUT:
     RETVAL
+
+    ###########################################################################
+    # (@)METHOD:GetString(INDEX)
+    # Retrieves the string from the toolbar's string pool identified by the zero based INDEX
+void
+GetString(handle, index)
+    HWND handle
+    int  index
+PPCODE:
+    char * szString = (char *) safemalloc (1024);
+    int res = (int) SendMessage(handle, TB_GETSTRING, (WPARAM) MAKEWPARAM (1024, index), (LPARAM) (LPTSTR) (szString));
+    if(res != -1) {
+      szString[1024-1] = '\0';
+      EXTEND(SP, 1);
+      XST_mPV(0, szString);
+      safefree(szString);
+      XSRETURN(1);
+    } else {
+      safefree(szString);
+      XSRETURN_UNDEF;
+    }
 
     ###########################################################################
     # (@)METHOD:GetStyle(STYLE)
@@ -1096,8 +1118,8 @@ OUTPUT:
     RETVAL
 
     ###########################################################################
-    # (@)METHOD:SetButtonInfo(BUTTON, %OPTIONS)
-    # Sets the information for an existing button in a toolbar. 
+    # (@)METHOD:SetButtonInfo(COMMAND, %OPTIONS)
+    # Sets the information for the button associated with the specified command identifier.
     #
     # B<%OPTIONS> :
     #  -command => ID
@@ -1139,6 +1161,7 @@ PREINIT:
     unsigned int tlen;
 CODE:
     ZeroMemory(&button, sizeof(TBBUTTONINFO));
+    button.cbSize = sizeof(TBBUTTONINFO);
     next_i = -1;
     for(i = 2; i < items; i++) {
         if(next_i == -1) {
@@ -1239,7 +1262,7 @@ OUTPUT:
     RETVAL
 
     ###########################################################################
-    # (@)METHOD:SetBitmapSize([X=24, Y=22])
+    # (@)METHOD:SetButtonSize([X=24, Y=22])
     # Sets the size of the buttons to be added to a toolbar.
     # The size can be set only before adding any bitmaps to the toolbar.
     # If an application does not explicitly set the buttons size, the size defaults to 24 by 22 pixels. 
@@ -1349,43 +1372,43 @@ OUTPUT:
     #
     # Extended style flag constants are as follows:
     #
-    # TBSTYLE_EX_DRAWDDARROWS
-    #   This style allows buttons to have a separate dropdown arrow. Buttons
-    #   that have the BTNS_DROPDOWN style will be drawn with a drop-down
-    #   arrow in a separate section, to the right of the button. If the
-    #   arrow is clicked, only the arrow portion of the button will depress,
-    #   and the toolbar control will send a TBN_DROPDOWN notification to
-    #   prompt the application to display the dropdown menu. If the main
-    #   part of the button is clicked, the toolbar control sends a
-    #   WM_COMMAND message with the button's ID. The application normally
-    #   responds by launching the first command on the menu.
+    #  TBSTYLE_EX_DRAWDDARROWS
+    #    This style allows buttons to have a separate dropdown arrow. Buttons
+    #    that have the BTNS_DROPDOWN style will be drawn with a drop-down
+    #    arrow in a separate section, to the right of the button. If the
+    #    arrow is clicked, only the arrow portion of the button will depress,
+    #    and the toolbar control will send a TBN_DROPDOWN notification to
+    #    prompt the application to display the dropdown menu. If the main
+    #    part of the button is clicked, the toolbar control sends a
+    #    WM_COMMAND message with the button's ID. The application normally
+    #    responds by launching the first command on the menu.
     #
-    #   There are many situations where you may want to have only some of the
-    #   dropdown buttons on a toolbar with separated arrows. To do so, set the
-    #   TBSTYLE_EX_DRAWDDARROWS extended style. Give those buttons that will
-    #   not have separated arrows the BTNS_WHOLEDROPDOWN style. Buttons with
-    #   this style will have an arrow displayed next to the image. However, the
-    #   arrow will not be separate and when any part of the button is clicked,
-    #   the toolbar control will send a TBN_DROPDOWN notification. To prevent
-    #   repainting problems, this style should be set before the toolbar control
-    #   becomes visible.
+    #    There are many situations where you may want to have only some of the
+    #    dropdown buttons on a toolbar with separated arrows. To do so, set the
+    #    TBSTYLE_EX_DRAWDDARROWS extended style. Give those buttons that will
+    #    not have separated arrows the BTNS_WHOLEDROPDOWN style. Buttons with
+    #    this style will have an arrow displayed next to the image. However, the
+    #    arrow will not be separate and when any part of the button is clicked,
+    #    the toolbar control will send a TBN_DROPDOWN notification. To prevent
+    #    repainting problems, this style should be set before the toolbar control
+    #    becomes visible.
     #
-    # TBSTYLE_EX_HIDECLIPPEDBUTTONS
-    #   This style hides partially clipped buttons. The most common use of this
-    #   style is for toolbars that are part of a rebar control. If an adjacent
-    #   band covers part of a button, the button will not be displayed. However,
-    #   if the rebar band has the RBBS_USECHEVRON style, the button will be
-    #   displayed on the chevron's dropdown menu.
+    #  TBSTYLE_EX_HIDECLIPPEDBUTTONS
+    #    This style hides partially clipped buttons. The most common use of this
+    #    style is for toolbars that are part of a rebar control. If an adjacent
+    #    band covers part of a button, the button will not be displayed. However,
+    #    if the rebar band has the RBBS_USECHEVRON style, the button will be
+    #    displayed on the chevron's dropdown menu.
     #
-    # TBSTYLE_EX_MIXEDBUTTONS
-    #   This style allows you to set text for all buttons, but only display it
-    #   for those buttons with the BTNS_SHOWTEXT button style. The TBSTYLE_LIST
-    #   style must also be set. Normally, when a button does not display text,
-    #   your application must handle TBN_GETINFOTIP to display a ToolTip. With
-    #   the TBSTYLE_EX_MIXEDBUTTONS extended style, text that is set but not
-    #   displayed on a button will automatically be used as the button's ToolTip
-    #   text. Your application only needs to handle TBN_GETINFOTIP if it needs
-    #   more flexibility in specifying the ToolTip text.
+    #  TBSTYLE_EX_MIXEDBUTTONS
+    #    This style allows you to set text for all buttons, but only display it
+    #    for those buttons with the BTNS_SHOWTEXT button style. The TBSTYLE_LIST
+    #    style must also be set. Normally, when a button does not display text,
+    #    your application must handle TBN_GETINFOTIP to display a ToolTip. With
+    #    the TBSTYLE_EX_MIXEDBUTTONS extended style, text that is set but not
+    #    displayed on a button will automatically be used as the button's ToolTip
+    #    text. Your application only needs to handle TBN_GETINFOTIP if it needs
+    #    more flexibility in specifying the ToolTip text.
 LRESULT
 SetExtendedStyle(handle, style)
     HWND handle

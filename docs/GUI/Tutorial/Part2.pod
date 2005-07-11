@@ -1,4 +1,10 @@
-=head1 Win32::GUI Tutorial - Part 2 - Adding functionality
+=for comment $Id: Part2.pod,v 1.1 2005/06/26 16:41:00 robertemay Exp $
+
+=head1 NAME
+
+Win32::GUI::Tutorial::Part2 - Adding Functionality
+
+=head1 Win32::GUI Tutorial - Part 2
 
 =head2 Some more control types
 
@@ -9,32 +15,19 @@ obtain information from the user, respond to mouse clicks, etc etc.
 
 Some of the basic Windows controls supported by Win32::GUI include
 
-=over 4
+=over
 
-=item *
+=item * Buttons, for taking actions.
 
-Buttons, for taking actions.
+=item * Edit boxes, for data entry.
 
-=item *
+=item * Checkboxes, for selecting options from a list.
 
-Edit boxes, for data entry.
+=item * Radio buttons, for choosing from mutually exclusive options.
 
-=item *
+=item * Combo boxes and list boxes, for selection from lists.
 
-Checkboxes, for selecting options from a list.
-
-=item *
-
-Radio buttons, for choosing from mutually exclusive options.
-
-=item *
-
-Combo boxes and list boxes, for selection from lists.
-
-=item *
-
-And many other more complex controls, such as list views, tree views, status
-bars, tab strips, etc.
+=item * And many other more complex controls, such as list views, tree views, status bars, tab strips, etc.
 
 =back
 
@@ -83,7 +76,7 @@ mouse on the control, for example).
 
 =head2 Some control-specific issues
 
-=over 4
+=over
 
 =item Labels
 
@@ -144,7 +137,9 @@ when it is created.
 
 =back
 
-This covers the basic controls available in Win32::GUI. In part 3, we will
+This covers the basic controls available in Win32::GUI. In L<part 3|Win32::GUI::Tutorial::Part3>, we will
 cover some of the subtleties of dialog boxes and main windows, and then in
-part 4, we will be ready to cover some of the more complex user interface
+L<part 4|Win32::GUI::Tutorial::Part4>, we will be ready to cover some of the more complex user interface
 options.
+
+__W32G_POSTAMBLE__

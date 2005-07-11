@@ -1,16 +1,41 @@
-testing/.*
-dodoc/.*
-blib/.*
-old/.*
-tmp/.*
+## Regular ExtUtils::Manifest SKIPS
+
+# Avoid version control files.
+\bRCS\b
+\bCVS\b
+,v$
+\B\.svn\b
+
+# Avoid Makemaker generated and utility files.
+\bMANIFEST\.bak
+\bMakefile$
+\bblib/
+\bMakeMaker-\d
+\bpm_to_blib$
+
+# Avoid Module::Build generated and utility files.
+\bBuild$
+\b_build/
+
+# Avoid temp and backup files.
+~$
+\.old$
+\#$
+\b\.#
+
+
+## Win32::GUI additions
+
+# temporaray working files
 .*\.bat$
 .*\.bak$
+
+# any of out distribution files
 .*\.zip$
 .*\.ppd$
+.*\.ppm$
 .*\.gz$
-MANIFEST\.good
-MANIFEST\.SKIP
-Makefile\.old
-GUI_def\.old
-.*PPM\.LOG$
-pod2html-.*cache
+
+# Anything beginning with MY_ to allow developers to keep notes
+# scripts, etc. in the main source trees local to their machine
+\bMY_.*\b

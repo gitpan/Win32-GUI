@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Trackbar
     #
-    # $Id: Trackbar.xs,v 1.4 2004/04/17 08:34:10 lrocher Exp $
+    # $Id: Trackbar.xs,v 1.6 2005/06/30 22:36:21 robertemay Exp $
     #
     ###########################################################################
     */
@@ -219,7 +219,7 @@ PPCODE:
         pTics = (DWORD *) SendMessage(handle, TBM_GETPTICS, 0, 0);
         if (pTics) {
             EXTEND(SP, nTics);
-            for (int i = 0; i < nTics; i++) 
+            for (UINT i = 0; i < nTics; i++) 
                 XST_mIV(i, pTics[i]);
             XSRETURN(nTics);
         }
@@ -600,7 +600,7 @@ CODE:
         if(items > 2)
             RETVAL = SendMessage(handle, TBM_SETRANGEMIN, (WPARAM) SvIV(ST(2)), (LPARAM) SvIV(ST(1))); 
         else
-            RETVAL = SendMessage(handle, TBM_SETRANGEMIN, 0, (LPARAM) SvIV(ST(1)));
+            RETVAL = SendMessage(handle, TBM_SETRANGEMIN, 1, (LPARAM) SvIV(ST(1)));
     }
     else
         RETVAL = SendMessage(handle, TBM_GETRANGEMIN, 0, 0);
@@ -620,7 +620,7 @@ CODE:
         if(items > 2)
             RETVAL = SendMessage(handle, TBM_SETRANGEMAX, (WPARAM) SvIV(ST(2)), (LPARAM) SvIV(ST(1))); 
         else
-            RETVAL = SendMessage(handle, TBM_SETRANGEMAX, 0, (LPARAM) SvIV(ST(1)));
+            RETVAL = SendMessage(handle, TBM_SETRANGEMAX, 1, (LPARAM) SvIV(ST(1)));
     }
     else
         RETVAL = SendMessage(handle, TBM_GETRANGEMAX, 0, 0);
@@ -639,7 +639,7 @@ CODE:
         if(items > 2)
             RETVAL = SendMessage(handle, TBM_SETPOS, (WPARAM) SvIV(ST(2)), (LPARAM) SvIV(ST(1))); 
         else
-            RETVAL = SendMessage(handle, TBM_SETPOS, 0, (LPARAM) SvIV(ST(1)));
+            RETVAL = SendMessage(handle, TBM_SETPOS, 1, (LPARAM) SvIV(ST(1)));
     }
     else
         RETVAL = SendMessage(handle, TBM_GETPOS, 0, 0);
@@ -658,7 +658,7 @@ CODE:
         if(items > 2)
             RETVAL = SendMessage(handle, TBM_SETSELSTART, (WPARAM) SvIV(ST(2)), (LPARAM) SvIV(ST(1))); 
         else
-            RETVAL = SendMessage(handle, TBM_SETSELSTART, 0, (LPARAM) SvIV(ST(1)));
+            RETVAL = SendMessage(handle, TBM_SETSELSTART, 1, (LPARAM) SvIV(ST(1)));
     }
     else
         RETVAL = SendMessage(handle, TBM_GETSELSTART, 0, 0);
@@ -677,7 +677,7 @@ CODE:
         if(items > 2)
             RETVAL = SendMessage(handle, TBM_SETSELEND, (WPARAM) SvIV(ST(2)), (LPARAM) SvIV(ST(1))); 
         else
-            RETVAL = SendMessage(handle, TBM_SETSELEND, 0, (LPARAM) SvIV(ST(1)));
+            RETVAL = SendMessage(handle, TBM_SETSELEND, 1, (LPARAM) SvIV(ST(1)));
     }
     else
         RETVAL = SendMessage(handle, TBM_GETSELEND, 0, 0);

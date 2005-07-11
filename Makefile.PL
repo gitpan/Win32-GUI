@@ -1,38 +1,105 @@
+use strict;
+use warnings;
+
 use ExtUtils::MakeMaker;
 use Config;
 
-$USERESOURCE = 0;
+$main::USERESOURCE = 1;
+$main::BUILDENV = '';
 
+# parse our command line options, removing them from @ARGV so that
+# MakeMaker doen't warm that they are unrecoginised.
+my @tmp;
 foreach (@ARGV) {
-    if(/USERESOURCE=0/) {
-        $USERESOURCE = -1;
-        undef $_;
-        last;
+  if(/USERESOURCE=0/) {
+    $main::USERESOURCE = -1;
+  }
+  elsif(/USERESOURCE=1/) {
+    $main::USERESOURCE = 1;
+  }
+  elsif(/BUILDENV=(.*)/) {
+    $main::BUILDENV = $1;
+  }
+  else {
+    push @tmp, $_;
+  }
+}
+@ARGV=@tmp;
+
+# determine the build environment, and report it.  We support 3 variants:
+# (1) MSWin32 and Visual C++  BUILDENV=vc
+# (2) MSWin32 and MinGW       BUILDENV=mingw
+# (3) Cygwin (and gcc)        BUILDENV=cygwin
+
+my %allowed = (
+  vc     => 'MSWin32 and Visual C++',
+  mingw  => 'MSWin32 and MinGW',
+  cygwin => 'Cygwin',
+);
+
+if (not $main::BUILDENV) {
+  if ($^O eq "cygwin") {
+    $main::BUILDENV = 'cygwin';
+  }
+  elsif ($^O eq "MSWin32") {
+    if($Config{'cc'} =~ /^cl(\.exe)?/i) {
+      $main::BUILDENV = 'vc';
     }
+    elsif($Config{'cc'} =~ /^gcc(\.exe)?/i) {
+      $main::BUILDENV = 'mingw';
+    }
+  }
 }
 
-if($USERESOURCE == -1) {
-    $USERESOURCE = 0;
+if (not $main::BUILDENV) {
+  print STDERR <<__NOBUILDENV;
+
+Building on OS $^O with compiler $Config{'cc'} is not officially supported.
+To force a build call this script with the additional parameter 'BUILDENV':
+
+  perl Makefile.PL BUILDENV=xxxx
+
+where xxxx is one of:
+vc     (for MSWin32 and Visual C++)
+mingw  (for MSWin32 and MInGW)
+cygwin (for cygwin and gcc)
+
+__NOBUILDENV
+
+  exit(1);
+}
+
+if ( not exists $allowed{$main::BUILDENV} ) {
+  print STDERR <<__BADBUILDENV;
+
+Unrecognised build environment BUILDENV=$main::BUILDENV
+
+Allowed values are: vc, mingw, cygwin
+
+__BADBUILDENV
+
+  exit(1);
+}
+
+print "\n\nBUILDENV=$main::BUILDENV  Used build environment is: $allowed{$main::BUILDENV}\n\n";
+
+if($main::USERESOURCE == -1) {
+    $main::USERESOURCE = 0;
 } else {
-    if($Config{'cc'} =~ /^cl(\.exe)?/i) {
+  print <<____EXPLAIN;
 
-        print <<____EXPLAIN;
+NOTE: Makefile.PL will add the instruction to use the Resource Compiler to 
+your Makefile; if you don't want to compile resources with your extension,
+call this script with this additional argument:
 
-Using Visual C++
-NOTE:Makefile.PL will add the instruction to use the Resource Compiler to 
-your Makefile; if you're not using Visual C++, or don't want to compile 
-resources with your extension, call this script with this additional 
-argument:
-
-    perl Makefile.PL USERESOURCE=0    
+    perl Makefile.PL USERESOURCE=0
 
 ____EXPLAIN
 
-        $USERESOURCE = 1;
-    }
+  $main::USERESOURCE = 1;
 }
 
-@subpackages = qw(
+my @subpackages = qw(
     Animation
     Bitmap
     Button
@@ -63,7 +130,7 @@ ____EXPLAIN
     Window
 );
 
-@c_files = qw(
+my @c_files = qw(
     GUI
     GUI_Constants
     GUI_Helpers
@@ -72,18 +139,18 @@ ____EXPLAIN
     GUI_Events
 );
 
-$c_ext = ($^O eq "cygwin") ? "c" : "cpp";
+my $c_ext = "cpp";
 
-@arg_c = ();
-$arg_object = "";
+my @arg_c = ();
+my $arg_object = "";
 
 foreach (@c_files) {
     push( @arg_c, $_ . '.' . $c_ext );
     $arg_object .= ' ' . $_ . $Config{'obj_ext'};
 }
 
-%arg_xs = ( 'GUI.xs' => 'GUI.' . $c_ext );
-@arg_dl_funcs = ( 'boot_Win32__GUI' );
+my %arg_xs = ( 'GUI.xs' => 'GUI.' . $c_ext );
+my @arg_dl_funcs = ( 'boot_Win32__GUI' );
 foreach (@subpackages) {
     $arg_xs{$_.'.xs'} = $_ . '.' . $c_ext;
     push( @arg_c, $_ . '.' . $c_ext );
@@ -92,35 +159,41 @@ foreach (@subpackages) {
 }
 
 
-%MakefileArgs = (
-    'NAME'         => 'Win32::GUI',
-    'VERSION_FROM' => 'GUI.pm',
-    'LIBS'         => ( ($^O eq "cygwin") ? '-lcomctl32' : 'comctl32.lib' ),
-    'PM' => {
-        'GUI.pm'            => '$(INST_LIBDIR)/GUI.pm',
-        'BitmapInline.pm'   => '$(INST_LIBDIR)/GUI/BitmapInline.pm',
-        'GridLayout.pm'     => '$(INST_LIBDIR)/GUI/GridLayout.pm',
-    },
-    'XS' => { %arg_xs },
-    'C'  => [ @arg_c ],
-    'OBJECT' => $arg_object,
-    'DL_FUNCS' => { 'Win32::GUI' => [ @arg_dl_funcs ] },
-
-    ($^O eq "cygwin") ? ( 'DEFINE' => '-UWIN32' ) : (), 
-
-    'dist'  => {
-        ZIP => 'zip',
-        ZIPFLAGS => '-r9',
-    },
-    ($] < 5.005 ? () : (
-        'AUTHOR'        => 'Aldo Calpini <dada@perl.it>',
-        'ABSTRACT'      => 'Perl-Win32 Graphical User Interface Extension',
-    )),
-
+my %MakefileArgs = (
+    NAME            => 'Win32::GUI',
+    VERSION_FROM    => 'GUI.pm',
+    LIBS            => ['comctl32.lib', 'comdlg32.lib', 'shell32.lib', 'gdi32.lib', 'user32.lib'],
+    PM              => {
+                         'GUI.pm'          => '$(INST_LIBDIR)/GUI.pm',
+                         'BitmapInline.pm' => '$(INST_LIBDIR)/GUI/BitmapInline.pm',
+                         'GridLayout.pm'   => '$(INST_LIBDIR)/GUI/GridLayout.pm',
+                      },
+    XS              => { %arg_xs },
+    C               => [ @arg_c ],
+    OBJECT          => $arg_object,
+    DL_FUNCS        => { 'Win32::GUI' => [ @arg_dl_funcs ] },
+    dist            => {
+                         ZIP => 'zip',
+                         ZIPFLAGS => '-r9',
+                       },
+  ($] < 5.005 ? () : (
+    AUTHOR          => 'Aldo Calpini <dada@perl.it>',
+    ABSTRACT        => 'Perl-Win32 Graphical User Interface Extension',
+  )),
+    BINARY_LOCATION => 'Win32-GUI.tar.gz',
 );
 
+if ($main::BUILDENV eq "cygwin") {
+  $MakefileArgs{'LIBS'} = ['-L/usr/lib/w32api -lcomctl32 -lcomdlg32 -luser32 -lgdi32'];
+  $MakefileArgs{'DEFINE'} = '-UWIN32';
+}
 
-$MakefileArgs{'LDFROM'} = '$(OBJECT) GUI.res' if $USERESOURCE;
+if ($main::BUILDENV eq "mingw") {
+  $MakefileArgs{'LIBS'} = [':nosearch -lcomctl32'];
+  $MakefileArgs{'DEFINE'} = '-D__MINGW__';  # should really use __MINGW32__, as that's defined by the compiler
+}
+
+$MakefileArgs{'LDFROM'} = '$(OBJECT) GUI.res' if $main::USERESOURCE;
 
 WriteMakefile( %MakefileArgs );
 
@@ -128,28 +201,37 @@ WriteMakefile( %MakefileArgs );
 
 package MY;
 
+use strict;
+use warnings;
+
 sub xs_c {
-($^O eq 'cygwin') ? 
-    shift->SUPER::xs_c(@_)
-:
-    '
-.xs.cpp:
-    $(PERL) -I$(PERL_ARCHLIB) -I$(PERL_LIB) $(XSUBPP) $(XSPROTOARG) $(XSUBPPARGS) $*.xs >$*.cpp
-';
+  my $inherited = shift->SUPER::xs_c(@_);
+  $inherited =~ s/\.c/.cpp/g;
+  return $inherited;
 }
 
-sub constants {
-    my $inherited = shift->SUPER::constants(@_);
-    if($main::USERESOURCE) {
-        $inherited =~ s/\.SUFFIXES([^\n]+)\n/\.SUFFIXES$1 .rc .res\n/;
-    }
+sub xs_o {
+  my $inherited = shift->SUPER::xs_o(@_);
+  $inherited =~ s/\.c$/.cpp/mg;
+  return $inherited;
+}
+
+sub special_targets {
+    my $inherited = shift->SUPER::special_targets(@_);
+    $inherited =~ s/\.SUFFIXES: \.xs \.c \.C \.cpp/.SUFFIXES: .xs .cpp .c .C/;
+    $inherited =~ s/\.SUFFIXES([^\n]+)\n/\.SUFFIXES$1 .rc .res\n/ if($main::USERESOURCE);
     return $inherited;
 }
 
 sub c_o {
     my $inherited = shift->SUPER::c_o(@_);
     if($main::USERESOURCE) {
-        $inherited .= "\nGUI.res:\n\trc.exe /l 0x409 /fo\"GUI.res\" GUI.rc\n\n";
+      if ($main::BUILDENV eq 'vc') {  # Visual C++
+         $inherited .= "\nGUI.res: GUI.rc\n\trc.exe /l 0x409 /fo\"GUI.res\" GUI.rc\n";
+      } else {                        # cygwin and MinGW
+        $inherited .= "\nGUI.res: GUI.rc\n\twindres -O coff -i GUI.rc -o GUI.res\n";
+      }
+      $inherited .= "\nclean::\n\t" . '$(RM_F) GUI.res' . "\n\n";
     }
     return $inherited;
 }
@@ -160,4 +242,130 @@ sub top_targets {
         $inherited =~ s/pure_all(.*) linkext/pure_all$1 GUI.res linkext/;
     }
     return $inherited;
+}
+
+sub const_loadlibs {
+  my $inherited = shift->SUPER::const_loadlibs(@_);
+  if ($main::BUILDENV eq "cygwin") {
+    $inherited = "MYEXTLIB = ./libcyg.a\n\n". $inherited;
+    $inherited =~ s/(EXTRALIBS.*)\n/$1 .\/libcyg.a\n/;
+    $inherited =~ s/(LDLOADLIBS.*)\n/$1 .\/libcyg.a\n/;
+  }
+  return $inherited;
+}
+
+# In the following here-doc fragments, ensure that command lines are indented with TAB
+# and not space for gnu-make compatibility (cygwin)
+sub postamble {
+
+  my $cygwin_frag = '';
+
+  # cygwin w32api comctl32 before 2004-12-02 misses some stubs
+  if ($main::BUILDENV eq "cygwin") {
+    my $missing = '';
+    my $defs = `nm -g /usr/lib/w32api/libcomctl32.a`;
+    for (qw(ImageList_Duplicate@4 ImageList_DrawIndirect@4 ImageList_Copy@20)) {
+      unless ($defs =~ / _$_/) {
+        $missing .= "\t" . '$(NOECHO)$(ECHO) "' . $_ . '" >$@' . "\n";
+      }
+    }
+    if($missing) {
+      $cygwin_frag = sprintf <<'CYGWIN_FRAG1', $missing;
+
+# -- Win32::GUI Cygwin section --
+
+comctl32.def: 
+	$(NOECHO)$(ECHO) "LIBRARY COMCTL32.DLL" >$@
+	$(NOECHO)$(ECHO) "EXPORTS" >$@
+%s
+
+libcyg.a: comctl32.def cygwin.o
+	dlltool -k --output-lib libcyg.a --def comctl32.def
+	ar r libcyg.a cygwin.o
+
+clean::
+	$(RM_F) comctl32.def cygwin.o libcyg.a
+
+CYGWIN_FRAG1
+
+    } else {
+      $cygwin_frag = <<'CYGWIN_FRAG2';
+
+# -- Win32::GUI Cygwin section --
+
+libcyg.a: cygwin.o
+	ar r libcyg.a cygwin.o
+
+clean::
+	$(RM_F) cygwin.o libcyg.a
+
+CYGWIN_FRAG2
+
+    }
+  }
+
+  my $doc_frag = <<'DOC_FRAG';
+
+# -- Win32::GUI documents section --
+
+BUILD_TOOLS = build_tools
+
+readmedocs:
+	$(NOECHO) $(PERL) -I$(BUILD_TOOLS) $(BUILD_TOOLS)/doReadme.pl
+
+realclean::
+	$(RM_F) Readme.old Readme.html.old
+
+poddocs:
+	$(NOECHO) $(PERL) -I$(BUILD_TOOLS) $(BUILD_TOOLS)/doPodDocs.pl
+
+htmldocs: poddocs
+	$(NOECHO) $(PERL) -I$(BUILD_TOOLS) $(BUILD_TOOLS)/doHTMLDocs.pl
+
+distdir: readmedocs
+
+all:: poddocs
+
+DOC_FRAG
+
+  my $ppm_frag = '';
+
+  if ($main::BUILDENV eq "vc" || $main::BUILDENV eq "mingw") {
+
+    $ppm_frag = sprintf <<'PPM_FRAG', substr($Config::Config{version},0,3);
+
+# -- Win32::GUI ppm section --
+
+INST_DEMO = $(INST_LIBDIR)/GUI/demos
+
+demos:
+	$(MKPATH) $(INST_DEMO)
+	$(CP) samples/* $(INST_DEMO)
+
+ppmdist: all htmldocs demos
+	$(TAR) --exclude="*.pod" -$(TARFLAGS) $(DISTNAME).tar blib
+	$(COMPRESS) $(DISTNAME).tar
+
+PPMDISTVNAME = $(DISTVNAME)-PPM-%s
+
+ppm: readmedocs ppd ppmdist
+	$(RM_RF) $(PPMDISTVNAME)
+	$(MKPATH) $(PPMDISTVNAME)
+	$(CP) Readme $(PPMDISTVNAME)/Readme.txt
+	$(CP) Readme.html $(PPMDISTVNAME)/Readme.html
+	$(CP) CHANGELOG $(PPMDISTVNAME)/Changelog.txt
+	$(MV) $(DISTNAME).tar.gz $(PPMDISTVNAME)
+	$(MV) $(DISTNAME).ppd $(PPMDISTVNAME)
+	$(RM_F) $(PPMDISTVNAME).zip
+	$(ZIP) $(ZIPFLAGS) $(PPMDISTVNAME).zip $(PPMDISTVNAME)
+
+clean::
+	$(RM_RF) $(PPMDISTVNAME)
+	$(RM_F) $(PPMDISTVNAME).zip
+
+PPM_FRAG
+
+  }
+
+  return $cygwin_frag . $doc_frag . $ppm_frag;
 }

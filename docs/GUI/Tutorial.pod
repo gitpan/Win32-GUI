@@ -1,0 +1,31 @@
+=for comment $Id: Tutorial.pod,v 1.1 2005/06/26 16:41:00 robertemay Exp $
+
+=head1 NAME
+
+Win32::GUI::Tutorial - An introduction to programming Win32::GUI
+
+=head1 Table of Contents
+
+=over
+
+=item 1. L<Part 1 - Our First Win32::GUI Program|Win32::GUI::Tutorial::Part1>
+
+=item 2. L<Part 2 - Adding Functionality|Win32::GUI::Tutorial::Part2>
+
+=item 3. L<Part 3 - Dialog Boxes and Main Windows|Win32::GUI::Tutorial::Part3>
+
+=item 4. L<Part 4 - Further Features of Win32::GUI|Win32::GUI::Tutorial::Part4>
+
+=item 5. L<Part 5 - More than one Window|Win32::GUI::Tutorial::Part5>
+
+=item 6. Part 6 - TBD
+
+=item 7. Part 7 - TBD
+
+=item 8. Part 8 - TBD
+
+=item 9. L<Part 9 - Some peripheral issues|Win32::GUI::Tutorial::Part9>
+
+=back
+
+__W32G_POSTAMBLE__

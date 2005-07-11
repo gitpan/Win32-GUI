@@ -1,4 +1,10 @@
-=head1 Win32::GUI Tutorial - Part 4 - Further Features of Win32::GUI
+=for comment $Id: Part4.pod,v 1.1 2005/06/26 16:41:01 robertemay Exp $
+
+=head1 NAME
+
+Win32::GUI::Tutorial::Part4 - Further Features of Win32::GUI
+
+=head1 Win32::GUI Tutorial - Part 4
 
 =head2 Timers
 
@@ -6,7 +12,7 @@ Many types of application need to be able to perform an action at regular
 intervals. The obvious example is a clock application, but other examples
 might be
 
-=over 4
+=over
 
 =item *
 
@@ -39,12 +45,12 @@ For example,
 
 Some things to note:
 
-=over 4
+=over
 
 =item *
 
 The AddTimer() method takes two explicit parameters, the timer name and the
-interval (in milliseconds). The normal C<option =E<gt> value> syntax is B<not>
+interval (in milliseconds). The normal C<< option => value >> syntax is B<not>
 used.
 
 =item *
@@ -134,7 +140,7 @@ The simplest way to demonstrate this is to show some working code...
 
 Some points to note
 
-=over 4
+=over
 
 =item *
 
@@ -162,4 +168,6 @@ though I have referred to them as simple, it is possible to create some fairly
 complicated applications using just what we have seen so far.
 
 In the next couple of tutorials, I will move on to the more sophisticated
-controls available - list views and tree views.
+controls available - list views and tree views.  On to L<Part 5|Win32::GUI::Tutorial::Part5>.
+
+__W32G_POSTAMBLE__

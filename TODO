@@ -1,11 +1,48 @@
-- Add missing Common Control : 
+- Add missing Common Controls: 
     Pager 
-    Ip adresse 
+    Ip address
     Drag List Boxes
-    Propery Sheet?
+    Property Sheet?
     HOT Key?
     Flat Scroll bar?
 - expand support for GDI drawing
 - evtl. support for owner drawn controls
-- write the documentation
-- also search for "TODO" in the GUI.xs file
+- also search for "TODO" in the GUI.xs (and other) file
+
+- Documentation:
+  - revise and correct FAQ
+  - any TBD sections
+  - get SrcParser.pm to return info about TBD items.
+  - get SrcParser to compare packages and methods found in files with 
+    documentation found in files
+  - split README into README, INSTALLATION and BUILDING
+  - remove EVENTS section from auto generated package documentation where 
+    it is not relevant
+  - review and update the tutorial
+  - add tutorial for other controls?
+  - add tutorial on NEM
+  - add tutorial on using Hook() and pack/unpack to cope with events and 
+    messages that are not supported.
+
+- Tests
+  - re-write all test using Test::More
+  - add at least a check for each package that it generates the correct
+    object type
+  - GuiTest: with seperate module or add our own Win32::GUI::Test?
+     - SendKeys, MouseClick, PushButton, WaitWindow
+
+- Add Win32::GUI::WebBrowser, to give us native HTML support
+
+- Look at seeing if there is a way to prevent PAR (and perl2exe?) packing 
+  package Win32, when it's only required for old perls
+
+- GUI.h
+  Investigate using __MINGW32__ instead of the __MINGW__ define for mingw
+  guard-blocks, as I think that is automatically defined by the compiler
+
+- Makefile.PL
+  link stage does not depend on GUI.res, so 'touch GUI.rc'results in rebuilding
+  the GUI.res but not re-linking.
+
+- warnings: do something with the tests of PL_dowarn to allow at least perl -X
+  to turn off Win32::GUI warnings.

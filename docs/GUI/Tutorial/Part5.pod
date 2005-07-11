@@ -1,4 +1,10 @@
-=head1 Win32::GUI Tutorial - Part 5 - More than one window
+=for comment $Id: Part5.pod,v 1.1 2005/06/26 16:41:01 robertemay Exp $
+
+=head1 NAME
+
+Win32::GUI::Tutorial::Part5 - More than one Window
+
+=head1 Win32::GUI Tutorial - Part 5
 
 =head2 A simple multi-window program
 
@@ -8,7 +14,7 @@ applications that make use of more than one window.
 In principle, Win32::GUI does not limit the number of windows a program
 can have: we've seen that the usual procedure for a program is:
 
-=over 4
+=over
 
 =item 1
 
@@ -66,7 +72,7 @@ limitation that while the code for a window's event is executing, the
 other one is frozen; whis is due to the single-threaded nature of Perl,
 although work is being done for a full featured multithreaded Perl).
 
-=for HTML <BR><BR><CENTER><IMG SRC="guitut5-1.gif"></CENTER>
+=for HTML <br /><img align="center" src="part5-1.gif" />
 
 One thing to note is that even if the windows are two, they belong to
 the same process and share a single message loop, so when you exit from
@@ -125,7 +131,7 @@ Furthermore, we put a button on the second window to make it go away:
 	
 	sub Button2_Click { $W2->Hide(); }
 
-=for HTML <BR><BR><CENTER><IMG SRC="guitut5-2.gif"></CENTER>
+=for HTML <br /><img align="center" src="part5-2.gif" />
 
 This rather basic example shows the skeleton framework for a typical
 multi-window application; but there are still two issues we want to
@@ -157,6 +163,9 @@ that we can show it again using the button in C<$W1>.
 
 =head2 Simulating "modal" windows
 
+[ This section is out of date.  Win32::GUI has native support
+for modal windows.  See the DoModal() method in the main documention.]
+
 Here is another very common functionality you may want to implement:
 when a popup window is open, you don't want the user to interact with
 the main window; this is known as using a "modal" window, a window that
@@ -186,3 +195,5 @@ add code for everyone of them:
 		# ... and so on
 		return 1;
 	}
+
+__W32G_POSTAMBLE__

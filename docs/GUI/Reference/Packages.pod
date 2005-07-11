@@ -1,0 +1,19 @@
+=for comment $Id: Packages.pod,v 1.1 2005/06/26 16:41:00 robertemay Exp $
+
+=head1 NAME
+
+Win32::GUI::Reference::Packages - Available packages
+
+=head1 DESCRIPTION
+
+This page provides a summary of the packages available with Win32::GUI.
+
+=head1 PACKAGES
+
+=over
+
+__W32G_PACKLIST__
+
+=back
+
+__W32G_POSTAMBLE__

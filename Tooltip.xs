@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Tooltip
     #
-    # $Id: ToolTip.xs,v 1.3 2004/09/29 21:18:44 lrocher Exp $
+    # $Id: Tooltip.xs,v 1.4 2005/06/26 16:40:59 robertemay Exp $
     #
     ###########################################################################
     */
@@ -257,9 +257,12 @@ CODE:
     # Retrieves the initial, pop-up, and reshow durations currently set for a tooltip control.
     #
     # B<FLAG> :
-    #   TTDT_RESHOW  = 1 : Length of time it takes for subsequent tooltip windows to appear as the pointer moves from one tool to another.
-    #   TTDT_AUTOPOP = 2 : Length of time the tooltip window remains visible if the pointer is stationary within a tool's bounding rectangle.
-    #   TTDT_INITIAL = 3 : Length of time the pointer must remain stationary within a tool's bounding rectangle before the tooltip window appears.
+    #   TTDT_RESHOW  = 1 : Length of time it takes for subsequent tooltip windows to appear
+    #                      as the pointer moves from one tool to another.
+    #   TTDT_AUTOPOP = 2 : Length of time the tooltip window remains visible if the pointer is
+    #                      stationary within a tool's bounding rectangle.
+    #   TTDT_INITIAL = 3 : Length of time the pointer must remain stationary within a tool's
+    #                      bounding rectangle before the tooltip window appears.
 LRESULT
 GetDelayTime(handle,flag=TTDT_INITIAL)
     HWND handle
@@ -332,7 +335,7 @@ OUTPUT:
     RETVAL
 
     ###########################################################################
-    # (@)METHOD:GetTipBkColor()
+    # (@)METHOD:GetTipTextColor()
     # Retrieves the text color in a tooltip window.
 COLORREF
 GetTipTextColor(handle)
@@ -474,9 +477,12 @@ OUTPUT:
     # Sets the initial, pop-up, and reshow durations for a tooltip control. 
     #
     # B<FLAG> :
-    #   TTDT_RESHOW  = 1 : Length of time it takes for subsequent tooltip windows to appear as the pointer moves from one tool to another.
-    #   TTDT_AUTOPOP = 2 : Length of time the tooltip window remains visible if the pointer is stationary within a tool's bounding rectangle.
-    #   TTDT_INITIAL = 3 : Length of time the pointer must remain stationary within a tool's bounding rectangle before the tooltip window appears.
+    #   TTDT_RESHOW  = 1 : Length of time it takes for subsequent tooltip windows to appear
+    #                      as the pointer moves from one tool to another.
+    #   TTDT_AUTOPOP = 2 : Length of time the tooltip window remains visible if the pointer
+    #                      is stationary within a tool's bounding rectangle.
+    #   TTDT_INITIAL = 3 : Length of time the pointer must remain stationary within a tool's
+    #                      bounding rectangle before the tooltip window appears.
 LRESULT
 SetDelayTime(handle,time,flag=TTDT_INITIAL)
     HWND handle

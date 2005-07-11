@@ -11,7 +11,7 @@
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: GUI.xs,v 1.29 2004/11/12 15:58:51 lrocher Exp $
+# $Id: GUI.xs,v 1.38 2005/07/02 09:53:27 jwgui Exp $
 #
 ###############################################################################
  */
@@ -904,8 +904,8 @@ PPCODE:
     # Win32::GUI::Dialog(); does a similar thing to
     #    while(Win32::GUI::DoEvents() != -1) {};
     #
-    # see also DoEvents()
-    # see also DoModal()
+    # See also DoEvents()
+    # See also DoModal()
 DWORD
 Dialog(hwnd=NULL)
     HWND hwnd
@@ -1059,7 +1059,9 @@ OUTPUT:
     # B<DISABLE_ALL> flag can set for deactivate all top window and not only parent/active window.
     #
     # The correct usage is:
-    #   $window->DoModal();
+    #   $window->DoModal(1);
+    #
+    # To exit from the GUI dialog phase of the modal window, return -1 from the event handler.
     #
     # See also Dialog()
     # See also DoEvents()
@@ -1343,6 +1345,43 @@ CODE:
 OUTPUT:
     RETVAL
 
+    ###########################################################################
+    # (@)METHOD:LoadCursor(ID)
+    #This function loads one of the default cursors. ID can be one of:
+    #
+    #  32650 IDC_APPSTARTING  Standard arrow and small hourglass
+    #  32512 IDC_ARROW        Standard arrow
+    #  32515 IDC_CROSS        Crosshair
+    #  32649 IDC_HAND         Windows 98/Me, Windows 2000/XP: Hand
+    #  32651 IDC_HELP         Arrow and question mark
+    #  32513 IDC_IBEAM        I-beam
+    #  32641 IDC_ICON         Obsolete for applications marked version 4.0 or later.
+    #  32648 IDC_NO           Slashed circle
+    #  32640 IDC_SIZE         Obsolete for applications marked version 4.0 or later. Use IDC_SIZEALL.
+    #  32646 IDC_SIZEALL      Four-pointed arrow pointing north, south, east, and west
+    #  32643 IDC_SIZENESW     Double-pointed arrow pointing northeast and southwest
+    #  32645 IDC_SIZENS       Double-pointed arrow pointing north and south
+    #  32642 IDC_SIZENWSE     Double-pointed arrow pointing northwest and southeast
+    #  32644 IDC_SIZEWE       Double-pointed arrow pointing west and east
+    #  32516 IDC_UPARROW      Vertical arrow
+    #  32514 IDC_WAIT         Hourglass
+    # 
+    #On success returns a Win32::GUI::Cursor object, on failure undef.
+    #
+    #Example:
+    #
+    #my $hourglass=Win32::GUI::LoadCursor(32514);
+    #    
+void
+LoadCursor(ID)
+    long ID
+PREINIT:
+    HCURSOR cursor;
+PPCODE:
+    cursor = LoadCursor(NULL, MAKEINTRESOURCE(ID));
+    if (cursor== NULL) XSRETURN_UNDEF;
+    XPUSHs(CreateObjectWithHandle(NOTXSCALL "Win32::GUI::Cursor", (HWND) cursor));
+    
      ##########################################################################
      # (@)METHOD:LoadString(ID)
      # The LoadString method loads a string resource from the executable file 
@@ -1447,8 +1486,8 @@ OUTPUT:
     # Usage:
     #   ($x, $y) = Win32::GUI::GetCursorPos;
     #
-    # see also ScreenToClient()
-    # see also SetCursorPos()
+    # See also ScreenToClient()
+    # See also SetCursorPos()
 void
 GetCursorPos()
 PREINIT:
@@ -1691,6 +1730,24 @@ CODE:
 OUTPUT:
     RETVAL
 
+    ###########################################################################
+    # (@)METHOD:SetWindowRgn(region,flag)
+    # The SetWindowRgn method sets the window region of a window. The window region determines the area 
+    # within the window where the system permits drawing. The system does not display any portion of a window 
+    # that lies outside of the window region 
+    #
+    # flag : Specifies whether the system redraws the window after setting the window region. If flag is TRUE, 
+    # the system does so; otherwise, it does not. 
+    # Typically, you set flag to TRUE if the window is visible. 
+BOOL
+SetWindowRgn(handle, region, flag=1)
+    HWND handle
+    HRGN region
+    BOOL flag
+CODE:
+    RETVAL = SetWindowRgn(handle, region, flag);
+OUTPUT:
+    RETVAL
 
     ###########################################################################
     # (@)METHOD:Update()
@@ -1883,6 +1940,18 @@ CODE:
 OUTPUT:
     RETVAL
 
+    ###########################################################################
+    # (@)METHOD:WaitMessage()
+    # The WaitMessage function yields control to other threads when a thread 
+    # has no other messages in its message queue. The WaitMessage function suspends 
+    # the thread and does not return until a new message is placed in the thread's 
+    # message queue.
+BOOL
+WaitMessage()
+CODE:
+  RETVAL = WaitMessage();
+OUTPUT:
+  RETVAL
 
     ###########################################################################
     # (@)METHOD:SendMessageTimeout(MSG, WPARAM, LPARAM, [FLAGS=SMTO_NORMAL], TIMEOUT)
@@ -2037,7 +2106,6 @@ Hook(handle,msg,coderef)
     SV* coderef
 PREINIT:
     LPPERLWIN32GUI_USERDATA perlud;
-    dTARG;
     SV** arrayref;
     AV* newarray;
     int i;
@@ -2331,7 +2399,7 @@ GetAbsClientRect(handle)
     HWND handle
 PREINIT:
     WINDOWINFO pwi;
-CODE:
+PPCODE:
     pwi.cbSize = sizeof(WINDOWINFO);
     if(GetWindowInfo(handle, &pwi)) {
         EXTEND(SP, 4);
@@ -2606,6 +2674,25 @@ PPCODE:
     XSRETURN(2);
 
 
+    ###########################################################################
+    # (@)METHOD:ClientToScreen(X, Y)
+    # Converts client-area co-ordinates to screen co-ordinates.
+void
+ClientToScreen(handle,x,y)
+    HWND handle
+    int x
+    int y
+PREINIT:
+    POINT myPt;
+PPCODE:
+    myPt.x = x;
+    myPt.y = y;
+    ClientToScreen(handle, &myPt);
+    EXTEND(SP, 2);
+    XST_mIV(0, myPt.x);
+    XST_mIV(1, myPt.y);
+    XSRETURN(2);
+    
     ###########################################################################
     # (@)METHOD:ScaleWidth()
     # Returns the windows client area width.
@@ -2928,6 +3015,17 @@ OUTPUT:
 
 
     ###########################################################################
+    # (@)METHOD:GetCapture()
+    # Returns the handle of the window that has the captured the mouse. 
+    # If no window has captured the mouse zero is returned.
+HWND
+GetCapture()
+CODE:
+    RETVAL = GetCapture();
+OUTPUT:
+    RETVAL
+    
+    ###########################################################################
     # (@)METHOD:ReleaseCapture()
     # Releases the mouse capture.
 BOOL
@@ -2937,7 +3035,100 @@ CODE:
 OUTPUT:
     RETVAL
 
-
+    ###########################################################################
+    # (@)METHOD:ShellExecute(window,operation,file,parameters,directory,showcmd)
+    #
+    # Performs an operation on a file.
+    #
+    # B<Operation>. A string that specifies the action to be performed. The set of available action verbs depends
+    # on the particular file or folder. Generally, the actions available from an object's shortcut menu are
+    # available verbs. 
+    #   edit     - Launches an editor and opens the document for editing. If File is not a document file,
+    #              the function will fail.
+    #   explore  - Explores the folder specified by File.
+    #   find     - Initiates a search starting from the specified directory.
+    #   open     - Opens the file specified by the File parameter. The file can be an executable file,
+    #              a document file, or a folder.
+    #   print    - Prints the document file specified by lpFile. If lpFile is not a document file,
+    #              the function will fail.
+    #   ""(NULL) - For systems prior to Microsoft Windows 2000, the default verb is used if it is valid
+    #              and available in the registry. If not, the "open" verb is used. For Windows 2000 and
+    #              later systems, the default verb is used if available. If not, the "open" verb is used.
+    #              If neither verb is available, the system uses the first verb listed in the registry.
+    #
+    # B<File>. A string that specifies the file or object on which to execute the specified verb. To specify
+    # a Shell namespace object, pass the fully qualified parse name. Note that not all verbs are supported on
+    # all objects. For example, not all document types support the "print" verb.
+    #
+    # B<Parameters>. If the File parameter specifies an executable file, Parameters is a string that specifies
+    # the parameters to be passed to the application. The format of this string is determined by the verb that
+    # is to be invoked. If File specifies a document file, Parameters should be NULL.
+    #
+    # B<Directory>. A string that specifies the default directory.
+    #
+    # B<ShowCmd>. Flags that speciow an application is to be displayed when it is opened. If File specifies a
+    # document file, the flag is simply passed to the associated application. It is up to the application to
+    # decide how to handle it.   
+    #
+    #   0  SW_HIDE            Hides the window and activates another window.
+    #   3  SW_MAXIMIZE        Maximizes the specified window.
+    #   6  SW_MINIMIZE        Minimizes the specified window and activates the next top-level window in the z-order.
+    #   9  SW_RESTORE         Activates and displays the window. If the window is minimized or maximized,
+    #                         Windows restores it to its original size and position. An application should specify
+    #                         this flag when restoring a minimized window.
+    #   5  SW_SHOW            Activates the window and displays it in its current size and position.
+    #   10 SW_SHOWDEFAULT     Sets the show state based on the SW_ flag specified in the STARTUPINFO structure
+    #                         passed to the CreateProcess function by the program that started the application.
+    #                         An application should call ShowWindow with this flag to set the initial show state of
+    #                         its main window.
+    #   2  SW_SHOWMINIMIZED   Activates the window and displays it as a minimized window.
+    #   7  SW_SHOWMINNOACTIVE Displays the window as a minimized window. The active window remains active.
+    #   8  SW_SHOWNA          Displays the window in its current state. The active window remains active.
+    #   4  SW_SHOWNOACTIVATE  Displays a window in its most recent size and position. The active window remains active.
+    #   1  SW_SHOWNORMAL      Activates and displays a window. If the window is minimized or maximized, Windows
+    #                         restores it to its original size and position. An application should specify this flag
+    #                         when displaying the window for the first time.
+    #
+    # Returns a value greater than 32 if successful, or an error value that is less than or equal to 32 otherwise.
+    # The following table lists the error values. 
+    #
+    #   0  The operating system is out of memory or resources. 
+    #   3  ERROR_PATH_NOT_FOUND   The specified path was not found. 
+    #   11 ERROR_BAD_FORMAT       The .exe file is invalid (non-Microsoft Win32 .exe or error in .exe image). 
+    #   5  SE_ERR_ACCESSDENIED    The operating system denied access to the specified file. 
+    #   27 SE_ERR_ASSOCINCOMPLETE The file name association is incomplete or invalid. 
+    #   30 SE_ERR_DDEBUSY         The Dynamic Data Exchange (DDE) transaction could not be completed because
+    #                             other DDE transactions were being processed. 
+    #   29 SE_ERR_DDEFAIL         The DDE transaction failed. 
+    #   28 SE_ERR_DDETIMEOUT      The DDE transaction could not be completed because the request timed out. 
+    #   32 SE_ERR_DLLNOTFOUND     The specified dynamic-link library (DLL) was not found. 
+    #   2  SE_ERR_FNF             The specified file was not found. 
+    #   31 SE_ERR_NOASSOC         There is no application associated with the given file name extension. This
+    #                             error will also be returned if you attempt to print a file that is not printable. 
+    #   8  SE_ERR_OOM             There was not enough memory to complete the operation. 
+    #   3  SE_ERR_PNF             The specified path was not found. 
+    #   26 SE_ERR_SHARE           A sharing violation occurred. 
+    #
+    # Examples:
+    #
+    # Open a web page in the default browser
+    #   my $exitval = $win->ShellExecute('open','http://www.perl.org','','',1);
+    #
+    # Open a text file in nodepad
+    #   my $exitval = $win->ShellExecute('open','notepad.exe','readme.txt','',1) ;
+int
+ShellExecute(window,operation,file,parameters,directory,showcmd)
+    HWND window
+    LPCTSTR operation
+    LPCTSTR file
+    LPCTSTR parameters
+    LPCTSTR directory
+    int showcmd
+CODE:
+    RETVAL = (int) ShellExecute(window,operation,file,parameters,directory,showcmd);
+OUTPUT:
+    RETVAL
+    
     ###########################################################################
     # (@)METHOD:GetWindowThreadProcessId()
     # Returns a two elements array containing the thread and the process
@@ -3017,9 +3208,14 @@ PPCODE:
 
 
     ###########################################################################
-    # (@)METHOD:TrackPopupMenu(MENU, X, Y, [FLAGS])
-    # Displays the menu B<MENU> at the specified co-ordinates and tracks the
+    # (@)METHOD:TrackPopupMenu(MENU [, X, Y [, LEFT, TOP, RIGHT, BOTTOM] [, FLAGS [, CODEREF]]])
+    # Displays the menu B<MENU> at the specified co-ordinates (X,Y) and tracks the
     # selection of items on the menu. X and Y are absolute screen co-ordinates.
+    #
+    # If X and Y are not provided, uses the current cursor position.
+    #
+    # If LEFT, TOP, RIGHT and BOTTOM are provided they describe a rectangle in absolute screen
+    # co-ordinates over which the menu will not be drawn (the excluded rectangle).
     #
     # The following flags can be set (combine flags with bitwise OR (|) )
     #   0x0000 TPM_LEFTBUTTON      Menu items can only be selected with left mouse button
@@ -3030,29 +3226,162 @@ PPCODE:
     #   0x0000 TPM_TOPALIGN        Menu is aligned above the given Y co-ordinate
     #   0x0010 TPM_VCENTERALIGN    Menu is centered on the given Y co-ordinate
     #   0x0020 TPM_BOTTOMALIGN     Menu is aligned below the given Y co-ordinate
-    #   0x0100 TPM_RETURNCMD       Causes TrackPopupMenu to return the menu item identifier of the user's selection in the return value
+    #   0x0100 TPM_RETURNCMD       TrackPopupMenu returns the selected menu item identifier in the return value
     #   0x0400 TPM_HORPOSANIMATION Menu will be animated from left to right (ignored if menu fading is on)
     #   0x0800 TPM_HORNEGANIMATION Menu will be animated from right to left (ignored if menu fading is on)
     #   0x1000 TPM_VERPOSANIMATION Menu will be animated from top to bottom (ignored if menu fading is on)
     #   0x2000 TPM_VERNEGANIMATION Menu will be animated from bottom to top (ignored if menu fading is on)
-    #   0x4000 TPM_NOANIMATION     Menu will not be animated and will not "fade" in and out even if menu fading is enabled
-    #   0x0001 TPM_RECURSE         Allows you to display a menu when another menu is already displayed. This is intended to support context menus within a menu. (Windows 2000/XP only)
+    #   0x4000 TPM_NOANIMATION     Menu will not be animated and will not "fade" in and out even if menu
+    #                              fading is enabled
+    #   0x0001 TPM_RECURSE         Allows you to display a menu when another menu is already displayed.
+    #                              This is intended to support context menus within a menu. (Windows 2000/XP only)
     #
-    # The default flags are TPM_LEFTALIGN | TPM_TOPALIGN | TPM_LEFTBUTTON
+    # The default flags are C<TPM_LEFTALIGN | TPM_TOPALIGN | TPM_LEFTBUTTON>
     #
-    # If you specify TPM_RETURNCMD, then the menu item ID of the selected item is returned. If an error occurs or the user does not select an item, zero is returned.
-    # If you do not specify TPM_RETURNCMD, the return value will be nonzero on success or zero on failure.
+    # If an excluded rectangle is spefified then the following flags may also be used, and TPM_VERTICAL is added to
+    # the default flags:
+    #   0x0000 TPM_HORIZONTAL      If the menu cannot be shown at the specified location without overlapping
+    #                              the excluded rectangle, the system tries to accommodate the requested
+    #                              horizontal alignment before the requested vertical alignment.
+    #   0x0040 TPM_VERTICAL        If the menu cannot be shown at the specified location without overlapping
+    #                              the excluded rectangle, the system tries to accommodate the requested
+    #                              vertical alignment before the requested horizontal alignment.
+    #
+    # If you specify C<TPM_RETURNCMD>, then the menu item ID of the selected item is returned. If an error
+    # occurs or the user does not select an item, zero is returned.
+    # If you do not specify C<TPM_RETURNCMD>, the return value will be nonzero on success or zero on failure.
+    #
+    # If B<CODEREF> is provided, then it is a code reference to a callback procedure that will be called for windows
+    # events that occur while the menu is displayed (normally such events are not available, as TrackPopupMenu has
+    # its own internal event loop).  The callback will recieve a reference to the Win32::GUI object used to call
+    # TrackPopupMenu on, and the message code, wParam and lParam of the event that occured. The callback should
+    # return nothing or 1 to allow the event to be processed normally, or 0 to prevent the event being passed to the
+    # default event handler.  See MSDN documentation for SetWindowsHookEx with idHook set to WH_MSGFILTER for
+    # the full gore.
+    #
+    # The callback prototype is:
+    #
+    #     sub callback {
+    #         my ($self, $message, $wParam, $lParam) = @_;
+    #
+    #         # Process messages you are interested in
+    #         
+    #         return;
+    #     }
+    #
+
 BOOL
-TrackPopupMenu(handle,hmenu,x,y,flags=TPM_LEFTALIGN|TPM_TOPALIGN|TPM_LEFTBUTTON)
+TrackPopupMenu(handle,hmenu, ... )
     HWND handle
     HMENU hmenu
-    int x
-    int y
-    UINT flags
+PREINIT:
+    int x = 0;
+    int y = 0;
+    UINT flags = TPM_LEFTALIGN|TPM_TOPALIGN|TPM_LEFTBUTTON;
+    LPTPMPARAMS lptpm = (LPTPMPARAMS) NULL;
+    TPMPARAMS tpm;
+    SV* coderef = (SV*) NULL;
+    HHOOK hhook = NULL;
+    LPPERLWIN32GUI_USERDATA perlud;
+    AV* newarray;
 CODE:
+    if(items < 2 || items == 3 || items == 7 || items > 10) {
+      CROAK("Usage: TrackPopupMenu(handle, menu, [x, y, [left, top, right, bottom], [flag, [coderef]]])\n");
+    }
+
+    if (items == 2) {
+      POINT pt;
+      if(GetCursorPos(&pt)) {
+		  x = pt.x;
+		  y = pt.y;
+      }
+    }
+    else {
+      x = SvIV(ST(2));
+      y = SvIV(ST(3));
+      if (items > 4 && items < 8) {
+        flags = (UINT) SvIV(ST(4));
+        if (items > 5) {
+          coderef = ST(5);
+        }
+      }
+      else {
+        tpm.cbSize = sizeof(TPMPARAMS);
+        tpm.rcExclude.left   = SvIV(ST(4));
+        tpm.rcExclude.top    = SvIV(ST(5));
+        tpm.rcExclude.right  = SvIV(ST(6));
+        tpm.rcExclude.bottom = SvIV(ST(7));
+        lptpm = &tpm;
+        flags |= TPM_VERTICAL;
+        if (items > 8) {
+          flags = (UINT) SvIV(ST(8));
+          if(items > 9) {
+            coderef = ST(9);
+          }
+        }
+      }
+    }
+
+    // if given a coderef, check that it actually is one
+    if(coderef != NULL && !(SvOK(coderef) && SvROK(coderef) && SvTYPE(SvRV(coderef)) == SVt_PVCV)) {
+      if(PL_dowarn) warn("TrackPopupMenu argument 'coderef' must be a code reference - callback not applied\n");
+      coderef = NULL;  // don't set up the hook
+    }
+
+    // if we have a coderef, then store it temporarily in the hooks array so that we can access
+    // it in the callback, and if successful, register the callback hook handler
+    if(coderef != NULL) {
+
+      perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(handle, GWL_USERDATA);
+      if(ValidUserData(perlud)) {
+        if(perlud->avHooks == NULL) {
+          perlud->avHooks = newAV();
+        }
+
+        // Check if there is already a handler for this message (there shouldn't be)
+        if(av_fetch(perlud->avHooks, WM_TRACKPOPUP_MSGHOOK, 0) == NULL) {
+          // No array reference for this msg yet, so make one and insert our
+          // handler ref:
+          newarray = newAV();
+          av_push(newarray, coderef);
+          SvREFCNT_inc(coderef);  // needed so that av_undef results in unchanged ref count.
+          if(av_store(perlud->avHooks, WM_TRACKPOPUP_MSGHOOK, newRV_noinc((SV*) newarray)) == NULL) {
+            // Failed to store new array
+            av_undef(newarray);
+            if(PL_dowarn) warn("TrackPopupMenu failed to store 'coderef' - callback not applied\n");
+            coderef = NULL;  // don't set up the hook
+          }
+        }
+        else {
+          // there's an existing hook for the message value we've chosen to use.
+          // this means someone called hook() with the message code 0xBFFF !!
+          if(PL_dowarn) warn("TrackPopupMenu found an existing 'coderef' - callback not applied\n");
+          coderef = NULL;  // don't set up the hook
+        }
+      }
+      else {
+        coderef = NULL;  // don't set up the hook
+      }
+
+      // only set up the hook if we installed the callback
+      if(coderef != NULL) {
+        hhook = SetWindowsHookEx(WH_MSGFILTER, (HOOKPROC)WindowsHookMsgProc, (HINSTANCE)NULL, GetWindowThreadProcessId(handle, (LPDWORD)NULL));
+      }
+    }
+
+    // Display the menu
     SetForegroundWindow(handle);
-    RETVAL = TrackPopupMenu(hmenu, flags, x, y, 0, handle, (CONST RECT*) NULL);
+    RETVAL = TrackPopupMenuEx(hmenu, flags, x, y, handle, lptpm);
     SetForegroundWindow(handle);
+
+    if(coderef != NULL) {
+      if(hhook != NULL) {
+        UnhookWindowsHookEx(hhook); // release the windows hook
+      }
+      // remove the temporary value stored in the hooks array
+      av_undef(newarray);
+      av_delete(perlud->avHooks, WM_TRACKPOPUP_MSGHOOK, 0);
+    }
 OUTPUT:
     RETVAL
 
@@ -3117,7 +3446,7 @@ PPCODE:
     # fields, accelerator keys etc). B<FLAG> should be 1 to enable this functionality,
     # or 0 to disable it.
     #
-    # See also new Win32::GUI::DialogBox
+    # See also new Win32::GUI::DialogBox()
 void
 DialogUI(handle,...)
     HWND handle
@@ -3151,7 +3480,9 @@ PPCODE:
     #
     #  0x0001 TME_HOVER     Makes the window receive WM_MOUSEHOVER messages when the mouse hovers over it.
     #  0x0002 TME_LEAVE     Makes the window receive a WM_MOUSELEAVE message when the mouse leaves it.
-    #  0x0010 TME_NONCLIENT Specifies that the non-client area should be included when tracking the mouse. The window will receive WM_NCMOUSEHOVER and WM_NCMOUSELEAVE messages depending on whether TME_HOVER and/or TME_LEAVE are set.
+    #  0x0010 TME_NONCLIENT Specifies that the non-client area should be included when tracking the mouse.
+    #                       The window will receive WM_NCMOUSEHOVER and WM_NCMOUSELEAVE messages depending
+    #                       on whether TME_HOVER and/or TME_LEAVE are set.
     #
     # See also UntrackMouse()
 BOOL
@@ -3166,7 +3497,7 @@ CODE:
     tme.hwndTrack = handle;
     tme.dwFlags = events;
     tme.dwHoverTime = timeout;
-    RETVAL = TrackMouseEvent( &tme );
+    RETVAL = _TrackMouseEvent( &tme );
 OUTPUT:
     RETVAL
 
@@ -3186,9 +3517,9 @@ CODE:
     tme.hwndTrack = handle;
     tme.dwFlags = TME_QUERY;
     tme.dwHoverTime = 0;
-    if(TrackMouseEvent( &tme )) {
+    if(_TrackMouseEvent( &tme )) {
         tme.dwFlags = tme.dwFlags | TME_CANCEL;
-        RETVAL = TrackMouseEvent( &tme );
+        RETVAL = _TrackMouseEvent( &tme );
     } else {
         RETVAL = FALSE;
     }
@@ -3892,9 +4223,10 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:EnumMyWindows()
-    # Returns a list of window handles created by your application.
+    # Returns a list of top-level window handles created by your application.
     #
-    # Usage: @windows = Win32::GUI::EnumMyWindows();
+    # Usage:
+    #    @windows = Win32::GUI::EnumMyWindows();
     #
 void
 EnumMyWindows()
@@ -3904,13 +4236,13 @@ PREINIT:
 PPCODE:
     ary = newAV();
     EnumWindows( (WNDENUMPROC) EnumMyWindowsProc, (LPARAM) ary);
-    for(i=0; i<av_len(ary); i++) {
-        printf("XS(EnumMyWindows): ary[%d] = %ld\n", i, SvIV(*(av_fetch(ary, i, 0))));
+    for(i=0; i<av_len(ary)+1; i++) {
+        //printf("XS(EnumMyWindows): ary[%d] = %ld\n", i, SvIV(*(av_fetch(ary, i, 0))));
         XST_mIV(i, SvIV(*(av_fetch(ary, i, 0))));
     }
-    /* SvREFCNT_dec((SV*)ary); */
+    SvREFCNT_dec((SV*)ary);
     XSRETURN(i);
-
+  
     ###########################################################################
     # (@)METHOD:GetSystemMetrics(INDEX)
     # Retrieves various system metrics (dimensions of display elements) and
@@ -3956,35 +4288,43 @@ OUTPUT:
     #  0x0030 MB_ICONEXCLAMATION show an exclamation mark icon (used for warnings)
     #  0x0040 MB_ICONASTERISK show an asterisk icon (the letter "i" in a circle) (used for information)
     #
-    # To set a default button, specify one of these values (if none of these are specified, the first button will be the default button):
+    # To set a default button, specify one of these values (if none of these are specified, the first
+    # button will be the default button):
     #  0x0100 MB_DEFBUTTON2 The second button is default
     #  0x0200 MB_DEFBUTTON3 The third button is default
     #  0x0300 MB_DEFBUTTON4 The fourth button is default
     #
-    # To specify how the message box affects other windows and various other flags, use one or more of the following values:
-    #  0x0000 MB_APPLMODAL The user must dismiss the message box before continuing work in the window specified by HANDLE (this is the default)
-    #  0x1000 MB_SYSTEMMODAL Same as MB_APPLMODAL but the window appears on top of all other windows on the desktop.
-    #  0x2000 MB_TASKMODAL Same as MB_APPLMODAL except that all the top-level windows belonging to the current thread are disabled if no HANDLE is specified
-    #  0x8000 MB_NOFOCUS Does not give the message box input focus
-    #  0x10000 MB_SETFOREGROUND Makes the message box become the foreground window
-    #  0x20000 MB_DEFAULT_DESKTOP_ONLY If the current desktop is not the default desktop, MessageBox will not return until the user switches to the default desktop
-    #  0x40000 MB_TOPMOST Makes the message box become the topmost window
-    #  0x80000 MB_RIGHT Makes text in the message box right-aligned
-    #  0x100000 MB_RTLREADING Displays message and caption text using right-to-left reading order on Hebrew and Arabic systems.
-    #  0x200000 MB_SERVICE_NOTIFICATION Displays the message box even if no user is logged in on Windows NT/2000/XP. You should not specify a HANDLE when using this.
+    # To specify how the message box affects other windows and various other flags, use one or
+    # more of the following values:
+    #  0x0000   MB_APPLMODAL The user must dismiss the message box before continuing work in
+    #              the window specified by HANDLE (this is the default)
+    #  0x1000   MB_SYSTEMMODAL Same as MB_APPLMODAL but the window appears on top of all other
+    #              windows on the desktop.
+    #  0x2000   MB_TASKMODAL Same as MB_APPLMODAL except that all the top-level windows belonging
+    #              to the current thread are disabled if no HANDLE is specified
+    #  0x8000   MB_NOFOCUS Does not give the message box input focus
+    #  0x10000  MB_SETFOREGROUND Makes the message box become the foreground window
+    #  0x20000  MB_DEFAULT_DESKTOP_ONLY If the current desktop is not the default
+    #              desktop, MessageBox will not return until the user switches to the default desktop
+    #  0x40000  MB_TOPMOST Makes the message box become the topmost window
+    #  0x80000  MB_RIGHT Makes text in the message box right-aligned
+    #  0x100000 MB_RTLREADING Displays message and caption text using right-to-left reading
+    #              order on Hebrew and Arabic systems.
+    #  0x200000 MB_SERVICE_NOTIFICATION Displays the message box even if no user is logged
+    #              in on Windows NT/2000/XP. You should not specify a HANDLE when using this.
     #
     # To combine several values together, use a bitwise OR operator (|).
     #
     # MessageBox will return one of the following values depending on the user's action:
-    #   1 IDOK The user clicked the OK button.
-    #   2 IDCANCEL The user clicked the Cancel button.
-    #   3 IDABORT The user clicked the Abort button.
-    #   4 IDRETRY The user clicked the Retry button.
-    #   5 IDIGNORE The user clicked the Ignore button.
-    #   6 IDYES The user clicked the Yes button.
-    #   7 IDNO The user clicked the No button.
-    #   8 IDCLOSE The user closed the message box.
-    #   9 IDHELP The user clicked the Help button.
+    #   1 IDOK       The user clicked the OK button.
+    #   2 IDCANCEL   The user clicked the Cancel button.
+    #   3 IDABORT    The user clicked the Abort button.
+    #   4 IDRETRY    The user clicked the Retry button.
+    #   5 IDIGNORE   The user clicked the Ignore button.
+    #   6 IDYES      The user clicked the Yes button.
+    #   7 IDNO       The user clicked the No button.
+    #   8 IDCLOSE    The user closed the message box.
+    #   9 IDHELP     The user clicked the Help button.
     #  10 IDTRYAGAIN The user clicked the Try Again button.
     #  11 IDCONTINUE The user clicked the Continue button.
     #
@@ -4037,21 +4377,22 @@ OUTPUT:
     #      (for example, "Text Files"), and the second string specifies the filter pattern
     #      (for example, "*.TXT"). To specify multiple filter patterns for a single display
     #      string, use a semicolon to separate the patterns (for example, "*.TXT;*.DOC;*.BAK").
-    #      A pattern string can be a combination of valid filename characters and the asterisk (*)
-    #      wildcard character. Do not include spaces in the pattern string.
+    #      A pattern string can be a combination of valid filename characters and the
+    #      asterisk (*) wildcard character. Do not include spaces in the pattern string.
     #  -defaultextension => STRING
-    #      Contains the default extension. GetOpenFileName append this extension to the filename if the user
-    #      fails to type an extension. This string can be any length, but only the first three characters are
-    #      appended. The string should not contain a period (.).
+    #      Contains the default extension. GetOpenFileName append this extension to the
+    #      filename if the user fails to type an extension. This string can be any length,
+    #      but only the first three characters are appended. The string should not contain a
+    #      period (.).
     #  -defaultfilter => NUMBER
     #      Specifies the index of the currently selected filter in the File Types control.
     #      The first pair of strings has an index value of 0, the second pair 1, and so on.    
     #  -createprompt => 0/1 (default 0)
-    #      If the user specifies a file that does not exist, this flag causes the dialog box to prompt
-    #      the user for permission to create the file. If the user chooses to create the file, the dialog box
-    #      closes and the function returns the specified name; otherwise, the dialog box remains open.
-    #      If you use this flag with the -multisel flag, the dialog box allows the user to specify
-    #      only one nonexistent file.
+    #      If the user specifies a file that does not exist, this flag causes the dialog box
+    #      to prompt the user for permission to create the file. If the user chooses to create
+    #      the file, the dialog box closes and the function returns the specified name; otherwise,
+    #      the dialog box remains open. If you use this flag with the -multisel flag, the dialog
+    #      box allows the user to specify only one nonexistent file.
     #  -multisel => 0/1 (default 0)
     #      Allow multiple file selection
     #      If the user selects more than one file then return filename with full path.
@@ -4060,26 +4401,31 @@ OUTPUT:
     #  -explorer => 0/1 (default 1)
     #      Explorer look.
     #  -extensiondifferent => 0/1 (default 0)
-    #      Specifies that the user can typed a filename extension that differs from the extension specified by -defaultextension.
+    #      Specifies that the user can typed a filename extension that differs from the extension
+    #      specified by -defaultextension.
     #  -filemustexist => 0/1 (default 0)
-    #      Specifies that the user can type only names of existing files in the File Name entry field.
-    #      If this flag is specified and the user enters an invalid name, the dialog box procedure displays
-    #      a warning in a message box.
+    #      Specifies that the user can type only names of existing files in the File Name entry
+    #      field. If this flag is specified and the user enters an invalid name, the dialog box
+    #      procedure displays a warning in a message box.
     #  -hidereadonly => 0/1 (default 1)
-    #      Hides the Read Only check box.
-    #      If -hidereadonly is set to 0, the read only statut is return only in array context as last value.
+    #      Hides the Read Only check box. If -hidereadonly is set to 0, the read only status is
+    #      return only in array context as last value.
     #  -nochangedir => 0/1 (default 0)
-    #      Restores the current directory to its original value if the user changed the directory while searching for files.
+    #      Restores the current directory to its original value if the user changed the directory
+    #      while searching for files.
     #  -nodeferencelinks => 0/1 (default 0)
-    #      Directs the dialog box to return the path and filename of the selected shortcut (.LNK) file.
-    #      If this value is not given, the dialog box returns the path and filename of the file referenced by the shortcut.
+    #      Directs the dialog box to return the path and filename of the selected
+    #      shortcut (.LNK) file. If this value is not given, the dialog box returns the
+    #      path and filename of the file referenced by the shortcut.
     #  -nonetwork  => 0/1 (default 0)
     #      Hides and disables the Network button
     #  -noreadonlyreturn => 0/1 (default 0)
-    #      Specifies that the returned file does not have the Read Only check box checked and is not in a write-protected directory.
+    #      Specifies that the returned file does not have the Read Only check box checked and is
+    #      not in a write-protected directory.
     #  -pathmustexist => 0/1 (default 0)
     #      Specifies that the user can type only valid paths and filenames.
-    #      If this flag is used and the user types an invalid path and filename in the File Name entry field, the dialog box function displays a warning in a message box.
+    #      If this flag is used and the user types an invalid path and filename in the File Name
+    #      entry field, the dialog box function displays a warning in a message box.
     #  -readonly => 0/1 (default 0)
     #      Causes the Read Only check box to be checked initially when the dialog box is created.
     #
@@ -4287,25 +4633,30 @@ PPCODE:
     #  -explorer => 0/1 (default 1)
     #      Explorer look.
     #  -extensiondifferent => 0/1 (default 0)
-    #      Specifies that the user can typed a filename extension that differs from the extension specified by -defaultextension.
+    #      Specifies that the user can typed a filename extension that differs from the extension
+    #      specified by -defaultextension.
     #  -filemustexist => 0/1 (default 0)
     #      Specifies that the user can type only names of existing files in the File Name entry field.
     #      If this flag is specified and the user enters an invalid name, the dialog box procedure displays
     #      a warning in a message box.
     #  -nochangedir => 0/1 (default 0)
-    #      Restores the current directory to its original value if the user changed the directory while searching for files.
+    #      Restores the current directory to its original value if the user changed the directory
+    #      while searching for files.
     #  -nodeferencelinks => 0/1 (default 0)
     #      Directs the dialog box to return the path and filename of the selected shortcut (.LNK) file.
-    #      If this value is not given, the dialog box returns the path and filename of the file referenced by the shortcut.
+    #      If this value is not given, the dialog box returns the path and filename of the file
+    #      referenced by the shortcut.
     #  -nonetwork  => 0/1 (default 0)
     #      Hides and disables the Network button
     #  -noreadonlyreturn => 0/1 (default 0)
     #      Specifies that the returned file is not in a write-protected directory.
     #  -pathmustexist => 0/1 (default 1)
     #      Specifies that the user can type only valid paths and filenames.
-    #      If this flag is used and the user types an invalid path and filename in the File Name entry field, the dialog box function displays a warning in a message box.
+    #      If this flag is used and the user types an invalid path and filename in the File Name
+    #      entry field, the dialog box function displays a warning in a message box.
     #  -overwriteprompt => 0/1 (default 1)
-    #      Generate a message box if the selected file already exists. The user must confirm whether to overwrite the file.
+    #      Generate a message box if the selected file already exists. The user must confirm8
+    #      whether to overwrite the file.
 void
 GetSaveFileName(...)
 PPCODE:
@@ -5091,6 +5442,29 @@ MODULE = Win32::GUI     PACKAGE = Win32::GUI::Menu
 #pragma message( "*** PACKAGE Win32::GUI::Menu..." )
 
     ###########################################################################
+    # (@)METHOD:RemoveMenu(position, [flags=MF_BYPOSITION])
+    # The RemoveMenu function deletes a menu item or detaches a submenu from the
+    # specified menu. If the menu item opens a drop-down menu or submenu, RemoveMenu
+    # does not destroy the menu or its handle, allowing the menu to be reused
+    #
+    # position specifies the menu item to be removed, as determined by the flags field.
+    #
+    # flags specifies how the position field is interpreted, and can take one of the
+    # following values:
+    #   MF_BYCOMMAND  (0x0000): Indicates that position gives the identifier of the menu item
+    #   MF_BYPOSITION (0x0400): Indicates that position gives the zero-based relative position of the menu item.
+    # If flags is not supplied, then MF_BYPOSITION is used as the default
+BOOL
+RemoveMenu(menu, position, flags=MF_BYPOSITION)
+  HMENU menu
+  UINT position
+  UINT flags
+CODE:
+    RETVAL = RemoveMenu(menu, position, flags);
+OUTPUT:
+    RETVAL
+
+    ###########################################################################
     # (@)INTERNAL:DESTROY(HANDLE)
 BOOL
 DESTROY(handle)
@@ -5236,8 +5610,13 @@ PPCODE:
 
 
     ###########################################################################
-    # (@)METHOD:Enabled(...)
+    # (@)METHOD:Enabled([FLAG])
     # Set or Retrieve Enabled state of a menu item.
+    #
+    # B<FLAG> is a boolean.  If supplied sets the state of the menu item
+    # (0 = Disabled, 1 = Eabled).  If not supplied, retrieves the enabled
+    # state if the menu item.
+    #
 void
 Enabled(...)
 PPCODE:

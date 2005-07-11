@@ -4,13 +4,13 @@
 #
 # 29 Jan 1997 by Aldo Calpini <dada@perl.it>
 #
-# Version: 1.0 (12 Nov 2004)
+# Version: 1.02 (10 July 2005)
 #
-# Copyright (c) 1997..2004 Aldo Calpini. All rights reserved.
+# Copyright (c) 1997..2005 Aldo Calpini. All rights reserved.
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: GUI.pm,v 1.25 2004/11/12 15:58:50 lrocher Exp $
+# $Id: GUI.pm,v 1.30 2005/07/10 11:24:29 robertemay Exp $
 #
 ###############################################################################
 package Win32::GUI;
@@ -24,7 +24,9 @@ require DynaLoader;     # to dynuhlode the module.
 ###############################################################################
 # STATIC OBJECT PROPERTIES
 #
-$VERSION             = "1.0";
+$VERSION             = "1.02";        # For MakeMaker
+$XS_VERSION          = $VERSION;      # For dynaloader
+$VERSION             = eval $VERSION; # For Perl  (see perldoc perlmodstyle)
 $MenuIdCounter       = 1;
 $TimerIdCounter      = 1;
 $NotifyIconIdCounter = 1;
@@ -469,6 +471,10 @@ sub bootstrap_subpackage {
 ###############################################################################
 # PUBLIC METHODS
 # (@)PACKAGE:Win32::GUI
+# Common Methods
+# The Win32::GUI package defines a set of methods that apply to most winodws and
+# controls. Some of the methods are applicable to resources. See the individual
+# method documentation for more details.
 
     ###########################################################################
     # (@)METHOD:Version()
@@ -610,7 +616,7 @@ sub _new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Font
-#
+# Create font resources
 package Win32::GUI::Font;
 @ISA = qw(Win32::GUI);
 
@@ -651,7 +657,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Bitmap
-#
+# Create bitmap resources
 package Win32::GUI::Bitmap;
 @ISA = qw(Win32::GUI);
 
@@ -681,7 +687,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Icon
-#
+# Create Icon resources
 package Win32::GUI::Icon;
 @ISA = qw(Win32::GUI);
 
@@ -717,7 +723,7 @@ sub DESTROY {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Cursor
-#
+# Create cursor resources
 package Win32::GUI::Cursor;
 @ISA = qw(Win32::GUI);
 
@@ -752,7 +758,7 @@ sub DESTROY {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Class
-#
+# Create Window classes
 package Win32::GUI::Class;
 @ISA = qw(Win32::GUI);
 
@@ -787,8 +793,14 @@ sub new {
     # figure out the correct background color 
     # (to avoid the "white background" syndrome on XP)
     if(not exists $args{-color} && not exists $args{-brush}) {
-        my($undef, $major, $minor) = Win32::GetOSVersion();
-        if($major == 5 && $minor > 0) {         
+        my($undef, $major, $minor);
+        eval { ($undef, $major, $minor) = Win32::GetOSVersion(); };
+        # certain Win32 perls didn't have Win32 in core
+        if ($@) {
+          eval { require Win32 };
+          ($undef, $major, $minor) = Win32::GetOSVersion();
+        }
+        if($major == 5 && $minor > 0) {
             $args{-color} = Win32::GUI::constant("COLOR_BTNFACE", 0)+1;
         } else {
             $args{-color} = Win32::GUI::constant("COLOR_WINDOW", 0);
@@ -810,6 +822,8 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Window
+# Create and manipulate Windows
+# This is the main container of a regular GUI; also known as "top level window".
 #
 package Win32::GUI::Window;
 @ISA = qw(
@@ -1073,6 +1087,10 @@ sub AUTOLOAD {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::DialogBox
+# Create and manipulate Windows
+# Just like Window, but with a predefined dialog box look: by default, a DialogBox
+# can not be sized, has no maximize box and has C<-dialogui> enabled (eg. 
+# interprets tab/enter/esc).
 #
 package Win32::GUI::DialogBox;
 @ISA = qw(Win32::GUI::Window);
@@ -1091,6 +1109,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::MDIFrame
+# Create and manipulate MDI Windows
 #
 package Win32::GUI::MDIFrame;
 @ISA = qw(
@@ -1184,6 +1203,7 @@ sub AUTOLOAD {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::MDIClient
+# Create and manipulate MDI Windows
 #
 package Win32::GUI::MDIClient;
 @ISA = qw(
@@ -1227,6 +1247,7 @@ sub AUTOLOAD {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::MDIChild
+# Create and manipulate MDI Windows
 #
 package Win32::GUI::MDIChild;
 @ISA = qw(
@@ -1258,6 +1279,7 @@ sub GetDC {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Button
+# Create and manipulate button controls
 #
 package Win32::GUI::Button;
 @ISA = qw(
@@ -1276,11 +1298,14 @@ package Win32::GUI::Button;
     #     -valign  => top/center/bottom
     #       specify vertical text align.
     #     -default => 0/1 (default 0)
-    #       Set/Unset default push button style.
+    #       Set/Unset default push button style. A default Button has a black
+    #       border drawn around it.
     #     -ok      => 0/1 (default 0)
-    #       Set/Unset button id to ID_OK.
+    #       Set/Unset button id to ID_OK. If 1, the button will correspond to the OK
+    #       action of a dialog, and its Click event will be fired by pressing the ENTER key.
     #     -cancel  => 0/1 (default 0)
-    #       Set/Unset button id to ID_CANCEL.
+    #       Set/Unset button id to ID_CANCEL. If 1, the button will correspond to the CANCEL
+    #       action of a dialog, and its Click event will be fired by pressing the ESC key.
     #     -bitmap  => Win32::GUI::Bitmap object
     #       Create a bitmap button.
     #     -picture => see -bitmap
@@ -1306,6 +1331,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::RadioButton
+# Create and manipulate radio button controls
 #
 package Win32::GUI::RadioButton;
 @ISA = qw(
@@ -1318,7 +1344,7 @@ package Win32::GUI::RadioButton;
     # Creates a new RadioButton object;
     # can also be called as PARENT->AddRadioButton(%OPTIONS).
     #
-    # B<%OPTIONS> are the same of Button (see new Win32::GUI::Button() ).
+    # B<%OPTIONS> are the same as Button (See new Win32::GUI::Button() ).
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__RADIOBUTTON", 0), @_);
 }
@@ -1326,6 +1352,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Checkbox
+# Create and manipulate checkbox controls
 #
 package Win32::GUI::Checkbox;
 @ISA = qw(
@@ -1338,13 +1365,14 @@ package Win32::GUI::Checkbox;
     # Creates a new Checkbox object;
     # can also be called as PARENT->AddCheckbox(%OPTIONS).
     #
-    # B<%OPTIONS> are the same of Button (see new Win32::GUI::Button() ).
+    # B<%OPTIONS> are the same of Button (See new Win32::GUI::Button() ).
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__CHECKBOX", 0), @_);
 }
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Groupbox
+# Create and manipulate groupbox controls
 #
 package Win32::GUI::Groupbox;
 @ISA = qw(
@@ -1363,6 +1391,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Label
+# Create and manipulate label controls
 #
 package Win32::GUI::Label;
 @ISA = qw(
@@ -1411,6 +1440,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Textfield
+# Create and manipulate textfield controls
 #
 package Win32::GUI::Textfield;
 @ISA = qw(
@@ -1432,6 +1462,8 @@ package Win32::GUI::Textfield;
     #       is "\r\n", not "\n"!).
     #   -password      => 0/1 (default 0)
     #       masks the user input (like password prompts).
+    #   -passwordchar  => CHAR (default '*')
+    #       The specified CHAR that is shown instead of the text with C<< -password => 1 >>.
     #   -lowercase     => 0/1 (default 0)
     #       Convert all caracter into lowercase
     #   -uppercase     => 0/1 (default 0)
@@ -1444,7 +1476,7 @@ package Win32::GUI::Textfield;
     #   -readonly      => 0/1 (default 0)
     #       text can't be changed.
     #
-    # The -prompt option is very special; if a string is passed, a
+    # The C<-prompt> option is very special; if a string is passed, a
     # Win32::GUI::Label object (with text set to the string passed) is created
     # to the left of the Textfield.
     # Example:
@@ -1540,6 +1572,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Listbox
+# Create and manipulate checkbox clistboxontrols
 #
 package Win32::GUI::Listbox;
 @ISA = qw(
@@ -1597,6 +1630,7 @@ sub Item { &List; }
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Listbox::Item
+# Create and manipulate listbox entries
 #
 package Win32::GUI::Listbox::Item;
 
@@ -1629,6 +1663,7 @@ sub Select {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Combobox
+# Create and manipulate combobox controls
 #
 package Win32::GUI::Combobox;
 @ISA = qw(
@@ -1669,6 +1704,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::ProgressBar
+# Create and manipulate progress bar controls
 #
 package Win32::GUI::ProgressBar;
 @ISA = qw(
@@ -1692,6 +1728,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::StatusBar
+# Create and manipulate ststus bar controls
 #
 package Win32::GUI::StatusBar;
 @ISA = qw(
@@ -1715,6 +1752,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::TabStrip
+# Create and manipulate tab strip controls
 #
 package Win32::GUI::TabStrip;
 @ISA = qw(
@@ -1731,6 +1769,7 @@ package Win32::GUI::TabStrip;
     #   -alignright=> 0/1 (default 0)
     #   -bottom    => 0/1 (default 0)
     #   -buttons   => 0/1 (default 0)
+    #     if enabled items look like push buttons
     #   -hottrack  => 0/1 (default 0)
     #   -imagelist => Win32::GUI::ImageList object
     #   -justify   => 0/1 (default 0)
@@ -1743,6 +1782,7 @@ package Win32::GUI::TabStrip;
     #   -flatseparator => 0/1 (default 0)
     #   -raggedright => 0/1 (default 0)
     #   -multiline => 0/1 (default 0)
+    #     The control can have more than one line
     #   -multiselect => 0/1 (default 0)   
     #   -vertical  => 0/1 (default 0)
     #   -tooltip => Win32::GUI::Tooltip object    
@@ -1752,6 +1792,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Toolbar
+# Create and manipulate toolbar controls
 #
 package Win32::GUI::Toolbar;
 @ISA = qw(
@@ -1772,6 +1813,7 @@ package Win32::GUI::Toolbar;
     #   -transparent => 0/1
     #   -imagelist => IMAGELIST
     #   -multiline => 0/1
+    #     The control can have more than one line
     #   -nodivider => 0/1
     #   -tooltip => Win32::GUI::Tooltip object    
 sub new {
@@ -1780,7 +1822,9 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::RichEdit
-#
+# Create and manipulate Richedit controls
+# Most of the methods and events that apply to a L<TextField|Win32::GUI::Textfield>
+# also apply to Win32::GUI::RichEdit.
 package Win32::GUI::RichEdit;
 @ISA = qw(
     Win32::GUI
@@ -1791,14 +1835,16 @@ package Win32::GUI::RichEdit;
     # (@)METHOD:new Win32::GUI::RichEdit(PARENT, %OPTIONS)
     # Creates a new RichEdit object;
     # can also be called as PARENT->AddRichEdit(%OPTIONS).
-    # See new Win32::GUI::Edit for B<%OPTIONS>
+    # See new Win32::GUI::TextField() for B<%OPTIONS>
 sub new {
+    $Win32::GUI::RICHED = Win32::GUI::LoadLibrary("RICHED32") unless defined $Win32::GUI::RICHED;
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__RICHEDIT", 0), @_);
 }
 
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::ListView
+# Create and manipulate listview controls
 #
 package Win32::GUI::ListView;
 @ISA = qw(
@@ -1857,6 +1903,7 @@ sub Item {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::ListView::Item
+# Create and manipulate listview entries
 #
 package Win32::GUI::ListView::Item;
 
@@ -1912,6 +1959,7 @@ sub Text {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::ListView::SubItem
+# Create and manipulate listview entries
 #
 package Win32::GUI::ListView::SubItem;
 
@@ -1947,6 +1995,7 @@ sub Text {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::TreeView
+# Create and manipulate treeview controls
 #
 package Win32::GUI::TreeView;
 @ISA = qw(
@@ -1965,6 +2014,7 @@ package Win32::GUI::TreeView;
     #   -lines => 0/1
     #   -rootlines => 0/1
     #   -buttons => 0/1
+    #        enables or disables the +/- buttons to expand/collapse tree items.
     #   -showselalways => 0/1
     #   -checkboxes => 0/1
     #   -trackselect => 0/1
@@ -1982,7 +2032,9 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Slider
-# also Trackbar
+# Create and manipulate slider controls
+#
+# See Win32::GUI::Trackbar
 #
 package Win32::GUI::Trackbar;
 @ISA = qw(
@@ -2018,6 +2070,7 @@ package Win32::GUI::Slider;
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::UpDown
+# Create and manipulate up-down controls
 #
 package Win32::GUI::UpDown;
 @ISA = qw(
@@ -2032,18 +2085,33 @@ package Win32::GUI::UpDown;
     #
     # Class specific B<%OPTIONS> are:
     #   -align => left,right
+    #     When Left, positions the up-down control next to the left edge of the buddy window. 
+    #     The buddy window is moved to the right, and its width is decreased to accommodate the 
+    #     width of the up-down control.
+    #     When right, positions the up-down control next to the right edge of the buddy window. 
+    #     The width of the buddy window is decreased to accommodate the width of the up-down control.
     #   -nothousands => 0/1
-    #   -wrap => 0/1
+    #     Does not insert a thousands separator between every three decimal digits. 
+    #   -wrap => 0/1 (default 0)
+    #     Causes the position to "wrap" if it is incremented or decremented beyond the ending or beginning of the range.
     #   -horizontal => 0/1
+    #     Causes the up-down control's arrows to point left and right instead of up and down.
     #   -autobuddy => 0/1
+    #     Automatically selects the previous window in the z-order as the up-down control's buddy window.
     #   -setbuddy => 0/1
+    #     Causes the up-down control to set the text of the buddy window (using the WM_SETTEXT message) 
+    #     when the position changes. The text consists of the position formatted as a decimal or hexadecimal string.
     #   -arrowkeys => 0/1
+    #     Causes the up-down control to increment and decrement the position when the UP ARROW and 
+    #     DOWN ARROW keys are pressed.
+    #
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__UPDOWN", 0), @_);
 }
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Tooltip
+# Create and manipulate ToolTip controls
 #
 package Win32::GUI::Tooltip;
 @ISA = qw(
@@ -2073,7 +2141,13 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Animation
-#
+# Create and manipulate animation controls
+# The Animation control displays an AVI animation.
+# To load an AVI file you can use the L<Open()|/Open> method; 
+# you can then use L<Play()|/Play> to start the animation
+# (note it will start automatically with the B<-autoplay> option),
+# L<Stop()|/Stop> to stop it, and L<Seek()|/Seek> to position it to
+# a specified frame.
 package Win32::GUI::Animation;
 @ISA = qw(
     Win32::GUI
@@ -2098,6 +2172,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Rebar
+# Create and manipulate Rebar (aka Coolbar) controls
 #
 package Win32::GUI::Rebar;
 @ISA = qw(
@@ -2138,6 +2213,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Header
+# Create and manipulate list header controls
 #
 package Win32::GUI::Header;
 @ISA = qw(
@@ -2174,6 +2250,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Splitter
+# Create and manipulate window splitter controls
 #
 package Win32::GUI::Splitter;
 @ISA = qw(
@@ -2208,6 +2285,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::ComboboxEx
+# Create and manipulate extended combobox controls
 #
 package Win32::GUI::ComboboxEx;
 @ISA = qw(
@@ -2239,6 +2317,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::DateTime
+# Create and manipulate datetime controls
 #
 package Win32::GUI::DateTime;
 @ISA = qw(
@@ -2266,6 +2345,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::MonthCal
+# Create and manipulate MonthCal controls
 #
 package Win32::GUI::MonthCal;
 @ISA = qw(
@@ -2296,6 +2376,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Graphic
+# Create and manipulate Graphic Windows
 #
 package Win32::GUI::Graphic;
 @ISA = qw(
@@ -2327,6 +2408,7 @@ sub GetDC {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::ImageList
+# Create and manipulate imagelist resources
 #
 package Win32::GUI::ImageList;
 @ISA = qw(Win32::GUI);
@@ -2377,6 +2459,7 @@ sub AddMasked {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Menu
+# Create and manipulate menu resources
 #
 package Win32::GUI::Menu;
 @ISA = qw(Win32::GUI);
@@ -2405,13 +2488,14 @@ sub new {
 
     ###########################################################################
     # (@)METHOD:AddMenuButton()
-    # see new Win32::GUI::MenuButton()
+    # See new Win32::GUI::MenuButton()
 sub AddMenuButton {
     return Win32::GUI::MenuButton->new(@_);
 }
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::MenuButton
+# Create and manipulate menu entries
 #
 package Win32::GUI::MenuButton;
 @ISA = qw(Win32::GUI);
@@ -2450,19 +2534,27 @@ sub new {
 
     ###########################################################################
     # (@)METHOD:AddMenuItem()
-    # see new Win32::GUI::MenuItem()
+    # See new Win32::GUI::MenuItem()
 sub AddMenuItem {
     return Win32::GUI::MenuItem->new(@_);
 }
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::MenuItem
+# Create and manipulate menu entries
 #
 package Win32::GUI::MenuItem;
 @ISA = qw(Win32::GUI);
 
     ###########################################################################
     # (@)METHOD:new Win32::GUI::MenuItem()
+    # Creates a new MenuItem object;
+    # can also be called as PARENT->AddMenuItem(%OPTIONS).
+    #
+    # Class specific B<%OPTIONS> are:
+    #     -default => 0/1 (default 0)
+    #       Set/Unset default push menu item style. A default menu item is
+    #       drawn in a bold font.
 sub new {
     my $class = shift;
     $class = "Win32::" . $class if $class =~ /^GUI::/;
@@ -2495,7 +2587,21 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE: Win32::GUI::Timer
+# Create and manipulate Timer resources
 #
+# The Timer object is a special kind of control: it has no appearance, its only 
+# purpose is to trigger an event every specified amount of time.  You can reate a
+# Timer object in either of these ways:
+#   new Win32::GUI::Timer( PARENT, NAME, ELAPSE )
+#   PARENT->AddTimer( NAME, ELAPSE )
+# where C<NAME> is the name for the Timer object (used to lookup the associated event).
+# and C<ELAPSE> is the number of milliseconds after which the Timer() event will
+# be triggered.
+#
+# Once you've created the Timer object, you can change the ELAPSE parameter 
+# with the L<Interval()|/Interval> method, or disables it with the L<Kill()|/Kill> method.
+# Note that Kill(), despite of its name, does not destroy the Timer object, 
+# so you can re-enable it later with Interval().
 package Win32::GUI::Timer;
 @ISA = qw(Win32::GUI);
 
@@ -2575,6 +2681,7 @@ sub DESTROY {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::NotifyIcon
+# Create and manipulate notify icons in the system tray
 #
 package Win32::GUI::NotifyIcon;
 
@@ -2630,7 +2737,7 @@ sub new {
 
     ###########################################################################
     # (@)METHOD:Change(%OPTIONS)
-    # Change most option. See new Win32::GUI::NotifyIcon.
+    # Change most option. See new Win32::GUI::NotifyIcon().
 sub Change {
     my $self = shift;
     my %args = @_;
@@ -2656,6 +2763,7 @@ sub DESTROY {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::DC
+# Work with a Window's DC (Drawing COntext)
 #
 package Win32::GUI::DC;
 
@@ -2706,6 +2814,7 @@ sub DESTROY {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Pen
+# Create and manipulate drawing Pen resources
 #
 package Win32::GUI::Pen;
 
@@ -2736,6 +2845,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Brush
+# Create and manipulate drawing Brush resources
 #
 package Win32::GUI::Brush;
 
@@ -2771,8 +2881,11 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::AcceleratorTable
-# an accelerator table
+# Create accelerator table resources
 #
+# The AcceleratorTable object can be associated to a window
+# with the -accel option; then, when an accelerator is used, a
+# corresponding <name>_Click event is fired.
 
 package Win32::GUI::AcceleratorTable;
 
@@ -2789,9 +2902,6 @@ package Win32::GUI::AcceleratorTable;
     #         "Ctrl-Alt-Del" => "Reboot",
     #         "Shift-A"      => sub { print "Hello\n"; },
     #     );
-    # The AcceleratorTable object can be associated to a window
-    # with the -accel option; then, when an accelerator is used, a
-    # corresponding <name>_Click event is fired.
     # Keyboard combinations currently support the following modifier :
     #     Shift
     #     Ctrl  (or Control)
@@ -3229,12 +3339,12 @@ $Win32::GUI::SplitterVertical = Win32::GUI::Class->new(
     -widget  => "Splitter",
 );
 
-$Win32::GUI::RICHED = Win32::GUI::LoadLibrary("RICHED32");
+#$Win32::GUI::RICHED = Win32::GUI::LoadLibrary("RICHED32");
 
-END {
+#END {
     # print "Freeing library RICHED32\n";
-    Win32::GUI::FreeLibrary($Win32::GUI::RICHED);
-}
+#    Win32::GUI::FreeLibrary($Win32::GUI::RICHED);
+#}
 
 #Currently Autoloading is not implemented in Perl for win32
 # Autoload methods go after __END__, and are processed by the autosplit program.

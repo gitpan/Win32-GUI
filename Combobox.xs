@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Combobox
     #
-    # $Id: Combobox.xs,v 1.4 2004/04/17 08:34:09 lrocher Exp $
+    # $Id: Combobox.xs,v 1.6 2005/06/26 16:40:59 robertemay Exp $
     #
     ###########################################################################
     */
@@ -50,6 +50,8 @@ Combobox_onParseEvent(NOTXSPROC char *name, int* eventID) {
     else if Parse_Event("DblClick",   PERLWIN32GUI_NEM_DBLCLICK)
     else if Parse_Event("Change",     PERLWIN32GUI_NEM_CONTROL1)
     else if Parse_Event("Anonymous",  PERLWIN32GUI_NEM_CONTROL2)
+    else if Parse_Event("DropDown",   PERLWIN32GUI_NEM_CONTROL3)
+    else if Parse_Event("CloseUp",    PERLWIN32GUI_NEM_CONTROL4)
     else retval = FALSE;
 
     return retval;
@@ -94,6 +96,28 @@ Combobox_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
              * (@)APPLIES_TO:Combobox, ComboboxEx
              */
             PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL1, "Change", -1 );
+            break;
+        case CBN_DROPDOWN:
+            /*
+             * (@)EVENT:DropDown()
+             * Sent when the user selects the list box. This event allows you to populate the
+             * dropdown dynamically. This event is only fired if the combo box has the CBS_DROPDOWN or CBS_DROPDOWNLIST style.
+             * (@)APPLIES_TO:Combobox, ComboboxEx
+             */
+            PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL3, "DropDown", -1 );
+            break;
+        case CBN_CLOSEUP:
+            /*
+             * (@)EVENT:CloseUp()
+             * Sent when the list box of a combo box has been closed. This event allows you to populate the
+             * dropdown dynamically. This event is only fired if the combo box has the CBS_DROPDOWN or CBS_DROPDOWNLIST style.
+             *
+             * If the user changed the current selection, the combo box also sends the Change event when the drop-down list closes. 
+             * In general, you cannot predict the order in which notifications will be sent. In particular, a Change event message 
+             * may occur either before or after a CloseUp event.
+             * (@)APPLIES_TO:Combobox, ComboboxEx
+             */
+            PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL4, "CloseUp", -1 );
             break;
         default:
             PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL2, "Anonymous",
@@ -565,7 +589,7 @@ OUTPUT:
     # TODO : CB_SETITEMDATA 
 
     ###########################################################################
-    # (@)METHOD:SetHorizontalExtend(INDEX,HEIGHT)
+    # (@)METHOD:SetItemHeight(INDEX,HEIGHT)
     # Set the height of list items or the selection field in a Combobox. 
 LRESULT
 SetItemHeight(handle,wparam,lparam)

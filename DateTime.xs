@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::DateTime
     #
-    # $Id: DateTime.xs,v 1.3 2004/05/08 17:32:41 lrocher Exp $
+    # $Id: DateTime.xs,v 1.4 2005/06/26 16:40:59 robertemay Exp $
     #
     ###########################################################################
     */
@@ -141,7 +141,9 @@ OUTPUT:
     #   MCSC_TEXT = Retrieve the color used to display text within a month. 
     #   MCSC_TITLEBK = Retrieve the background color displayed in the calendar's title. 
     #   MCSC_TITLETEXT = Retrieve the color used to display text within the calendar's title. 
-    #   MCSC_TRAILINGTEXT = Retrieve the color used to display header day and trailing day text. Header and trailing days are the days from the previous and following months that appear on the current month calendar. 
+    #   MCSC_TRAILINGTEXT = Retrieve the color used to display header day and trailing day
+    #                 text. Header and trailing days are the days from the previous and following
+    #                 months that appear on the current month calendar. 
 COLORREF
 GetMonthCalColor(handle,icolor)
     HWND handle
@@ -221,7 +223,7 @@ OUTPUT:
     RETVAL
 
     ###########################################################################
-    # (@)METHOD:SetMonthCalColor(icolor,color)
+    # (@)METHOD:SetMonthCalFont(font,flag)
     # Sets the font to be used by the date and time picker (DTP) control's child month calendar control.
 HFONT
 SetMonthCalFont(handle,font,flag)

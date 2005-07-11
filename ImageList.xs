@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::ImageList
     #
-    # $Id: ImageList.xs,v 1.3 2004/04/08 21:23:39 lrocher Exp $
+    # $Id: ImageList.xs,v 1.4 2005/06/26 16:40:59 robertemay Exp $
     #
     ###########################################################################
     */
@@ -32,7 +32,7 @@ OUTPUT:
     RETVAL
 
     ###########################################################################
-    # (@)METHOD:AddBitmap(BITMAP, COLORMASK)
+    # (@)METHOD:AddBitmapMasked(BITMAP, COLORMASK)
     # Adds a Win32::GUI::Bitmap object to the ImageList. COLORMASK is
     # color used to generate the mask. See also AddMasked().
 int
@@ -345,7 +345,7 @@ OUTPUT:
     RETVAL
 
     ###########################################################################
-    # (@)METHOD:Replace(INDEX, ICON)
+    # (@)METHOD:ReplaceIcon(INDEX, ICON)
     # Replaces the specified zero-based INDEX image with the icon specified
     # by ICON (must be a Win32::GUI::Icon object).
 int

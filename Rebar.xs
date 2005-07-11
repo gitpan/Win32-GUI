@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Rebar
     #
-    # $Id: Rebar.xs,v 1.5 2004/04/17 08:34:10 lrocher Exp $
+    # $Id: Rebar.xs,v 1.7 2005/06/26 16:40:59 robertemay Exp $
     #
     ###########################################################################
     */
@@ -76,6 +76,7 @@ Rebar_onParseEvent(NOTXSPROC char *name, int* eventID) {
     BOOL retval = TRUE;
 
          if Parse_Event("HeightChange",    PERLWIN32GUI_NEM_CONTROL1)
+    else if Parse_Event("ChevronPushed",   PERLWIN32GUI_NEM_CONTROL2)
     else retval = FALSE;
 
     return retval;
@@ -88,13 +89,34 @@ Rebar_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wPara
 
     if ( uMsg == WM_NOTIFY ) {
 
-        if(((LPNMHDR)lParam)->code == RBN_HEIGHTCHANGE) {
+        switch( ((LPNMHDR)lParam)->code ) {
+
+        case RBN_HEIGHTCHANGE :
             /*
              * (@)EVENT:HeightChange()
              * Sent when the height of the Rebar control has changed.
              * (@)APPLIES_TO:Rebar
              */
+            {
             PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL1, "HeightChange", -1 );
+            }
+            break;
+        case RBN_CHEVRONPUSHED :
+            /*
+             * (@)EVENT:ChevronPushed(bandindex, left, top, right, bottom)
+             * Sent when a chevron on a rebar band is clicked
+             * (@)APPLIES_TO:Rebar
+             */
+            {
+            PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL2, "ChevronPushed",
+                    PERLWIN32GUI_ARGTYPE_INT,  (INT)  ((LPNMREBARCHEVRON)lParam)->uBand,
+                    PERLWIN32GUI_ARGTYPE_LONG, (LONG) ((LPNMREBARCHEVRON)lParam)->rc.left,
+                    PERLWIN32GUI_ARGTYPE_LONG, (LONG) ((LPNMREBARCHEVRON)lParam)->rc.top,
+                    PERLWIN32GUI_ARGTYPE_LONG, (LONG) ((LPNMREBARCHEVRON)lParam)->rc.right,
+                    PERLWIN32GUI_ARGTYPE_LONG, (LONG) ((LPNMREBARCHEVRON)lParam)->rc.bottom,
+                    -1 );
+            }
+            break;
         }
 
     }
@@ -213,6 +235,8 @@ OUTPUT:
     #   -minwidth   => Minimum width of the child window, in pixels. The band can't be sized smaller than this value. 
     #   -minheight  => Minimum height of the child window, in pixels. The band can't be sized smaller than this value.
     #   -style      => Flags that specify the band style.
+    #   -idealwidth => Ideal band width. The band maximises to this size, and if chevrons are enabled
+    #                  they are shown when the band is smaller than this value.
       
 void
 GetBandInfo(handle,index)
@@ -233,7 +257,7 @@ CODE:
     rbbi.lpText = Buffer;
     rbbi.cch = 255;
     if(SendMessage(handle, RB_GETBANDINFO, (WPARAM) index, (LPARAM) &rbbi)) {
-        EXTEND(SP, 20);
+        EXTEND(SP, 22);
         XST_mPV( 0, "-text");
         XST_mPV( 1, rbbi.lpText);
         XST_mPV( 2, "-foreground");
@@ -254,7 +278,9 @@ CODE:
         XST_mIV(17, rbbi.cyMinChild);
         XST_mPV(18, "-style");
         XST_mIV(19, rbbi.fStyle);
-        XSRETURN(20);
+        XST_mPV(20, "-idealwidth");
+        XST_mIV(21, rbbi.cxIdeal);
+        XSRETURN(22);
     } else {
         XSRETURN_UNDEF;
     }
@@ -480,6 +506,7 @@ OUTPUT:
     #  -minheight  => The minimum height of the band.
     #  -text       => The text for the band.
     #  -style      => The style of the band. See Below
+    #  -idealwidth => Ideal band width. The band maximises to this size, and if chevrons are enabled they are shown when the band is smaller than this value.
     #
     # Each band can only contain one child control. However, you can add a child window that contains many controls:
     #
@@ -534,6 +561,7 @@ OUTPUT:
     #  RBBS_VARIABLEHEIGHT = 64 The band can be resized by the rebar control.
     #  RBBS_GRIPPERALWAYS = 128 The band will always have a sizing grip, even if it is the only band in the rebar.
     #  RBBS_NOGRIPPER = 256     The band will never have a sizing grip, even if there is more than one band in the rebar.
+    #  RBBS_USECHEVRON = 512    The band will display chevrons if its width is less than the ideal width
     #
 LRESULT
 InsertBand(handle,...)

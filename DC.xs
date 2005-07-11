@@ -2,7 +2,7 @@
     ###########################################################################
     #(@)PACKAGE:Win32::GUI::DC
     #
-    # $Id: DC.xs,v 1.9 2004/04/23 12:08:23 jwgui Exp $
+    # $Id: DC.xs,v 1.10 2005/04/30 12:51:31 jwgui Exp $
     #
     ###########################################################################
     */
@@ -1670,6 +1670,35 @@ PPCODE:
     if (hrgn== NULL) XSRETURN_UNDEF;
     XPUSHs(CreateObjectWithHandle(NOTXSCALL "Win32::GUI::Region", (HWND) hrgn));
 
+    ###########################################################################
+    # (@)METHOD:CombineRgn (source1,source2,CombineMode)
+    # The CombineRgn method combines two regions. The two regions are combined according to the 
+    # specified mode. 
+    #
+    # CombineMode:
+    #  RGN_AND (1) Creates the intersection of the two combined regions. 
+    #  RGN_COPY (5)  Creates a copy of the region identified by source1. 
+    #  RGN_DIFF (4) Combines the parts of source1 that are not part of source2. 
+    #  RGN_OR (2) Creates the union of two combined regions. 
+    #  RGN_XOR (3) Creates the union of two combined regions except for any overlapping areas. 
+    #
+    # Return Values
+    #
+    #  NULLREGION (1) The region is empty. 
+    #  SIMPLEREGION (2) The region is a single rectangle. 
+    #  COMPLEXREGION (3) The region is more than a single rectangle. 
+    #  ERROR No (0) region is created. 
+
+int CombineRgn(destination,source1,source2,CombineMode)
+  HRGN destination
+  HRGN source1
+  HRGN source2
+  long CombineMode
+CODE:
+    RETVAL = CombineRgn(destination,source1,source2,CombineMode);
+OUTPUT:
+    RETVAL
+    
     ###########################################################################
     # (@)METHOD:PtInRegion (X,Y)
     # The PtInRegion method determines whether the specified point is inside the specified region. 

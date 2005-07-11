@@ -2,7 +2,7 @@
     ###########################################################################
     # options parsing routines
     #
-    # $Id: GUI_Options.cpp,v 1.6 2004/04/26 16:25:59 lrocher Exp $
+    # $Id: GUI_Options.cpp,v 1.8 2005/06/30 22:36:21 robertemay Exp $
     #
     ###########################################################################
     */
@@ -670,6 +670,10 @@ void ParseRebarBandOptions(
                 next_i = i + 1;
                 rbbi->fStyle = SvIV(ST(next_i));
                 rbbi->fMask |= RBBIM_STYLE;
+            } else if(strcmp(option, "-idealwidth") == 0) {
+                next_i = i + 1;
+                rbbi->cxIdeal = SvIV(ST(next_i));
+                rbbi->fMask |= RBBIM_IDEALSIZE;
             }
         } else {
             next_i = -1;
@@ -739,7 +743,6 @@ void ParseTooltipOptions(
 
     int i, next_i;
     char * option;
-    unsigned int tlen;
 
     next_i = -1;
     for(i = from_i; i < items; i++) {

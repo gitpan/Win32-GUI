@@ -2,7 +2,7 @@
     ###########################################################################
     # event processing routines
     #
-    # $Id: GUI_Events.cpp,v 1.8 2004/05/31 17:41:29 lrocher Exp $
+    # $Id: GUI_Events.cpp,v 1.10 2005/06/30 22:36:21 robertemay Exp $
     #
     ###########################################################################
         */
@@ -17,8 +17,8 @@
      # according to user's click (CANCEL == -1),
      */
 BOOL ProcessEventError(NOTXSPROC char *Name, int* PerlResult) {
-    if(strncmp(Name, "main::", 6) == 0) Name += 6;
     if(SvTRUE(ERRSV)) {
+		if(strncmp(Name, "main::", 6) == 0) Name += 6;
         MessageBeep(MB_ICONASTERISK);
         *PerlResult = MessageBox(NULL, SvPV_nolen(ERRSV), Name, MB_ICONERROR | MB_OKCANCEL);
         if(*PerlResult == IDCANCEL) {
@@ -44,21 +44,20 @@ int DoEvent(
     va_list args;
     int count;
     int argtype;
-   
+
     int PerlResult = 1;
     perlud->dwPlStyle &= ~PERLWIN32GUI_EVENTHANDLING;
 
     // NEM event
-    if((perlud->dwPlStyle & PERLWIN32GUI_NEM) && (perlud->dwEventMask & iEventId)) { 
+    if((perlud->dwPlStyle & PERLWIN32GUI_NEM) && (perlud->dwEventMask & iEventId)) {
 
-         SV** event;          
+         SV** event;
          event = hv_fetch( (perlud->hvEvents), Name, strlen(Name), 0);
          if(event != NULL) {
 
             PerlResult = 0;
-            
+
             dSP;
-            dTARG;
             ENTER;
             SAVETMPS;
             PUSHMARK(SP);
@@ -108,9 +107,9 @@ int DoEvent(
 
     // OEM Event
     if (PerlResult == 1 && (perlud->dwPlStyle & PERLWIN32GUI_OEM) && perlud->szWindowName != NULL) {
-        
+
         // OEM name event
-        char EventName[MAX_EVENT_NAME]; 
+        char EventName[MAX_EVENT_NAME];
         strcpy(EventName, "main::");
         strcat(EventName, perlud->szWindowName);
         strcat(EventName, "_");
@@ -122,7 +121,6 @@ int DoEvent(
             PerlResult = 0;
 
             dSP;
-            dTARG;
             ENTER;
             SAVETMPS;
             PUSHMARK(SP);
@@ -216,7 +214,6 @@ int DoEvent_Menu(
         PerlResult = 0;
 
         dSP;
-        dTARG;
         ENTER;
         SAVETMPS;
         PUSHMARK(SP);
@@ -236,7 +233,7 @@ int DoEvent_Menu(
     else if (name != NULL) {
 
          // OEM name event
-        char EventName[MAX_EVENT_NAME]; 
+        char EventName[MAX_EVENT_NAME];
         strcpy(EventName, "main::");
         strcat(EventName, name);
         strcat(EventName, "_Click");
@@ -246,7 +243,6 @@ int DoEvent_Menu(
             PerlResult = 0;
 
             dSP;
-            dTARG;
             ENTER;
             SAVETMPS;
             PUSHMARK(SP);
@@ -298,12 +294,12 @@ int DoEvent_Accelerator(
 
             // Find for a child with AcceleratorName name
             if (strcmp (perlud->szWindowName, AcceleratorName) != 0) {
-                
+
                 HWND hWndParent = handle_From(NOTXSCALL perlud->svSelf);
                 st_FindChildWindow st;
                 st.perlchild = NULL;
                 st.Name = AcceleratorName;
-                
+
                 EnumChildWindows(hWndParent, (WNDENUMPROC) FindChildWindowsProc, (LPARAM) &st);
                 perlchild = st.perlchild;
             }
@@ -316,9 +312,8 @@ int DoEvent_Accelerator(
     if (acc_sub != NULL) {
 
         PerlResult = 0;
-        
+
         dSP;
-        dTARG;
         ENTER;
         SAVETMPS;
         PUSHMARK(SP);
@@ -339,17 +334,16 @@ int DoEvent_Accelerator(
         perlud->dwPlStyle |= PERLWIN32GUI_EVENTHANDLING;
     }
     // Try to call Click NEM on Child window
-    else if (perlchild != NULL && 
+    else if (perlchild != NULL &&
         (perlchild->dwPlStyle & PERLWIN32GUI_NEM) && (perlchild->dwEventMask & PERLWIN32GUI_NEM_CLICK)) {
 
-         SV** event;          
+         SV** event;
          event = hv_fetch( (perlchild->hvEvents), "Click", 5, 0);
          if(event != NULL) {
 
             PerlResult = 0;
-            
+
             dSP;
-            dTARG;
             ENTER;
             SAVETMPS;
             PUSHMARK(SP);
@@ -370,17 +364,16 @@ int DoEvent_Accelerator(
         }
     }
 
-    // Try to call current window Click NEM event 
-    else if ((perlud->dwPlStyle & PERLWIN32GUI_NEM) && (perlud->dwEventMask & PERLWIN32GUI_NEM_CLICK)) { 
+    // Try to call current window Click NEM event
+    else if ((perlud->dwPlStyle & PERLWIN32GUI_NEM) && (perlud->dwEventMask & PERLWIN32GUI_NEM_CLICK)) {
 
-         SV** event;          
+         SV** event;
          event = hv_fetch( (perlud->hvEvents), "Click", 5, 0);
          if(event != NULL) {
 
             PerlResult = 0;
-            
+
             dSP;
-            dTARG;
             ENTER;
             SAVETMPS;
             PUSHMARK(SP);
@@ -406,7 +399,7 @@ int DoEvent_Accelerator(
     else if (perlchild == NULL || perlchild->dwPlStyle & PERLWIN32GUI_OEM) {
 
         // OEM name event
-        char EventName[MAX_EVENT_NAME]; 
+        char EventName[MAX_EVENT_NAME];
         strcpy(EventName, "main::");
         strcat(EventName, AcceleratorName);
         strcat(EventName, "_Click");
@@ -416,7 +409,6 @@ int DoEvent_Accelerator(
             PerlResult = 0;
 
             dSP;
-            dTARG;
             ENTER;
             SAVETMPS;
             PUSHMARK(SP);
@@ -462,16 +454,15 @@ char*  DoEvent_NeedText(
     perlud->dwPlStyle &=  ~PERLWIN32GUI_EVENTHANDLING;
 
     // NEM event
-    if((perlud->dwPlStyle & PERLWIN32GUI_NEM) && (perlud->dwEventMask & iEventId)) { 
-        
+    if((perlud->dwPlStyle & PERLWIN32GUI_NEM) && (perlud->dwEventMask & iEventId)) {
+
         SV** event;
         event = hv_fetch( (perlud->hvEvents), Name, strlen(Name), 0);
         if(event != NULL) {
-            
+
             PerlResult = 0;
-            
+
             dSP;
-            dTARG;
             ENTER;
             SAVETMPS;
             PUSHMARK(SP);
@@ -523,9 +514,9 @@ char*  DoEvent_NeedText(
 
     // OEM Event
     if(PerlResult == 1 && (perlud->dwPlStyle & PERLWIN32GUI_OEM) && perlud->szWindowName != NULL) {
-        
+
         // OEM name event
-        char EventName[MAX_EVENT_NAME]; 
+        char EventName[MAX_EVENT_NAME];
         strcpy(EventName, "main::");
         strcat(EventName, perlud->szWindowName);
         strcat(EventName, "_");
@@ -537,7 +528,6 @@ char*  DoEvent_NeedText(
             PerlResult = 0;
 
             dSP;
-            dTARG;
             ENTER;
             SAVETMPS;
             PUSHMARK(SP);
@@ -623,16 +613,15 @@ int DoEvent_Timer (
     }
 
     // NEM event
-    if((perlud->dwPlStyle & PERLWIN32GUI_NEM) && (perlud->dwEventMask & iEventId)) { 
+    if((perlud->dwPlStyle & PERLWIN32GUI_NEM) && (perlud->dwEventMask & iEventId)) {
 
         SV** event;
         event = hv_fetch( perlud->hvEvents, "Timer", 5, 0);
         if(event != NULL) {
-            
+
             PerlResult = 0;
-            
+
             dSP;
-            dTARG;
             ENTER;
             SAVETMPS;
             PUSHMARK(SP);
@@ -680,9 +669,9 @@ int DoEvent_Timer (
 
     // OEM Event
     if(PerlResult == 1 && (perlud->dwPlStyle & PERLWIN32GUI_OEM)) {
-        
+
         // OEM timer name event
-        char EventName[MAX_EVENT_NAME]; 
+        char EventName[MAX_EVENT_NAME];
         strcpy(EventName, "main::");
         strcat(EventName, TimerName);
         strcat(EventName, "_");
@@ -694,7 +683,6 @@ int DoEvent_Timer (
             PerlResult = 0;
 
             dSP;
-            dTARG;
             ENTER;
             SAVETMPS;
             PUSHMARK(SP);
@@ -756,7 +744,7 @@ int DoEvent_NotifyIcon (
     int count;
     int argtype;
     char NotifyIconName[MAX_EVENT_NAME];
-    SV** events  = NULL;   
+    SV** events  = NULL;
     int PerlResult = 1;
     perlud->dwPlStyle &=  ~PERLWIN32GUI_EVENTHANDLING;
 
@@ -780,16 +768,15 @@ int DoEvent_NotifyIcon (
     }
 
     // Try NEM event
-    if (events != NULL) { 
+    if (events != NULL) {
 
          SV** event = hv_fetch( (HV*)SvRV(*events), Name, strlen(Name), 0);
 
          if(event != NULL) {
 
             PerlResult = 0;
-            
+
             dSP;
-            dTARG;
             ENTER;
             SAVETMPS;
             PUSHMARK(SP);
@@ -837,9 +824,9 @@ int DoEvent_NotifyIcon (
 
     // OEM Event (if no NEM event found)
     if(PerlResult == 1 && events == NULL) {
-        
+
         // OEM timer name event
-        char EventName[MAX_EVENT_NAME]; 
+        char EventName[MAX_EVENT_NAME];
         strcpy(EventName, "main::");
         strcat(EventName, NotifyIconName);
         strcat(EventName, "_");
@@ -851,7 +838,6 @@ int DoEvent_NotifyIcon (
             PerlResult = 0;
 
             dSP;
-            dTARG;
             ENTER;
             SAVETMPS;
             PUSHMARK(SP);
@@ -911,16 +897,15 @@ int DoEvent_Paint(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud) {
     perlud->dwPlStyle &= ~PERLWIN32GUI_EVENTHANDLING;
 
     // NEM event
-    if((perlud->dwPlStyle & PERLWIN32GUI_NEM) && (perlud->dwEventMask & PERLWIN32GUI_NEM_PAINT)) { 
+    if((perlud->dwPlStyle & PERLWIN32GUI_NEM) && (perlud->dwEventMask & PERLWIN32GUI_NEM_PAINT)) {
 
          SV** event;
          event = hv_fetch( (perlud->hvEvents), "Paint", 5, 0);
          if(event != NULL) {
 
             PerlResult = 0;
-            
+
             dSP;
-            dTARG;
 
             // Create a DC object
             ENTER;
@@ -936,7 +921,7 @@ int DoEvent_Paint(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud) {
             FREETMPS;
             LEAVE;
 
-            // Call Paint event    
+            // Call Paint event
             ENTER;
             SAVETMPS;
             PUSHMARK(SP);
@@ -959,9 +944,9 @@ int DoEvent_Paint(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud) {
 
     // OEM Event
     if(PerlResult == 1 && (perlud->dwPlStyle & PERLWIN32GUI_OEM) && perlud->szWindowName != NULL) {
-        
+
         // OEM name event
-        char EventName[MAX_EVENT_NAME]; 
+        char EventName[MAX_EVENT_NAME];
         strcpy(EventName, "main::");
         strcat(EventName, perlud->szWindowName);
         strcat(EventName, "_Paint");
@@ -972,7 +957,6 @@ int DoEvent_Paint(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud) {
             PerlResult = 0;
 
             dSP;
-            dTARG;
 
             // Create a DC object
             ENTER;
@@ -987,7 +971,7 @@ int DoEvent_Paint(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud) {
             PUTBACK;
             FREETMPS;
             LEAVE;
-            // Call paint event    
+            // Call paint event
             ENTER;
             SAVETMPS;
             PUSHMARK(SP);
@@ -1014,8 +998,8 @@ int DoEvent_Paint(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud) {
      ##########################################################################
      # (@)INTERNAL:DoHook(perlud, uMsg, wParam, lParam, *PerlResult, notify)
      */
-void DoHook(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, 
-            UINT uMsg, WPARAM wParam, LPARAM lParam, 
+void DoHook(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud,
+            UINT uMsg, WPARAM wParam, LPARAM lParam,
             int* PerlResult, int notify) {
     I32 count;
     SV** arrayval;
@@ -1050,7 +1034,15 @@ void DoHook(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud,
                 PUTBACK;
                 count = call_sv(perlsub, G_ARRAY|G_EVAL);
                 SPAGAIN;
-                if(count > 0) { *PerlResult = POPi; }
+                //if we have an error report it to the user
+                //we could call ProcessEventError in the form of if(!ProcessEventError(NOTXSCALL "Hook", PerlResult))
+                //but this is slightly quicker:)
+                if(SvTRUE(ERRSV)) {
+				  ProcessEventError(NOTXSCALL "Hook", PerlResult);
+				}
+				else {
+                  if(count > 0) { *PerlResult = POPi; }
+			    }
                 PUTBACK;
                 FREETMPS;
                 LEAVE;

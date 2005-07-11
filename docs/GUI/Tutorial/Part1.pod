@@ -1,4 +1,10 @@
-=head1 Win32::GUI Tutorial - Part 1 - Our first Win32::GUI Program
+=for comment $Id: Part1.pod,v 1.1 2005/06/26 16:41:00 robertemay Exp $
+
+=head1 NAME
+
+Win32::GUI::Tutorial::Part1 - Our first Win32::GUI Program
+
+=head1 Win32::GUI Tutorial - Part 1
 
 =head2 Hello, GUI world
 
@@ -66,7 +72,7 @@ event, so the event handler we need for our main window is C<Main_Terminate>.
 
 Event handlers should return one of three specific values:
 
-=over 4
+=over
 
 =item *
 
@@ -110,7 +116,7 @@ So, let's put it all together.
 
 Put that in a file (say, hello.plx) and run it using C<perl hello.plx>. 
 
-=for HTML <BR><CENTER><IMG SRC="guitut1-1.gif"></CENTER>
+=for html <br /><center><img src="part1-1.gif" /></center>
 
 Notice how you can resize and move the window, maximize and minimize it, 
 just like any other application window.
@@ -197,7 +203,7 @@ Run this version and see the results. Note that if you supply a short string,
 the window will not shrink beyond a minimum size sufficient to show the window
 icons.
 
-=for HTML <BR><CENTER><IMG SRC="guitut1-2.gif"></CENTER>
+=for html <br /><center><img src="part1-2.gif" /></center>
 
 =head2 Changing the appearance of the text
 
@@ -206,8 +212,8 @@ is easy. You just specify the colour as the value of the C<-foreground>
 attribute of the label. Colours can be specified either as hex values in the
 format 0xBBGGRR, or as list references in the format [ R, G, B ].
 
-So, to make the text red, use C<-foreground =E<gt> 0x0000FF> or C<-foreground
-=E<gt> [ 255, 0, 0 ]>.
+So, to make the text red, use C<< -foreground => 0x0000FF >>
+or C<< -foreground => [ 255, 0, 0 ] >>.
 
 To change the font, you need to specify the C<-font> attribute. But in this
 case, the value of the attribute is a Win32::GUI::Font object. To create a
@@ -218,28 +224,22 @@ font object, use
 As usual, the parameters to new() are a set of options. The most important
 ones are
 
-=over 4
+=over
 
-=item * -size
+=item B<-size>
 
 The font size in points.
 
-=for HTML <P>
-
-=item * -name
+=item B<-name>
 
 The font name, such as "Times New Roman", "Arial", "Verdana" or
 "Comic Sans MS".
 
-=for HTML <P>
-
-=item * -bold
+=item B<-bold>
 
 One for bold, zero (the default) for non-bold.
 
-=for HTML <P>
-
-=item * -italic
+=item B<-italic>
 
 One for italic, zero (the default) for non-italic.
 
@@ -257,7 +257,7 @@ So, to change the format of our label, all we need is
 		-foreground => [255, 0, 0],
 	);
 
-=for HTML <BR><CENTER><IMG SRC="guitut1-3.gif"></CENTER>
+=for html <br /><center><img src="part1-3.gif" /></center>
 
 Simple, isn't it?
 
@@ -402,5 +402,7 @@ glory.
 		$label->Top(int(($h - $lh) / 2));
     }
 
-That's it for this tutorial. In part 2, we will start looking at some other
+That's it for this tutorial. In L<part 2|Win32::GUI::Tutorial::Part2> , we will start looking at some other
 controls.
+
+__W32G_POSTAMBLE__

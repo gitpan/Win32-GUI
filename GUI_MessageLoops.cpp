@@ -2,7 +2,7 @@
     ###########################################################################
     # message loops
     #
-    # $Id: GUI_MessageLoops.cpp,v 1.8 2004/09/29 21:17:56 lrocher Exp $
+    # $Id: GUI_MessageLoops.cpp,v 1.11 2005/07/01 23:46:28 robertemay Exp $
     #
     ###########################################################################
         */
@@ -176,7 +176,7 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
             SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_CUSTOMCLASS, 1);  // Set Custom class flag
 
             // Search for an extend MsgLoop procedure (-extends option in RegisterClassEx)
-            perlud->WndProc = (WNDPROC) GetDefClassProc (NOTXSCALL ((CREATESTRUCT *) lParam)->lpszClass);
+            perlud->WndProc = (LWNDPROC_CAST) GetDefClassProc (NOTXSCALL ((CREATESTRUCT *) lParam)->lpszClass);
             if (perlud->WndProc) {
                 return CallWindowProc((WNDPROC_CAST) perlud->WndProc, hwnd, uMsg, wParam, lParam);
             }
@@ -296,7 +296,7 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
             }
 
             if (childud->avHooks != NULL)
-                DoHook(NOTXSCALL childud, (UINT) HIWORD(wParam), wParam, lParam, &PerlResult, WM_NOTIFY);
+                DoHook(NOTXSCALL childud, (UINT) (((LPNMHDR) lParam)->code), wParam, lParam, &PerlResult, WM_NOTIFY);
 
             if(childud->forceResult != 0) {
                 perlud->forceResult  = childud->forceResult;
@@ -464,8 +464,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
             tme.cbSize = sizeof(TRACKMOUSEEVENT);
             tme.hwndTrack = hwnd;
             tme.dwFlags = TME_QUERY;
-            if(TrackMouseEvent( &tme )) {
-                TrackMouseEvent( &tme );
+            if(_TrackMouseEvent( &tme )) {
+                _TrackMouseEvent( &tme );
             }
         }
         break;
@@ -480,8 +480,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
             tme.cbSize = sizeof(TRACKMOUSEEVENT);
             tme.hwndTrack = hwnd;
             tme.dwFlags = TME_QUERY;
-            if(TrackMouseEvent( &tme )) {
-                TrackMouseEvent( &tme );
+            if(_TrackMouseEvent( &tme )) {
+                _TrackMouseEvent( &tme );
             }
         }
         break;
@@ -658,7 +658,7 @@ LRESULT CALLBACK MDIFrameMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
             SetWindowLong(hwnd, GWL_USERDATA, (long) perlud);
             SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_CUSTOMCLASS, 1);  // Set Custom class flag
             SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_MDIFRAME   , 1);  // Set MDI Frame flag
-            perlud->WndProc = (WNDPROC) DefMDIFrameLoop;                // Set DefFrameProc
+            perlud->WndProc = (LWNDPROC_CAST) DefMDIFrameLoop;          // Set DefFrameProc
 
             if (perlud->WndProc) {
                 return CallWindowProc((WNDPROC_CAST) perlud->WndProc, hwnd, uMsg, wParam, lParam);
@@ -739,7 +739,7 @@ LRESULT CALLBACK MDIChildMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
             SetWindowLong(hwnd, GWL_USERDATA, (long) perlud);
             SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_CUSTOMCLASS, 1);  // Set Custom class flag
             SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_MDICHILD   , 1);  // Set MDI Frame flag
-            perlud->WndProc = (WNDPROC) DefMDIChildLoop;                // Set DefMDIChildProc
+            perlud->WndProc = (LWNDPROC_CAST) DefMDIChildLoop;          // Set DefMDIChildProc
             perlud->dwData = (DWORD) hwnd;                              // For fast hwnd acces (Activate/Deactivate)
             if (perlud->WndProc) {
                 return CallWindowProc((WNDPROC_CAST) perlud->WndProc, hwnd, uMsg, wParam, lParam);
@@ -776,7 +776,7 @@ LRESULT CALLBACK ControlMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
             SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_CUSTOMCLASS, 1);  // Set Custom class flag
 
             // Search for an extend MsgLoop procedure (-extends option in RegisterClassEx)
-            perlud->WndProc = (WNDPROC) GetDefClassProc (NOTXSCALL ((CREATESTRUCT *) lParam)->lpszClass);
+            perlud->WndProc = (LWNDPROC_CAST) GetDefClassProc (NOTXSCALL ((CREATESTRUCT *) lParam)->lpszClass);
             if (perlud->WndProc) {
                 return CallWindowProc((WNDPROC_CAST) perlud->WndProc, hwnd, uMsg, wParam, lParam);
             }
@@ -907,8 +907,8 @@ LRESULT CALLBACK ControlMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
             tme.cbSize = sizeof(TRACKMOUSEEVENT);
             tme.hwndTrack = hwnd;
             tme.dwFlags = TME_QUERY;
-            if(TrackMouseEvent( &tme )) {
-                TrackMouseEvent( &tme );
+            if(_TrackMouseEvent( &tme )) {
+                _TrackMouseEvent( &tme );
             }
         }
         break;
@@ -919,8 +919,8 @@ LRESULT CALLBACK ControlMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
             tme.cbSize = sizeof(TRACKMOUSEEVENT);
             tme.hwndTrack = hwnd;
             tme.dwFlags = TME_QUERY;
-            if(TrackMouseEvent( &tme )) {
-                TrackMouseEvent( &tme );
+            if(_TrackMouseEvent( &tme )) {
+                _TrackMouseEvent( &tme );
             }
         }
         break;
@@ -966,7 +966,7 @@ LRESULT CALLBACK ContainerMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
             SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_CONTAINER  , 1);  // Set Container flag
 
             // Search for an extend MsgLoop procedure (-extends option in RegisterClassEx)
-            perlud->WndProc = (WNDPROC) GetDefClassProc (NOTXSCALL ((CREATESTRUCT *) lParam)->lpszClass);
+            perlud->WndProc = (LWNDPROC_CAST) GetDefClassProc (NOTXSCALL ((CREATESTRUCT *) lParam)->lpszClass);
             if (perlud->WndProc) {
                 return CallWindowProc((WNDPROC_CAST) perlud->WndProc, hwnd, uMsg, wParam, lParam);
             }
@@ -1003,7 +1003,7 @@ LRESULT CALLBACK CustomMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
             SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_CUSTOMCLASS, 1);  // Set Custom class flag
 
             // Search for an extend MsgLoop procedure (-extends option in RegisterClassEx)
-            perlud->WndProc = (WNDPROC) GetDefClassProc (NOTXSCALL ((CREATESTRUCT *) lParam)->lpszClass);
+            perlud->WndProc = (LWNDPROC_CAST) GetDefClassProc (NOTXSCALL ((CREATESTRUCT *) lParam)->lpszClass);
             if (perlud->WndProc) {
                 return CallWindowProc((WNDPROC_CAST) perlud->WndProc, hwnd, uMsg, wParam, lParam);
             }

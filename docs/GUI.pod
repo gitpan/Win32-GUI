@@ -1,78 +1,49 @@
-=head1 Win32::GUI Documentation
+=for comment $Id: GUI.pod,v 1.3 2005/06/26 16:41:00 robertemay Exp $
 
-Version: B<0.99_1>, 2 Oct 2004
+=head1 NAME
 
-=head2 Table Of Contents
+Win32::GUI - Perl Win32 Graphical User Interface Extension
 
-=over
+=head1 Table of Contents
 
-=item *
-
-B<User's Guide>
+=head2 User Guide
 
 =over
 
-=item *
+=item * L<README|Win32::GUI::UserGuide::Readme>
 
-L<Introduction|guiintro/>
+=item * L<Introdction|Win32::GUI::UserGuide::Introduction>
 
-=item *
+=item * L<General Concepts|Win32::GUI::UserGuide::Concepts>
 
-L<General concepts|guiconcepts/>
+=item * L<Tutorial|Win32::GUI::Tutorial>
 
-=item *
-
-L<Writing a script with Win32::GUI|guitut/>
+=item * L<Frequently Asked Questions|Win32::GUI::UserGuide::FAQ>
 
 =back
 
-=for html <P>
-
-=item *
-
-B<Reference Manual>
+=head2 Reference
 
 =over
 
-=item *
+=item * L<Packages|Win32::GUI::Reference::Packages>
 
-L<Common options|guioptions/>
+=item * L<Common Events|Win32::GUI::Reference::Events>
 
-=item *
+=item * L<Common Methods|Win32::Reference::Methods>
 
-L<Packages|guipacks/>
-
-=item *
-
-B<Support packages>
-
-
-=over 4
-
-=item *
-
-L<Win32::GUI::BitmapInline|BitmapInline/>
-
-=item *
-
-L<Win32::GUI::GridLayout|GridLayout/>
+=item * L<Options|Win32::GUI::Reference::Options>
 
 =back
 
+=head2 Support Packages
+
+=over
+
+=item * L<Win32::GUI::BitmapInline|Win32::GUI::BitmapInline>
+
+=item * L<Win32::GUI::GridLayout|Win32::GUI::GridLayout>
+
 =back
 
-=for html <P>
-
-=item *
-
-B<FAQs>
-
-=back
-
-=head2 AUTHOR
-
-(c) 1997, 8, 9 Aldo Calpini, C<dada@divinf.it>.
-
-
-
-=cut
+__W32G_POSTAMBLE__
