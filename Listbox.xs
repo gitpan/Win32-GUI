@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Listbox
     #
-    # $Id: Listbox.xs,v 1.3 2004/04/04 18:01:34 lrocher Exp $
+    # $Id: Listbox.xs,v 1.4 2005/10/16 08:03:20 jwgui Exp $
     #
     ###########################################################################
     */
@@ -403,7 +403,7 @@ PREINIT:
 PPCODE:
     cbString = SendMessage(handle, LB_GETTEXTLEN, index, 0);
     if(cbString != LB_ERR) {
-        szString = (char *) safemalloc(cbString);
+        szString = (char *) safemalloc(cbString+1);
         if(SendMessage(handle, LB_GETTEXT, index, (LPARAM) (LPCTSTR) szString) != LB_ERR) {
             EXTEND(SP, 1);
             XST_mPV(0, szString);

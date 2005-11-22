@@ -1,14 +1,16 @@
 use strict;
 use warnings;
 
+use File::Spec();
 use ExtUtils::MakeMaker;
 use Config;
 
 $main::USERESOURCE = 1;
 $main::BUILDENV = '';
+$main::BUILDENV_SETONCMDLINE = 0;
 
 # parse our command line options, removing them from @ARGV so that
-# MakeMaker doen't warm that they are unrecoginised.
+# MakeMaker doesn't warn that they are unrecoginised.
 my @tmp;
 foreach (@ARGV) {
   if(/USERESOURCE=0/) {
@@ -19,6 +21,7 @@ foreach (@ARGV) {
   }
   elsif(/BUILDENV=(.*)/) {
     $main::BUILDENV = $1;
+    $main::BUILDENV_SETONCMDLINE = 1;
   }
   else {
     push @tmp, $_;
@@ -60,11 +63,9 @@ To force a build call this script with the additional parameter 'BUILDENV':
   perl Makefile.PL BUILDENV=xxxx
 
 where xxxx is one of:
-vc     (for MSWin32 and Visual C++)
-mingw  (for MSWin32 and MInGW)
-cygwin (for cygwin and gcc)
-
 __NOBUILDENV
+
+  print "$_\t($allowed{$_})\n" for (keys %allowed);
 
   exit(1);
 }
@@ -74,14 +75,51 @@ if ( not exists $allowed{$main::BUILDENV} ) {
 
 Unrecognised build environment BUILDENV=$main::BUILDENV
 
-Allowed values are: vc, mingw, cygwin
-
+Allowed values are:
 __BADBUILDENV
+
+	print "$_\t($allowed{$_})\n" for (keys %allowed);
 
   exit(1);
 }
 
 print "\n\nBUILDENV=$main::BUILDENV  Used build environment is: $allowed{$main::BUILDENV}\n\n";
+
+# If we got this far, then we have a buildenv and compiler that
+# we want to try to use.  Check that we can find the compiler,
+# and exit with a nice error message if we can't.  This stops
+# us from failing CPAN Smoke tests on boxes that don't have
+# compilers.
+if($main::BUILDENV_SETONCMDLINE == 0) {
+  my @path = File::Spec->path();
+  unshift @path, ('', '.');
+
+  my $found = 0;
+  foreach my $prog ( map { ( $_, "$_.exe" ) } ($Config{cc}) ) {
+    foreach my $path ( @path ) {
+      if( -f File::Spec->catfile( $path, $prog ) ) {
+        $found=1, last;
+      }
+    }
+  }
+
+  if(!$found) {
+    print STDERR <<__NOCOMPILER;
+
+Makefile.PL was unable to find compiler '$Config{cc}' on your path.
+To force a build call this script with the additional parameter 'BUILDENV':
+
+  perl Makefile.PL BUILDENV=xxxx
+
+where xxxx is one of:
+__NOCOMPILER
+
+    print "$_\t($allowed{$_})\n" for (keys %allowed);
+
+
+    exit(1);
+  }
+}
 
 if($main::USERESOURCE == -1) {
     $main::USERESOURCE = 0;
@@ -119,13 +157,13 @@ my @subpackages = qw(
     Rebar
     RichEdit
     Splitter
+    StatusBar
     TabStrip
     Textfield
     Toolbar
     Tooltip
     Trackbar
     TreeView
-    StatusBar
     UpDown
     Window
 );
@@ -133,10 +171,10 @@ my @subpackages = qw(
 my @c_files = qw(
     GUI
     GUI_Constants
+    GUI_Events
     GUI_Helpers
     GUI_Options
     GUI_MessageLoops
-    GUI_Events
 );
 
 my $c_ext = "cpp";
@@ -158,11 +196,15 @@ foreach (@subpackages) {
     $arg_object .= ' ' . $_ . $Config{'obj_ext'};
 }
 
+$arg_object .= ' GUI.res' if $main::USERESOURCE;
 
 my %MakefileArgs = (
     NAME            => 'Win32::GUI',
     VERSION_FROM    => 'GUI.pm',
-    LIBS            => ['comctl32.lib', 'comdlg32.lib', 'shell32.lib', 'gdi32.lib', 'user32.lib'],
+    LIBS            => [':nosearch -lcomctl32 -lcomdlg32 -lshell32 -lgdi32 -luser32'],
+    PREREQ_PM       => {
+                         'Test::More' => 0,
+                       },
     PM              => {
                          'GUI.pm'          => '$(INST_LIBDIR)/GUI.pm',
                          'BitmapInline.pm' => '$(INST_LIBDIR)/GUI/BitmapInline.pm',
@@ -175,29 +217,38 @@ my %MakefileArgs = (
     dist            => {
                          ZIP => 'zip',
                          ZIPFLAGS => '-r9',
+                         DIST_DEFAULT => 'zipdist',
                        },
   ($] < 5.005 ? () : (
     AUTHOR          => 'Aldo Calpini <dada@perl.it>',
     ABSTRACT        => 'Perl-Win32 Graphical User Interface Extension',
   )),
     BINARY_LOCATION => 'Win32-GUI.tar.gz',
+    macro           => {
+                         BUILD_TOOLS  => './build_tools',
+                         INST_DEMO    => '$(INST_LIBDIR)/GUI/demos',
+                         PPMDISTVNAME => '$(DISTVNAME)-PPM-' . substr($Config{version},0,3),
+                       },
+    clean           => {
+                         FILES => 'comctrl32.def cygwin.o libcyg.a GUI.res',
+                       },
+    realclean       => {
+                         FILES => '$(PPMDISTVNAME) Readme.old Readme.html.old',
+                       },
+    depend          => {
+                         distdir => 'readmedocs',
+                       },
 );
 
 if ($main::BUILDENV eq "cygwin") {
-  $MakefileArgs{'LIBS'} = ['-L/usr/lib/w32api -lcomctl32 -lcomdlg32 -luser32 -lgdi32'];
+  $MakefileArgs{'LIBS'} = ['-L/usr/lib/w32api -lcomctl32 -lcomdlg32 -lshell32 -lgdi32 -luser32'];
   $MakefileArgs{'DEFINE'} = '-UWIN32';
+  $MakefileArgs{'MYEXTLIB'} = './libcyg.a';
 }
-
-if ($main::BUILDENV eq "mingw") {
-  $MakefileArgs{'LIBS'} = [':nosearch -lcomctl32'];
-  $MakefileArgs{'DEFINE'} = '-D__MINGW__';  # should really use __MINGW32__, as that's defined by the compiler
-}
-
-$MakefileArgs{'LDFROM'} = '$(OBJECT) GUI.res' if $main::USERESOURCE;
 
 WriteMakefile( %MakefileArgs );
 
-# tweak the generated Makefile to include resource
+# tweak the generated Makefile
 
 package MY;
 
@@ -216,41 +267,14 @@ sub xs_o {
   return $inherited;
 }
 
-sub special_targets {
-    my $inherited = shift->SUPER::special_targets(@_);
-    $inherited =~ s/\.SUFFIXES: \.xs \.c \.C \.cpp/.SUFFIXES: .xs .cpp .c .C/;
-    $inherited =~ s/\.SUFFIXES([^\n]+)\n/\.SUFFIXES$1 .rc .res\n/ if($main::USERESOURCE);
-    return $inherited;
-}
-
-sub c_o {
-    my $inherited = shift->SUPER::c_o(@_);
-    if($main::USERESOURCE) {
-      if ($main::BUILDENV eq 'vc') {  # Visual C++
-         $inherited .= "\nGUI.res: GUI.rc\n\trc.exe /l 0x409 /fo\"GUI.res\" GUI.rc\n";
-      } else {                        # cygwin and MinGW
-        $inherited .= "\nGUI.res: GUI.rc\n\twindres -O coff -i GUI.rc -o GUI.res\n";
-      }
-      $inherited .= "\nclean::\n\t" . '$(RM_F) GUI.res' . "\n\n";
-    }
-    return $inherited;
-}
-
-sub top_targets {
-    my $inherited = shift->SUPER::top_targets(@_);
-    if($main::USERESOURCE) {
-        $inherited =~ s/pure_all(.*) linkext/pure_all$1 GUI.res linkext/;
-    }
-    return $inherited;
-}
-
-sub const_loadlibs {
-  my $inherited = shift->SUPER::const_loadlibs(@_);
-  if ($main::BUILDENV eq "cygwin") {
-    $inherited = "MYEXTLIB = ./libcyg.a\n\n". $inherited;
-    $inherited =~ s/(EXTRALIBS.*)\n/$1 .\/libcyg.a\n/;
-    $inherited =~ s/(LDLOADLIBS.*)\n/$1 .\/libcyg.a\n/;
-  }
+# Remove the Test-More dependency from the PPD file, as it is not
+# a requirement for a binary distribution
+sub ppd {
+  my $inherited = shift->SUPER::ppd(@_);
+  #perl 5.6
+  $inherited =~ s/qq\{\\t\\t<DEPENDENCY NAME=.*Test-More.*?\}\.//s;
+  #perl 5.8
+  $inherited =~ s/^.*DEPENDENCY.*Test-More.*$//m;
   return $inherited;
 }
 
@@ -283,9 +307,6 @@ libcyg.a: comctl32.def cygwin.o
 	dlltool -k --output-lib libcyg.a --def comctl32.def
 	ar r libcyg.a cygwin.o
 
-clean::
-	$(RM_F) comctl32.def cygwin.o libcyg.a
-
 CYGWIN_FRAG1
 
     } else {
@@ -296,25 +317,50 @@ CYGWIN_FRAG1
 libcyg.a: cygwin.o
 	ar r libcyg.a cygwin.o
 
-clean::
-	$(RM_F) cygwin.o libcyg.a
-
 CYGWIN_FRAG2
 
     }
   }
 
+	my $rc_frag = '';
+
+  if($main::USERESOURCE) {
+    if ($main::BUILDENV eq 'vc') {  # Visual C++
+      $rc_frag = <<'RC_FRAG1';
+
+# -- Win32::GUI resource section --
+
+GUI.res: GUI.rc
+	rc.exe /l 0x409 /fo"GUI.res" GUI.rc
+
+RC_FRAG1
+	
+    } else {                        # cygwin and MinGW
+      $rc_frag = <<'RC_FRAG2';
+
+# -- Win32::GUI resource section --
+
+GUI.res: GUI.rc
+	windres -O coff -i GUI.rc -o GUI.res
+
+RC_FRAG2
+
+    }
+    $rc_frag .= <<'RC_FRAG3'
+
+GUI.rc: GUI.pm
+	$(PERL) -I$(BUILD_TOOLS) $(BUILD_TOOLS)/updateRC.pl
+
+RC_FRAG3
+
+	}
+
   my $doc_frag = <<'DOC_FRAG';
 
 # -- Win32::GUI documents section --
 
-BUILD_TOOLS = build_tools
-
 readmedocs:
 	$(NOECHO) $(PERL) -I$(BUILD_TOOLS) $(BUILD_TOOLS)/doReadme.pl
-
-realclean::
-	$(RM_F) Readme.old Readme.html.old
 
 poddocs:
 	$(NOECHO) $(PERL) -I$(BUILD_TOOLS) $(BUILD_TOOLS)/doPodDocs.pl
@@ -322,9 +368,7 @@ poddocs:
 htmldocs: poddocs
 	$(NOECHO) $(PERL) -I$(BUILD_TOOLS) $(BUILD_TOOLS)/doHTMLDocs.pl
 
-distdir: readmedocs
-
-all:: poddocs
+all:: poddocs demos
 
 DOC_FRAG
 
@@ -332,21 +376,17 @@ DOC_FRAG
 
   if ($main::BUILDENV eq "vc" || $main::BUILDENV eq "mingw") {
 
-    $ppm_frag = sprintf <<'PPM_FRAG', substr($Config::Config{version},0,3);
+    $ppm_frag = <<'PPM_FRAG';
 
 # -- Win32::GUI ppm section --
-
-INST_DEMO = $(INST_LIBDIR)/GUI/demos
 
 demos:
 	$(MKPATH) $(INST_DEMO)
 	$(CP) samples/* $(INST_DEMO)
 
-ppmdist: all htmldocs demos
+ppmdist: all htmldocs
 	$(TAR) --exclude="*.pod" -$(TARFLAGS) $(DISTNAME).tar blib
 	$(COMPRESS) $(DISTNAME).tar
-
-PPMDISTVNAME = $(DISTVNAME)-PPM-%s
 
 ppm: readmedocs ppd ppmdist
 	$(RM_RF) $(PPMDISTVNAME)
@@ -358,14 +398,11 @@ ppm: readmedocs ppd ppmdist
 	$(MV) $(DISTNAME).ppd $(PPMDISTVNAME)
 	$(RM_F) $(PPMDISTVNAME).zip
 	$(ZIP) $(ZIPFLAGS) $(PPMDISTVNAME).zip $(PPMDISTVNAME)
-
-clean::
 	$(RM_RF) $(PPMDISTVNAME)
-	$(RM_F) $(PPMDISTVNAME).zip
 
 PPM_FRAG
 
   }
 
-  return $cygwin_frag . $doc_frag . $ppm_frag;
+  return $cygwin_frag . $rc_frag . $doc_frag . $ppm_frag;
 }

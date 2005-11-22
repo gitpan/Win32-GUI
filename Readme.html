@@ -20,11 +20,24 @@
 
 		<li><a href="#activestate_activeperl_ppms">ActiveState ActivePerl PPMs</a></li>
 		<li><a href="#cygwin">Cygwin</a></li>
-		<li><a href="#building_from_source">Building from source</a></li>
-		<li><a href="#documentation">Documentation</a></li>
-		<li><a href="#building_your_own_ppm_from_source">Building your own PPM from source</a></li>
 	</ul>
 
+	<li><a href="#building_from_source">Building from source</a></li>
+	<ul>
+
+		<li><a href="#microsoft_visual_c___v6">Microsoft Visual C++ V6</a></li>
+		<li><a href="#mingw_and_extutils__fakeconfig">MinGW and ExtUtils::FakeConfig</a></li>
+		<li><a href="#cygwin">Cygwin</a></li>
+	</ul>
+
+	<li><a href="#documentation">Documentation</a></li>
+	<ul>
+
+		<li><a href="#pod_documentation">POD documentation</a></li>
+		<li><a href="#html_documentation">HTML Documentation</a></li>
+	</ul>
+
+	<li><a href="#building_your_own_ppm_from_source">Building your own PPM from source</a></li>
 	<li><a href="#version">VERSION</a></li>
 	<li><a href="#support">SUPPORT</a></li>
 	<li><a href="#copyright_and_licence">COPYRIGHT and LICENCE</a></li>
@@ -48,8 +61,8 @@ event-based dialog model that mimic the functionality of visual basic.</p>
 </p>
 <hr />
 <h1><a name="availability">AVAILABILITY</a></h1>
-<p>This is the README file for Win32::GUI v1.02
-built on 10 Jul 2005.</p>
+<p>This is the README file for Win32::GUI v1.03
+built on 22 Nov 2005.</p>
 <p>Source and ActiveState Perl PPMs are available from
 <a href="http://sourceforge.net/project/showfiles.php?group_id=16572">http://sourceforge.net/project/showfiles.php</a>.</p>
 <p>A cygwin distribution (available through cygwin's setup.exe) is maintained
@@ -88,26 +101,27 @@ the perl-Win32-GUI binary package.</p>
 <p>Cygwin port questions to the mailinglist &lt;<a href="mailto:cygwin@cygwin.com">cygwin@cygwin.com</a>&gt;</p>
 <p>
 </p>
-<h2><a name="building_from_source">Building from source</a></h2>
+<hr />
+<h1><a name="building_from_source">Building from source</a></h1>
 <p>Unpack the distribution into a local directory, and from a command
 prompt in that directory follow the instructions below.</p>
 <p>These instructions assume that you have already set up your build
 environment, and can build source distributions.  The following
 environments are known to work:</p>
-<ol>
-<li><strong><a name="item_microsoft_visual_c_2b_2b_v6">Microsoft Visual C++ V6</a></strong><br />
-</li>
-Other versions may work.  There are reported issues with VC++ 7
+<p>
+</p>
+<h2><a name="microsoft_visual_c___v6">Microsoft Visual C++ V6</a></h2>
+<p>Other versions may work.  There are reported issues with VC++ 7
 which links with a different C runtime to VC++ 6, and so you may have
-issues running an extension built with VC++ 7 with the ActiveState Perls.
+issues running an extension built with VC++ 7 with the ActiveState Perls.</p>
 <pre>
   perl Makefle.PL
   nmake
   nmake test
   nmake install</pre>
-<p></p>
-<li><strong><a name="item_mingw_and_extutils_3a_3afakeconfig">MinGW and ExtUtils::FakeConfig</a></strong><br />
-</li>
+<p>
+</p>
+<h2><a name="mingw_and_extutils__fakeconfig">MinGW and ExtUtils::FakeConfig</a></h2>
 <pre>
   perl -MConfig_m Makefile.PL
   nmake
@@ -120,9 +134,10 @@ flags more optimally.  If you want to try this, then replace the first
 command with:</p>
 <pre>
   perl -Ibuild_tools -MConfig_mO Makefile.PL</pre>
-<li><strong><a name="item_cygwin">Cygwin</a></strong><br />
-</li>
-Build requirements (over and above the runtime requirements above):
+<p>
+</p>
+<h2><a name="cygwin">Cygwin</a></h2>
+<p>Build requirements (over and above the runtime requirements above):</p>
 <pre>
   cygwin
   cygutils
@@ -130,15 +145,15 @@ Build requirements (over and above the runtime requirements above):
   make
   gzip</pre>
 <p>Build instructions:</p>
-<p>unpack <em>perl-Win32-GUI-1.0-2-src.tar.bz2</em>. If you use setup to install
+<p>unpack <em>perl-Win32-GUI-X.XX-X-src.tar.bz2</em>. If you use setup to install
 this src package, it will be unpacked under <em>/usr/src</em> automatically.</p>
 <pre>
   cd /usr/src
-  ./perl-Win32-GUI-1.0-2.sh all</pre>
+  ./perl-Win32-GUI-X.XX-X.sh all</pre>
 <p>This will create:</p>
 <pre>
-  /usr/src/perl-Win32-GUI-1.0-2.tar.bz2
-  /usr/src/perl-Win32-GUI-1.0-2-src.tar.bz2</pre>
+  /usr/src/perl-Win32-GUI-X.XX-X.tar.bz2
+  /usr/src/perl-Win32-GUI-X.XX-X-src.tar.bz2</pre>
 <p>Port Notes:</p>
 <p>The dll's must probably be rebased. If a remap error occurs run rebaseall from 
 the rebase package. The packaged version is already rebased to my personal settings.</p>
@@ -149,43 +164,51 @@ should be sufficient:</p>
   make
   make test
   make install</pre>
-<p></p></ol>
 <p>
 </p>
-<h2><a name="documentation">Documentation</a></h2>
-<p>HTML documentation is included with the PPM distributions, and installed
-into your ActiveState Perl documentation tree by the install process.
-When building from source the POD documentation is built automatically
+<hr />
+<h1><a name="documentation">Documentation</a></h1>
+<p>
+</p>
+<h2><a name="pod_documentation">POD documentation</a></h2>
+<p>When building from source the POD documentation is built automatically
 by the make process.  It can also be generated by issuing:</p>
 <pre>
   nmake poddocs;</pre>
-<p>The HTML documentation can be built by issuing:</p>
+<p>
+</p>
+<h2><a name="html_documentation">HTML Documentation</a></h2>
+<p>HTML documentation is included with the PPM distributions, and installed
+into your ActiveState Perl documentation tree by the install process.</p>
+<p>The HTML documentation can also be generated by issuing:</p>
 <pre>
   nmake htmldocs;</pre>
 <p>
 </p>
-<h2><a name="building_your_own_ppm_from_source">Building your own PPM from source</a></h2>
+<hr />
+<h1><a name="building_your_own_ppm_from_source">Building your own PPM from source</a></h1>
+<p>You will need <strong>tar</strong>, <strong>gzip</strong> and <strong>zip</strong> utilities on your path.  Issue
+the following commands.</p>
 <pre>
   perl Makefile.PL (adjust as necessary for your build environment)
   nmake
   nmake test
   nmake ppm</pre>
-<p>You will need <strong>tar</strong>, <strong>gzip</strong> and <strong>zip</strong> utilities on your path.  This procedure
-will generate a PPM for you current perl environment, including the HTML
-documentation, ready for installation as above.</p>
+<p>This procedure will generate a PPM for you current perl environment,
+including the HTML documentation, ready for installation as above.</p>
 <p>
 </p>
 <hr />
 <h1><a name="version">VERSION</a></h1>
-<p>Documentation for Win32::GUI v1.02 created 10 Jul 2005</p>
+<p>Documentation for Win32::GUI v1.03 created 22 Nov 2005</p>
 <p>This document is autogenerated by the build process. Edits made here will be lost.
 Edit <em>docs/GUI/UserGuide/Readme.pod</em> instead.</p>
 <p>
 </p>
 <hr />
 <h1><a name="support">SUPPORT</a></h1>
-<p>Homepage: <a href="http://sourceforge.net/projects/perl-win32-gui/">http://sourceforge.net/projects/perl-win32-gui/</a>.</p>
-<p>For further support join the users mailing <code>list(perl-win32-gui-users@lists.sourceforge.net)</code> from the website
+<p>Homepage: <a href="http://perl-win32-gui.sourceforge.net/">http://perl-win32-gui.sourceforge.net/</a>.</p>
+<p>For further support join the users mailing list(<code>perl-win32-gui-users@lists.sourceforge.net</code>) from the website
 at <a href="http://lists.sourceforge.net/lists/listinfo/perl-win32-gui-users">http://lists.sourceforge.net/lists/listinfo/perl-win32-gui-users</a>.  There is a searchable list archive at <a href="http://sourceforge.net/mail/?group_id=16572">http://sourceforge.net/mail/</a>.</p>
 <p>
 </p>

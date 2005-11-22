@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::UpDown
     #
-    # $Id: UpDown.xs,v 1.4 2005/06/26 16:41:00 robertemay Exp $
+    # $Id: UpDown.xs,v 1.5 2005/08/03 21:45:58 robertemay Exp $
     #
     ###########################################################################
     */
@@ -29,7 +29,7 @@ UpDown_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATESTR
             SwitchBit(perlcs->cs.style, UDS_ALIGNLEFT, 0);
             SwitchBit(perlcs->cs.style, UDS_ALIGNRIGHT, 1);
         } else {
-            if(PL_dowarn) warn("Win32::GUI: Invalid value for -align!");
+            W32G_WARN("Win32::GUI: Invalid value for -align!");
         }
     } else if BitmaskOptionValue("-nothousands", perlcs->cs.style, UDS_NOTHOUSANDS)
     } else if BitmaskOptionValue("-wrap", perlcs->cs.style, UDS_WRAP)

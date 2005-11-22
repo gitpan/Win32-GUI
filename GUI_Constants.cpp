@@ -1,7 +1,7 @@
 /*
 ###########################################################################
 # Win32::GUI Constants
-# $Id: GUI_Constants.cpp,v 1.5 2004/05/31 17:41:29 lrocher Exp $
+# $Id: GUI_Constants.cpp,v 1.6 2005/10/05 22:20:49 robertemay Exp $
 ###########################################################################
 */
 #include "GUI.h"
@@ -1771,9 +1771,9 @@ constant(NOTXSPROC char *name, int arg) {
              #else                                  
                  goto not_there;                    
              #endif                                 
-         if (strEQ(name, "TMP_NONOTIFY"))           
-             #ifdef TMP_NONOTIFY                    
-                 return TMP_NONOTIFY;               
+         if (strEQ(name, "TPM_NONOTIFY"))           
+             #ifdef TPM_NONOTIFY                    
+                 return TPM_NONOTIFY;               
              #else                                  
                  goto not_there;                    
              #endif                                 

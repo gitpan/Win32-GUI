@@ -11,7 +11,7 @@
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: GUI.xs,v 1.38 2005/07/02 09:53:27 jwgui Exp $
+# $Id: GUI.xs,v 1.46 2005/11/13 18:57:52 robertemay Exp $
 #
 ###############################################################################
  */
@@ -41,21 +41,19 @@ OUTPUT:
 
 
     ##########################################################################
-    # @)METHOD:GetAsyncKeyState(key)
-    # Retrieve the status of the specified virtual key. The status 
-    # specifies whether the key is up, down, or toggled (on, off--
-    # alternating each time the key is pressed). 
+    # (@)METHOD:GetAsyncKeyState(key)
+    # Retrieve the status of the specified virtual key at the time the function
+    # is called. The status specifies whether the key is up or down.
     #
-    # keyCode -- If a..z0..9, use the ASCII code. Otherwise, use 
+    # keyCode -- If A..Z0..9, use the ASCII code. Otherwise, use 
     # a virtual key code. Example: VK_SHIFT
     #
     # Return 1 if the key is depressed, 0 if it's not.
-    #
 LONG
 GetAsyncKeyState(key)
     int key
 CODE:
-    RETVAL = GetAsyncKeyState(key) & 1;
+    RETVAL = (GetAsyncKeyState(key) & 0x8000) >>16;
 OUTPUT:
     RETVAL
    
@@ -294,7 +292,7 @@ PPCODE:
         if(strcmp(SvPV_nolen(ST(i)), "-extends") == 0) {
             next_i = i + 1;
             if(!GetClassInfoEx((HINSTANCE) NULL, (LPCTSTR) SvPV_nolen(ST(next_i)), &wcx)) {
-                if(PL_dowarn) warn("Win32::GUI: Class '%s' not found!\n", SvPV_nolen(ST(next_i)));
+                W32G_WARN("Win32::GUI: Class '%s' not found!", SvPV_nolen(ST(next_i)));
                 XSRETURN_NO;
             }
             DefClassProc = wcx.lpfnWndProc;
@@ -558,7 +556,8 @@ PPCODE:
     if(perlcs.iClass != WIN32__GUI__WINDOW && 
        perlcs.iClass != WIN32__GUI__DIALOG &&
        perlcs.iClass != WIN32__GUI__MDIFRAME &&
-       perlcs.iClass != WIN32__GUI__MDICHILD) {
+       perlcs.iClass != WIN32__GUI__MDICHILD &&
+       perlcs.iClass != WIN32__GUI__TOOLTIP ) {
         SwitchBit(perlcs.cs.style, WS_CHILD, 1);
     }
 #ifdef PERLWIN32GUI_STRONGDEBUG
@@ -1087,8 +1086,8 @@ CODE:
 
     perlud->dwPlStyle |= PERLWIN32GUI_ISMODAL;
 
-    // Find is parent window if any or use ActiveWindow
-    parent = GetParent(handle);
+    // Find its owner window if any or use ActiveWindow
+    parent = GetWindow(handle, GW_OWNER);
     if (parent == NULL) {
         parent = GetActiveWindow(); 
     }
@@ -1601,6 +1600,93 @@ PPCODE:
         XSRETURN_NO;
     }
 
+    ###########################################################################
+    # (@)METHOD:GetParent()
+    # Returns the parent window for this child control/window. If there is no
+    # parent window or there has been an error, undef is returned.
+void
+GetParent(handle)
+    HWND handle
+PREINIT:
+  HWND parentHandle;
+  SV* SvParent;
+PPCODE:
+  parentHandle=GetParent(handle);
+  if (parentHandle!=NULL) {
+    SvParent = SV_SELF_FROM_WINDOW(parentHandle);
+    if (SvParent != NULL && SvROK(SvParent)) {
+      XPUSHs(SvParent);
+    }
+    else {
+      XSRETURN_UNDEF;
+    }
+  } 
+  else {
+    XSRETURN_UNDEF;
+  }
+
+    ###########################################################################
+    # (@)INTERNAL:GetWindowObject()
+    # Returns the perl window object from a window handle.  If the window handle
+    # passed is a handle to a window created by Win32::GUI, returns the perl
+    # object reference, else returns undef.
+void
+GetWindowObject(handle)
+    HWND handle
+PREINIT:
+  SV* SvObject;
+PPCODE:
+  if (IsWindow(handle)) {
+    SvObject = SV_SELF_FROM_WINDOW(handle);
+    if (SvObject != NULL && SvROK(SvObject)) {
+      XPUSHs(SvObject);
+    }
+    else {
+      XSRETURN_UNDEF;
+    }
+  } 
+  else {
+    XSRETURN_UNDEF;
+  }
+  
+    ###########################################################################
+    # (@)METHOD:UserData([value])
+    # Sets or reads user data associated with the window or control.
+    #
+    #  my $data=$win->UserData();#retrieve any data associated with the window
+    #  $win->UserData('some string');#associate user data to the window
+    #
+    # User data can be any perl scalar or reference.
+void
+UserData(handle,...)
+    HWND handle
+PREINIT:
+    LPPERLWIN32GUI_USERDATA perlud;
+PPCODE:
+    if(items > 2) {
+      CROAK("Usage: UserData(handle, [value]);\n");
+    }
+    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(handle, GWL_USERDATA);
+    if( ! ValidUserData(perlud) ) {
+        XSRETURN_UNDEF;
+    } else {
+      if(items==1){//reading the user data
+        if (perlud->userData!=NULL) {
+          //Just return the SV
+          XPUSHs(perlud->userData);
+        } else {
+          XSRETURN_UNDEF;
+        }
+      }
+      else {//setting user data
+        //need to free previous!
+        if (perlud->userData!=NULL) {
+          SvREFCNT_dec(perlud->userData); 
+        }
+        perlud->userData=ST(1);
+        SvREFCNT_inc(perlud->userData);
+      }
+    }
 
     ###########################################################################
     # (@)METHOD:FindWindow(CLASSNAME, WINDOWNAME)
@@ -2044,14 +2130,14 @@ CODE:
             av_push((AV*) SvRV(message), newSViv(msg.pt.x));
             av_push((AV*) SvRV(message), newSViv(msg.pt.y));
         } else {
-            if(PL_dowarn) warn("Win32::GUI: fourth parameter to PeekMessage is not an array reference");
+            W32G_WARN("Win32::GUI: fourth parameter to PeekMessage is not an array reference");
         }
     }
 OUTPUT:
     RETVAL
 
     ###########################################################################
-    # (@)Method:Hook(MSG,CODEREF)
+    # (@)METHOD:Hook(MSG,CODEREF)
     # Adds a new handler to the list of handlers for a particular window
     # message / command / notification.
     #
@@ -2154,7 +2240,7 @@ PPCODE:
     }
 
     ###########################################################################
-    # (@)Method:UnHook(MSG,[CODEREF])
+    # (@)METHOD:UnHook(MSG,[CODEREF])
     # Removes a specific code reference from the hooks listing for the given
     # message, or removes all code references for the given message if no
     # coderef is specified.
@@ -2196,15 +2282,17 @@ PPCODE:
                 for(i = 0; i <= (int) av_len((AV*) SvRV(*arrayref)); i++) {
                     removedvalue = av_fetch((AV*) SvRV(*arrayref), i,0);
                     if(removedvalue != NULL && (coderef == NULL || sv_eq(*removedvalue,coderef)) ) {
-                        SvREFCNT_dec(*removedvalue);
-                        av_delete((AV*) SvRV(*arrayref), i, 0);
+                        /* SvREFCNT_dec(*removedvalue);
+                        av_delete((AV*) SvRV(*arrayref), i, 0); */
+                        av_delete((AV*) SvRV(*arrayref), i, G_DISCARD);
                         count++;
                     }
                 }
                 if(coderef == NULL || av_len((AV*) SvRV(*arrayref)) == -1) {
                     removedvalue = av_fetch(perlud->avHooks, msg, 0);
-                    SvREFCNT_dec(*removedvalue);
-                    av_delete(perlud->avHooks, msg, 0);
+                    /* SvREFCNT_dec(*removedvalue);
+                    av_delete(perlud->avHooks, msg, 0); */
+                    av_delete(perlud->avHooks, msg, G_DISCARD);
                 }
                 XSRETURN_IV(count);
             }
@@ -2416,7 +2504,7 @@ PPCODE:
     ###########################################################################
     # (@)METHOD:GetWindowRect()
     # Returns a four elements array defining the windows rectangle (left, top,
-    # right, bottom) or undef on errors.
+    # right, bottom) in screen co-ordinates or undef on errors.
 void
 GetWindowRect(handle)
     HWND handle
@@ -3284,47 +3372,41 @@ PREINIT:
     HHOOK hhook = NULL;
     LPPERLWIN32GUI_USERDATA perlud;
     AV* newarray;
+    POINT pt;
 CODE:
-    if(items < 2 || items == 3 || items == 7 || items > 10) {
-      CROAK("Usage: TrackPopupMenu(handle, menu, [x, y, [left, top, right, bottom], [flag, [coderef]]])\n");
-    }
 
-    if (items == 2) {
-      POINT pt;
-      if(GetCursorPos(&pt)) {
-		  x = pt.x;
-		  y = pt.y;
-      }
-    }
-    else {
-      x = SvIV(ST(2));
-      y = SvIV(ST(3));
-      if (items > 4 && items < 8) {
-        flags = (UINT) SvIV(ST(4));
-        if (items > 5) {
-          coderef = ST(5);
-        }
-      }
-      else {
-        tpm.cbSize = sizeof(TPMPARAMS);
-        tpm.rcExclude.left   = SvIV(ST(4));
-        tpm.rcExclude.top    = SvIV(ST(5));
-        tpm.rcExclude.right  = SvIV(ST(6));
-        tpm.rcExclude.bottom = SvIV(ST(7));
-        lptpm = &tpm;
-        flags |= TPM_VERTICAL;
-        if (items > 8) {
-          flags = (UINT) SvIV(ST(8));
-          if(items > 9) {
-            coderef = ST(9);
-          }
-        }
-      }
+    switch (items) {
+      case 10: coderef              = ST(9);
+      case  9: flags                = SvIV(ST(8));
+      case  8: tpm.rcExclude.bottom = SvIV(ST(7));
+               tpm.rcExclude.right  = SvIV(ST(6));
+               tpm.rcExclude.top    = SvIV(ST(5));
+               tpm.rcExclude.left   = SvIV(ST(4));
+               tpm.cbSize           = sizeof(TPMPARAMS);
+               y                    = SvIV(ST(3));
+               x                    = SvIV(ST(2));
+           break;
+
+      case  6: coderef              = ST(5);
+      case  5: flags                = SvIV(ST(4));
+      case  4: y                    = SvIV(ST(3));
+               x                    = SvIV(ST(2));
+           break;
+
+      case  2: if(GetCursorPos(&pt)) {
+               y                  = pt.y;
+               x                  = pt.x;
+             }
+          break;
+
+      default:
+        CROAK("Usage: TrackPopupMenu(handle, menu, [x, y, [left, top, right, bottom], [flag, [coderef]]])\n");
+      break;
     }
 
     // if given a coderef, check that it actually is one
     if(coderef != NULL && !(SvOK(coderef) && SvROK(coderef) && SvTYPE(SvRV(coderef)) == SVt_PVCV)) {
-      if(PL_dowarn) warn("TrackPopupMenu argument 'coderef' must be a code reference - callback not applied\n");
+      W32G_WARN("TrackPopupMenu argument 'coderef' must be a code reference - callback not applied");
       coderef = NULL;  // don't set up the hook
     }
 
@@ -3348,14 +3430,14 @@ CODE:
           if(av_store(perlud->avHooks, WM_TRACKPOPUP_MSGHOOK, newRV_noinc((SV*) newarray)) == NULL) {
             // Failed to store new array
             av_undef(newarray);
-            if(PL_dowarn) warn("TrackPopupMenu failed to store 'coderef' - callback not applied\n");
+            W32G_WARN("TrackPopupMenu failed to store 'coderef' - callback not applied");
             coderef = NULL;  // don't set up the hook
           }
         }
         else {
           // there's an existing hook for the message value we've chosen to use.
           // this means someone called hook() with the message code 0xBFFF !!
-          if(PL_dowarn) warn("TrackPopupMenu found an existing 'coderef' - callback not applied\n");
+          W32G_WARN("TrackPopupMenu found an existing 'coderef' - callback not applied");
           coderef = NULL;  // don't set up the hook
         }
       }
@@ -3471,7 +3553,7 @@ PPCODE:
 
 
     ###########################################################################
-    # (@)METHOD:TrackMouse([TIMEOUT, EVENTS])
+    # (@)METHOD:TrackMouse([TIMEOUT=HOVER_DEFAULT, EVENTS=TME_HOVER|TME_LEAVE])
     # Causes the window to receive messages when the mouse pointer leaves a
     # window or hovers over a window for a specified amount of time (B<TIMEOUT>, in
     # milliseconds).
@@ -4503,7 +4585,7 @@ PPCODE:
                     *fpointer = 0;
                     ofn.lpstrFilter = (LPCTSTR) filter;
                 } else {
-                    if(PL_dowarn) warn("Win32::GUI: argument to -filter is not an array reference!");
+                    W32G_WARN("Win32::GUI: argument to -filter is not an array reference!");
                 }
             } else if(strcmp(option, "-defaultfilter") == 0 ) {
                 next_i = i + 1;
@@ -4732,7 +4814,7 @@ PPCODE:
                     *fpointer = 0;
                     ofn.lpstrFilter = (LPCTSTR) filter;
                 } else {
-                    if(PL_dowarn) warn("Win32::GUI: argument to -filter is not an array reference!");
+                    W32G_WARN("Win32::GUI: argument to -filter is not an array reference!");
                 }
             } else if(strcmp(option, "-defaultfilter") == 0 ) {
                 next_i = i + 1;
@@ -4960,7 +5042,7 @@ PPCODE:
                         NULL
                     );
                     if(FAILED(hr)) {
-                        if(PL_dowarn) warn("Win32::GUI::BrowseForFolder: can't get ITEMIDLIST for -root!\n");
+                        W32G_WARN("Win32::GUI::BrowseForFolder: can't get ITEMIDLIST for -root!");
                         pDesktopFolder->Release();
                         XSRETURN_UNDEF;
                     } else {

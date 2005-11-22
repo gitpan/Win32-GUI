@@ -1,4 +1,4 @@
-=for comment $Id: Part3.pod,v 1.1 2005/06/26 16:41:01 robertemay Exp $
+=for comment $Id: Part3.pod,v 1.2 2005/10/05 22:20:49 robertemay Exp $
 
 =head1 NAME
 
@@ -58,14 +58,13 @@ to implement. Windows just fires the relevant event.
 =item Return
 
 To make the return key work as expected, you need to give one of your dialog's
-buttons the C<< -default => 1 >> option. When the return key is pressed, it is
+buttons the C<< -ok => 1 >> option. When the return key is pressed, it is
 translated into a click event on the default button. The default button is
-also highlighted differently from the other buttons (it has a dark border).
-B<Note:> There is a related option, C<< -ok => 1 >>, which has a similar
-effect as C<-default>. However, the two seem to conflict in their effects. I
-would recommend that if your default button has the caption C<"OK">, you
-should set both the C<-ok> and C<-default> options. Otherwise, stick with just
-C<-default>.
+also usually highlighted differently from the other buttons
+(it has a dark border), this is achieved by the C<< -default => 1 >> option,
+It is normal to give this button a caption C<"OK"> and make its click
+handler close the window, setting any changes made, but again, this is up to
+you.
 
 =back
 
@@ -94,6 +93,11 @@ In most cases, the key issues will be whether you need the keyboard handling,
 and whether you need the user to be able to resize your windows. Otherwise,
 the choice is arbitrary. To switch types, the only change you need to make is
 the name of the constructor you use to create your application's main window.
+
+Recent versions of Win32::GUI have a C<-dialogui> option that controls the
+special keyboard handling. Setting this option to C<1> on a basic Window add the
+special key handling to the window; setting it to C<0> on a DialogBox removes
+the special key handling.
 
 In the L<next part|Win32::GUI::Tutorial::Part4>, we will cover some further ways in which you can increase
 your application's functionality.

@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::ListView
     #
-    # $Id: ListView.xs,v 1.8 2005/07/10 11:24:29 robertemay Exp $
+    # $Id: ListView.xs,v 1.9 2005/08/03 21:45:57 robertemay Exp $
     #
     ###########################################################################
     */
@@ -30,7 +30,7 @@ ListView_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATES
             SwitchBit(perlcs->cs.style, LVS_ALIGNLEFT, 0);
             SwitchBit(perlcs->cs.style, LVS_ALIGNTOP, 1);
         } else {
-            if(PL_dowarn) warn("Win32::GUI: Invalid value for -align!");
+            W32G_WARN("Win32::GUI: Invalid value for -align!");
         }
     } else if(strcmp(option, "-imagelist") == 0) {
         perlcs->hImageList = (HIMAGELIST) handle_From(NOTXSCALL value);
@@ -332,7 +332,7 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:CreateDragImage(index, xcor, ycor)
-    # Creates a transparent version of an item image. The xcor and ycor are the 
+    # Creates a transparent version of an item image. The xcor and yxcor are the 
     # initial location of the  upper-left corner of the image.
 HIMAGELIST
 CreateDragImage(handle, index, xcor, ycor)
@@ -769,7 +769,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:GetItemPosition(index)
-    # Retrieves the position of a list view item.
+    # Retrieves the position of a list view item, in listview co-ordinates.
+    # See GetOrigin() to convert to client co-ordinates.
 void
 GetItemPosition(handle,index)
     HWND handle
@@ -788,7 +789,8 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:GetItemRect(index,[code=LVIR_BOUNDS])
-    # Retrieves the bounding rectangle for all or part of an item in the current view.
+    # Retrieves the bounding rectangle for all or part of an item in the current view,
+    # in client co-ordinates.
 void
 GetItemRect(handle,index,code=LVIR_BOUNDS)
     HWND handle
@@ -810,7 +812,8 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:GetItemSpacing([flag=FALSE])
-    # Determines the spacing between items in a ListView.
+    # Determines the spacing between items in a ListView. Flag is true to return the
+    # item spacing for the small icon view, and false to return the icon spacing for large icon view.
 DWORD
 GetItemSpacing(handle,flag=FALSE)
     HWND handle
@@ -822,7 +825,19 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:GetItemState(index,mask)
-    # Determines the spacing between items in a ListView.
+    # Determines the spacing between items in a ListView. Index is the listview item for which
+    # to retrieve information.  mask is a combination of the fllowing flags:
+    #  LVIS_CUT            The item is marked for a cut-and-paste operation.
+    #  LVIS_DROPHILITED    The item is highlighted as a drag-and-drop target.
+    #  LVIS_FOCUSED        The item has the focus, so it is surrounded by a standard
+    #                      focus rectangle. Although more than one item may be selected,
+    #                      only one item can have the focus.
+    #  LVIS_SELECTED       The item is selected. The appearance of a selected item depends
+    #                      on whether it has the focus and also on the system colors used for selection.
+    #  LVIS_OVERLAYMASK    Use this mask to retrieve the item's overlay image index.
+    #  LVIS_STATEIMAGEMASK Use this mask to retrieve the item's state image index.
+    # The only valid its in the response are those bits that correspond to bits set in mask.
+
 UINT
 GetItemState(handle,index,mask)
     HWND handle
@@ -880,7 +895,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:GetOrigin()
-    # Retrieves the current view origin for a ListView.
+    # Retrieves the current view origin for a ListView. Use the values returned
+    # to convert between listview co-ordinates and client co-ordinates.
 void
 GetOrigin(handle)
     HWND handle
@@ -935,7 +951,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:GetSubItemRect(iItem, iSubitem,[code=LVIR_BOUNDS])
-    # Retrieves the bounding rectangle for all or part of an item in the current view.
+    # Retrieves the bounding rectangle for all or part of an item in the current view,
+    # in client co-oridinates.
 void
 GetSubItemRect(handle,index,index2,code=LVIR_BOUNDS)
     HWND handle
@@ -1037,6 +1054,19 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:HitTest(X, Y)
+    # Determine the index of the listview item at X,Y.  X,Y are in client co-ordinates.
+    # In list context, returns a 2 member list, the first member containing the item index
+    # of the item under the tested position (or -1 of no such item), and the second member
+    # containing flags giving information about the result of the test:
+    #  LVHT_ABOVE           The position is above the control's client area.
+    #  LVHT_BELOW           The position is below the control's client area.
+    #  LVHT_NOWHERE         The position is inside the list-view control's client window,
+    #                       but it is not over a list item.
+    #  LVHT_ONITEMICON      The position is over a list-view item's icon.
+    #  LVHT_ONITEMLABEL     The position is over a list-view item's text.
+    #  LVHT_ONITEMSTATEICON The position is over the state image of a list-view item.
+    #  LVHT_TOLEFT          The position is to the left of the list-view control's client area.
+    #  LVHT_TORIGHT         The position is to the right of the list-view control's client area.
 void
 HitTest(handle,x,y)
     HWND handle
@@ -1095,12 +1125,14 @@ OUTPUT:
     #  -image => NUMBER
     #    index of an image from the associated ImageList
     #  -indent => NUMBER
-    #    how much the item must be indented; one unit is the width of an item image, so 2 is twice the width of the image, and so on.
+    #    how much the item must be indented; one unit is the width of an item image,
+    #    so 2 is twice the width of the image, and so on.
     #  -item => NUMBER
     #    zero-based index for the new item; the default is to add the item at the end of the list.
     #  -selected => 0/1, default 0
     #  -text => STRING
-    #    the text for the item
+    #    the text for the item.  If STRING an array refereence, then the array contains the text for
+    #    item at position 0, and all other array members are treated as text for subitems.
 int
 InsertItem(handle,...)
     HWND handle
@@ -1485,6 +1517,7 @@ CODE:
     # (@)METHOD:SetItemPosition(INDEX, X, Y)
     # (@)METHOD:MoveItem(INDEX, X, Y)
     # Moves an item to a specified position in a ListView (in icon or small icon view).     
+    # X,Y are in listview co-ordinates.
 void
 SetItemPosition(handle, index, x, y)
     HWND handle
@@ -1510,7 +1543,7 @@ CODE:
 
     ###########################################################################
     # (@)METHOD:SetItemText(INDEX,TEXT,[SUBITEM=0])
-    # Changes the state of an item in a ListView.
+    # Changes the text of an item in a ListView.
 void
 SetItemText(handle,index,texte,subitem=0)
     HWND handle
@@ -1589,6 +1622,20 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:SubItemHitTest(X, Y)
+    # Test to find which sub-item is at the position X,Y.  X,Y are inclient-co-ordinates.
+    # Returns a 3 memeber list, giving the item number, subitem number and flags related
+    # to the test.  the item number is -1 if no item or subitem is under X,Y.
+    # flags are a combination of:
+    #  LVHT_ABOVE           The position is above the control's client area.
+    #  LVHT_BELOW           The position is below the control's client area.
+    #  LVHT_NOWHERE         The position is inside the list-view control's client window,
+    #                       but it is not over a list item.
+    #  LVHT_ONITEMICON      The position is over a list-view item's icon.
+    #  LVHT_ONITEMLABEL     The position is over a list-view item's text.
+    #  LVHT_ONITEMSTATEICON The position is over the state image of a list-view item.
+    #  LVHT_TOLEFT          The position is to the left of the list-view control's client area.
+    #  LVHT_TORIGHT         The position is to the right of the list-view control's client area.
+
 void
 SubItemHitTest(handle,x,y)
     HWND handle
@@ -1880,6 +1927,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:ItemPosition(INDEX, [X, Y])
+    # Get or set the position of an item in icon or small icon view.  X,Y are in
+    # listview co-ordinates.
 void
 ItemPosition(handle, index, x=-1, y=-1)
     HWND handle

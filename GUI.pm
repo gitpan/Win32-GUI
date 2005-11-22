@@ -10,7 +10,7 @@
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: GUI.pm,v 1.30 2005/07/10 11:24:29 robertemay Exp $
+# $Id: GUI.pm,v 1.35 2005/11/21 22:33:33 robertemay Exp $
 #
 ###############################################################################
 package Win32::GUI;
@@ -24,7 +24,7 @@ require DynaLoader;     # to dynuhlode the module.
 ###############################################################################
 # STATIC OBJECT PROPERTIES
 #
-$VERSION             = "1.02";        # For MakeMaker
+$VERSION             = "1.03";        # For MakeMaker
 $XS_VERSION          = $VERSION;      # For dynaloader
 $VERSION             = eval $VERSION; # For Perl  (see perldoc perlmodstyle)
 $MenuIdCounter       = 1;
@@ -472,7 +472,7 @@ sub bootstrap_subpackage {
 # PUBLIC METHODS
 # (@)PACKAGE:Win32::GUI
 # Common Methods
-# The Win32::GUI package defines a set of methods that apply to most winodws and
+# The Win32::GUI package defines a set of methods that apply to most windows and
 # controls. Some of the methods are applicable to resources. See the individual
 # method documentation for more details.
 
@@ -595,7 +595,7 @@ sub _new {
     tie %tier, $class, $oself;
     my $self = bless \%tier, $class;
 
-    # print "OSELF = $oself\n";   
+    # print "OSELF = $oself\n";
     # print " SELF = $self\n";
 
     my (@input) = @_;
@@ -770,7 +770,7 @@ package Win32::GUI::Class;
     #       the name for the class (it must be unique!).
     #   -icon => Win32::GUI::Icon object
     #   -cursor => Win32::GUI::Cursor object
-    #   -color => COLOR 
+    #   -color => COLOR
     #       system color use as window background.
     #   -brush => Win32::GUI::Brush object
     #       brush use as window background brush.
@@ -790,9 +790,9 @@ sub new {
     my %args = @_;
     my $self = {};
 
-    # figure out the correct background color 
+    # figure out the correct background color
     # (to avoid the "white background" syndrome on XP)
-    if(not exists $args{-color} && not exists $args{-brush}) {
+    if(not exists($args{-color}) and not exists($args{-brush})) {
         my($undef, $major, $minor);
         eval { ($undef, $major, $minor) = Win32::GetOSVersion(); };
         # certain Win32 perls didn't have Win32 in core
@@ -865,19 +865,19 @@ package Win32::GUI::Window;
     #   -controlbox => 0/1
     #     Set/Unset system menu style.
     #   -titlebar => 0/1
-    #     Set/Unset caption style.    
+    #     Set/Unset caption style.
     #   -helpbutton => 0/1
     #   -helpbox => 0/1
     #   -hashelp => 0/1
     #     Set/Unset help context extended style.
     #   -toolwindow => 0/1
-    #     Set/Unset tool window extended style. 
+    #     Set/Unset tool window extended style.
     #   -appwindow => 0/1
-    #     Set/Unset app window extended style. 
+    #     Set/Unset app window extended style.
     #   -topmost => 0/1 (default 0)
     #     The window "stays on top" even when deactivated
     #   -controlparent => 0/1 (default 0)
-    #     Set/Unset control parent extended style. 
+    #     Set/Unset control parent extended style.
     #   -noflicker => 0/1 (default 0)
     #     Set to 1 to enable anti-flicker. This will eliminate all flicker from
     #     your window, but may prevent things like Graphic objects from showing
@@ -1062,11 +1062,11 @@ sub Center {
     #Code taken from Win32::GUI::AdHoc by Johan Lindström
     my ($winSelf, $winParent) = @_;
     defined($winParent) or $winParent = Win32::GUI::GetDesktopWindow();
-    
+
     #Avoid OO notation to enable us to use either a hwind or a Win32::GUI::Window object
     my $x = Win32::GUI::Left($winParent) + (Win32::GUI::Width($winParent) / 2) - (Win32::GUI::Width($winSelf) / 2);
     my $y = Win32::GUI::Top($winParent) + (Win32::GUI::Height($winParent) / 2) - (Win32::GUI::Height($winSelf) / 2);
-    
+
     Win32::GUI::Move($winSelf, $x, $y) and return(1);
     return(0);
     }
@@ -1089,7 +1089,7 @@ sub AUTOLOAD {
 # (@)PACKAGE:Win32::GUI::DialogBox
 # Create and manipulate Windows
 # Just like Window, but with a predefined dialog box look: by default, a DialogBox
-# can not be sized, has no maximize box and has C<-dialogui> enabled (eg. 
+# can not be sized, has no maximize box and has C<-dialogui> enabled (eg.
 # interprets tab/enter/esc).
 #
 package Win32::GUI::DialogBox;
@@ -1432,7 +1432,7 @@ package Win32::GUI::Label;
     #    -wrap     => 0/1 (default 1)
     #       The text wraps automatically to a new line.
     #    -simple   => 0/1 (default 1)
-    #       Set/Unset simple style. 
+    #       Set/Unset simple style.
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__STATIC", 0), @_);
 }
@@ -1516,7 +1516,7 @@ sub new {
           $options{-width}  = $options{-size}[0];
           $options{-height} = $options{-size}[1];
         }
-         
+
         if(ref($options{-prompt}) eq "ARRAY") {
             $left = pop(@{$options{'-prompt'}});
             $text = pop(@{$options{'-prompt'}});
@@ -1572,7 +1572,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Listbox
-# Create and manipulate checkbox clistboxontrols
+# Create and manipulate listbox controls
 #
 package Win32::GUI::Listbox;
 @ISA = qw(
@@ -1728,7 +1728,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::StatusBar
-# Create and manipulate ststus bar controls
+# Create and manipulate status bar controls
 #
 package Win32::GUI::StatusBar;
 @ISA = qw(
@@ -1783,9 +1783,9 @@ package Win32::GUI::TabStrip;
     #   -raggedright => 0/1 (default 0)
     #   -multiline => 0/1 (default 0)
     #     The control can have more than one line
-    #   -multiselect => 0/1 (default 0)   
+    #   -multiselect => 0/1 (default 0)
     #   -vertical  => 0/1 (default 0)
-    #   -tooltip => Win32::GUI::Tooltip object    
+    #   -tooltip => Win32::GUI::Tooltip object
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__TAB", 0), @_);
 }
@@ -1815,16 +1815,22 @@ package Win32::GUI::Toolbar;
     #   -multiline => 0/1
     #     The control can have more than one line
     #   -nodivider => 0/1
-    #   -tooltip => Win32::GUI::Tooltip object    
+    #   -tooltip => Win32::GUI::Tooltip object
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__TOOLBAR", 0), @_);
 }
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::RichEdit
-# Create and manipulate Richedit controls
+# Create and manipulate Richedit controls.
 # Most of the methods and events that apply to a L<TextField|Win32::GUI::Textfield>
 # also apply to Win32::GUI::RichEdit.
+#
+# Note that in order for most events to be triggered you must call the
+# SetEventMask() method, to set the events that you want to be triggered.
+# See SetEventMask().
+#
+# By default Win32::GUI::RichEdit uses Rich Edit 1.0.
 package Win32::GUI::RichEdit;
 @ISA = qw(
     Win32::GUI
@@ -2034,7 +2040,7 @@ sub new {
 # (@)PACKAGE:Win32::GUI::Slider
 # Create and manipulate slider controls
 #
-# See Win32::GUI::Trackbar
+# See L<Win32::GUI::Trackbar|Win32::GUI::TrackBar>
 #
 package Win32::GUI::Trackbar;
 @ISA = qw(
@@ -2085,13 +2091,13 @@ package Win32::GUI::UpDown;
     #
     # Class specific B<%OPTIONS> are:
     #   -align => left,right
-    #     When Left, positions the up-down control next to the left edge of the buddy window. 
-    #     The buddy window is moved to the right, and its width is decreased to accommodate the 
+    #     When Left, positions the up-down control next to the left edge of the buddy window.
+    #     The buddy window is moved to the right, and its width is decreased to accommodate the
     #     width of the up-down control.
-    #     When right, positions the up-down control next to the right edge of the buddy window. 
+    #     When right, positions the up-down control next to the right edge of the buddy window.
     #     The width of the buddy window is decreased to accommodate the width of the up-down control.
     #   -nothousands => 0/1
-    #     Does not insert a thousands separator between every three decimal digits. 
+    #     Does not insert a thousands separator between every three decimal digits.
     #   -wrap => 0/1 (default 0)
     #     Causes the position to "wrap" if it is incremented or decremented beyond the ending or beginning of the range.
     #   -horizontal => 0/1
@@ -2099,10 +2105,10 @@ package Win32::GUI::UpDown;
     #   -autobuddy => 0/1
     #     Automatically selects the previous window in the z-order as the up-down control's buddy window.
     #   -setbuddy => 0/1
-    #     Causes the up-down control to set the text of the buddy window (using the WM_SETTEXT message) 
+    #     Causes the up-down control to set the text of the buddy window (using the WM_SETTEXT message)
     #     when the position changes. The text consists of the position formatted as a decimal or hexadecimal string.
     #   -arrowkeys => 0/1
-    #     Causes the up-down control to increment and decrement the position when the UP ARROW and 
+    #     Causes the up-down control to increment and decrement the position when the UP ARROW and
     #     DOWN ARROW keys are pressed.
     #
 sub new {
@@ -2111,7 +2117,7 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Tooltip
-# Create and manipulate ToolTip controls
+# Create and manipulate Tooltip controls
 #
 package Win32::GUI::Tooltip;
 @ISA = qw(
@@ -2143,7 +2149,7 @@ sub new {
 # (@)PACKAGE:Win32::GUI::Animation
 # Create and manipulate animation controls
 # The Animation control displays an AVI animation.
-# To load an AVI file you can use the L<Open()|/Open> method; 
+# To load an AVI file you can use the L<Open()|/Open> method;
 # you can then use L<Play()|/Play> to start the animation
 # (note it will start automatically with the B<-autoplay> option),
 # L<Stop()|/Stop> to stop it, and L<Seek()|/Seek> to position it to
@@ -2360,15 +2366,15 @@ package Win32::GUI::MonthCal;
     #
     # Class specific B<%OPTIONS> are:
     #   -daystate  => 0/1 (default 0)
-    #     Set/Unset daystate style. 
+    #     Set/Unset daystate style.
     #   -multiselect  => 0/1 (default 0)
-    #     Set/Unset multiselect style. 
+    #     Set/Unset multiselect style.
     #   -notoday  => 0/1 (default 0)
-    #     Set/Unset notoday style. 
+    #     Set/Unset notoday style.
     #   -notodaycircle  => 0/1 (default 0)
-    #     Set/Unset notodaycircle style. 
+    #     Set/Unset notodaycircle style.
     #   -weeknumber  => 0/1 (default 0)
-    #     Set/Unset weeknumber style. 
+    #     Set/Unset weeknumber style.
 
 sub new {
     return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__MONTHCAL", 0), @_);
@@ -2449,7 +2455,7 @@ sub Add {
 
     ###########################################################################
     # (@)METHOD:AddMasked(BITMAP, COLORMASK)
-    # Adds a bitmap to the ImageList; B<BITMAP> can be either Win32::GUI::Bitmap 
+    # Adds a bitmap to the ImageList; B<BITMAP> can be either Win32::GUI::Bitmap
     # object or filename.
 sub AddMasked {
     my($self, $bitmap, $colorMask) = @_;
@@ -2587,29 +2593,41 @@ sub new {
 
 ###############################################################################
 # (@)PACKAGE: Win32::GUI::Timer
-# Create and manipulate Timer resources
+# Create and manipulate periodic Timer events
 #
-# The Timer object is a special kind of control: it has no appearance, its only 
-# purpose is to trigger an event every specified amount of time.  You can reate a
+# The Timer object is a special kind of control: it has no appearance, its only
+# purpose is to trigger an event every specified amount of time.  You can create a
 # Timer object in either of these ways:
 #   new Win32::GUI::Timer( PARENT, NAME, ELAPSE )
 #   PARENT->AddTimer( NAME, ELAPSE )
 # where C<NAME> is the name for the Timer object (used to lookup the associated event).
 # and C<ELAPSE> is the number of milliseconds after which the Timer() event will
-# be triggered.
+# be periodically triggered.
 #
-# Once you've created the Timer object, you can change the ELAPSE parameter 
-# with the L<Interval()|/Interval> method, or disables it with the L<Kill()|/Kill> method.
-# Note that Kill(), despite of its name, does not destroy the Timer object, 
-# so you can re-enable it later with Interval().
+# Once you've created the Timer object, you can change the ELAPSE parameter
+# with the L<Interval()|/Interval> method, or disable the Timer with the
+# L<Kill()|/Kill> method.
+#
+# The triggered OEM event is called as "$name_Timer"()
+# The triggered NEM event is defined as -onTimer => sub{} method of the parent window.
 package Win32::GUI::Timer;
-@ISA = qw(Win32::GUI);
 
     ###########################################################################
-    # (@)METHOD:new Win32::GUI::Timer(PARENT, NAME, ELAPSE)
+    # (@)METHOD:new Win32::GUI::Timer(PARENT, [NAME, [ELAPSE]])
     # Creates a new timer in the PARENT window named NAME that will
     # trigger its Timer() event after ELAPSE milliseconds.
     # Can also be called as PARENT->AddTimer(NAME, ELAPSE).
+    #
+    # If NAME is not supplied, then an internal name will be allocated.
+    #
+    # ELAPSE must by an integer greater than or equal to zero.  If ELAPSE
+    # is 0, then the timer object is created, but the timer will be disabled.
+    # You can then start the timer by calling the L<Interval()|/Interval> method
+    # and setting ELAPSE to a non-zero number. If ELASPE is not supplied, then
+    # 0 will be used.
+    #
+    # Note: Different OS versions might change too low or large intervals for ELAPSE
+    # to more appropriate values. E.g. > 0x7fffffff or < 10
 sub new {
     my $class = shift;
     $class = "Win32::" . $class if $class =~ /^GUI::/;
@@ -2620,61 +2638,112 @@ sub new {
     my %args = @_;
 
     # Get a new Id
-    $id = $Win32::GUI::TimerIdCounter;
-    $Win32::GUI::TimerIdCounter++;
+    $id = $Win32::GUI::TimerIdCounter++;
 
     # Force a name if havent.
     $name = "_Timer".$id unless defined $name;
-    $elapse = 1 unless defined $elapse;
+    $elapse = 0 unless defined $elapse;
+
+    # check $elapse
+    if($elapse != int($elapse) or $elapse < 0) {
+	    warn qq(ELAPSE must be an integer greater than or equal to 0, not "$elapse". Using ELAPSE=0.);
+	    $elapse = 0;
+    }
 
     my $self = {};
     bless($self, $class);
 
-    # add $self->{name}
+    # store object propeties
     $self->{-id} = $id;
     $self->{-name} = $name;
     $self->{-handle} = $window->{-handle};
     $self->{-interval} = $elapse;
 
-    # Store name in timers hash
+    # Store name in parent's timers hash
     $window->{-timers}->{$id} = $name;
     # Add Timer into parent hash.
     $window->{$name} = $self;
 
-    Win32::GUI::SetTimer($window, $id, $elapse);
+    Win32::GUI::SetTimer($window, $id, $elapse) if $elapse > 0;
 
     return $self;
 }
 
     ###########################################################################
     # (@)METHOD:Interval(ELAPSE)
+    # Get or set the periodic timer interval. Unit: ms
+    # When setting a new interval, any existing timer is reset.  When setting
+    # returns the previous interval.
+    #
+    # Setting ELAPSE to 0 suspends the timer (i.e. it will not fire timer events).
+    # The timer can be restarted later by setting ELAPSE to a positive value.
+    #
+    # Note: Different OS versions might change too low or large intervals for ELAPSE
+    # to more appropriate values. E.g. > 0x7fffffff or < 10
 sub Interval {
     my $self = shift;
-    my $interval = shift;
-    if(defined $interval) {
-        Win32::GUI::SetTimer($self->{-handle}, $self->{-id}, $interval);
-        $self->{-interval} = $interval;
-    } else {
-        return $self->{-interval};
+    my $elapse = shift;
+
+    #Get
+    return $self->{-interval} unless defined $elapse;
+
+    my $previous = $self->{-interval};
+    # check $elapse
+    if($elapse != int($elapse) or $elapse < 0) {
+        warn qq(ELAPSE must be an integer greater than or equal to 0, not "$elapse". Using previous value($previous ms));
+        $elapse = $previous;
     }
+    $self->{-interval} = $elapse;
+    if ($elapse > 0) { # match Win32::GUI::Tutorial::Part4
+        Win32::GUI::SetTimer($self->{-handle}, $self->{-id}, $elapse);
+    } else {
+        Win32::GUI::KillTimer($self->{-handle}, $self->{-id});
+    }
+
+    return $previous;
 }
 
     ###########################################################################
-    # (@)METHOD:Kill()
+    # (@)METHOD:Kill([REMOVE=0])
+    # Remove the periodic timer event.
+    #
+    # Kill() with no parameters, or a False parameter suspends the timer,
+    # exactly as $timer->Interval(0); In this case it return the previous
+    # interval.
+    #
+    # Kill() with a True parameter will stop and remove all traces of the timer.
+    # To use system resources efficiently, applications should Kill(1)
+    # timers that are no longer necessary.
 sub Kill {
     my $self = shift;
-    Win32::GUI::KillTimer($self->{-handle}, $self->{-id});
+    my $remove = shift;
+
+    if($remove) {
+	    $self->DESTROY();
+    }
+    else {
+	    return $self->Interval(0);
+    }
+    return undef;
 }
 
     ###########################################################################
     # (@)INTERNAL:DESTROY(HANDLE)
 sub DESTROY {
     my $self = shift;
-    if ( defined $self &&
-         defined $self->{-handle} &&
-         defined $self->{-id} ) {
-        # Kill timer
-        Win32::GUI::KillTimer($self->{-handle}, $self->{-id});
+
+    # Kill timer
+    Win32::GUI::KillTimer($self->{-handle}, $self->{-id});
+
+    # We put this code to tidy up the parent here, rather than
+    # in Timer->Kill(1), so that we still tidy up, even in the
+    # unlikely event of someone doing PARENT->{Timer name} = undef;
+    my $window = Win32::GUI::GetWindowObject($self->{-handle});
+    if(defined $window) {
+        # Remove id from -timers hash
+        delete $window->{-timers}->{$self->{-id}};
+        # Remove name from parent
+        delete $window->{$self->{-name}};
     }
 }
 
@@ -2729,6 +2798,10 @@ sub new {
     $window->{-notifyicons}->{$args{-id}} = $args{-name};
     # AutoReference to parent
     $window->{$args{-name}} = $self;
+    # Only if perl is circular ref-safe
+    if ($] > 5.006) {
+      $self->{-window} = \$window;
+    }
 
     Win32::GUI::NotifyIcon::Add($self->{-handle}, %args);
 
@@ -2751,19 +2824,28 @@ sub DESTROY {
 
     my($self) = @_;
     if ( defined $self &&
-         defined $self->{-handle} && 
+         defined $self->{-handle} &&
          defined $self->{-id} ) {
-         
+
         Win32::GUI::NotifyIcon::Delete(
             $self->{-handle},
             -id => $self->{-id},
         );
+
+	if (defined $self->{-window}) {
+	  my $window = ${$self->{-window}};
+	  # Remove id from parent
+	  delete $window->{-notifyicons}->{$self->{-id}}
+	    if ref($window) and defined $window->{-notifyicons}->{$self->{-id}};
+	  # Remove name from parent
+	  delete $window->{$self->{-name}} if defined $window;
+	}
     }
 }
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::DC
-# Work with a Window's DC (Drawing COntext)
+# Work with a Window's DC (Drawing Context)
 #
 package Win32::GUI::DC;
 
@@ -2798,7 +2880,7 @@ sub new {
             }
         }
     } else {
-        $self = CreateDC("DISPLAY", 0);
+        $self->{-handle} = CreateDC("DISPLAY", 0);
     }
     return $self;
 }
@@ -2872,10 +2954,16 @@ sub new {
     my $class = shift;
     $class = "Win32::" . $class if $class =~ /^GUI::/;
 
-    my $self = {};
-    bless($self, $class);
-    $self->{-handle} = Create(@_);
-    return $self;
+    my $handle = Create(@_);
+
+    if($handle) {
+			my $self = {};
+			$self->{-handle} = $handle;
+			return bless($self, $class);
+		}
+		else {
+			return undef;
+		}
 }
 
 
@@ -2920,139 +3008,139 @@ sub new {
     my $key = 0;
     my %accels = @_;
     my @acc;
-    
+
     while( ($k, $v) = each %accels) {
         $flag = 0x0001;
         if($k =~ s/shift[-\+]//i)                { $flag |= 0x0004; }
         if($k =~ s/(ctrl|control)[-\+]//i)       { $flag |= 0x0008; }
         if($k =~ s/alt[-\+]//i)                  { $flag |= 0x0010; }
 
-                                                 # { $key = 0x01; } # VK_LBUTTON             
-                                                 # { $key = 0x02; } # VK_RBUTTON             
-                                                 # { $key = 0x03; } # VK_CANCEL              
-                                                 # { $key = 0x04; } # VK_MBUTTON             
-           if($k =~ /^backspace$/i)                { $key = 0x08; } # VK_BACK                
-        elsif($k =~ /^tab$/i)                      { $key = 0x09; } # VK_TAB                 
-#       elsif($k =~ /^clear$/i)                    { $key = 0x0c; } # VK_CLEAR               
-        elsif($k =~ /^return$/i)                   { $key = 0x0d; } # VK_RETURN              
-                                                 # { $key = 0x10; } # VK_SHIFT               
-                                                 # { $key = 0x11; } # VK_CONTROL             
-                                                 # { $key = 0x12; } # VK_MENU /ALT           
-        elsif($k =~ /^pause$/i)                    { $key = 0x13; } # VK_PAUSE               
-        elsif($k =~ /^capslock$/i)                 { $key = 0x14; } # VK_CAPITAL             
-        elsif($k =~ /^(esc|escape)$/i)             { $key = 0x1b; } # VK_ESCAPE              
-        elsif($k =~ /^space$/i)                    { $key = 0x20; } # VK_SPACE               
-        elsif($k =~ /^(pgup|pageup)$/i)            { $key = 0x21; } # VK_PRIOR               
-        elsif($k =~ /^(pgdn|pagedn|pagedown)$/i)   { $key = 0x22; } # VK_NEXT                
-        elsif($k =~ /^end$/i)                      { $key = 0x23; } # VK_END                 
-        elsif($k =~ /^home$/i)                     { $key = 0x24; } # VK_HOME                
-        elsif($k =~ /^left$/i)                     { $key = 0x25; } # VK_LEFT                
-        elsif($k =~ /^up$/i)                       { $key = 0x26; } # VK_UP                  
-        elsif($k =~ /^right$/i)                    { $key = 0x27; } # VK_RIGHT               
-        elsif($k =~ /^down$/i)                     { $key = 0x28; } # VK_DOWN                
-#       elsif($k =~ /^select$/i)                   { $key = 0x29; } # VK_SELECT              
-#       elsif($k =~ /^print$/i)                    { $key = 0x2a; } # VK_PRINT               
-#       elsif($k =~ /^execute$/i)                  { $key = 0x2b; } # VK_EXECUTE             
-        elsif($k =~ /^(prntscrn|printscreen)$/i)   { $key = 0x2c; } # VK_SNAPSHOT            
-        elsif($k =~ /^ins$/i)                      { $key = 0x2d; } # VK_INSERT              
-        elsif($k =~ /^del$/i)                      { $key = 0x2e; } # VK_DELETE              
-#       elsif($k =~ /^help$/i)                     { $key = 0x2f; } # VK_HELP                
-        elsif($k =~ /^[0-9a-z]$/i)                 { $key = ord(uc($k)); }                   
-                                                 # 0x30-0x39: ASCII 0-9                      
-                                                 # 0x41-0x5a: ASCII A-Z                      
-        elsif($k =~ /^left(win|windows)$/i)        { $key = 0x5b; } # VK_LWIN                
-        elsif($k =~ /^right(win|windows)$/i)       { $key = 0x5c; } # VK_RWIN                
-        elsif($k =~ /^(app|application)$/i)        { $key = 0x5d; } # VK_APPS                
-#       elsif($k =~ /^sleep$/i)                    { $key = 0x5e; } # VK_SLEEP               
-        elsif($k =~ /^(num|numeric|keypad)0$/i)    { $key = 0x60; } # VK_NUMPAD0             
-        elsif($k =~ /^(num|numeric|keypad)1$/i)    { $key = 0x61; } # VK_NUMPAD1             
-        elsif($k =~ /^(num|numeric|keypad)2$/i)    { $key = 0x62; } # VK_NUMPAD2             
-        elsif($k =~ /^(num|numeric|keypad)3$/i)    { $key = 0x63; } # VK_NUMPAD3             
-        elsif($k =~ /^(num|numeric|keypad)4$/i)    { $key = 0x64; } # VK_NUMPAD4             
-        elsif($k =~ /^(num|numeric|keypad)5$/i)    { $key = 0x65; } # VK_NUMPAD5             
-        elsif($k =~ /^(num|numeric|keypad)6$/i)    { $key = 0x66; } # VK_NUMPAD6             
-        elsif($k =~ /^(num|numeric|keypad)7$/i)    { $key = 0x67; } # VK_NUMPAD7             
-        elsif($k =~ /^(num|numeric|keypad)8$/i)    { $key = 0x68; } # VK_NUMPAD8             
-        elsif($k =~ /^(num|numeric|keypad)9$/i)    { $key = 0x69; } # VK_NUMPAD9             
-        elsif($k =~ /^multiply$/i)                 { $key = 0x6a; } # VK_MULTIPLY            
-        elsif($k =~ /^add$/i)                      { $key = 0x6b; } # VK_ADD                 
-#       elsif($k =~ /^separator$/i)                { $key = 0x6c; } # VK_SEPARATOR           
-        elsif($k =~ /^subtract$/i)                 { $key = 0x6d; } # VK_SUBTRACT            
-        elsif($k =~ /^decimal$/i)                  { $key = 0x6e; } # VK_DECIMAL             
-        elsif($k =~ /^divide$/i)                   { $key = 0x6f; } # VK_DIVIDE              
-        elsif($k =~ /^f1$/i)                       { $key = 0x70; } # VK_F1                  
-        elsif($k =~ /^f2$/i)                       { $key = 0x71; } # VK_F2                  
-        elsif($k =~ /^f3$/i)                       { $key = 0x72; } # VK_F3                  
-        elsif($k =~ /^f4$/i)                       { $key = 0x73; } # VK_F4                  
-        elsif($k =~ /^f5$/i)                       { $key = 0x74; } # VK_F5                  
-        elsif($k =~ /^f6$/i)                       { $key = 0x75; } # VK_F6                  
-        elsif($k =~ /^f7$/i)                       { $key = 0x76; } # VK_F7                  
-        elsif($k =~ /^f8$/i)                       { $key = 0x77; } # VK_F8                  
-        elsif($k =~ /^f9$/i)                       { $key = 0x78; } # VK_F9                  
-        elsif($k =~ /^f10$/i)                      { $key = 0x79; } # VK_F10                 
-        elsif($k =~ /^f11$/i)                      { $key = 0x7a; } # VK_F11                 
-        elsif($k =~ /^f12$/i)                      { $key = 0x7b; } # VK_F12                 
-#       elsif($k =~ /^f13$/i)                      { $key = 0x7c; } # VK_F13                 
-#       elsif($k =~ /^f14$/i)                      { $key = 0x7d; } # VK_F14                 
-#       elsif($k =~ /^f15$/i)                      { $key = 0x7e; } # VK_F15                 
-#       elsif($k =~ /^f16$/i)                      { $key = 0x7f; } # VK_F16                 
-#       elsif($k =~ /^f17$/i)                      { $key = 0x80; } # VK_F17                 
-#       elsif($k =~ /^f18$/i)                      { $key = 0x81; } # VK_F18                 
-#       elsif($k =~ /^f19$/i)                      { $key = 0x82; } # VK_F19                 
-#       elsif($k =~ /^f20$/i)                      { $key = 0x83; } # VK_F20                 
-#       elsif($k =~ /^f21$/i)                      { $key = 0x84; } # VK_F21                 
-#       elsif($k =~ /^f22$/i)                      { $key = 0x85; } # VK_F22                 
-#       elsif($k =~ /^f23$/i)                      { $key = 0x86; } # VK_F23                 
-#       elsif($k =~ /^f24$/i)                      { $key = 0x87; } # VK_F24                 
-        elsif($k =~ /^numlock$/i)                  { $key = 0x90; } # VK_NUMLOCK             
-        elsif($k =~ /^scrolllock$/i)               { $key = 0x91; } # VK_SCROLL              
-                                                 # { $key = 0xa0; } # VK_LSHIFT              
-                                                 # { $key = 0xa1; } # VK_RSHIFT              
-                                                 # { $key = 0xa2; } # VK_LCONTROL            
-                                                 # { $key = 0xa3; } # VK_RCONTROL            
-                                                 # { $key = 0xa4; } # VK_LMENU               
-                                                 # { $key = 0xa5; } # VK_RMENU               
-#       elsif($k =~ /^browserback$/i)              { $key = 0xa6; } # VK_BROWSER_BACK        
-#       elsif($k =~ /^browserforward$/i)           { $key = 0xa7; } # VK_BROWSER_FORWARD     
-#       elsif($k =~ /^browserrefresh$/i)           { $key = 0xa8; } # VK_BROWSER_REFRESH     
-#       elsif($k =~ /^browserstop$/i)              { $key = 0xa9; } # VK_BROWSER_STOP        
-#       elsif($k =~ /^browsersearch$/i)            { $key = 0xaa; } # VK_BROWSER_SEARCH      
-#       elsif($k =~ /^browserfavorites$/i)         { $key = 0xab; } # VK_BROWSER_FAVORITES   
-#       elsif($k =~ /^browserhome$/i)              { $key = 0xac; } # VK_BROWSER_HOME        
-#       elsif($k =~ /^volumemute$/i)               { $key = 0xad; } # VK_VOLUME_MUTE         
-#       elsif($k =~ /^volumedown$/i)               { $key = 0xae; } # VK_VOLUME_UP           
-#       elsif($k =~ /^volumenup$/i)                { $key = 0xaf; } # VK_VOLUME_DOWN         
-#       elsif($k =~ /^medianexttrack$/i)           { $key = 0xb0; } # VK_MEDIA_NEXT_TRACK    
-#       elsif($k =~ /^mediaprevtrack$/i)           { $key = 0xb1; } # VK_MEDIA_PREV_TRACK    
-#       elsif($k =~ /^mediastop$/i)                { $key = 0xb2; } # VK_MEDIA_STOP          
-#       elsif($k =~ /^mediaplaypause$/i)           { $key = 0xb3; } # VK_MEDIA_PLAY_PAUSE    
-#       elsif($k =~ /^launchmail$/i)               { $key = 0xb4; } # VK_LAUNCH_MAIL         
-#       elsif($k =~ /^launchmediaselect$/i)        { $key = 0xb5; } # VK_LAUNCH_MEDIA_SELECT 
-#       elsif($k =~ /^launchapp1$/i)               { $key = 0xb6; } # VK_LAUNCH_APP1         
-#       elsif($k =~ /^launchapp2$/i)               { $key = 0xb7; } # VK_LAUNCH_APP2         
-        elsif($k =~ /^semicolon$/i)                { $key = 0xba; } # VK_OEM_1               
-        elsif($k =~ /^(plus|equal)$/i)             { $key = 0xbb; } # VK_OEM_PLUS            
-        elsif($k =~ /^(comma|lessthan)$/i)         { $key = 0xbc; } # VK_OEM_COMMA           
-        elsif($k =~ /^(minus|underscore)$/i)       { $key = 0xbd; } # VK_OEM_MINUS           
-        elsif($k =~ /^(period|greaterthan)$/i)     { $key = 0xbe; } # VK_OEM_PERIOD          
-        elsif($k =~ /^(slash|question)$/i)         { $key = 0xbf; } # VK_OEM_2               
-        elsif($k =~ /^(acute|tilde)$/i)            { $key = 0xc0; } # VK_OEM_3               
-        elsif($k =~ /^(left|open)brac(e|ket)$/i)   { $key = 0xdb; } # VK_OEM_4               
-        elsif($k =~ /^(backslash|verticalbar)$/i)  { $key = 0xdc; } # VK_OEM_5               
-        elsif($k =~ /^(right|close)brac(e|ket)$/i) { $key = 0xdd; } # VK_OEM_6               
-        elsif($k =~ /^(single|double|)quote$/i)    { $key = 0xde; } # VK_OEM_7               
-#       elsif($k =~ /^unknown$/i)                  { $key = 0xdf; } # VK_OEM_8               
-#       elsif($k =~ /^process$/i)                  { $key = 0xe5; } # VK_PROCESSKEY          
-        elsif($k =~ /^(attn|attention)$/i)         { $key = 0xf6; } # VK_ATTN                
-        elsif($k =~ /^crsel$/i)                    { $key = 0xf7; } # VK_CRSEL               
-        elsif($k =~ /^exsel$/i)                    { $key = 0xf8; } # VK_EXSEL               
-        elsif($k =~ /^(ereof|eraseeof)$/i)         { $key = 0xf9; } # VK_EREOF               
-        elsif($k =~ /^play$/i)                     { $key = 0xfa; } # VK_PLAY                
-        elsif($k =~ /^zoom$/i)                     { $key = 0xfb; } # VK_ZOOM                
-        elsif($k =~ /^noname$/i)                   { $key = 0xfc; } # VK_NONAME              
-        elsif($k =~ /^pa1$/i)                      { $key = 0xfd; } # VK_PA1                 
-        elsif($k =~ /^oem_clear$/i)                { $key = 0xfe; } # VK_OEM_CLEAR           
-        else {$key = 0; print "Key name '$k' unknown\n"; }                                            
+                                                 # { $key = 0x01; } # VK_LBUTTON
+                                                 # { $key = 0x02; } # VK_RBUTTON
+                                                 # { $key = 0x03; } # VK_CANCEL
+                                                 # { $key = 0x04; } # VK_MBUTTON
+           if($k =~ /^backspace$/i)                { $key = 0x08; } # VK_BACK
+        elsif($k =~ /^tab$/i)                      { $key = 0x09; } # VK_TAB
+#       elsif($k =~ /^clear$/i)                    { $key = 0x0c; } # VK_CLEAR
+        elsif($k =~ /^return$/i)                   { $key = 0x0d; } # VK_RETURN
+                                                 # { $key = 0x10; } # VK_SHIFT
+                                                 # { $key = 0x11; } # VK_CONTROL
+                                                 # { $key = 0x12; } # VK_MENU /ALT
+        elsif($k =~ /^pause$/i)                    { $key = 0x13; } # VK_PAUSE
+        elsif($k =~ /^capslock$/i)                 { $key = 0x14; } # VK_CAPITAL
+        elsif($k =~ /^(esc|escape)$/i)             { $key = 0x1b; } # VK_ESCAPE
+        elsif($k =~ /^space$/i)                    { $key = 0x20; } # VK_SPACE
+        elsif($k =~ /^(pgup|pageup)$/i)            { $key = 0x21; } # VK_PRIOR
+        elsif($k =~ /^(pgdn|pagedn|pagedown)$/i)   { $key = 0x22; } # VK_NEXT
+        elsif($k =~ /^end$/i)                      { $key = 0x23; } # VK_END
+        elsif($k =~ /^home$/i)                     { $key = 0x24; } # VK_HOME
+        elsif($k =~ /^left$/i)                     { $key = 0x25; } # VK_LEFT
+        elsif($k =~ /^up$/i)                       { $key = 0x26; } # VK_UP
+        elsif($k =~ /^right$/i)                    { $key = 0x27; } # VK_RIGHT
+        elsif($k =~ /^down$/i)                     { $key = 0x28; } # VK_DOWN
+#       elsif($k =~ /^select$/i)                   { $key = 0x29; } # VK_SELECT
+#       elsif($k =~ /^print$/i)                    { $key = 0x2a; } # VK_PRINT
+#       elsif($k =~ /^execute$/i)                  { $key = 0x2b; } # VK_EXECUTE
+        elsif($k =~ /^(prntscrn|printscreen)$/i)   { $key = 0x2c; } # VK_SNAPSHOT
+        elsif($k =~ /^ins$/i)                      { $key = 0x2d; } # VK_INSERT
+        elsif($k =~ /^del$/i)                      { $key = 0x2e; } # VK_DELETE
+#       elsif($k =~ /^help$/i)                     { $key = 0x2f; } # VK_HELP
+        elsif($k =~ /^[0-9a-z]$/i)                 { $key = ord(uc($k)); }
+                                                 # 0x30-0x39: ASCII 0-9
+                                                 # 0x41-0x5a: ASCII A-Z
+        elsif($k =~ /^left(win|windows)$/i)        { $key = 0x5b; } # VK_LWIN
+        elsif($k =~ /^right(win|windows)$/i)       { $key = 0x5c; } # VK_RWIN
+        elsif($k =~ /^(app|application)$/i)        { $key = 0x5d; } # VK_APPS
+#       elsif($k =~ /^sleep$/i)                    { $key = 0x5e; } # VK_SLEEP
+        elsif($k =~ /^(num|numeric|keypad)0$/i)    { $key = 0x60; } # VK_NUMPAD0
+        elsif($k =~ /^(num|numeric|keypad)1$/i)    { $key = 0x61; } # VK_NUMPAD1
+        elsif($k =~ /^(num|numeric|keypad)2$/i)    { $key = 0x62; } # VK_NUMPAD2
+        elsif($k =~ /^(num|numeric|keypad)3$/i)    { $key = 0x63; } # VK_NUMPAD3
+        elsif($k =~ /^(num|numeric|keypad)4$/i)    { $key = 0x64; } # VK_NUMPAD4
+        elsif($k =~ /^(num|numeric|keypad)5$/i)    { $key = 0x65; } # VK_NUMPAD5
+        elsif($k =~ /^(num|numeric|keypad)6$/i)    { $key = 0x66; } # VK_NUMPAD6
+        elsif($k =~ /^(num|numeric|keypad)7$/i)    { $key = 0x67; } # VK_NUMPAD7
+        elsif($k =~ /^(num|numeric|keypad)8$/i)    { $key = 0x68; } # VK_NUMPAD8
+        elsif($k =~ /^(num|numeric|keypad)9$/i)    { $key = 0x69; } # VK_NUMPAD9
+        elsif($k =~ /^multiply$/i)                 { $key = 0x6a; } # VK_MULTIPLY
+        elsif($k =~ /^add$/i)                      { $key = 0x6b; } # VK_ADD
+#       elsif($k =~ /^separator$/i)                { $key = 0x6c; } # VK_SEPARATOR
+        elsif($k =~ /^subtract$/i)                 { $key = 0x6d; } # VK_SUBTRACT
+        elsif($k =~ /^decimal$/i)                  { $key = 0x6e; } # VK_DECIMAL
+        elsif($k =~ /^divide$/i)                   { $key = 0x6f; } # VK_DIVIDE
+        elsif($k =~ /^f1$/i)                       { $key = 0x70; } # VK_F1
+        elsif($k =~ /^f2$/i)                       { $key = 0x71; } # VK_F2
+        elsif($k =~ /^f3$/i)                       { $key = 0x72; } # VK_F3
+        elsif($k =~ /^f4$/i)                       { $key = 0x73; } # VK_F4
+        elsif($k =~ /^f5$/i)                       { $key = 0x74; } # VK_F5
+        elsif($k =~ /^f6$/i)                       { $key = 0x75; } # VK_F6
+        elsif($k =~ /^f7$/i)                       { $key = 0x76; } # VK_F7
+        elsif($k =~ /^f8$/i)                       { $key = 0x77; } # VK_F8
+        elsif($k =~ /^f9$/i)                       { $key = 0x78; } # VK_F9
+        elsif($k =~ /^f10$/i)                      { $key = 0x79; } # VK_F10
+        elsif($k =~ /^f11$/i)                      { $key = 0x7a; } # VK_F11
+        elsif($k =~ /^f12$/i)                      { $key = 0x7b; } # VK_F12
+#       elsif($k =~ /^f13$/i)                      { $key = 0x7c; } # VK_F13
+#       elsif($k =~ /^f14$/i)                      { $key = 0x7d; } # VK_F14
+#       elsif($k =~ /^f15$/i)                      { $key = 0x7e; } # VK_F15
+#       elsif($k =~ /^f16$/i)                      { $key = 0x7f; } # VK_F16
+#       elsif($k =~ /^f17$/i)                      { $key = 0x80; } # VK_F17
+#       elsif($k =~ /^f18$/i)                      { $key = 0x81; } # VK_F18
+#       elsif($k =~ /^f19$/i)                      { $key = 0x82; } # VK_F19
+#       elsif($k =~ /^f20$/i)                      { $key = 0x83; } # VK_F20
+#       elsif($k =~ /^f21$/i)                      { $key = 0x84; } # VK_F21
+#       elsif($k =~ /^f22$/i)                      { $key = 0x85; } # VK_F22
+#       elsif($k =~ /^f23$/i)                      { $key = 0x86; } # VK_F23
+#       elsif($k =~ /^f24$/i)                      { $key = 0x87; } # VK_F24
+        elsif($k =~ /^numlock$/i)                  { $key = 0x90; } # VK_NUMLOCK
+        elsif($k =~ /^scrolllock$/i)               { $key = 0x91; } # VK_SCROLL
+                                                 # { $key = 0xa0; } # VK_LSHIFT
+                                                 # { $key = 0xa1; } # VK_RSHIFT
+                                                 # { $key = 0xa2; } # VK_LCONTROL
+                                                 # { $key = 0xa3; } # VK_RCONTROL
+                                                 # { $key = 0xa4; } # VK_LMENU
+                                                 # { $key = 0xa5; } # VK_RMENU
+#       elsif($k =~ /^browserback$/i)              { $key = 0xa6; } # VK_BROWSER_BACK
+#       elsif($k =~ /^browserforward$/i)           { $key = 0xa7; } # VK_BROWSER_FORWARD
+#       elsif($k =~ /^browserrefresh$/i)           { $key = 0xa8; } # VK_BROWSER_REFRESH
+#       elsif($k =~ /^browserstop$/i)              { $key = 0xa9; } # VK_BROWSER_STOP
+#       elsif($k =~ /^browsersearch$/i)            { $key = 0xaa; } # VK_BROWSER_SEARCH
+#       elsif($k =~ /^browserfavorites$/i)         { $key = 0xab; } # VK_BROWSER_FAVORITES
+#       elsif($k =~ /^browserhome$/i)              { $key = 0xac; } # VK_BROWSER_HOME
+#       elsif($k =~ /^volumemute$/i)               { $key = 0xad; } # VK_VOLUME_MUTE
+#       elsif($k =~ /^volumedown$/i)               { $key = 0xae; } # VK_VOLUME_UP
+#       elsif($k =~ /^volumenup$/i)                { $key = 0xaf; } # VK_VOLUME_DOWN
+#       elsif($k =~ /^medianexttrack$/i)           { $key = 0xb0; } # VK_MEDIA_NEXT_TRACK
+#       elsif($k =~ /^mediaprevtrack$/i)           { $key = 0xb1; } # VK_MEDIA_PREV_TRACK
+#       elsif($k =~ /^mediastop$/i)                { $key = 0xb2; } # VK_MEDIA_STOP
+#       elsif($k =~ /^mediaplaypause$/i)           { $key = 0xb3; } # VK_MEDIA_PLAY_PAUSE
+#       elsif($k =~ /^launchmail$/i)               { $key = 0xb4; } # VK_LAUNCH_MAIL
+#       elsif($k =~ /^launchmediaselect$/i)        { $key = 0xb5; } # VK_LAUNCH_MEDIA_SELECT
+#       elsif($k =~ /^launchapp1$/i)               { $key = 0xb6; } # VK_LAUNCH_APP1
+#       elsif($k =~ /^launchapp2$/i)               { $key = 0xb7; } # VK_LAUNCH_APP2
+        elsif($k =~ /^semicolon$/i)                { $key = 0xba; } # VK_OEM_1
+        elsif($k =~ /^(plus|equal)$/i)             { $key = 0xbb; } # VK_OEM_PLUS
+        elsif($k =~ /^(comma|lessthan)$/i)         { $key = 0xbc; } # VK_OEM_COMMA
+        elsif($k =~ /^(minus|underscore)$/i)       { $key = 0xbd; } # VK_OEM_MINUS
+        elsif($k =~ /^(period|greaterthan)$/i)     { $key = 0xbe; } # VK_OEM_PERIOD
+        elsif($k =~ /^(slash|question)$/i)         { $key = 0xbf; } # VK_OEM_2
+        elsif($k =~ /^(acute|tilde)$/i)            { $key = 0xc0; } # VK_OEM_3
+        elsif($k =~ /^(left|open)brac(e|ket)$/i)   { $key = 0xdb; } # VK_OEM_4
+        elsif($k =~ /^(backslash|verticalbar)$/i)  { $key = 0xdc; } # VK_OEM_5
+        elsif($k =~ /^(right|close)brac(e|ket)$/i) { $key = 0xdd; } # VK_OEM_6
+        elsif($k =~ /^(single|double|)quote$/i)    { $key = 0xde; } # VK_OEM_7
+#       elsif($k =~ /^unknown$/i)                  { $key = 0xdf; } # VK_OEM_8
+#       elsif($k =~ /^process$/i)                  { $key = 0xe5; } # VK_PROCESSKEY
+        elsif($k =~ /^(attn|attention)$/i)         { $key = 0xf6; } # VK_ATTN
+        elsif($k =~ /^crsel$/i)                    { $key = 0xf7; } # VK_CRSEL
+        elsif($k =~ /^exsel$/i)                    { $key = 0xf8; } # VK_EXSEL
+        elsif($k =~ /^(ereof|eraseeof)$/i)         { $key = 0xf9; } # VK_EREOF
+        elsif($k =~ /^play$/i)                     { $key = 0xfa; } # VK_PLAY
+        elsif($k =~ /^zoom$/i)                     { $key = 0xfb; } # VK_ZOOM
+        elsif($k =~ /^noname$/i)                   { $key = 0xfc; } # VK_NONAME
+        elsif($k =~ /^pa1$/i)                      { $key = 0xfd; } # VK_PA1
+        elsif($k =~ /^oem_clear$/i)                { $key = 0xfe; } # VK_OEM_CLEAR
+        else {$key = 0; print "Key name '$k' unknown\n"; }
 
         if ($key) {
             my $id = $Win32::GUI::AcceleratorCounter++;
@@ -3081,8 +3169,8 @@ sub DESTROY {
 
 ###############################################################################
 # (@)INTERNAL:Win32::GUI::WindowProps
-# the package to tie to a window hash to set/get properties in a more
-# fashionable way...
+# The package to tie to a window hash to set/get properties in a more
+# fashionable way.
 #
 package Win32::GUI::WindowProps;
 
@@ -3262,7 +3350,7 @@ sub DESTROY {
             delete $oself->{$key};
         }
       }
-      
+
       Win32::GUI::DestroyWindow($oself->{-handle}) if exists $oself->{-handle};
       undef $oself;
       untie %$self;

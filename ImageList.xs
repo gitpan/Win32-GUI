@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::ImageList
     #
-    # $Id: ImageList.xs,v 1.4 2005/06/26 16:40:59 robertemay Exp $
+    # $Id: ImageList.xs,v 1.7 2005/10/05 22:20:49 robertemay Exp $
     #
     ###########################################################################
     */
@@ -69,8 +69,9 @@ Copy(handle, iDest, iSrc, flag=ILCF_MOVE)
     int iSrc
     UINT flag
 CODE:
-    // Not supported in MinGW
-#ifdef __MINGW__
+    // Not supported in MinGW w32api package prior to v3.2
+#ifdef W32G_BROKENW32API
+    W32G_WARN_UNSUPPORTED("ImageList_Copy missing from build");
     RETVAL = FALSE;
 #else
     RETVAL = ImageList_Copy(handle, iDest, handle, iSrc, flag);
@@ -178,8 +179,9 @@ CODE:
     param.fStyle  = flag;
     param.dwRop   = rop;
 
-    // Not supported in MinGW
-#ifdef __MINGW__
+    // Not supported in MinGW w32api package prior to v3.2
+#ifdef W32G_BROKENW32API
+    W32G_WARN_UNSUPPORTED("ImageList_DrawIndirect missing from build");
     RETVAL = FALSE;
 #else
     RETVAL = ImageList_DrawIndirect(&param);
@@ -196,8 +198,9 @@ Duplicate(handle)
 PREINIT:
     HIMAGELIST  hdup;
 PPCODE:
-    // Not supported in MinGW
-#ifdef __MINGW__
+    // Not supported in MinGW w32api package prior to v3.2
+#ifdef W32G_BROKENW32API
+    W32G_WARN_UNSUPPORTED("ImageList_Duplicate missing from build");
     XSRETURN_UNDEF;
 #else
     hdup = ImageList_Duplicate(handle);

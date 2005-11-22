@@ -1,4 +1,4 @@
-=for comment $Id: Part9.pod,v 1.1 2005/06/26 16:41:01 robertemay Exp $
+=for comment $Id: Part9.pod,v 1.2 2005/10/05 22:20:49 robertemay Exp $
 
 =head1 NAME
 
@@ -16,15 +16,15 @@ used.
 
 =item *
 
-Enter the command "perl MyApp.plx" from a Windows console window.
+Enter the command "perl MyApp.pl" from a Windows console window.
 
 =item *
 
-Enter the command "perl MyApp.plx" in the Windows "Run" box.
+Enter the command "perl MyApp.pl" in the Windows "Run" box.
 
 =item *
 
-Double click on the file "MyApp.plx" (assuming you have .plx files associated
+Double click on the file "MyApp.pl" (assuming you have .pl files associated
 with the perl.exe application).
 
 =back
@@ -45,8 +45,9 @@ to do this is
 
     editbin /subsystem:windows perlw.exe
 
-There is also an all-perl way to achieve the same result on Jenda's site:
-L<http://jenda.krynicky.cz/perl/GUIscripts.html>
+ActiveState Perl comes with an executable called wperl.exe (you'll find it
+n the same place as your perl.exe).  This is an executable with exactly
+this change already made to it.
 
 If you can't (or don't want to) create a perlw.exe, then a compromise is to hide 
 the console window while your application is running. This is reasonable for the 
@@ -57,6 +58,10 @@ The code to do this is
 
     my ($DOS) = Win32::GUI::GetPerlWindow();
     Win32::GUI::Hide($DOS);
+
+Note that C<GetPerlWindow()> returns a windows handle, not a C<Win32::GUI::Window>
+object, so we have to use the static call to C<Win32::GUI::Hide()> as discussed
+in part 1 of the tutorial.
 
 Do this as early as possible. Obviously, if we hide the console, we must show
 it when we finish (otherwise, someone who runs your program from a command

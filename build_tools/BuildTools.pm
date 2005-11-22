@@ -6,7 +6,7 @@ package BuildTools;
 # are repeatedly used in the build process
 #
 # Author: Robert May , rmay@popeslane.clara.co.uk, 20 June 2005
-# $Id: BuildTools.pm,v 1.1 2005/06/26 16:41:00 robertemay Exp $
+# $Id: BuildTools.pm,v 1.2 2005/08/25 19:30:17 robertemay Exp $
 
 use strict;
 use warnings;
@@ -35,7 +35,7 @@ $year += 1900;
                  DATE           => sprintf("%02d %3s %4d", $mday, $monthname[$mon], $year),
                  YEAR           => $year,
                  FILE           => $unknown_file,
-                 WEB_HOMEPAGE   => 'http://sourceforge.net/projects/perl-win32-gui/',
+                 WEB_HOMEPAGE   => 'http://perl-win32-gui.sourceforge.net/',
                  WEB_USERMAIL   => 'http://lists.sourceforge.net/lists/listinfo/perl-win32-gui-users',
                  WEB_MAILARCHIVE => 'http://sourceforge.net/mail/?group_id=16572',
                  WEB_FILES      => 'http://sourceforge.net/project/showfiles.php?group_id=16572',
@@ -212,12 +212,22 @@ sub mv
 
 # rm_f()
 #
-# forcefully remove fies
+# forcefully remove files
 # See EXtUtils::Command for more details
 sub rm_f
 {
   local @ARGV = @_;
   ExtUtils::Command::rm_f();
+}
+
+# rm_rf()
+#
+# forcefully remove directories
+# See EXtUtils::Command for more details
+sub rm_rf
+{
+  local @ARGV = @_;
+  ExtUtils::Command::rm_rf();
 }
 
 1; # end of BuildTools

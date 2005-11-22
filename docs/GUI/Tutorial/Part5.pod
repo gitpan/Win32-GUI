@@ -1,4 +1,4 @@
-=for comment $Id: Part5.pod,v 1.1 2005/06/26 16:41:01 robertemay Exp $
+=for comment $Id: Part5.pod,v 1.2 2005/10/05 22:20:49 robertemay Exp $
 
 =head1 NAME
 
@@ -140,17 +140,14 @@ address: the mortality of popup windows and their "modal" behaviour.
 =head2 Keeping popup windows alive
 
 If you choose to close the second window with the Close (little X)
-button on the upper right corner, you'll notice that the window
-disappear, and that it does not show anymore when you press the
-button on the main window!
+button on the upper right corner, you'll notice that all the windows
+disappear.
 
 What's happening here is that we requested a C<W2_Terminate> action,
 and since we didn't provide an event for this, Win32::GUI proceeds
 with the default behaviour for the close button, which is to destroy
-the window. The result is that you can't show $W2 anymore, because
-it does not exists anymore as a valid window (although it still exists
-as a Perl object). To let our window survive the close action, we need
-to provide a customary C<Terminate> event:
+the window, and exit the windows message loop. To let our window survive
+the close action, we need to provide a customary C<Terminate> event:
 
 	sub W2_Terminate {
 		$W2->Hide();
@@ -161,10 +158,7 @@ The C<return 0> is B<very important> in this case, because it tells
 Windows to avoid the destruction of our window (it is just hidden), so
 that we can show it again using the button in C<$W1>.
 
-=head2 Simulating "modal" windows
-
-[ This section is out of date.  Win32::GUI has native support
-for modal windows.  See the DoModal() method in the main documention.]
+=head2 "modal" windows
 
 Here is another very common functionality you may want to implement:
 when a popup window is open, you don't want the user to interact with
@@ -172,28 +166,70 @@ the main window; this is known as using a "modal" window, a window that
 gets all your attention and does not let you go forward with the 
 program unless you have disposed of it.
 
-Win32::GUI does not have direct support for modal windows, but you can
-simulate the behaviour with this trick:
+So, the behaviour of a modal window is to diable interaction with the
+window used to launch it (know as its parent window).  To achieve this
+we first have to tell the window who its parent is.  We do this when we
+create W2, using the C<-parent> option:
 
-	sub W1_Activate {
-		if($W2->IsVisible) {
-			$W2->SetForegroundWindow();
-			return 0;
-		}
-		return 1;
+	$W2 = new Win32::GUI::Window(
+		...
+		-parent => $W1,
+	);
+
+Now, when we want to display the W2 we use the C<DoModal()> method: this
+disables W2's parent window (W1), and starts a new message loop to
+process events for W2.  When we are done with W2, we return C<-1> from an
+event handler, which causes C<DoModal()> to return, but in this case does
+not cause any of the windows to be destroyed.  Here's the full code:
+
+	use Win32::GUI;
+
+	my $W1 = Win32::GUI::Window->new(
+		-name  => "W1",
+		-title => "First Window",
+		-pos   => [ 100, 100 ],
+		-size  => [ 300, 200 ],
+	);
+
+	$W1->AddButton(
+		-name => "Button1",
+		-text => "Open popup window",
+		-pos  => [ 10, 10 ],
+	);
+
+	my $W2 = Win32::GUI::Window->new(
+		-name  => "W2",
+		-title => "Second Window",
+		-pos   => [ 150, 150 ],
+		-size  => [ 300, 200 ],
+		-parent => $W1,
+	);
+
+	$W2->AddButton(
+		-name => "Button2",
+		-text => "Close this window",
+		-pos  => [ 10, 10 ],
+	);
+
+	$W1->Show();
+	Win32::GUI::Dialog();
+	exit(0);
+
+	sub W1_Terminate {
+		return -1;
 	}
 
-The meaning should be obvious enough: if the popup window is shown,
-trying to activate the main window automatically reports you to the
-popup window; otherwise, the main window becomes the active one as
-normal. Of course, if you have more than one popup window, you should
-add code for everyone of them:
+	sub Button1_Click {
+		$W2->DoModal();
+		return 0;
+	}
 
-	sub W1_Activate {
-		if($W2->IsVisible) { $W2->SetForegroundWindow(); return 0; }
-		if($W3->IsVisible) { $W3->SetForegroundWindow(); return 0; }
-		# ... and so on
-		return 1;
+	sub W2_Terminate {
+		return -1;
+	}
+
+	sub Button2_Click {
+		return -1;
 	}
 
 __W32G_POSTAMBLE__

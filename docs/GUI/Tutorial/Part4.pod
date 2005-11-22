@@ -1,4 +1,4 @@
-=for comment $Id: Part4.pod,v 1.1 2005/06/26 16:41:01 robertemay Exp $
+=for comment $Id: Part4.pod,v 1.3 2005/11/13 18:57:52 robertemay Exp $
 
 =head1 NAME
 
@@ -55,12 +55,14 @@ used.
 
 =item *
 
-The timer keeps firing repeatedly. To disable a timer, use $timer->Kill().
+The timer keeps firing repeatedly. To disable a timer, use C<< $timer->Interval(0) >>
+or C<< $timer->Kill() >>.
 
 =item *
 
-To change the interval of a timer (or to re-enable it after a Kill), use 
-$timer->Interval(n). Setting an interval of zero disables the timer, just
+To change the interval of a timer (or to re-enable it after C<< $timer->Interval(0) >>
+or C<< $timer->Kill() >>), use 
+C<< $timer->Interval(n) >>. Setting an interval of zero disables the timer, just
 like Kill.
 
 =back
@@ -150,16 +152,10 @@ to re-enable it.
 
 =item *
 
-There is a small bug in this program. The tray icon does not disappear
-immediately when the program terminates. Instead, it remains in the system
-tray until you point the mouse cursor at it, when it disappears. This is a bug
-in Win32::GUI - when you close your program, you should explicitly remove any
-system tray icons you still have displayed. Referring to the example above,
-you should place this line after the Win32::GUI::Dialog() call:
+If you want to remove the tray icon before the end of your program
+you can use this line:
 
 	$main->NI->Delete(-id => 1);
-
-Hopefully, this will be fixed in a later version.
 
 =back
 

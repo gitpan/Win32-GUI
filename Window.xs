@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Window
     #
-    # $Id: Window.xs,v 1.8 2004/09/29 21:17:56 lrocher Exp $
+    # $Id: Window.xs,v 1.10 2005/11/13 18:57:52 robertemay Exp $
     #
     ###########################################################################
     */
@@ -39,8 +39,7 @@ Window_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATESTR
                 stored = hv_store_mg(NOTXSCALL perlcs->hvSelf, "-minheight", 10, storing, 0);
             }
         } else {
-            if(PL_dowarn)
-                warn("Win32::GUI: Argument to -minsize is not an array reference!");
+            W32G_WARN("Win32::GUI: Argument to -minsize is not an array reference!");
         }
     } else if(strcmp(option, "-maxsize") == 0) {
         if(SvROK(value) && SvTYPE(SvRV(value)) == SVt_PVAV) {
@@ -58,8 +57,7 @@ Window_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATESTR
                 stored = hv_store_mg(NOTXSCALL perlcs->hvSelf, "-maxheight", 10, storing, 0);
             }
         } else {
-            if(PL_dowarn)
-                warn("Win32::GUI: Argument to -maxsize is not an array reference!");
+            W32G_WARN("Win32::GUI: Argument to -maxsize is not an array reference!");
         }
     } else if(strcmp(option, "-minwidth") == 0) {
         perlcs->iMinWidth = (int) SvIV(value);
@@ -397,8 +395,8 @@ Graphic_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wPa
              * (@)APPLIES_TO:Graphic
              */
             PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL1, "LButtonDown",
-                PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-                PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+                PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+                PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
                 PERLWIN32GUI_ARGTYPE_LONG, wParam,
                 -1);
             break;
@@ -409,8 +407,8 @@ Graphic_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wPa
              * (@)APPLIES_TO:Graphic
              */
             PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL2, "LButtonUp",
-                PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-                PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+                PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+                PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
                 PERLWIN32GUI_ARGTYPE_LONG, wParam,
                 -1);
             break;
@@ -421,8 +419,8 @@ Graphic_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wPa
              * (@)APPLIES_TO:Graphic
              */ 
             PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL3, "RButtonDown",
-                PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-                PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+                PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+                PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
                 PERLWIN32GUI_ARGTYPE_LONG, wParam,
                 -1);
             break;
@@ -433,8 +431,8 @@ Graphic_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wPa
              * (@)APPLIES_TO:Graphic
              */ 
             PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL4, "RButtonUp",
-                PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-                PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+                PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+                PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
                 PERLWIN32GUI_ARGTYPE_LONG, wParam,
                 -1);
             break;

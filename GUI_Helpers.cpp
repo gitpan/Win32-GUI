@@ -2,7 +2,7 @@
     ###########################################################################
     # helper routines
     #
-    # $Id: GUI_Helpers.cpp,v 1.13 2005/06/30 22:36:21 robertemay Exp $
+    # $Id: GUI_Helpers.cpp,v 1.14 2005/08/06 10:36:20 jwgui Exp $
     #
     ###########################################################################
         */
@@ -92,7 +92,10 @@ void Perlud_Free(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud) {
             SvREFCNT_dec(perlud->svSelf);
             perlud->svSelf = NULL;
         }
-
+        // Drop the ref counter on user data
+        if (perlud->userData != NULL && SvREFCNT(perlud->userData) > 0) {
+	      SvREFCNT_dec(perlud->userData);
+	    }
         // Free perlpud
         safefree (perlud);
     }

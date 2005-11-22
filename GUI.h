@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------
-// $Id: GUI.h,v 1.16 2005/07/01 23:46:27 robertemay Exp $
+// $Id: GUI.h,v 1.21 2005/10/06 21:27:40 robertemay Exp $
 // --------------------------------------------------------------------
 // #### Uncomment the next two lines (in increasing verbose order)
 // #### for debugging info
@@ -60,6 +60,19 @@ extern "C" {
 }
 #endif
 
+/* fix up warnings */
+#if defined(W32G_NEWWARN) && defined(G_WARN_ON)
+#  define W32G_WARN if(PL_dowarn & G_WARN_ON) warn
+#  define W32G_WARN_DEPRECATED if(PL_dowarn & G_WARN_ON) warn
+#  define W32G_WARN_UNSUPPORTED if(PL_dowarn & G_WARN_ON) warn
+//#  define W32G_WARN W32G_lexwarn
+//#  define W32G_WARN_DEPRECATED W32G_lexwarn_deprecated
+#else
+#  define W32G_WARN if(PL_dowarn) warn
+#  define W32G_WARN_DEPRECATED if(PL_dowarn) warn
+#  define W32G_WARN_UNSUPPORTED if(PL_dowarn) warn
+#endif
+
 //=====================================================================================
 
 /*
@@ -91,7 +104,7 @@ extern "C" {
 #       define PERLUD_STORE   perlud->aTHX = aTHX;
 #       define PERLUD_FETCH   PERLUD_DECLARE = perlud->aTHX;
 #   else
-#       pragma message( "\n*** Using an implicite Perl context.\n" )
+#       pragma message( "\n*** Using an implicit Perl context.\n" )
 #       define NOTXSPROC
 #       define NOTXSCALL
 #       define PERLUD_DECLARE
@@ -284,6 +297,7 @@ typedef struct tagPERLWIN32GUI_USERDATA {
     AV*         avHooks;
     LRESULT     forceResult;
     DWORD       dwData;                                                // Internal DATA usage
+    SV*         userData;                                              // user data
 } PERLWIN32GUI_USERDATA, *LPPERLWIN32GUI_USERDATA;
 
 typedef struct tagPERLWIN32GUI_MENUITEMDATA {
@@ -668,8 +682,21 @@ void MonthCal_onPostCreate(NOTXSPROC HWND myhandle, LPPERLWIN32GUI_CREATESTRUCT 
 BOOL MonthCal_onParseEvent(NOTXSPROC char *name, int* eventID);
 int  MonthCal_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
+// From windowsX.h (if we use any more from there, then probably better to 
+// include it, and remove these)
+#define GET_X_LPARAM(lp)                        ((int)(short)LOWORD(lp))
+#define GET_Y_LPARAM(lp)                        ((int)(short)HIWORD(lp))
+
 // MinGW patch
-#if defined(__MINGW__) || defined(__CYGWIN__)
+#if defined(__MINGW32__) || defined(__CYGWIN__)
+  // There are some ImageList_* functions that we use that
+  // are only correctly implemented in the MINGW w32api package
+  // version 3.2 and higher:
+  #include <w32api.h> // to get w32api package version
+  #if (__W32API_MAJOR_VERSION < 3) || ((__W32API_MAJOR_VERSION == 3) && (__W32API_MINOR_VERSION < 2))
+    #define W32G_BROKENW32API
+  #endif
+
   #define WNDPROC_CAST WNDPROC
   #define LWNDPROC_CAST WNDPROC
   #ifndef HDHITTESTINFO
@@ -730,7 +757,7 @@ int  MonthCal_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPAR
   #ifndef TBSTATE_ELLIPSES
     #define TBSTATE_ELLIPSES  0x40
   #endif
-  HIMAGELIST  WINAPI ImageList_Duplicate(HIMAGELIST himl);
+  HIMAGELIST  WINAPI ImageList_Duplicate(HIMAGELIST himl); //TODO: remove?
   #ifndef MCM_GETUNICODEFORMAT
     #define MCM_GETUNICODEFORMAT     CCM_GETUNICODEFORMAT
   #endif

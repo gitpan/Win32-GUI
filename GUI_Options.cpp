@@ -2,7 +2,7 @@
     ###########################################################################
     # options parsing routines
     #
-    # $Id: GUI_Options.cpp,v 1.8 2005/06/30 22:36:21 robertemay Exp $
+    # $Id: GUI_Options.cpp,v 1.9 2005/08/03 21:45:57 robertemay Exp $
     #
     ###########################################################################
     */
@@ -74,8 +74,8 @@ void ParseNEMEvent(
         eventID = PERLWIN32GUI_NEM_DROPFILE;        
     } else if(strcmp(name, "Char") == 0) {
         eventID = PERLWIN32GUI_NEM_CHAR;        
-    } else if(PL_dowarn)  {
-        warn("Win32::GUI: Unrecognized event name '%s' in -names!", name);
+    } else {
+    	W32G_WARN("Win32::GUI: Unrecognized event name '%s' in -names!", name);
     }
 
     if(eventID != 0) {
@@ -132,9 +132,7 @@ void ParseWindowOptions(
             } else if(strcmp(option, "-style") == 0) {
                 next_i = i + 1;
                 perlcs->cs.style = (DWORD) SvIV(ST(next_i));
-                if(PL_dowarn) {
-                    warn("Win32::GUI: the -style option is deprecated!");
-                }
+                W32G_WARN_DEPRECATED("Win32::GUI: the -style option is deprecated!");
             } else if(strcmp(option, "-pushstyle") == 0
             ||        strcmp(option, "-addstyle") == 0) {
                 next_i = i + 1;
@@ -148,9 +146,7 @@ void ParseWindowOptions(
             } else if(strcmp(option, "-exstyle") == 0) {
                 next_i = i + 1;
                 perlcs->cs.dwExStyle = (DWORD) SvIV(ST(next_i));
-                if(PL_dowarn) {
-                    warn("Win32::GUI: the -exstyle option is deprecated!");
-                }
+                W32G_WARN_DEPRECATED("Win32::GUI: the -exstyle option is deprecated!");
             } else if(strcmp(option, "-pushexstyle") == 0
             ||        strcmp(option, "-addexstyle") == 0) {
                 next_i = i + 1;
@@ -226,8 +222,7 @@ void ParseWindowOptions(
                         perlcs->cs.cy = (int) SvIV(*t);
                     }
                 } else {
-                    if(PL_dowarn)
-                        warn("Win32::GUI: Argument to -size is not an array reference!");
+                    W32G_WARN("Win32::GUI: Argument to -size is not an array reference!");
                 }
             } else if(strcmp(option, "-pos") == 0) {
                 next_i = i + 1;
@@ -242,8 +237,7 @@ void ParseWindowOptions(
                         perlcs->cs.y = (int) SvIV(*t);
                     }
                 } else {
-                    if(PL_dowarn)
-                        warn("Win32::GUI: Argument to -pos is not an array reference!");
+                    W32G_WARN("Win32::GUI: Argument to -pos is not an array reference!");
                 }
             } else if(strcmp(option, "-tip") == 0) {
                 next_i = i + 1;
@@ -309,7 +303,7 @@ void ParseWindowOptions(
                     SwitchBit(perlcs->dwPlStyle, PERLWIN32GUI_NEM, 1);
                     SwitchBit(perlcs->dwPlStyle, PERLWIN32GUI_OEM, 1);
                 } else {
-                    if(PL_dowarn) warn("Win32::GUI: Invalid value for -eventmodel!");
+                    W32G_WARN("Win32::GUI: Invalid value for -eventmodel!");
                 }
 
             } else BitmaskOption("-visible", perlcs->cs.style, WS_VISIBLE)
@@ -521,7 +515,7 @@ void ParseHeaderItemOptions(
                     SwitchBit(hditem->fmt, HDF_CENTER, 0);
                     SwitchBit(hditem->fmt, HDF_RIGHT, 1);
                 } else {
-                    if(PL_dowarn) warn("Win32::GUI: Invalid value for -align!");
+                    W32G_WARN("Win32::GUI: Invalid value for -align!");
                 }
             } else if(strcmp(option, "-item") == 0 || strcmp(option, "-index") == 0) {
                 next_i = i + 1;
@@ -588,7 +582,7 @@ void ParseListViewColumnItemOptions(
                 } else if(strcmp(SvPV_nolen(ST(next_i)), "right") == 0) {
                     lvcolumn->fmt = LVCFMT_RIGHT;
                 } else {
-                    if(PL_dowarn) warn("Win32::GUI: Invalid value for -align!");
+                    W32G_WARN("Win32::GUI: Invalid value for -align!");
                 }
             } else if(strcmp(option, "-item") == 0 || strcmp(option, "-index") == 0) {
                 next_i = i + 1;

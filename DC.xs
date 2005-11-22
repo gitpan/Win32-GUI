@@ -2,7 +2,7 @@
     ###########################################################################
     #(@)PACKAGE:Win32::GUI::DC
     #
-    # $Id: DC.xs,v 1.10 2005/04/30 12:51:31 jwgui Exp $
+    # $Id: DC.xs,v 1.12 2005/08/25 19:30:17 robertemay Exp $
     #
     ###########################################################################
     */
@@ -803,7 +803,7 @@ OUTPUT:
     # TODO : DrawCaption
 
     ###########################################################################
-    # (@)METHOD:DrawEdge(LEFT, TOP, RIGHT, BOTTOM, [EDGE, FLAGS])
+    # (@)METHOD:DrawEdge(LEFT, TOP, RIGHT, BOTTOM, [EDGE=EDGE_RAISE, [FLAGS=BF_RECT]])
     # Draws one or more edges of rectangle
 BOOL
 DrawEdge(handle, left, top, right, bottom, edge=EDGE_RAISED, flags=BF_RECT)
@@ -1166,7 +1166,7 @@ OUTPUT:
     ###########################################################################
 
     ###########################################################################
-    # (@)METHOD:BitBlt(XD, YD, SOURCE, XS, YS, [ROP=SRCCOPY])
+    # (@)METHOD:BitBlt(XD, YD, WD, HD, SOURCE, XS, YS, [ROP=SRCCOPY])
     # Performs a bit-block transfer of the color data corresponding to a
     # rectangle of pixels from the specified source device context into
     # a destination device context. 
@@ -1183,6 +1183,31 @@ BitBlt(handle, xd, yd, w, h, source, xs, ys, dwRop=SRCCOPY)
     DWORD dwRop
 CODE:
     RETVAL = BitBlt (handle, xd, yd, w, h, source, xs, ys, dwRop);
+OUTPUT:
+    RETVAL
+
+
+    ###########################################################################
+    # (@)METHOD:StretchBlt(XD, YD, WD, HD, SOURCE, XS, YS, WD, HD, [ROP=SRCCOPY])
+    # Performs a bit-block transfer of the color data corresponding to a
+    # rectangle of pixels from the specified source device context into
+    # a rectangle of pixels in the destination device context, performing
+    # stretching a necessary. 
+BOOL
+StretchBlt(handle, xd, yd, wd, hd, source, xs, ys, ws, hs, dwRop=SRCCOPY)
+    HDC handle
+    int xd
+    int yd
+    int wd
+    int hd
+    HDC source
+    int xs
+    int ys
+    int ws
+    int hs
+    DWORD dwRop
+CODE:
+    RETVAL = StretchBlt (handle, xd, yd, wd, hd, source, xs, ys, ws, hs, dwRop);
 OUTPUT:
     RETVAL
 

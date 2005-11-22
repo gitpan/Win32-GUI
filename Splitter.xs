@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Splitter
     #
-    # $Id: Splitter.xs,v 1.3 2004/03/28 15:01:23 lrocher Exp $
+    # $Id: Splitter.xs,v 1.4 2005/08/03 21:45:57 robertemay Exp $
     #
     ###########################################################################
     */
@@ -55,8 +55,7 @@ Splitter_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATES
                 perlcs->iMaxWidth = SvIV(*t);
             }
         } else {
-            if(PL_dowarn)
-                warn("Win32::GUI: Argument to -range is not an array reference!");
+            W32G_WARN("Win32::GUI: Argument to -range is not an array reference!");
         }
     } else retval = FALSE;
 

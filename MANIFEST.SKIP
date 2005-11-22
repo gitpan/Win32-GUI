@@ -30,7 +30,11 @@
 .*\.bat$
 .*\.bak$
 
-# any of out distribution files
+# patch backups
+\.orig$
+\~$
+
+# any of our distribution files
 .*\.zip$
 .*\.ppd$
 .*\.ppm$

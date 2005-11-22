@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Combobox
     #
-    # $Id: Combobox.xs,v 1.6 2005/06/26 16:40:59 robertemay Exp $
+    # $Id: Combobox.xs,v 1.7 2005/10/16 08:03:20 jwgui Exp $
     #
     ###########################################################################
     */
@@ -398,7 +398,7 @@ PREINIT:
 PPCODE:
     cbString = SendMessage(handle, CB_GETLBTEXTLEN, index, 0);
     if(cbString != LB_ERR) {
-        szString = (char *) safemalloc(cbString);
+        szString = (char *) safemalloc(cbString+1);
         if(SendMessage(handle, CB_GETLBTEXT,
                        index, (LPARAM) (LPCTSTR) szString) != LB_ERR) {
             EXTEND(SP, 1);

@@ -1,10 +1,106 @@
 ###############################################################################
 # CHANGELOG
-# $Id: CHANGELOG,v 1.57 2005/07/10 11:24:29 robertemay Exp $
+# $Id: CHANGELOG,v 1.68 2005/11/22 20:54:45 robertemay Exp $
 ###############################################################################
 
 Win32-GUI ChangeLog
 ===================
++ [Robert May] : 22 Nov 2003 - 1.03 release
+    - Tagged head as Win32-GUI-1_03
+
++ [Robert May] : 21 Nov 2003 - 1.03 release candidate
+    - t\05_Timer_*.t change interval test to use milli-seconds using
+    Win32::GetTickCount() rather than time().
+    -t\01_basic.t add tests for Test::More availability and correct OS.
+    -t\98_Pod.t new test of POD syntax
+    - various minor documentation edits to correct POD syntax
+    -Makefile.PL added test for presence of compiler to stop us failing CPAN
+    Smoke tests in test environments with no compilers.
+    - Up version to 1.03
+
++ [Robert May] : 13 Nov 2005 - Bug fixes and preparing for 1.03 release
+    - Makefile.PL added code to remove Test::More dependence from PPD
+    - GUI_MessageLoops.cpp, Window.xs change all mouse related handlers to
+    use GET_X_LPARAM and GET_Y_LPARAM rather than HIWORD and LOWORD
+    (Tracker: 1262098) 
+    - GUI.xs added INTERNAL function GetWindowObject to get the perl window
+    object from a window handle
+    - GUI.pm, t\05_Timer*.t, docs\GUI\Tutorial\Part4.pod - re-wrote
+    Win32::GUI::Timer implementation and updated docs to make it all
+    consistent, and to make destruction happen correctly.  Added full tests
+    for the package. 
+    - GUI.xs fixed GetAsyncKeyState(), which was checking the wrong bit of
+    window's return value. Updated documentation.
+    - MANIFEST updated with new samples and new tests
+    - GUI.pm upped version to 1.02_03
+
++ [Jeremy White] : Bug fix - not enough space malloc'ed for strings
+    - Combobox.xs: added 1 to safemalloc
+    - Listbox.xs: added 1 to safemalloc
+
++ [Robert May] : 4 Oct 2005 - Bug fixes and preparing for 1.03 release
+    - Makefile.PL added 'demos' target as dependancy for 'all', so that
+      samples get included in ActiveState PPM
+    - GUI_Constants.cpp: correct TMP_NONOTIFY to TPM_NONOTIFY (aschwarz1309)
+    - GUI.pm, RichEdit.xs: added documentation for SetEventMask method
+      (Tracker: 1242808)
+    - GUI.pm upped version to 1.02_02
+    - GUI.h, ImageList.xs allowed missing ImageList_* functions to be compiled
+      in under MinGW and Cygwin, if w32api package has high enough version
+    - GUI.xs: Changed DoModal's use of GetParent to GetWindow(hwnd, GW_OWNER).
+      See http://support.microsoft.com/default.aspx?scid=kb;en-us;84190 for
+      more information (Tracker: 1165626)
+    - Updated all the Tutorial documentation and added tutorial examples to
+      the samples directory.
+    
++ [Robert May] :
+    - GUI.h added GET_X_LPARAM and GET_Y_LPARAM macros (from windowsX.h)
+    - GUI_MessageLoops.cpp change WM_MOUSEMOVE handler to use GET_X_LPARAM
+      and GET_Y_LPARAM rather than HIWORD and LOWORD (Tracker: 1262098)
+    - GUI.xs fixed UnHook() to resolve perl 5.6/5.8 differences in av_delete,
+      causing a warning in perl 5.8 (Tracker: 1164766)
+
++ [Robert May] :
+    - DC.xs added StretchBlt method.
+    - GUI.pm fixed Win32::GUI::DC::new() with no params to return a correct object
+    - Tooltip.xs, GUI.xs fixed Tooltip styles (Tracker: 1273134)
+
++ [Jeremy White] : Added GetParent and UserData methods
+    - GUI.h Added userData to tagPERLWIN32GUI_USERDATA
+    - GUI.xs Added GetParent and UserData
+    - GUI_Helpers Added ref dec to Perlud_Free
+
++ [Robert May] : MinGW fixes
+    - ListView.xs change __MINGW__ to __MINGW32__
+    - GUI_MessageLoops.cpp correct evaluation of return type of GetClassLong
+    - MANIFEST remove spurious entries
+
++ [Robert May, Reini Uran, Dan Dascalescu] : Bugfixes, tests and documentation changes
+    - Added VERSIONINFO resource to GUI.rc
+    - Added build process to update version automatically in VERSIONINFO Structure
+    - GUI.h, button.xs, datetime.xs, GUI.xs, GUI_options.cpp, Label.xs, Listview.xs,
+      Richedit.xs, Splitter.xs, Textfield.xs, Updown.xs, Window.xs: Added new macro
+      W32G_DOWARN and W32G_DOWARN_DEPRECATED to repace use of PL_dowarm, fixing inability
+      to turn off Win32::GUI warnings when lexical warnings are in use. By default
+      behaviour is as before, pass -DW32G_NEWWARN to enable this.
+    - Makefile.PL, GUI.h: now use __MINGW32__ guard blocks rather than __MINGW__, as
+      compiler defines first automatically; reduced variations between build environments
+    - GUI.pm Fix to logic in Win32::GUI::Class::new for perl 5.8.6 and above. Tracker:1236053
+    - GUI.pm fixed Win32::GUI::Brush to return undef on failure
+    - GUI.pm upped version to v1.02_01
+    - GUI_messageloops.cpp: Tracker 1246429 fixed WM_CTLCOLORSTATIC for handling readonly Edit controls
+    - GUI_messageloops.cpp: Fixed WM_CTLCOLOR* to use window class background brush if there is one
+    - GUI_messageloops.cpp: Tracker:1236283 Change to WM_ERASEBACKGROUND to allow -background to work with windows
+    - sourceParser.pm Fix to solve over agressive removal of blank lines.
+    - various minor documentation corrections/enhancements
+    - Richedit.xs fix SetCharCofmat/GetCharFormat option and new documentation (thanks to Dan Dascalescu)
+    - GUI.pm Timer fixes (Reini Urban)
+    - many tests added, and MANIFEST updated (Reini Urban, Dan Dascalescu, Robert May)
+    - GUI.xs re-wote logic for TrackPopupMenu to make it (slightly) more maintainable
+    - added listvew_drag_drop.pl to the samples
+
++ [Robert May]
+    - Fix to 4 item call to TrackPopupMenu.  Tracker 1241830
 
 + [Robert May] : v1.02 release
     - Listview.xs: Corrected prototype for GetOrigin.
@@ -12,9 +108,9 @@ Win32-GUI ChangeLog
     - tagged HEAD as Win32-GUI-1_02
 
 + [Robert May] : more MSVC6 fixes
-		- Hopefully fixed build issues introduced wth last changes
-		- Fixed Makefile.PL so that GUI.res depends on GUI.rc
-		- Changes for MSVC6 build environment
+    - Hopefully fixed build issues introduced wth last changes
+    - Fixed Makefile.PL so that GUI.res depends on GUI.rc
+    - Changes for MSVC6 build environment
 
 + [Robert May] : cygwin patches, build process
     - Merged cygwin patches from Reini Urban (includes new cygwin.c file)
@@ -36,7 +132,7 @@ Win32-GUI ChangeLog
     - upped version to 1.01_02
     - tidied up MANIFEST.SKIP
     - new MANIFEST to reflect changes
-    - added $Id: CHANGELOG,v 1.57 2005/07/10 11:24:29 robertemay Exp $ ident to documentation files 
+    - added Id ident to documentation files 
 
 + [Robert May] : Changes for release 1.01
     - GUI.pm :

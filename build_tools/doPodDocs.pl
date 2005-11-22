@@ -19,7 +19,7 @@
 
 #
 # Author: Robert May , rmay@popeslane.clara.co.uk, 20 June 2005
-# $Id: doPodDocs.pl,v 1.1 2005/06/26 16:41:00 robertemay Exp $
+# $Id: doPodDocs.pl,v 1.3 2005/10/01 18:00:40 robertemay Exp $
 
 use strict;
 use warnings;
@@ -67,7 +67,7 @@ $SrcParser::DEBUG = 0;
   my $packages = "";
 
   for my $package (SrcParser::get_package_list()) {
-    (my $link = $package) =~ s/^Win32::GUI$/Win32::GUI::Reference::Packages/; # special case for Win32::GUI
+    (my $link = $package) =~ s/^Win32::GUI$/Win32::GUI::Reference::Methods/; # special case for Win32::GUI
     BuildTools::macro_set("PKGNAME", $package);
     BuildTools::macro_set("PKGLINK", $link);
     $packages .= BuildTools::macro_subst("__W32G_PKGTPL__");
@@ -317,9 +317,13 @@ sub create_link
     $text = "new $pack()";
   }
   else {
-    ($pack = $method) =~ s/(.*::).*/$1/ if($method =~ /::/);
-
+    #($pack = $method) =~ s/(.*::).*/$1/ if($method =~ /::/);
     $text = "$method()";
+    if( $method  =~ /(.*)::(.*?)$/ ) {
+	    $pack = $1;
+	    $method = $2;
+    }
+
   }
 
   # special case for Win32::GUI

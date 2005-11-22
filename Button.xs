@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Button
     #
-    # $Id: Button.xs,v 1.5 2004/10/08 17:40:13 lrocher Exp $
+    # $Id: Button.xs,v 1.6 2005/08/03 21:45:55 robertemay Exp $
     #
     ###########################################################################
     */
@@ -33,7 +33,7 @@ Button_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATESTR
             SwitchBit(perlcs->cs.style, BS_LEFT, 0);
             SwitchBit(perlcs->cs.style, BS_RIGHT, 1);
         } else {
-            if(PL_dowarn) warn("Win32::GUI: Invalid value for -align!");
+            W32G_WARN("Win32::GUI: Invalid value for -align!");
         }
     } else if(strcmp(option, "-valign") == 0) {
         if(strcmp(SvPV_nolen(value), "top") == 0) {
@@ -46,7 +46,7 @@ Button_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATESTR
             SwitchBit(perlcs->cs.style, BS_TOP, 0);
             SwitchBit(perlcs->cs.style, BS_BOTTOM, 1);
         } else {
-            if(PL_dowarn) warn("Win32::GUI: Invalid value for -valign!");
+            W32G_WARN("Win32::GUI: Invalid value for -valign!");
         }
     } else if(strcmp(option, "-ok") == 0) {
         if(SvIV(value) != 0) {

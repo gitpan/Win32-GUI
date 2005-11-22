@@ -2,7 +2,7 @@
     ###########################################################################
     # message loops
     #
-    # $Id: GUI_MessageLoops.cpp,v 1.11 2005/07/01 23:46:28 robertemay Exp $
+    # $Id: GUI_MessageLoops.cpp,v 1.15 2005/11/13 18:57:52 robertemay Exp $
     #
     ###########################################################################
         */
@@ -77,6 +77,14 @@ LRESULT CommonMsgLoop(NOTXSPROC HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
         if(perlud && (perlud->dwPlStyle & PERLWIN32GUI_FLICKERFREE)) {
            return (LRESULT) 1;
         }
+        // If we're a window and we have a background brush, then use it
+        if(perlud && perlud->hBackgroundBrush &&
+        		(perlud->iClass == WIN32__GUI__WINDOW || perlud->iClass == WIN32__GUI__DIALOG) ) {
+					RECT rc;
+					GetUpdateRect((HWND)hwnd, &rc, 0); 
+					FillRect((HDC)wParam, &rc, perlud->hBackgroundBrush); 
+        	return (LRESULT) 1;
+        }
         break;
     case WM_CTLCOLOREDIT:
     case WM_CTLCOLORSTATIC:
@@ -85,8 +93,12 @@ LRESULT CommonMsgLoop(NOTXSPROC HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
         {
             perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong((HWND) lParam, GWL_USERDATA);
             if( ValidUserData(perlud) ) {
-                if(uMsg == WM_CTLCOLORSTATIC)
-                    SetBkMode((HDC) wParam, TRANSPARENT);
+                if(uMsg == WM_CTLCOLORSTATIC) {
+                		if(perlud->iClass == WIN32__GUI__EDIT) // Read-only Edit control
+                			SetBkColor((HDC) wParam, GetSysColor(COLOR_BTNFACE));
+                		else
+											SetBkMode((HDC) wParam, TRANSPARENT);
+								}
                 if(perlud->clrForeground != CLR_INVALID)
                     SetTextColor((HDC) wParam, perlud->clrForeground);
                 if(perlud->clrBackground != CLR_INVALID) {
@@ -94,6 +106,10 @@ LRESULT CommonMsgLoop(NOTXSPROC HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
                     return ((LRESULT) perlud->hBackgroundBrush);
                 }
             }
+
+						DWORD hbrBackground;
+						if(hbrBackground = GetClassLong((HWND)lParam, GCL_HBRBACKGROUND))
+								return ((LRESULT) hbrBackground);
 
             switch(uMsg) {
             case WM_CTLCOLOREDIT:
@@ -315,12 +331,12 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 
     case WM_MOUSEMOVE:
         /*
-         * (@)EVENT:MouseMouve()
+         * (@)EVENT:MouseMove()
          * (@)APPLIES_TO:*
          */
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_MOUSEMOVE, "MouseMove",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;
@@ -330,8 +346,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
          * (@)APPLIES_TO:*
          */
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_LMOUSEDOWN, "MouseDown",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;
@@ -341,8 +357,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
          * (@)APPLIES_TO:*
          */
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_LMOUSEUP, "MouseUp",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;
@@ -352,8 +368,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
          * (@)APPLIES_TO:*
          */
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_LMOUSEDBLCLK, "MouseDblClick",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;
@@ -363,8 +379,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
          * (@)APPLIES_TO:*
          */
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_RMOUSEDOWN, "MouseRightDown",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;
@@ -374,8 +390,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
          * (@)APPLIES_TO:*
          */
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_RMOUSEUP, "MouseRightUp",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;
@@ -385,8 +401,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
          * (@)APPLIES_TO:*
          */
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_RMOUSEDBLCLK, "MouseRightDblClick",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;
@@ -396,8 +412,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
          * (@)APPLIES_TO:*
          */
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_MMOUSEDOWN, "MouseMiddleDown",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;
@@ -407,8 +423,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
          * (@)APPLIES_TO:*
          */
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_MMOUSEUP, "MouseMiddleUp",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;
@@ -418,8 +434,8 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
          * (@)APPLIES_TO:*
          */
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_MMOUSEDBLCLK, "MouseMiddleDblClick",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;
@@ -508,6 +524,12 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
     case WM_TIMER:
         /*
          * (@)EVENT:Timer()
+	 * Sent when a Win32::GUI::Timer object reaches its ELAPSEd time.
+	 * For OEM the event is names $name_Timer.
+	 * For NEM the subroutine called is set with the parent window's
+	 * -onTimer option.  There are 2 arguments passed to the NEM event handler:
+	 *  the first is the parent window object, and the second is the timer's
+	 *  name.
          * (@)APPLIES_TO:*
          */
         PerlResult = DoEvent_Timer (NOTXSCALL perlud, (int) wParam, PERLWIN32GUI_NEM_TIMER, "Timer", -1);
@@ -806,71 +828,71 @@ LRESULT CALLBACK ControlMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
         break;
     case WM_MOUSEMOVE:
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_MOUSEMOVE, "MouseMove",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;
     case WM_LBUTTONDOWN:
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_LMOUSEDOWN, "MouseDown",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;
     case WM_LBUTTONUP:
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_LMOUSEUP, "MouseUp",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;
     case WM_LBUTTONDBLCLK:
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_LMOUSEDBLCLK, "MouseDblClick",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;
     case WM_RBUTTONDOWN:
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_RMOUSEDOWN, "MouseRightDown",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;
     case WM_RBUTTONUP:
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_RMOUSEUP, "MouseRightUp",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;
     case WM_RBUTTONDBLCLK:
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_RMOUSEDBLCLK, "MouseRightDblClick",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;
     case WM_MBUTTONDOWN:
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_MMOUSEDOWN, "MouseMiddleDown",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;
     case WM_MBUTTONUP:
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_MMOUSEUP, "MouseMiddleUp",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;
     case WM_MBUTTONDBLCLK:
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_MMOUSEDBLCLK, "MouseMiddleDblClick",
-            PERLWIN32GUI_ARGTYPE_LONG, LOWORD(lParam),
-            PERLWIN32GUI_ARGTYPE_LONG, HIWORD(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_X_LPARAM(lParam),
+            PERLWIN32GUI_ARGTYPE_LONG, GET_Y_LPARAM(lParam),
             PERLWIN32GUI_ARGTYPE_LONG, wParam,
             -1);
         break;

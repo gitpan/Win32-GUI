@@ -5,7 +5,7 @@ package SrcParser;
 # documentation from within the source files.
 #
 # Author: Robert May , rmay@popeslane.clara.co.uk, 20 June 2005
-# $Id: SrcParser.pm,v 1.1 2005/06/26 16:41:00 robertemay Exp $
+# $Id: SrcParser.pm,v 1.2 2005/08/03 21:45:58 robertemay Exp $
 
 use strict;
 use warnings;
@@ -80,7 +80,7 @@ sub parse_file
           # find the description:
           while(<$FILE>) {
             if( s/^\s*(#|\*(\/)?)+\s?// ) {  # if it looks like documentation, then store the description
-              $PACKAGES{$package}->{description} .= $_;
+              $PACKAGES{$package}->{description} .= ($_ eq '' ? "\n" : $_);
             }
             else {
               last;
@@ -118,7 +118,7 @@ sub parse_file
           print STDERR "\tFound alternate method in package $package: '${alternate}'\n" if $DEBUG;
         }
         elsif( s/^\s*(#|\*(\/)?)+\s?// ) {
-          $methoddescr .= $_;
+          $methoddescr .= ($_ eq '' ? "\n" : $_);
         }
         else {
           # store the method details:
@@ -149,7 +149,7 @@ sub parse_file
           print STDERR "\tApplies to: $applies\n" if $DEBUG;
         }
         elsif( s/^\s*(#|\*(\/)?)+\s?// ) {
-          $eventdescr .= $_;
+          $eventdescr .= ($_ eq '' ? "\n" : $_);
         }
         else {
           # Store the event information
@@ -337,7 +337,7 @@ sub get_package_event_description
 }
 
 # fix_alternates()
-#  moves the alternate methods into the correct locakion, and adds text for them
+#  moves the alternate methods into the correct location, and adds text for them
 # - if alternate is in same package, add it with same prototype
 #   and description 'See thismethod()'
 # - if package is different, add it with same prototype and description 

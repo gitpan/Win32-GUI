@@ -1,50 +1,57 @@
-#!perl -w
-# Before `make install' is performed this script should be runnable with
-# `make test'. After `make install' it should work as `perl test.pl'
+#!perl -wT
+# Win32::GUI test suite.
+# $Id: 02_window.t,v 1.2 2005/08/03 21:46:00 robertemay Exp $
+#
+# Win32::GUI::Window tests:
+# - check that we can create and manipulate Windows
 
 use strict;
-use vars qw( $loaded $clip $actual );
+use warnings;
 
-######################### We start with some black magic to print on failure.
+BEGIN { $| = 1 } # Autoflush
 
-BEGIN { $| = 1; print "1..9\n"; }
-END {print "not ok 1\n" unless $loaded;}
+use Test::More tests => 16;
+
 use Win32::GUI;
-$loaded = 1;
-print "ok 1\n";
 
-######################### End of black magic.
+# check that the methods we want to use are available
+can_ok('Win32::GUI::Window', qw(new Left Top Width Height Move Resize Text) );
 
 my $W = new Win32::GUI::Window(
     -name => "TestWindow",
     -pos  => [  0,   0],
-    -size => [100, 100],
+    -size => [210, 200],
     -text => "TestWindow",
 );
-print ((defined $W and ref($W) =~ /Win32::GUI::Window/) ? "" : "not ");
-print "ok 2\n";
 
-print (($W->Left == 0) ? "" : "not ");
-print "ok 3\n";
+isa_ok($W, "Win32::GUI::Window");
 
-print (($W->Top == 0) ? "" : "not ");
-print "ok 4\n";
+is($W->Left,0, "Window LEFT correct");
+is($W->Top, 0, "Window TOP correct");
+is($W->Width,210, "Window WIDTH correct");
+is($W->Height, 200, "Window HEIGHT correct");
+is($W->Text, "TestWindow", "Window TITLE correct");
 
 $W->Left(100);
-print (($W->Left == 100) ? "" : "not ");
-print "ok 5\n";
+is($W->Left, 100, "Change window LEFT");
 
 $W->Top(100);
-print (($W->Top == 100) ? "" : "not ");
-print "ok 6\n";
+is($W->Top, 100, "Change window TOP");
+
+$W->Width(310);
+is($W->Width, 310, "Change window WIDTH");
+
+$W->Height(300);
+is($W->Height, 300, "Change window HEIGHT");
 
 $W->Move(0, 0);
-print (($W->Left == 0 && $W->Top == 0) ? "" : "not ");
-print "ok 7\n";
+is($W->Left, 0, "Move window, LEFT");
+is($W->Top, 0, "Move winodw TOP");
 
-print (($W->Text eq "TestWindow") ? "" : "not ");
-print "ok 8\n";
+$W->Resize(210, 200);
+is($W->Width, 210, "Resize winodw WIDTH");
+is($W->Height, 200, "Resize winodw HEIGHT");
 
 $W->Text("TestChanged");
-print (($W->Text eq "TestChanged") ? "" : "not ");
-print "ok 9\n";
+is($W->Text ,"TestChanged", "Change winodw TITLE");
+

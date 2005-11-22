@@ -1,4 +1,4 @@
-=for comment $Id: Part1.pod,v 1.1 2005/06/26 16:41:00 robertemay Exp $
+=for comment $Id: Part1.pod,v 1.2 2005/10/05 22:20:49 robertemay Exp $
 
 =head1 NAME
 
@@ -114,7 +114,7 @@ So, let's put it all together.
         -1;
     }
 
-Put that in a file (say, hello.plx) and run it using C<perl hello.plx>. 
+Put that in a file (say, hello.pl) and run it using C<perl hello.pl>. 
 
 =for html <br /><center><img src="part1-1.gif" /></center>
 
@@ -301,27 +301,23 @@ methods, with a single parameter which specifies the value to set.
 OK, let's just do it.
 
     sub Main_Resize {
-        my $w = $main->Width();
-        my $h = $main->Height();
+        my $mw = $main->ScaleWidth();
+        my $mh = $main->ScaleHeight();
         my $lw = $label->Width();
         my $lh = $label->Height();
-        if ($lw > $w) {
-            $main->Width($lw) + $ncw; # Remember the non-client width!
+        if ($lw > $mw) {
+            $main->Width($lw + $ncw); # Remember the non-client width!
         }
         else {
-            $label->Left(($w - $lw) / 2);
+            $label->Left(($mw - $lw) / 2);
         }
-        if ($lh > $h) {
-            $main->Height($lh) + $nch; # Remember the non-client height!
+        if ($lh > $mh) {
+            $main->Height($lh + $nch); # Remember the non-client height!
         }
         else {
-            $label->Top(($h - $lh) / 2);
+            $label->Top(($mh - $lh) / 2);
         }
     }
-
-This does not work in build 340 of Win32::GUI, as there is a bug in the Left()
-and Top() methods for client windows (such as the label used here). Hopefully,
-this bug will be fixed in the next version.
 
 Note that co-ordinates are calculated from the top left of the enclosing
 window.
@@ -384,6 +380,7 @@ glory.
     $y = ($dh - $h) / 2;
 
     $main->Change(-minsize => [$w, $h]);
+    $main->Resize($w, $h);
     $main->Move($x, $y);
     $main->Show();
 
@@ -394,12 +391,13 @@ glory.
     }
 
     sub Main_Resize {
-        my $w = $main->ScaleWidth();
-        my $h = $main->ScaleHeight();
+        my $mw = $main->ScaleWidth();
+        my $mh = $main->ScaleHeight();
         my $lw = $label->Width();
         my $lh = $label->Height();
-		$label->Left(int(($w - $lw) / 2));
-		$label->Top(int(($h - $lh) / 2));
+
+	$label->Left(int(($mw - $lw) / 2));
+	$label->Top(int(($mh - $lh) / 2));
     }
 
 That's it for this tutorial. In L<part 2|Win32::GUI::Tutorial::Part2> , we will start looking at some other

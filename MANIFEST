@@ -8,10 +8,11 @@ build_tools/doHTMLDocs.pl
 build_tools/doPodDocs.pl
 build_tools/doReadme.pl
 build_tools/SrcParser.pm
+build_tools/updateRC.pl
 Button.xs
 CHANGELOG
 Combobox.xs
-cygwin.c                                   Missing cygwin functions
+cygwin.c
 DateTime.xs
 DC.xs
 docs/Documentation.txt
@@ -63,9 +64,10 @@ Listbox.xs
 ListView.xs
 Makefile.PL
 Makefile_m.pl
-MANIFEST			                             This list of files
+MANIFEST			This list of files
 MANIFEST.SKIP
 MDI.xs
+META.yml
 MonthCal.xs
 NotifyIcon.xs
 ProgressBar.xs
@@ -80,17 +82,48 @@ samples/DateTime.pl
 samples/Draw.pl
 samples/EventModel.pl
 samples/GetOpenFileName.pl
+samples/guiperl.ico
 samples/harrow.cur
+samples/listview_drag_drop.pl
 samples/MDI.pl
 samples/MonthCal.pl
 samples/Notepad.pl
 samples/Region.pl
 samples/SplashScreen.pl
+samples/Tutorial_Part1_hello1.pl
+samples/Tutorial_Part1_hello2.pl
+samples/Tutorial_Part1_hello3.pl
+samples/Tutorial_Part1_hello4.pl
+samples/Tutorial_Part1_hello5.pl
+samples/Tutorial_Part1_hello6.pl
+samples/Tutorial_Part2_framework.pl
+samples/Tutorial_Part3_DialogBox.pl
+samples/Tutorial_Part4_NotifyIcon.pl
+samples/Tutorial_Part4_StatusBar.pl
+samples/Tutorial_Part4_timer.pl
+samples/Tutorial_Part5_modalWindow.pl
+samples/Tutorial_Part5_popupWindow1.pl
+samples/Tutorial_Part5_popupWindow2.pl
+samples/Tutorial_Part5_twoWindows.pl
+samples/Tutorial_Part9_noDosWindow.pl
 Splitter.xs
 StatusBar.xs
 t/01_basic.t
 t/02_window.t
 t/03_button.t
+t/04_cov.t
+t/05_AcceleratorTable.t
+t/05_Menu.t
+t/05_Timer_01_OEM.t
+t/05_Timer_02_NEM.t
+t/05_Timer_03_Interval.t
+t/05_Timer_04_Kill.t
+t/05_Timer_05_DESTROY.t
+t/06_Cursor.t
+t/06_Icon.t
+t/50_Font_GetMetrics.t
+t/50_Richedit_GetCharFormat.t
+t/98_Pod.t
 TabStrip.xs
 Textfield.xs
 TODO
@@ -102,4 +135,3 @@ TYPEMAP
 UpDown.xs
 vsplit.cur
 Window.xs
-META.yml                                 Module meta-data (added by MakeMaker)

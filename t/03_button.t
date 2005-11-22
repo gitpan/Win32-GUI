@@ -1,59 +1,62 @@
-#!perl -w
-# Before `make install' is performed this script should be runnable with
-# `make test'. After `make install' it should work as `perl test.pl'
+#!perl -wT
+# Win32::GUI test suite.
+# $Id: 03_button.t,v 1.2 2005/08/03 21:46:00 robertemay Exp $
+#
+# Basic Button tsets:
 
 use strict;
-use vars qw( $loaded $clip $actual );
+use warnings;
 
-######################### We start with some black magic to print on failure.
+BEGIN { $| = 1 } # Autoflush
 
-BEGIN { $| = 1; print "1..10\n"; }
-END {print "not ok 1\n" unless $loaded;}
+use Test::More tests => 19;
+
 use Win32::GUI;
-$loaded = 1;
-print "ok 1\n";
 
-######################### End of black magic.
+can_ok("Win32::GUI::Window", qw(AddButton));
+can_ok("Win32::GUI::Button", qw(new Left Top Width Height Move Resize Text));
 
 my $W = new Win32::GUI::Window(
     -name => "TestWindow",
     -pos  => [  0,   0],
-    -size => [100, 100],
+    -size => [210, 200],
     -text => "TestWindow",
 );
-print ((defined $W) ? "" : "not ");
-print "ok 2\n";
+isa_ok($W, "Win32::GUI::Window", "\$W");
 
 my $B = $W->AddButton(
     -name => "TestButton",
     -pos  => [  0,   0],
     -text => "TestButton",
 );
+isa_ok($B,               "Win32::GUI::Button", "\$B");
+isa_ok($W->{TestButton}, "Win32::GUI::Button", "\$W->{TestButton}");
+isa_ok($W->TestButton,   "Win32::GUI::Button", "\$W->TestButton");
+is($B, $W->TestButton, "Parent references Button");
 
-print ((defined $B and ref($B) =~ /Win32::GUI::Button/) ? "" : "not ");
-print "ok 3\n";
-
-print ((defined $W->{TestButton}) ? "" : "not ");
-print "ok 4\n";
-
-print ((defined $W->TestButton) ? "" : "not ");
-print "ok 5\n";
-
-print (($B->Left == 0) ? "" : "not ");
-print "ok 6\n";
-
-print (($B->Top == 0) ? "" : "not ");
-print "ok 7\n";
+is($B->Left, 0, "button LEFT correct");
+is($B->Top, 0, "button TOP correct");
+is($B->Text, "TestButton", "button TEXT correct");
 
 $W->TestButton->Left(100);
-print (($W->TestButton->Left == 100) ? "" : "not ");
-print "ok 8\n";
+is($W->TestButton->Left(), 100, "change button LEFT");
 
-$W->Top(100);
-print (($W->Top == 100) ? "" : "not ");
-print "ok 9\n";
+$W->TestButton->Top(100);
+is($W->TestButton->Top, 100, "change button TOP");
 
-$W->Move(0, 0);
-print (($W->Left == 0 && $W->Top == 0) ? "" : "not ");
-print "ok 10\n";
+$W->TestButton->Width(100);
+is($W->TestButton->Width, 100, "change button WIDTH");
 
+$W->TestButton->Height(100);
+is($W->TestButton->Height, 100, "change button HEIGHT");
+
+$W->TestButton->Resize(10, 10);
+is($W->TestButton->Width, 10, "resize button WIDTH");
+is($W->TestButton->Height, 10, "resize button HEIGHT");
+
+$W->TestButton->Move(0, 0);
+is($W->TestButton->Left, 0, "move button LEFT");
+is($W->TestButton->Top, 0, "move button TOP");
+
+$W->TestButton->Text("Press me");
+is($W->TestButton->Text, "Press me", "change button TEXT");

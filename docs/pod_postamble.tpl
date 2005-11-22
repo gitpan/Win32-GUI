@@ -1,4 +1,4 @@
-=for comment $Id: pod_postamble.tpl,v 1.1 2005/06/26 16:41:00 robertemay Exp $
+=for comment $Id: pod_postamble.tpl,v 1.2 2005/08/03 21:45:59 robertemay Exp $
 
 =head1 VERSION
 
@@ -11,7 +11,7 @@ Edit F<__W32G_FILE__> instead.
 
 Homepage: L<__W32G_WEB_HOMEPAGE__>.
 
-For further support join the users mailing list(__W32G_EMAIL_USERLIST__) from the website
+For further support join the users mailing list(C<__W32G_EMAIL_USERLIST__>) from the website
 at L<__W32G_WEB_USERMAIL__>.  There is a searchable list archive at L<__W32G_WEB_MAILARCHIVE__>.
 
 =head1 COPYRIGHT and LICENCE

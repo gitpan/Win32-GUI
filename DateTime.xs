@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::DateTime
     #
-    # $Id: DateTime.xs,v 1.4 2005/06/26 16:40:59 robertemay Exp $
+    # $Id: DateTime.xs,v 1.5 2005/08/03 21:45:56 robertemay Exp $
     #
     ###########################################################################
     */
@@ -28,7 +28,7 @@ DateTime_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATES
         } else if(strcmp(SvPV_nolen(value), "right") == 0) {
             SwitchBit(perlcs->cs.style, DTS_RIGHTALIGN, 1);
         } else {
-            if(PL_dowarn) warn("Win32::GUI: Invalid value for -align!");
+            W32G_WARN("Win32::GUI: Invalid value for -align!");
         }
     } 
     else if(strcmp(option, "-format") == 0) {
@@ -45,7 +45,7 @@ DateTime_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATES
             SwitchBit(perlcs->cs.style, DTS_SHORTDATEFORMAT, 0);
             SwitchBit(perlcs->cs.style, DTS_TIMEFORMAT,      1);
         } else {
-            if(PL_dowarn) warn("Win32::GUI: Invalid value for -format!");
+            W32G_WARN("Win32::GUI: Invalid value for -format!");
         }
     } else if BitmaskOptionValue("-shownone", perlcs->cs.style, DTS_SHOWNONE)
     } else if BitmaskOptionValue("-updown", perlcs->cs.style,   DTS_UPDOWN)

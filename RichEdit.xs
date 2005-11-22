@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::RichEdit
     #
-    # $Id: RichEdit.xs,v 1.3 2005/06/13 17:37:46 robertemay Exp $
+    # $Id: RichEdit.xs,v 1.6 2005/10/05 22:20:49 robertemay Exp $
     #
     ###########################################################################
     */
@@ -240,7 +240,25 @@ OUTPUT:
     # TODO : EM_GETBIDIOPTIONS
 
     ###########################################################################
-    # (@)METHOD:GetCharFormat([FLAG])
+    # (@)METHOD:GetCharFormat([FLAG=SCF_SELECTION])
+    # 
+    # Return a named hash containing the formatting of the current selection 
+    # if FLAG = SCF_SELECTION (1) or the default character character formatting 
+    # if FLAG = SCF_DEFAULT (0).
+    #
+    # Hash keys (if a hash key doesn't exist, that property varies across the selection):
+    #
+    #   -bold => 0/1
+    #   -italic => 0/1
+    #   -underline => 0/1
+    #   -strikeout => 0/1
+    #   -color => Text color (0xBBGGRR)
+    #   -name => Font name
+    #   -size => Character height, in twips (1/1440 of an inch or 1/20 of a printer's point).
+    #
+    # MSDN link:
+    # http://msdn.microsoft.com/library/en-us/shellcc/platform/commctls/richedit/richeditcontrols/richeditcontrolreference/richeditstructures/charformat.asp
+
 void
 GetCharFormat(handle,flag=1)
     HWND handle
@@ -257,11 +275,9 @@ PPCODE:
     );
     si = 0;
     if(dwMask & CFM_BOLD) {
-        if(cf.dwEffects & CFE_BOLD) {
-            EXTEND(SP, 2);
-            XST_mPV(si++, "-bold");
-            XST_mIV(si++, 1);
-        }
+        EXTEND(SP, 2);
+        XST_mPV(si++, "-bold");
+        XST_mIV(si++, cf.dwEffects & CFE_BOLD > 0);
     }
     if(dwMask & CFM_COLOR) {
         EXTEND(SP, 2);
@@ -274,30 +290,24 @@ PPCODE:
         XST_mPV(si++, cf.szFaceName);
     }
     if(dwMask & CFM_ITALIC) {
-        if(cf.dwEffects & CFE_ITALIC) {
-            EXTEND(SP, 2);
-            XST_mPV(si++, "-italic");
-            XST_mIV(si++, 1);
-        }
+        EXTEND(SP, 2);
+        XST_mPV(si++, "-italic");
+        XST_mIV(si++, cf.dwEffects & CFE_ITALIC > 0);
     }
     if(dwMask & CFM_SIZE) {
         EXTEND(SP, 2);
-        XST_mPV(si++, "-name");
+        XST_mPV(si++, "-size");
         XST_mIV(si++, cf.yHeight);
     }
     if(dwMask & CFM_STRIKEOUT) {
-        if(cf.dwEffects & CFE_STRIKEOUT) {
-            EXTEND(SP, 2);
-            XST_mPV(si++, "-strikeout");
-            XST_mIV(si++, 1);
-        }
+        EXTEND(SP, 2);
+        XST_mPV(si++, "-strikeout");
+        XST_mIV(si++, cf.dwEffects & CFE_STRIKEOUT > 0);
     }
     if(dwMask & CFM_UNDERLINE) {
-        if(cf.dwEffects & CFE_UNDERLINE) {
-            EXTEND(SP, 2);
-            XST_mPV(si++, "-underline");
-            XST_mIV(si++, 1);
-        }
+        EXTEND(SP, 2);
+        XST_mPV(si++, "-underline");
+        XST_mIV(si++, cf.dwEffects & CFE_UNDERLINE > 0);
     }
     XSRETURN(si);
 
@@ -562,6 +572,18 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:SetCharFormat(%OPTIONS)
+    # Sets the format of the selected text.  If there is no selected text sets the
+    # format of the insertion point for text subsequently inserted at that point.
+    #
+    # %OPTIONS are:
+    # 
+    #  -name => font name,
+    #  -bold => 0/1, 
+    #  -underline => 0/1, 
+    #  -italic => 0/1,
+    #  -strikeout => 0/1,
+    #  -height => Character height, in twips (1/1440 of an inch or 1/20 of a printer's point).
+    #  -color => Text color (0xBBGGRR)
 LRESULT
 SetCharFormat(handle,...)
     HWND handle
@@ -652,7 +674,37 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:SetEventMask(MASK)
-    # 
+    # The SetEventMask() method sets the event mask for a rich edit control.
+    # The event mask specifies which notification messages the control sends
+    # to its parent window.  MASK is any combination of:
+    #   
+    #   ENM_CHANGE          Sends EN_CHANGE notifications.
+    #   ENM_CORRECTTEXT     Sends EN_CORRECTTEXT notifications.
+    #   ENM_DRAGDROPDONE    Sends EN_DRAGDROPDONE notifications.
+    #   ENM_DROPFILES       Sends EN_DROPFILES notifications.
+    #   ENM_IMECHANGE       Microsoft Rich Edit 1.0 only: Sends EN_IMECHANGE
+    #                       notifications when the IME conversion status has
+    #                       changed. Only for Asian-language versions of the
+    #                       operating system.
+    #   ENM_KEYEVENTS       Sends EN_MSGFILTER notifications for keyboard events.
+    #   ENM_LINK            Rich Edit 2.0 and later: Sends EN_LINK notifications when
+    #                       the mouse pointer is over text that has the CFE_LINK and
+    #                       one of several mouse actions is performed.
+    #   ENM_MOUSEEVENTS     Sends EN_MSGFILTER notifications for mouse events.
+    #   ENM_OBJECTPOSITIONS Sends EN_OBJECTPOSITIONS notifications.
+    #   ENM_PROTECTED       Sends EN_PROTECTED notifications.
+    #   ENM_REQUESTRESIZE   Sends EN_REQUESTRESIZE notifications.
+    #   ENM_SCROLL          Sends EN_HSCROLL and EN_VSCROLL notifications.
+    #   ENM_SCROLLEVENTS    Sends EN_MSGFILTER notifications for mouse wheel events.
+    #   ENM_SELCHANGE       Sends EN_SELCHANGE notifications.
+    #   ENM_UPDATE          Sends EN_UPDATE notifications.  Rich Edit 2.0 and later:
+    #                       this flag is ignored and the EN_UPDATE notifications are
+    #                       always sent. However, if Rich Edit 3.0 emulates Rich Edit
+    #                       1.0, you must use this flag to send EN_UPDATE notifications.
+    #
+    # The default event mask before any is set is ENM_NONE.  Returns the previous
+    # event mask.
+    
 LRESULT
 SetEventMask(handle, mask)
     HWND handle
@@ -729,7 +781,7 @@ CODE:
                     pf.wAlignment = PFA_RIGHT;
                     pf.dwMask = pf.dwMask | PFM_ALIGNMENT;
                 } else {
-                    if(PL_dowarn) warn("Win32::GUI:: Invalid value for -align!\n");
+                    W32G_WARN("Win32::GUI:: Invalid value for -align!");
                 }
             } else if(strcmp(option, "-offset") == 0) {
                 next_i = i + 1;
@@ -887,6 +939,21 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:Save(FILENAME, [FORMAT])
+    # More information at http://msdn.microsoft.com/library/en-us/shellcc/platform/commctls/richedit/richeditcontrols/richeditcontrolreference/richeditmessages/em_setoptions.asp
+    # Here are some constants for the FORMAT:
+    #
+    #   0x0001 (SF_TEXT)	
+    #   0x0002 (SF_RTF)	
+    #   0x0003 (SF_RTFNOOBJS)	
+    #   0x0004 (SF_TEXTIZED)	
+    #   0x0010 (SF_UNICODE)	
+    #   0x0020 (SF_USECODEPAGE)	
+    #   0x8000 (SFF_SELECTION)	
+    #   0x4000 (SFF_PLAINRTF)	
+    #
+    #   1200 is the Unicode code page
+    #   CP_UTF8 = 65001
+
 LRESULT
 Save(handle,filename,format=SF_RTF)
     HWND handle

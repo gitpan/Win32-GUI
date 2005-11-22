@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Label
     #
-    # $Id: Label.xs,v 1.5 2005/06/13 17:35:52 robertemay Exp $
+    # $Id: Label.xs,v 1.6 2005/08/03 21:45:57 robertemay Exp $
     #
     ###########################################################################
     */
@@ -34,7 +34,7 @@ Label_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATESTRU
             SwitchBit(perlcs->cs.style, SS_CENTER, 0);
             SwitchBit(perlcs->cs.style, SS_RIGHT, 1);
         } else {
-            if(PL_dowarn) warn("Win32::GUI: Invalid value for -align!");
+            W32G_WARN("Win32::GUI: Invalid value for -align!");
         }
     } else if(strcmp(option, "-bitmap") == 0 || strcmp(option, "-picture") == 0) {
         SwitchBit(perlcs->cs.style, SS_BITMAP, 1);

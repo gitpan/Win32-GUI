@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Tooltip
     #
-    # $Id: Tooltip.xs,v 1.4 2005/06/26 16:40:59 robertemay Exp $
+    # $Id: Tooltip.xs,v 1.5 2005/08/25 19:30:17 robertemay Exp $
     #
     ###########################################################################
     */
@@ -13,7 +13,8 @@ void
 Tooltip_onPreCreate(NOTXSPROC LPPERLWIN32GUI_CREATESTRUCT perlcs) {
 
     perlcs->cs.lpszClass = TOOLTIPS_CLASS;
-    perlcs->cs.style = WS_VISIBLE | WS_CHILD | TTS_ALWAYSTIP;
+    perlcs->cs.style = TTS_ALWAYSTIP;
+    perlcs->cs.dwExStyle = WS_EX_TOPMOST;
 }
 
 BOOL

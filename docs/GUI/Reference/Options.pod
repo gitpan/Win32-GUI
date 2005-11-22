@@ -1,4 +1,4 @@
-=for comment $Id: Options.pod,v 1.1 2005/06/26 16:41:00 robertemay Exp $
+=for comment $Id: Options.pod,v 1.2 2005/08/03 21:45:59 robertemay Exp $
 
 =head1 NAME
 
@@ -442,6 +442,8 @@ See L<-popstyle|/-popstyle>
 
 =item B<-size> => [ X, Y ]
 
+=back
+
 Defines the size for the window; note that X and Y must be passed in an
 array reference, eg:
 
@@ -449,8 +451,6 @@ array reference, eg:
     -size =>   100, 100,      # WRONG
     -size => @coords,         # WRONG
     -size => \@coors,         # correct
-
-=back
 
 =head2 -style
 

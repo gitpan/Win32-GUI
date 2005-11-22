@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Textfield
     #
-    # $Id: Textfield.xs,v 1.6 2005/06/26 16:40:59 robertemay Exp $
+    # $Id: Textfield.xs,v 1.7 2005/08/03 21:45:57 robertemay Exp $
     #
     ###########################################################################
     */
@@ -36,7 +36,7 @@ Textfield_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATE
             SwitchBit(perlcs->cs.style, ES_CENTER, 0);
             SwitchBit(perlcs->cs.style, ES_RIGHT, 1);
         } else {
-            if(PL_dowarn) warn("Win32::GUI: Invalid value for -align!");
+            W32G_WARN("Win32::GUI: Invalid value for -align!");
         }
     } else if(strcmp(option, "-multiline") == 0) {
         if(SvIV(value)) {
