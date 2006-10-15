@@ -1,6 +1,7 @@
 package Win32::GUI::GridLayout;
 
-$Win32::GUI::GridLayout::VERSION = "0.05";
+$Win32::GUI::GridLayout::VERSION = "0.06";
+$Win32::GUI::GridLayout::VERSION = eval $Win32::GUI::GridLayout::VERSION;
 
 sub new {
     my($class, $c, $r, $w, $h, $xpad, $ypad) = @_;
@@ -275,7 +276,7 @@ Win32::GUI::GridLayout - Grid layout support for Win32::GUI
 
 =over 4
 
-=item new Win32::GUI::GridLayout(WIDTH, HEIGHT, COLS, ROWS, XPAD, YPAD)
+=item new Win32::GUI::GridLayout(COLS, ROWS, WIDTH, HEIGHT, XPAD, YPAD)
 
 =item apply Win32::GUI::GridLayout(WINDOW, COLS, ROWS, XPAD, YPAD)
 
@@ -386,13 +387,32 @@ Example: see col().
 
 =head1 VERSION
 
-Win32::GUI::GridLayout version 0.04, 24 June  2005.
-Win32::GUI::GridLayout version 0.04, 06 April 2005.
-Win32::GUI::GridLayout version 0.03, 13 April 1999.
+=over
+
+=item Win32::GUI::GridLayout version 0.06, June  2006.
+
+=item Win32::GUI::GridLayout version 0.05, 24 June  2005.
+
+=item Win32::GUI::GridLayout version 0.04, 06 April 2005.
+
+=item Win32::GUI::GridLayout version 0.03, 13 April 1999.
+
+=back
 
 =head1 AUTHOR
 
-Mike Kangas ( C<kangas@anlon.com> );
-additional coding by Aldo Calpini ( C<dada@perl.it> ).
-additional coding Alexander Romanenko ( C<alex@parom.biz> ).
+Original Author Mike Kangas ( C<kangas@anlon.com> );
+additional coding by
+Aldo Calpini ( C<dada@perl.it> ),
+Alexander Romanenko ( C<alex@parom.biz> ),
+Robert May ( C<robertemay@users.sourceforge.net> ).
+
+=head1 COPYRIGHT AND LICENCE
+
+Copyright (C) 1999..2005 by Mike Kangas
+Copyright (C) 2006 by Robert May
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
 =cut

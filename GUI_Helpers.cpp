@@ -2,7 +2,7 @@
     ###########################################################################
     # helper routines
     #
-    # $Id: GUI_Helpers.cpp,v 1.14 2005/08/06 10:36:20 jwgui Exp $
+    # $Id: GUI_Helpers.cpp,v 1.22 2006/08/30 21:57:58 robertemay Exp $
     #
     ###########################################################################
         */
@@ -66,16 +66,23 @@ void Perlud_Free(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud) {
     // Check perlpud
     if (perlud != NULL) {
 
-        // printf ("Free Perlud = %s\n", perlud->szWindowName);
         // Free event hash
         if (perlud->hvEvents != NULL) {
-            hv_undef(perlud->hvEvents);
+            // Test ref-count - warn if not one
+            if(SvREFCNT(perlud->hvEvents) != 1)
+                W32G_WARN("hvEvents ref count not 1 during destruction - please report this");
+
+            SvREFCNT_dec(perlud->hvEvents);
             perlud->hvEvents = NULL;
         }
         // Free hook hash
         if (perlud->avHooks != NULL) {
-             av_undef (perlud->avHooks);
-             perlud->avHooks = NULL;
+            // Test ref-count - warn if not one
+            if(SvREFCNT(perlud->avHooks) != 1)
+                W32G_WARN("avHooks ref count not 1 during destruction - please report this");
+
+            SvREFCNT_dec(perlud->avHooks);
+            perlud->avHooks = NULL;
         }
         // Free self
         if (perlud->svSelf != NULL && SvREFCNT(perlud->svSelf) > 0) {
@@ -92,10 +99,18 @@ void Perlud_Free(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud) {
             SvREFCNT_dec(perlud->svSelf);
             perlud->svSelf = NULL;
         }
-        // Drop the ref counter on user data
-        if (perlud->userData != NULL && SvREFCNT(perlud->userData) > 0) {
-	      SvREFCNT_dec(perlud->userData);
-	    }
+
+        // If we stored a hash in userData, drop it's
+        // ref count to free it (and it's members)
+        if (perlud->userData != NULL) {
+            // Test ref-count - warn if not one
+            if(SvREFCNT(perlud->userData) != 1)
+                W32G_WARN("userData ref count not 1 during destruction - please report this");
+
+            SvREFCNT_dec(perlud->userData);
+            perlud->userData = NULL;
+        }
+        
         // Free perlpud
         safefree (perlud);
     }
@@ -165,10 +180,10 @@ HWND handle_From(NOTXSPROC SV *pSv) {
             SV **pHv;
             pHv = hv_fetch_mg(NOTXSCALL (HV*) SvRV(pSv), "-handle", 7, 0);
             if(pHv != NULL) {
-                hReturn = (HWND) SvIV(*pHv);
+                hReturn = INT2PTR(HWND,SvIV(*pHv));
             }
         } else {
-            hReturn = (HWND) SvIV(pSv);
+            hReturn = INT2PTR(HWND,SvIV(pSv));
         }
     }
     return(hReturn);
@@ -209,7 +224,7 @@ WNDPROC GetDefClassProc (NOTXSPROC const char *Name) {
     hash = perl_get_hv("Win32::GUI::DefClassProc", FALSE);
     wndproc = hv_fetch_mg(NOTXSCALL hash, (char*) Name, strlen(Name), FALSE);
     if(wndproc == NULL) return NULL;
-    return (WNDPROC) SvIV(*wndproc);
+    return INT2PTR(WNDPROC,SvIV(*wndproc));
 }
 
     /*
@@ -293,7 +308,7 @@ HWND CreateTooltip(
 
     t = hv_fetch_mg(NOTXSCALL parent, "-handle", 7, 0);
     if(t != NULL) {
-        hParent = (HWND) SvIV(*t);
+        hParent = INT2PTR(HWND,SvIV(*t));
     } else {
         return NULL;
     }
@@ -330,7 +345,7 @@ void CalcControlSize(
     SIZE mySize;
     HDC hdc;
     SV** font;
-    HFONT hfont;
+    HFONT hfont, oldhfont;
     if(perlcs->cs.lpszName != NULL) {
         if(perlcs->cs.cx == 0 || perlcs->cs.cy == 0) {
             hdc = GetDC(perlcs->cs.hwndParent);
@@ -345,13 +360,14 @@ void CalcControlSize(
                     }
                 }
             }
-            SelectObject(hdc, hfont);
+            oldhfont = (HFONT)SelectObject(hdc, hfont);
             if(GetTextExtentPoint32(
                 hdc, perlcs->cs.lpszName, strlen(perlcs->cs.lpszName), &mySize
                 )) {
                 if(perlcs->cs.cx == 0) perlcs->cs.cx = mySize.cx + add_x;
                 if(perlcs->cs.cy == 0) perlcs->cs.cy = mySize.cy + add_y;
             }
+            SelectObject(hdc, oldhfont);
             ReleaseDC(perlcs->cs.hwndParent, hdc);
         }
     }
@@ -430,7 +446,7 @@ HMENU GetMenuFromID(NOTXSPROC int nID) {
     itoa(nID, temp, 10);
     handle = hv_fetch(hash, temp, strlen(temp), FALSE);
     if(handle == NULL) return NULL;
-    return (HMENU) SvIV(*handle);
+    return INT2PTR(HMENU,SvIV(*handle));
 }
 
     /*
@@ -572,7 +588,7 @@ int CALLBACK BrowseForFolderProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPARAM lpD
      ##########################################################################
      # (@)INTERNAL:AdjustSplitterCoord(self, x)
      */
-int AdjustSplitterCoord(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, int x, HWND phwnd) {
+int AdjustSplitterCoord(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, int x, int w, HWND phwnd) {
     int min, max;
     int adjusted;
     RECT rc;
@@ -583,7 +599,7 @@ int AdjustSplitterCoord(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, int x, HWND ph
     GetClientRect(phwnd, &rc);
     max = -1;
     max = perlud->iMaxWidth;
-    if(max == -1) max = rc.right;
+    if(max == -1) max = rc.right - w;
     if(adjusted < min) adjusted = min;
     if(adjusted > max) adjusted = max;
     return(adjusted);
@@ -593,20 +609,37 @@ int AdjustSplitterCoord(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, int x, HWND ph
      ##########################################################################
      # (@)INTERNAL:DrawSplitter(hwnd)
      */
-void DrawSplitter(NOTXSPROC HWND hwnd) {
-    RECT rc;
-    HDC hdc;
-    HBRUSH oldBrush;
-    HPEN oldPen;
+void DrawSplitter(NOTXSPROC HWND hwnd, int x, int y, int w, int h) {
 
-    hdc = GetDC(hwnd);
-    oldBrush = (HBRUSH) SelectObject(hdc, GetStockObject(GRAY_BRUSH));
-    oldPen   = (HPEN)   SelectObject(hdc, GetStockObject(NULL_PEN));
-    GetClientRect(hwnd, &rc);
-    PatBlt(hdc, rc.left, rc.top, rc.right-rc.left, rc.bottom-rc.top, DSTINVERT);
-    if(oldBrush != NULL) SelectObject(hdc, oldBrush);
-    if(oldPen   != NULL) SelectObject(hdc, oldPen  );
+    static WORD _dotPatternBmp[8] = { 0x00aa, 0x0055, 0x00aa, 0x0055, 
+                                      0x00aa, 0x0055, 0x00aa, 0x0055};
+
+    HDC hdc;
+    HBITMAP hbm;
+    HBRUSH  hbr, hbrushOld;
+
+    /* create a monochrome checkered pattern */
+    hbm = CreateBitmap(8, 8, 1, 1, _dotPatternBmp);
+    hbr = CreatePatternBrush(hbm);
+
+    /* get a DC on which we can draw, even if the
+     * class has CS_CLIPCHILDREN or the window
+     * has WS_CLIPCHILDREN
+     */
+    hdc = GetDCEx(hwnd, NULL, DCX_PARENTCLIP);
+
+    SetBrushOrgEx(hdc, x, y, NULL);
+    hbrushOld = (HBRUSH)SelectObject(hdc, hbr);
+
+    /* draw the checkered rectangle to the screen */
+    PatBlt(hdc, x, y, w, h, PATINVERT);
+
+    SelectObject(hdc, hbrushOld);
+
     ReleaseDC(hwnd, hdc);
+
+    DeleteObject(hbr);
+    DeleteObject(hbm);
 }
 
     /*
@@ -695,13 +728,12 @@ LRESULT CALLBACK WindowsHookMsgProc(int code, WPARAM wParam, LPARAM lParam) {
   int i;
 
   if(code == MSGF_MENU) {
-    dTHX;       /* fetch context */
-
     PerlResult = 1;
     pmsg = (MSG *)lParam;
     perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(pmsg->hwnd, GWL_USERDATA);
 
     if(ValidUserData(perlud)) {
+      PERLUD_FETCH;       /* fetch context */
 
       arrayref = av_fetch(perlud->avHooks, WM_TRACKPOPUP_MSGHOOK, 0);
       if(arrayref != NULL) {

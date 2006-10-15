@@ -1,7 +1,7 @@
 #! perl -w
 #
 # This sample show different event model availlabnle in Win32::GUI
-#  - OEM (Old Event Model) : Call a function venet based on control name and event name
+#  - OEM (Old Event Model) : Call a function evnet based on control name and event name
 #  - NEM (Nem Event Model) : Associate a sub event for a control.
 # It present how to use both event model for a control.
 # And event work with custom registered Class.
@@ -10,10 +10,13 @@
 #        and other value for contine default event.
 #
 use strict;
-use Win32::GUI;
+use warnings;
+
+use Win32::GUI qw(BS_NOTIFY);
+use FindBin();
 
 # Load a cursor bitmap
-my $C = new Win32::GUI::Bitmap("harrow.cur", 2);
+my $C = new Win32::GUI::Bitmap("$FindBin::Dir/harrow.cur", 2);
 
 # Register a BUTTON class with cursor
 my $BC = new Win32::GUI::Class(

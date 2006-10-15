@@ -1,6 +1,6 @@
 #!perl -wT
 # Win32::GUI test suite.
-# $Id: 04_cov.t,v 1.1 2005/08/03 21:46:00 robertemay Exp $
+# $Id: 04_cov.t,v 1.3 2006/05/16 18:57:26 robertemay Exp $
 #
 # test coverage of most AddCtrl, new Ctrl and DESTROY methods
 
@@ -11,7 +11,7 @@ BEGIN { $| = 1 } # Autoflush
 
 use Test::More qw(no_plan);
 
-use Win32::GUI;
+use Win32::GUI();
 
 my @ControlsAdd =
   qw/Animation
@@ -19,7 +19,7 @@ my @ControlsAdd =
      DateTime Graphic
      Groupbox Header Label
      ListView Listbox
-     Menu MonthCal NotifyIcon
+     Menu MonthCal 
      ProgressBar RadioButton Rebar
      RichEdit Slider Splitter StatusBar
      TabStrip Textfield Toolbar

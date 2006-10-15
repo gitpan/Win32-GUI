@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Textfield
     #
-    # $Id: Textfield.xs,v 1.7 2005/08/03 21:45:57 robertemay Exp $
+    # $Id: Textfield.xs,v 1.8 2006/06/23 23:08:07 robertemay Exp $
     #
     ###########################################################################
     */
@@ -54,6 +54,7 @@ Textfield_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATE
     } else if BitmaskOptionValue("-autohscroll",   perlcs->cs.style, ES_AUTOHSCROLL)
     } else if BitmaskOptionValue("-autovscroll",   perlcs->cs.style, ES_AUTOVSCROLL)
     } else if BitmaskOptionValue("-number",        perlcs->cs.style, ES_NUMBER)
+    } else if BitmaskOptionValue("-wantreturn",    perlcs->cs.style, ES_WANTRETURN)
     } else retval = FALSE;
 
     return retval;

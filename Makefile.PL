@@ -2,9 +2,14 @@ use strict;
 use warnings;
 
 use File::Spec();
-use ExtUtils::MakeMaker;
+# Bug in ExUtils::MakeMaker 5.45 that ships with ActiveState Perl
+# 5.6.1, writes the subdirs target with dmake syntax, that breaks
+# nmake.  Fixed in EU::MM 5.47
+# $(DIRFILESEP) macro requires EU::MM 6.06
+use ExtUtils::MakeMaker 6.06;
 use Config;
 
+our $W32G_CORE = 1;
 $main::USERESOURCE = 1;
 $main::BUILDENV = '';
 $main::BUILDENV_SETONCMDLINE = 0;
@@ -170,7 +175,6 @@ my @subpackages = qw(
 
 my @c_files = qw(
     GUI
-    GUI_Constants
     GUI_Events
     GUI_Helpers
     GUI_Options
@@ -201,7 +205,7 @@ $arg_object .= ' GUI.res' if $main::USERESOURCE;
 my %MakefileArgs = (
     NAME            => 'Win32::GUI',
     VERSION_FROM    => 'GUI.pm',
-    LIBS            => [':nosearch -lcomctl32 -lcomdlg32 -lshell32 -lgdi32 -luser32'],
+    LIBS            => [':nosearch -lcomctl32 -lcomdlg32 -lshell32 -lgdi32 -luser32 -lversion'],
     PREREQ_PM       => {
                          'Test::More' => 0,
                        },
@@ -213,6 +217,7 @@ my %MakefileArgs = (
     XS              => { %arg_xs },
     C               => [ @arg_c ],
     OBJECT          => $arg_object,
+    EXE_FILES       => [ 'scripts/win32-gui-demos.pl', ],
     DL_FUNCS        => { 'Win32::GUI' => [ @arg_dl_funcs ] },
     dist            => {
                          ZIP => 'zip',
@@ -241,7 +246,7 @@ my %MakefileArgs = (
 );
 
 if ($main::BUILDENV eq "cygwin") {
-  $MakefileArgs{'LIBS'} = ['-L/usr/lib/w32api -lcomctl32 -lcomdlg32 -lshell32 -lgdi32 -luser32'];
+  $MakefileArgs{'LIBS'} = ['-L/usr/lib/w32api -lcomctl32 -lcomdlg32 -lshell32 -lgdi32 -luser32 -lversion'];
   $MakefileArgs{'DEFINE'} = '-UWIN32';
   $MakefileArgs{'MYEXTLIB'} = './libcyg.a';
 }
@@ -254,6 +259,13 @@ package MY;
 
 use strict;
 use warnings;
+
+sub pasthru {
+  my $inherited = shift->SUPER::pasthru(@_);
+  chomp $inherited;
+  $inherited .= "\\\n\tW32G_CORE=1";
+  return $inherited;
+}
 
 sub xs_c {
   my $inherited = shift->SUPER::xs_c(@_);
@@ -368,6 +380,10 @@ poddocs:
 htmldocs: poddocs
 	$(NOECHO) $(PERL) -I$(BUILD_TOOLS) $(BUILD_TOOLS)/doHTMLDocs.pl
 
+demos:
+	$(MKPATH) $(INST_DEMO)
+	-$(CP) samples/* $(INST_DEMO)
+
 all:: poddocs demos
 
 DOC_FRAG
@@ -379,10 +395,6 @@ DOC_FRAG
     $ppm_frag = <<'PPM_FRAG';
 
 # -- Win32::GUI ppm section --
-
-demos:
-	$(MKPATH) $(INST_DEMO)
-	$(CP) samples/* $(INST_DEMO)
 
 ppmdist: all htmldocs
 	$(TAR) --exclude="*.pod" -$(TARFLAGS) $(DISTNAME).tar blib

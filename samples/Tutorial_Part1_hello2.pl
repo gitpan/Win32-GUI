@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Win32::GUI;
+use Win32::GUI();
 
 # Get the text to put in the label from the command line,
 # using 'Hello, world' as a default if nothing is provided.

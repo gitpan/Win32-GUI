@@ -5,7 +5,7 @@ package SrcParser;
 # documentation from within the source files.
 #
 # Author: Robert May , rmay@popeslane.clara.co.uk, 20 June 2005
-# $Id: SrcParser.pm,v 1.2 2005/08/03 21:45:58 robertemay Exp $
+# $Id: SrcParser.pm,v 1.5 2006/03/16 23:14:31 robertemay Exp $
 
 use strict;
 use warnings;
@@ -162,7 +162,7 @@ sub parse_file
             for my $pack (@packages) {
               $pack = "Win32::GUI::" . $pack unless $pack eq '*';
 
-              # The same evnet has multiple legitimate definitions in different packages
+              # The same event has multiple legitimate definitions in different packages
               # for the same package:
               # for example, Terminate() is described in both  Window.xs and MDI.xs,
               # applying to Win32::GUI::Window package in each case.  This is nasty to

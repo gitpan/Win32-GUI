@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Win32::GUI;
+use Win32::GUI();
 
 my $text = defined($ARGV[0]) ? $ARGV[0] : "Hello, world";
 

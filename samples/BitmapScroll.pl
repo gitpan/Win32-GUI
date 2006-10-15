@@ -1,9 +1,12 @@
 #This example creates a scrolling bitmap within another window. This example uses
 #a hooked event to paint to the window directly, rather than using a Graphic
 #Control.
-
-use Win32::GUI;
 use strict;
+use warnings;
+
+use Win32::GUI qw(WS_CLIPCHILDREN WS_CAPTION WS_SIZEBOX
+                  WS_CHILD WS_EX_CLIENTEDGE
+		  SB_ENDSCROLL SB_THUMBPOSITION);
 
 #create a new class which stops the WM_ERASEBKGND message from erasing the background
 #this stops the flicker of the window on resize.

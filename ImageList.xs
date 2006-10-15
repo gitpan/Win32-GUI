@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::ImageList
     #
-    # $Id: ImageList.xs,v 1.7 2005/10/05 22:20:49 robertemay Exp $
+    # $Id: ImageList.xs,v 1.10 2006/03/16 23:14:31 robertemay Exp $
     #
     ###########################################################################
     */
@@ -479,6 +479,7 @@ OUTPUT:
     # Gets or sets the size of the images in the ImageList;
     # if no parameter is given, returns a 2 element array (X, Y),
     # otherwise sets the size to the given parameters.
+    # If X and Y is given, also removes all images from the list.
 void
 Size(handle,...)
     HIMAGELIST handle

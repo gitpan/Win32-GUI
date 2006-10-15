@@ -7,7 +7,12 @@
 use strict;
 use warnings;
 
-use Win32::GUI 1.02;
+use Win32::GUI 1.03_03, qw(TPM_LEFTALIGN TPM_TOPALIGN TPM_RIGHTBUTTON
+                            ILC_COLOR ILC_COLOR24 ILC_MASK
+			    WM_CONTEXTMENU CW_USEDEFAULT
+			    LVS_ICON LVS_REPORT LVS_SMALLICON LVS_LIST
+			    LVIR_SELECTBOUNDS LVSIL_SMALL);
+
 use Win32::GUI::BitmapInline ();
 
 our $VERSION = "0.01";
@@ -21,34 +26,6 @@ my $dragInfo = {
 	cursor_start_x => undef,   # cursor x position in view coordinates at start of move
 	cursor_start_y => undef,   # cursor y position in view coordinates at start of move
 };
-
-######################################################################
-# Some Useful Constants
-# This style for defining constants is more compatible with older
-# versions of Perl than 'use constant', and still gets inlined.
-
-# ImageList Create
-sub ILC_COLOR()		      {0};
-sub ILC_COLOR24()       {24};
-sub ILC_MASK()		      {1};
-
-# Window Message
-sub WM_CONTEXTMENU()    {123};
-
-# Create Window
-sub CW_USEDEFAULT()     {0x80000000};
-
-# ListView Styles
-sub LVS_ICON()          {0};
-sub LVS_REPORT()        {1};
-sub LVS_SMALLICON()     {2};
-sub LVS_LIST()          {3};
-
-# ListView Image Rect
-sub LVIR_SELECTBOUNDS() {3};
-
-# ListView Set Image List
-sub LVSIL_SMALL()       {1};
 
 ######################################################################
 # Cursor for use when dragging

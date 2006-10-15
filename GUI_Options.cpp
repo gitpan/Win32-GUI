@@ -2,7 +2,7 @@
     ###########################################################################
     # options parsing routines
     #
-    # $Id: GUI_Options.cpp,v 1.9 2005/08/03 21:45:57 robertemay Exp $
+    # $Id: GUI_Options.cpp,v 1.16 2006/08/03 22:20:19 robertemay Exp $
     #
     ###########################################################################
     */
@@ -180,7 +180,7 @@ void ParseWindowOptions(
                 perlcs->cs.hMenu = (HMENU) handle_From(NOTXSCALL ST(next_i));
             } else if(strcmp(option, "-instance") == 0) {
                 next_i = i + 1;
-                perlcs->cs.hInstance = (HINSTANCE) SvIV(ST(next_i));
+                perlcs->cs.hInstance = INT2PTR(HINSTANCE,SvIV(ST(next_i)));
             } else if(strcmp(option, "-name") == 0) {
                 next_i = i + 1;
                 perlcs->szWindowName = SvPV_nolen(ST(next_i));
@@ -312,6 +312,7 @@ void ParseWindowOptions(
             } else BitmaskOption("-tabstop", perlcs->cs.style, WS_TABSTOP)
             } else BitmaskOption("-hscroll", perlcs->cs.style, WS_HSCROLL)
             } else BitmaskOption("-vscroll", perlcs->cs.style, WS_VSCROLL)
+            } else BitmaskOption("-acceptfiles", perlcs->cs.dwExStyle, WS_EX_ACCEPTFILES)
             } else BitmaskOption("-container", perlcs->dwPlStyle, PERLWIN32GUI_CONTAINER)
             }
             // ######################
@@ -738,27 +739,31 @@ void ParseTooltipOptions(
     int i, next_i;
     char * option;
 
+	ti->uFlags |= TTF_IDISHWND;
+	ti->uFlags |= TTF_SUBCLASS;
     next_i = -1;
     for(i = from_i; i < items; i++) {
         if(next_i == -1) {
             option = SvPV_nolen(ST(i));
             if(strcmp(option, "-text") == 0) {
                 next_i = i + 1;
-                ti->lpszText = SvPV_nolen(ST(next_i));
+                if(SvPOK(ST(next_i))) 
+                    ti->lpszText = SvPV_nolen(ST(next_i));
+                else if (SvIOK(ST(next_i)))
+                    ti->lpszText = MAKEINTRESOURCE((WORD)SvIV(ST(next_i)));
             } else if(strcmp(option, "-needtext") == 0) {
                 next_i = i + 1;
                 ti->lpszText = (SvIV(ST(next_i)) ? LPSTR_TEXTCALLBACK : NULL);
             } else if(strcmp(option, "-window") == 0) {
                 next_i = i + 1;
-                ti->uId = (UINT) handle_From(NOTXSCALL ST(next_i));
-                ti->uFlags |= TTF_IDISHWND;
+                ti->hwnd  = (HWND) handle_From(NOTXSCALL ST(next_i));
             } else if(strcmp(option, "-id") == 0) {
                 next_i = i + 1;
                 ti->uId = SvIV(ST(next_i));
                 ti->uFlags &= ~TTF_IDISHWND;
             } else if(strcmp(option, "-hinst") == 0) {
                 next_i = i + 1;
-                ti->hinst = (HINSTANCE) SvIV(ST(next_i));
+                ti->hinst = INT2PTR(HINSTANCE,SvIV(ST(next_i)));
             } else if(strcmp(option, "-flags") == 0) {
                 next_i = i + 1;
                 ti->uFlags = SvIV(ST(next_i));
@@ -780,6 +785,7 @@ void ParseTooltipOptions(
             } else if(strcmp(option, "-track") == 0) {
                 next_i = i + 1;
                 SwitchBit(ti->uFlags, TTF_TRACK , SvIV(ST(next_i)));
+                ti->uFlags &= ~TTF_SUBCLASS;
             } else if(strcmp(option, "-transparent") == 0) {
                 next_i = i + 1;
                 SwitchBit(ti->uFlags, TTF_TRANSPARENT , SvIV(ST(next_i)));
@@ -799,6 +805,29 @@ void ParseTooltipOptions(
             }
         } else {
             next_i = -1;
+        }
+    }
+
+	if( ti->uFlags & TTF_IDISHWND) {
+		ti->uId = (UINT)ti->hwnd;  /* TODO: can hwnd be NULL? */
+	} else {
+		/* if rect not supplied, use hwnd co-ordinates */
+		if(ti->rect.left == 0 && ti->rect.right == 0 && ti->rect.top == 0 && ti->rect.bottom == 0) {
+			GetWindowRect(ti->hwnd, &(ti->rect));
+		}
+	}
+
+    /* If we're not a top level window, then we
+     * need our container flag set in order to process
+     * WM_NOTIFY messages correctly (see CustomMsgLoop)
+     * Needed for NeedText, Pop and Show events
+     */
+    HWND parent = GetAncestor(ti->hwnd, GA_PARENT);
+    if(parent) {
+        LPPERLWIN32GUI_USERDATA ud;
+        ud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(ti->hwnd, GWL_USERDATA);
+        if( ValidUserData(ud) ) {
+                ud->dwPlStyle |= PERLWIN32GUI_CONTAINER;
         }
     }
 }
@@ -859,9 +888,29 @@ void ParseNotifyIconOptions(
 
     int i, next_i;
     char * option;
+    SV* shversion;
+    UINT version = 0;
 
     HV* hvEvents = NULL;
 
+    shversion = get_sv("Win32::GUI::NotifyIcon::SHELLDLL_VERSION",0);
+    if(shversion != NULL) {
+       version = (UINT)SvIV(shversion);
+#if (_WIN32_IE >= 0x0500) && (_WIN32_IE < 0x0600)
+       if (version >= 5) {
+           nid->cbSize = sizeof(NOTIFYICONDATA);
+       }
+#endif
+#if (_WIN32_IE >= 0x0600)
+       if (version >= 5) {
+           nid->cbSize = NOTIFYICONDATA_V2_SIZE;
+       }
+       if (version >= 6) {
+           nid->cbSize = sizeof(NOTIFYICONDATA);
+       }
+#endif
+    }
+    
     next_i = -1;
     for(i = from_i; i < items; i++) {
         if(next_i == -1) {
@@ -875,7 +924,13 @@ void ParseNotifyIconOptions(
                 SwitchBit(nid->uFlags, NIF_ICON, 1);
             } else if(strcmp(option, "-tip") == 0) {
                 next_i = i + 1;
-                strcpy(nid->szTip, SvPV_nolen(ST(next_i)));
+		if( version < 5 ) {
+		    strncpy(nid->szTip, SvPV_nolen(ST(next_i)), 64);
+		    nid->szTip[63] = '\0';
+		} else {
+		    strncpy(nid->szTip, SvPV_nolen(ST(next_i)), 128);
+		    nid->szTip[127] = '\0';
+		}
                 SwitchBit(nid->uFlags, NIF_TIP, 1);
             } else if(strcmp(option, "-events") == 0) {
                 next_i = i + 1;
@@ -901,6 +956,38 @@ void ParseNotifyIconOptions(
                     hvEvents = newHV();
 
                 ParseNEMNotifyIconEvent( NOTXSCALL hvEvents, option+3, ST(next_i) );
+            } else if(strcmp(option, "-behaviour") == 0) {
+                next_i = i + 1;
+		if (SvIV(ST(next_i))) {
+			nid->uVersion = NOTIFYICON_VERSION;
+		}
+            } else if(strcmp(option, "-balloon") == 0) {
+                next_i = i + 1;
+                SwitchBit(nid->uFlags, NIF_INFO, SvIV(ST(next_i)));
+            } else if(strcmp(option, "-balloon_tip") == 0) {
+                next_i = i + 1;
+		strncpy(nid->szInfo, SvPV_nolen(ST(next_i)), 256);
+		nid->szInfo[255] = '\0';
+            } else if(strcmp(option, "-balloon_title") == 0) {
+                next_i = i + 1;
+		strncpy(nid->szInfoTitle, SvPV_nolen(ST(next_i)), 64);
+		nid->szInfoTitle[63] = '\0';
+            } else if(strcmp(option, "-balloon_timeout") == 0) {
+                next_i = i + 1;
+                nid->uTimeout = (UINT) SvIV(ST(next_i));
+            } else if(strcmp(option, "-balloon_icon") == 0) {
+                next_i = i + 1;
+                if(strcmp(SvPV_nolen(ST(next_i)), "error") == 0) {
+                    nid->dwInfoFlags = NIIF_ERROR;
+                } else if(strcmp(SvPV_nolen(ST(next_i)), "info") == 0) {
+                    nid->dwInfoFlags = NIIF_INFO;
+                } else if(strcmp(SvPV_nolen(ST(next_i)), "warning") == 0) {
+                    nid->dwInfoFlags = NIIF_WARNING;
+                } else if(strcmp(SvPV_nolen(ST(next_i)), "none") == 0) {
+                    nid->dwInfoFlags = NIIF_NONE;
+                } else {
+                    W32G_WARN("Win32::GUI: Invalid value for -balloon_icon!");
+                }
             }
         } else {
             next_i = -1;
@@ -954,6 +1041,5 @@ void ParseNotifyIconOptions(
 
     // Free if not use.
     if (hvEvents != NULL)
-        hv_undef(hvEvents);
+        SvREFCNT_dec(hvEvents);
 }
-

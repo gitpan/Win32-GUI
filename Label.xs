@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Label
     #
-    # $Id: Label.xs,v 1.6 2005/08/03 21:45:57 robertemay Exp $
+    # $Id: Label.xs,v 1.7 2006/01/11 21:26:16 robertemay Exp $
     #
     ###########################################################################
     */
@@ -44,21 +44,16 @@ Label_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATESTRU
         perlcs->hImageList = (HIMAGELIST) handle_From(NOTXSCALL value);
     } else if(strcmp(option, "-truncate") == 0) {
         if(strcmp(SvPV_nolen(value), "path") == 0) {
-            SwitchBit(perlcs->cs.style, SS_PATHELLIPSIS, 1);
-            SwitchBit(perlcs->cs.style, SS_ENDELLIPSIS, 0);
-            SwitchBit(perlcs->cs.style, SS_WORDELLIPSIS, 0);
+			perlcs->cs.style &= ~SS_ELLIPSISMASK;
+			perlcs->cs.style |= SS_PATHELLIPSIS;
         } else if(strcmp(SvPV_nolen(value), "word") == 0) {
-            SwitchBit(perlcs->cs.style, SS_PATHELLIPSIS, 0);
-            SwitchBit(perlcs->cs.style, SS_ENDELLIPSIS, 0);
-            SwitchBit(perlcs->cs.style, SS_WORDELLIPSIS, 1);
+			perlcs->cs.style &= ~SS_ELLIPSISMASK;
+			perlcs->cs.style |= SS_WORDELLIPSIS;
         } else if(SvIV(value)) {
-            SwitchBit(perlcs->cs.style, SS_PATHELLIPSIS, 0);
-            SwitchBit(perlcs->cs.style, SS_ENDELLIPSIS, 1);
-            SwitchBit(perlcs->cs.style, SS_WORDELLIPSIS, 0);
+			perlcs->cs.style &= ~SS_ELLIPSISMASK;
+			perlcs->cs.style |= SS_ENDELLIPSIS;
         } else {
-            SwitchBit(perlcs->cs.style, SS_PATHELLIPSIS, 0);
-            SwitchBit(perlcs->cs.style, SS_ENDELLIPSIS, 0);
-            SwitchBit(perlcs->cs.style, SS_WORDELLIPSIS, 0);
+			perlcs->cs.style &= ~SS_ELLIPSISMASK;
         }
     } else if(strcmp(option, "-frame") == 0) {
         if(strcmp(SvPV_nolen(value), "black") == 0) {

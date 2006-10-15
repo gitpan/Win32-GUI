@@ -1,6 +1,6 @@
 #!perl -wT
 # Win32::GUI test suite.
-# $Id: 02_window.t,v 1.2 2005/08/03 21:46:00 robertemay Exp $
+# $Id: 02_window.t,v 1.3 2006/05/16 18:57:26 robertemay Exp $
 #
 # Win32::GUI::Window tests:
 # - check that we can create and manipulate Windows
@@ -12,7 +12,7 @@ BEGIN { $| = 1 } # Autoflush
 
 use Test::More tests => 16;
 
-use Win32::GUI;
+use Win32::GUI();
 
 # check that the methods we want to use are available
 can_ok('Win32::GUI::Window', qw(new Left Top Width Height Move Resize Text) );

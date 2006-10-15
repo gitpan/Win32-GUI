@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::ListView
     #
-    # $Id: ListView.xs,v 1.9 2005/08/03 21:45:57 robertemay Exp $
+    # $Id: ListView.xs,v 1.13 2006/03/16 23:14:31 robertemay Exp $
     #
     ###########################################################################
     */
@@ -327,8 +327,6 @@ CODE:
     RETVAL = ListView_Arrange(handle, flag);
 OUTPUT:
     RETVAL
-
-    # TODO : ListView_CreateDragImage
 
     ###########################################################################
     # (@)METHOD:CreateDragImage(index, xcor, ycor)
@@ -867,7 +865,8 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:GetNextItem(index,[mask=LVNI_ALL])
-    # Searches for a list view item that has the specified properties and bears the specified relationship to a specified item.
+    # Searches for a list view item that has the specified properties and bears
+    # the specified relationship to a specified item.
 UINT
 GetNextItem(handle,index,mask=LVNI_ALL)
     HWND handle
@@ -939,7 +938,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:GetStringWidth(STRING)
-    # Determines the width of a specified string using the specified ListView's current font. 
+    # Determines the width of a specified string using the specified ListView's
+    # current font. 
 int
 GetStringWidth(handle,string)
     HWND handle

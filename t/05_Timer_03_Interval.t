@@ -1,6 +1,6 @@
 #!perl -wT
 # Win32::GUI test suite.
-# $Id: 05_Timer_03_Interval.t,v 1.2 2005/11/21 22:33:34 robertemay Exp $
+# $Id: 05_Timer_03_Interval.t,v 1.3 2006/05/16 18:57:26 robertemay Exp $
 #
 # test coverage of Timers
 
@@ -11,7 +11,7 @@ BEGIN { $| = 1 } # Autoflush
 
 use Test::More tests => 11;
 
-use Win32::GUI;
+use Win32::GUI();
 
 my $ctrl = "Timer";
 my $class = "Win32::GUI::$ctrl";

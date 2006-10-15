@@ -1,4 +1,4 @@
-=for comment $Id: Part1.pod,v 1.2 2005/10/05 22:20:49 robertemay Exp $
+=for comment $Id: Part1.pod,v 1.3 2006/07/16 11:09:33 robertemay Exp $
 
 =head1 NAME
 
@@ -13,7 +13,7 @@ environment prints "Hello, world", so let's go with that.
 
 To start with, we load Win32::GUI.
 
-    use Win32::GUI;
+    use Win32::GUI();
 
 We are working in a windowing environment, so we need a window. Main windows
 are created using Win32::GUI::Window->new(). The parameters to new() are a
@@ -100,7 +100,7 @@ handler, but we don't need to here.
 
 So, let's put it all together.
 
-    use Win32::GUI;
+    use Win32::GUI();
     $main = Win32::GUI::Window->new(
 		-name   => 'Main',
 		-width  => 100,
@@ -179,7 +179,7 @@ OK, let's put all this together. We'll add the ability to specify the label
 text on the command line, just to be fancy (it also shows that the values of
 options can be set using variables, not just constant values).
 
-    use Win32::GUI;
+    use Win32::GUI();
 
     $text = defined($ARGV[0]) ? $ARGV[0] : "Hello, world";
 
@@ -350,7 +350,7 @@ our initial setup.
 OK, we now have a nice, fully working GUI application. Here it is, in all its
 glory.
 
-    use Win32::GUI;
+    use Win32::GUI();
 
     $text = defined($ARGV[0]) ? $ARGV[0] : "Hello, world";
 

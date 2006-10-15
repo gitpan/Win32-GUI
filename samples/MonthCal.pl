@@ -3,7 +3,8 @@
 #  MonthCal sample
 #
 use strict;
-use Win32::GUI;
+use warnings;
+use Win32::GUI();
 
 # main Window
 my $Window = new Win32::GUI::Window (

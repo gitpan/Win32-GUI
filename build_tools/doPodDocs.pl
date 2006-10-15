@@ -19,7 +19,7 @@
 
 #
 # Author: Robert May , rmay@popeslane.clara.co.uk, 20 June 2005
-# $Id: doPodDocs.pl,v 1.3 2005/10/01 18:00:40 robertemay Exp $
+# $Id: doPodDocs.pl,v 1.5 2006/03/16 21:11:12 robertemay Exp $
 
 use strict;
 use warnings;

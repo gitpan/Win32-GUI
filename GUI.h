@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------
-// $Id: GUI.h,v 1.21 2005/10/06 21:27:40 robertemay Exp $
+// $Id: GUI.h,v 1.30 2006/08/30 21:57:58 robertemay Exp $
 // --------------------------------------------------------------------
 // #### Uncomment the next two lines (in increasing verbose order)
 // #### for debugging info
@@ -9,6 +9,9 @@
 #define  WIN32_LEAN_AND_MEAN
 #define _WIN32_IE 0x0501
 // #define _WIN32_WINNT 0x0400
+/* If WINVER is not defined, the latest MS headers define it as 0x501,
+ * but MinGW headers don't, so set it here */
+#define WINVER 0x501
 #undef NOTRACKMOUSEEVENT
 #include <stdarg.h>
 #include <windows.h>
@@ -17,6 +20,7 @@
 #include <wtypes.h>
 #include <richedit.h>
 #include <shellapi.h>
+#include <shlwapi.h>
 #include <shlobj.h>
 
 #include "resource.h"
@@ -318,7 +322,7 @@ typedef struct tagPERLWIN32GUI_MENUITEMDATA {
 #undef WORD
 #define WORD __TEMP_WORD
 
-#define PERLUD_FREE Perlud_Free(NOTXSCALL perlud); SetWindowLong(hwnd, GWL_USERDATA, (LONG) NULL);
+#define PERLUD_FREE SetWindowLong(hwnd, GWL_USERDATA, (LONG) NULL); Perlud_Free(NOTXSCALL perlud);
 /*
  * Section for the constant definitions.
  */
@@ -419,8 +423,8 @@ BOOL GetMenuName(NOTXSPROC HWND hwnd, int nID, char *Name);
 DWORD CALLBACK RichEditSave(DWORD dwCookie, LPBYTE pbBuff, LONG cb, LONG FAR *pcb);
 DWORD CALLBACK RichEditLoad(DWORD dwCookie, LPBYTE pbBuff, LONG cb, LONG FAR *pcb);
 int CALLBACK BrowseForFolderProc(HWND hWnd, UINT uMsg, LPARAM lParam, LPARAM lpData);
-int AdjustSplitterCoord(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, int x, HWND phwnd);
-void DrawSplitter(NOTXSPROC HWND hwnd);
+int AdjustSplitterCoord(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, int x, int w, HWND phwnd);
+void DrawSplitter(NOTXSPROC HWND hwnd, int x, int y, int w, int h);
 BOOL CALLBACK EnumMyWindowsProc(HWND hwnd, LPARAM lparam);
 BOOL CALLBACK CountMyWindowsProc(HWND hwnd, LPARAM lparam);
 BOOL CALLBACK EnableWindowsProc(HWND hwnd, LPARAM lParam);
@@ -436,7 +440,7 @@ char* DoEvent_NeedText(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, int iEventId, c
 int DoEvent_Timer (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, int iTimerId, int iEventId, char *Name, ...);
 int DoEvent_NotifyIcon (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, int iNotifyId, char* Name, ...);
 int DoEvent_Paint (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud);
-void DoHook(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wParam, LPARAM lParam, int* PerlResult, int notify = 0);
+void DoHook(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wParam, LPARAM lParam, int* PerlResult, int notify);
 BOOL ProcessEventError(NOTXSPROC char *Name, int* PerlResult);
 
 /* GUI_Options.cpp */
@@ -682,7 +686,7 @@ void MonthCal_onPostCreate(NOTXSPROC HWND myhandle, LPPERLWIN32GUI_CREATESTRUCT 
 BOOL MonthCal_onParseEvent(NOTXSPROC char *name, int* eventID);
 int  MonthCal_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-// From windowsX.h (if we use any more from there, then probably better to 
+// From windowsX.h (if we use any more from there, then probably better to
 // include it, and remove these)
 #define GET_X_LPARAM(lp)                        ((int)(short)LOWORD(lp))
 #define GET_Y_LPARAM(lp)                        ((int)(short)HIWORD(lp))
@@ -779,6 +783,15 @@ int  MonthCal_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPAR
     # define TB_GETSTRING TB_GETSTRINGA
     #endif
   #endif
+
+  #ifndef NOTIFYICONDATA_V1_SIZE
+    # define NOTIFYICONDATA_V1_SIZE CCSIZEOF_STRUCT(NOTIFYICONDATA, szTip[63])
+  #endif
+
+  #ifndef TTM_SETTITLE
+  # define TTM_SETTITLE TTM_SETTITLEA
+  #endif
+
 #else
   #define WNDPROC_CAST FARPROC
   #define LWNDPROC_CAST LRESULT (__stdcall *)(HWND, UINT, WPARAM, LPARAM)
@@ -806,7 +819,10 @@ typedef struct tagWINDOWINFO
 
 #define WS_ACTIVECAPTION    0x0001
 
-extern "C" BOOL WINAPI
+#ifdef __cplusplus
+  extern "C"
+#endif
+BOOL WINAPI
 GetWindowInfo(
     HWND hwnd,
     PWINDOWINFO pwi

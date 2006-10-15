@@ -1,4 +1,4 @@
-=for comment $Id: Part5.pod,v 1.2 2005/10/05 22:20:49 robertemay Exp $
+=for comment $Id: Part5.pod,v 1.3 2006/07/16 11:09:33 robertemay Exp $
 
 =head1 NAME
 
@@ -45,7 +45,7 @@ call the dialog phase, eg:
 Steps 1, 2 and 3 can be repeated how many times you like, to create
 several independent windows:
 
-	use Win32::GUI;
+	use Win32::GUI();
 	
 	$W1 = new Win32::GUI::Window(
 		-name  => "W1",
@@ -92,7 +92,7 @@ Properties dialog as a popup window.
 We'll modify our program so that the second window appears when the
 user clicks the button on the first window:
 
-	use Win32::GUI;
+	use Win32::GUI();
 	
 	$W1 = new Win32::GUI::Window(
 		-name  => "W1",
@@ -182,7 +182,7 @@ process events for W2.  When we are done with W2, we return C<-1> from an
 event handler, which causes C<DoModal()> to return, but in this case does
 not cause any of the windows to be destroyed.  Here's the full code:
 
-	use Win32::GUI;
+	use Win32::GUI();
 
 	my $W1 = Win32::GUI::Window->new(
 		-name  => "W1",

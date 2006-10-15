@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::NotifyIcon
     #
-    # $Id: NotifyIcon.xs,v 1.3 2004/03/28 15:01:47 lrocher Exp $
+    # $Id: NotifyIcon.xs,v 1.6 2006/03/16 21:11:12 robertemay Exp $
     #
     ###########################################################################
     */
@@ -18,17 +18,18 @@ PROTOTYPES: DISABLE
     ###########################################################################
     # (@)INTERNAL:Add(PARENT, %OPTIONS)
 BOOL
-Add(parent,...)
+_Add(parent,...)
     HWND parent
 PREINIT:
     NOTIFYICONDATA nid;
 CODE:
     ZeroMemory(&nid, sizeof(NOTIFYICONDATA));
-    nid.cbSize = sizeof(NOTIFYICONDATA);
-
+    nid.cbSize = NOTIFYICONDATA_V1_SIZE;
     nid.hWnd = parent;
     nid.uCallbackMessage = WM_NOTIFYICON;
     SwitchBit(nid.uFlags, NIF_MESSAGE, 1);
+    SwitchBit(nid.uFlags, NIF_INFO, 1);
+    nid.uTimeout = 10000;
 
     ParseNotifyIconOptions(NOTXSCALL sp, mark, ax, items, 1, &nid);
 
@@ -40,15 +41,15 @@ OUTPUT:
     ###########################################################################
     # (@)INTERNAL:Modify(PARENT, %OPTIONS)
 BOOL
-Modify(parent,...)
+_Modify(parent,...)
     HWND parent
 PREINIT:
     NOTIFYICONDATA nid;
 CODE:
     ZeroMemory(&nid, sizeof(NOTIFYICONDATA));
-
-    nid.cbSize = sizeof(NOTIFYICONDATA);
+    nid.cbSize = NOTIFYICONDATA_V1_SIZE;
     nid.hWnd = parent;
+    nid.uTimeout = 10000;
 
     ParseNotifyIconOptions(NOTXSCALL sp, mark, ax, items, 1, &nid);
 
@@ -60,13 +61,13 @@ OUTPUT:
     ###########################################################################
     # (@)INTERNAL:Delete(PARENT, %OPTIONS)
 BOOL
-Delete(parent,...)
+_Delete(parent,...)
     HWND parent
 PREINIT:
     NOTIFYICONDATA nid;
 CODE:
     ZeroMemory(&nid, sizeof(NOTIFYICONDATA));
-    nid.cbSize = sizeof(NOTIFYICONDATA);
+    nid.cbSize = NOTIFYICONDATA_V1_SIZE;
     nid.hWnd = parent;
 
     ParseNotifyIconOptions(NOTXSCALL sp, mark, ax, items, 1, &nid);
@@ -74,3 +75,40 @@ CODE:
     RETVAL = Shell_NotifyIcon(NIM_DELETE, &nid);
 OUTPUT:
     RETVAL
+
+    ###########################################################################
+    # (@)INTERNAL:SetFocus(PARENT, %OPTIONS)
+BOOL
+_SetFocus(parent,...)
+    HWND parent
+PREINIT:
+    NOTIFYICONDATA nid;
+CODE:
+    ZeroMemory(&nid, sizeof(NOTIFYICONDATA));
+    nid.cbSize = NOTIFYICONDATA_V1_SIZE;
+    nid.hWnd = parent;
+
+    ParseNotifyIconOptions(NOTXSCALL sp, mark, ax, items, 1, &nid);
+
+    RETVAL = Shell_NotifyIcon(NIM_SETFOCUS, &nid);
+OUTPUT:
+    RETVAL
+
+    ###########################################################################
+    # (@)INTERNAL:SetVersion(PARENT, %OPTIONS)
+BOOL
+_SetVersion(parent,...)
+    HWND parent
+PREINIT:
+    NOTIFYICONDATA nid;
+CODE:
+    ZeroMemory(&nid, sizeof(NOTIFYICONDATA));
+    nid.cbSize = NOTIFYICONDATA_V1_SIZE;
+    nid.hWnd = parent;
+
+    ParseNotifyIconOptions(NOTXSCALL sp, mark, ax, items, 1, &nid);
+
+    RETVAL = Shell_NotifyIcon(NIM_SETVERSION, &nid);
+OUTPUT:
+    RETVAL
+

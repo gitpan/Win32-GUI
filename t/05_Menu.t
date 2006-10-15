@@ -1,6 +1,6 @@
 #!perl -wT
 # Win32::GUI test suite.
-# $Id: 05_Menu.t,v 1.1 2005/08/03 21:46:00 robertemay Exp $
+# $Id: 05_Menu.t,v 1.2 2006/05/16 18:57:26 robertemay Exp $
 #
 # test coverage of Menus
 
@@ -11,7 +11,7 @@ BEGIN { $| = 1 } # Autoflush
 
 use Test::More tests => 4;
 
-use Win32::GUI;
+use Win32::GUI();
 
 my $ctrl = "Menu";
 my $name = "Test$ctrl";

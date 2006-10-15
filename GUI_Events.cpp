@@ -2,7 +2,7 @@
     ###########################################################################
     # event processing routines
     #
-    # $Id: GUI_Events.cpp,v 1.10 2005/06/30 22:36:21 robertemay Exp $
+    # $Id: GUI_Events.cpp,v 1.14 2006/08/03 22:20:02 robertemay Exp $
     #
     ###########################################################################
         */
@@ -140,6 +140,9 @@ int DoEvent(
                     break;
                 case PERLWIN32GUI_ARGTYPE_STRING:
                     XPUSHs(sv_2mortal(newSVpv(va_arg( args, char * ), 0)));
+                    break;
+                case PERLWIN32GUI_ARGTYPE_SV:
+                    XPUSHs(va_arg( args, SV *));
                     break;
                 default:
                     warn("Win32::GUI: WARNING! unknown argument type (%d) to event '%s'", argtype, Name);
@@ -497,7 +500,11 @@ char*  DoEvent_NeedText(
             SPAGAIN;
             if(!ProcessEventError(NOTXSCALL Name, &PerlResult)) {
                 if(count > 0) {
-                    PerlResult = POPi;
+                    if(count > 1) {
+                        PerlResult = POPi;
+                    } else {
+                        PerlResult = 0;
+                    }
                     SV* svt = POPs;
                     textneeded = (char *) safemalloc(sv_len(svt) + 1);
                     strcpy(textneeded, SvPV_nolen(svt));
@@ -561,7 +568,11 @@ char*  DoEvent_NeedText(
             SPAGAIN;
             if(!ProcessEventError(NOTXSCALL EventName, &PerlResult)) {
                 if(count > 0) {
-                    PerlResult = POPi;
+                    if(count > 1) {
+                        PerlResult = POPi;
+                    } else {
+                        PerlResult = 0;
+                    }
                     SV* svt = POPs;
                     textneeded = (char *) safemalloc(sv_len(svt) + 1);
                     strcpy(textneeded, SvPV_nolen(svt));

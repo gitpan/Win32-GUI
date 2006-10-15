@@ -1,8 +1,8 @@
-=for comment $Id: Packages.pod,v 1.1 2005/06/26 16:41:00 robertemay Exp $
+=for comment $Id: Packages.pod,v 1.2 2006/07/16 11:09:33 robertemay Exp $
 
 =head1 NAME
 
-Win32::GUI::Reference::Packages - Available packages
+Win32::GUI::Reference::Packages - Core packages
 
 =head1 DESCRIPTION
 

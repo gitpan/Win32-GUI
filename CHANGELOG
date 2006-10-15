@@ -1,36 +1,314 @@
 ###############################################################################
 # CHANGELOG
-# $Id: CHANGELOG,v 1.68 2005/11/22 20:54:45 robertemay Exp $
+# $Id: CHANGELOG,v 1.103 2006/10/15 14:07:45 robertemay Exp $
 ###############################################################################
 
 Win32-GUI ChangeLog
 ===================
-+ [Robert May] : 22 Nov 2003 - 1.03 release
++ [Robert May] : 15 October 2006 - 1.04 Release
+    - Win32::GUI 1.04 release.  Up versions, fix docs etc.
+    - Tagged head as Win32-GUI-1_04
+
++ [Robert May] : 15 October 2006 - Fix dist build
+    --- Win32::GUI::Constants ---
+    - Rename MFCGrid/Makefile to MFCGrid/Makefile.mfcgrid so that
+      it is not excluded by 'nmake manifest'.
+    - Makefile.PL - update to reflect new makefile name
+
++ [Robert May] : 15 October 2006 - Bugfix NotifyIcon Delete method
+    - GUI.pm - fix Win32::GUI::NotifyIcon::Delete
+
++ [Robert May] : 15 October 2006 - Fix build under Perl 5.6
+    - Makefile.PL - Need EU:MM 6/06 or higher
+    - Constants.PL, Scintilla.PL - stop using ':crlf' layer to avoid line
+      end problems and do it manually
+
++ [Robert May] : 15 October 2006 - keyboard navigation for win32-gui-demos
+    - scripts/win32-gui-demos.pl - fix TAB nagigation out of SCintilla
+      control, add menu accelerators, About box dismissed with ESC key.
+    --- Win32::GUI::Constants ---
+    - Constants.PL - add DLGC_ constants
+
++ [Robert May] : 30 August 2006 - remove legacy GUI namespace
+    - GUI.pm - remove legacy aliasing between Win32::GUI
+      namespace and GUI namespace.
+
++ [Robert May] : 30 August 2006 - Cygwin build fixes
+    - GUI_Helpers.cpp - SelectObject cast to HFONT
+    - Tooltip.xs - use PTR2IV() for casting pointers to IV
+    - GUI.h - add missing SETTITLE definition for MinGW headers
+
++ [Robert May] : 3 August 2006 - Bug Fixes
+    - GUI_Helpers.cpp - fix potential memory leak in CalcControlSize
+    --- Win32::GUI::DIBitmap ---
+    - DIBitmap.xs - fix memory leak in AlphaCopyToDC
+
++ [Robert May] : 3 August 2006 - Rework Tooltip class
+    - GUI.pm, Tooltip.xs - add -noanimate and -nofade window
+      options.  Document, along with -balloon option.
+    - Tooltip.xs - add methods: SetTitle, GetBubbleSize,
+      AdjustRect.  Update documentation.
+    - GUI_Options.cpp - modify ParseTooltipOptions to allow
+      using -window and -id options together, whilst maintaining
+      backwards comatibility with using -id on its own.
+    - Tooltip.xs - change all ID fields to TOOL (backwards compatible),
+      NeedText, Pop and Show events now have an extra flag indicating
+      whether the first parameter is hwnd or id, update all documentation,
+      make TTF_SUBCLASS on by default.
+    - GUI.pm - Add AddTooltip() method to Win32::GUI::Window, mirroring other
+      Add* methods.
+    - GUI_Events.cpp - fix DoEvent_NeedText so that it doesn't crash if
+      only a string is returned from the NeedText event
+    --- Win32::GUI::Constants ---
+   - Constants.PL - add TTF_, TTM_ and TTN_ constants
+
++ [Robert May] : 16 July 2006 - LoadLibrary and Scintilla
+    - GUI.xs - modify LoadLibrary to convert provided path
+      to Win32 style seperators, and under cygwin to convert
+      cygwin paths to Win32 paths.
+    - MANIFEST - correct and update MANIFEST
+    --- Win32::GUI::ReleaseNotes ---
+    - RN_1_04.pod - add information about new LoadLibrary
+      semantics
+    --- Win32::GUI::Scintilla ---
+    - Scintilla.PL - re-write SciLexer.dll loading code to
+      utilise new Win32::GUI::LoadLibrary semantics, and
+      report better diagnostics (Reini Urban).
+
++ [Robert May] : 16 July 2006 - Doc updates and add ReleaseNotes
+    - various documentation updates
+    - buildtools\doHTMLdocs.pl re-written to find and convert
+      all POD documentation
+    - Add Package Win32::GUI::ReleaseNotes and add historic
+      release information
+    - Initial version of 1.04 release notes drafted
+
++ [Robert May] : 26 June 2006 - win32-gui-demos.pl
+    - added new file scripts\win32-gui-demos.pl
+    - Makefile.PL - updated to install new win32-gui-demos script
+
++ [Robert May] : 26 June 2006 - Rename ExtCreateRgn and GetRgnData
+    - DC.xs - rename ExtCreateRgn and GetRgnData to ExtCreateRegion
+      and GetRegionData to match win32 API names
+
++ [Robert May] : 24 June 2006 - ExtCreateRgn and GetRgnData
+    - DC.xs - added new region construction ExtCreateRgn and
+      new region method GetRgnData (Tracker: 1469648)
+
++ [Robert May] : 23 June 2006 - -wantreturn and AnimateWindow
+    - GUI.pm, Textfield.xs - add -wantreturn option to constructor
+      for Textfield (and RichEdit), along with documentation
+    - GUI.pm, GUI.xs, samples/AnimateWindow.pl - add Animate() window
+      method.
+    --- Win32::GUI::Constants ---
+    - add AnimateWindow AW_* constants
+
++ [Robert May] : 23 June 2006 - ClassData method and memory leak fixes
+    - GUI.pm, GUI.xs, GUI_Helpers.cpp - change implementation of
+      UserData() method, and add ClassData() method.
+    - GUI_Helpers.cpp, GUI.xs, GUI_Options.cpp, MonthCal.xs - change av_undef
+      and hv_undef calls to SvREFCNT_dec to correct memory leaks
+    - samples\Tutorial* - change to use Win32::GUI(); to eliminate warning
+
++ [Robert May] : 14 June 2006 - Fix Cygwin build
+    - GUI.pm - fix docs; fix NotifyIcon->new to not modify parent if
+      failure on creation
+    - GUI_MessageLoops.cpp - fix documentation
+    - MANIFEST - corrected
+    --- Win32::GUI::Scintilla ---
+    - Perl.pm - fixed default styles
+    - Scintilla.pod - typos
+    --- Win32::GUI::Constants ---
+    - add Changes and TODO
+
++ [Robert May] : 11 June 2006 - Fix Cygwin build
+    - All Makefile.PL: add MY::special_targets to add .rc and .res to
+      .SUFFIXES
+    - All Makefile.PL: turn off warnings, to prevent spurious
+      'redefinition' of MY package subroutine warnings.
+    - GUI.xs - add casts in LoadImage to assist gcc.
+    - GUI.pm - up version to 1.03_04
+    - MANIFEST: update
+    --- Win32::GUI::Constants ---
+    - Constants.PL - fix line endings for cygwin
+    - Makefile.PL  - fix directory seperators
+    - Constants.xs - fix a cast
+    - hash/Makefile.PL - close the output filehandle
+    - t/52_tags.t  - fix icon, cursor and bitmap tag definitions
+    --- Win32::GUI::Scintilla ---
+    - Scintilla.PL   - fix line endings when reading Scintilla.iface; fix
+      path fo loading SciLexer.dll under Cygwin
+
++ [Robert May] : 11 June 2006 - Merge AxWindow/DIBitmap/Grid/SCintilla
+    - Move Win32::GUI::AxWindow code into core
+    - Move Win32::GUI::DIBitmap code into core
+    - Move Win32::GUI::Grid code into core
+    - Move Win32::GUI::Scintilla code into core
+
++ [Robert May] : 01 June 2006 - Icon/Cursor/Bitmap enhancement
+    --- Win32::GUI core ---
+    - GUI.xs,GUI.pm enhanced LoadImage to search more files for
+      resources, and to allow passing a resource ID.  Update
+      documentation for Icon, Cursor and Bitmap constructors
+      to reflect additions.
+    - samples/standard_images.pl add sample that allows browsing of
+      all the standard resources.
+    --- Win32::GUI::Constants ---
+    - Constants.PL add IDI_, IDC_, OBM_, OCR_ and OIC_ constants
+      to load pre-defined resources.
+
++ [Robert May] : 16 May 2006 - More Win32::GUI::Constants
+    --- Win32::GUI core ---
+    - GUI_constants.cpp removed
+    - Makefile.PL remove GUI_Constants.cpp
+    - GUI.xs change constants() to _constants and support only
+      the Win32__GUI__ constants here
+    - GUI.pm remove EXPORTER and @EXPORT_OK, replace with import()
+      that delegates to Win32::GUI::Constants. Fix AUTOLOAD() to
+      delegate to Win32::GUI::Constants.  Introduce
+      Win32::GUI::constant() that delegates to Win32::GUI::Constants
+      for backwards compatibility.  Changes to Win32::GUI::AUTOLOAD()
+      required removal of unnecessary inheritance on some
+      Win32::GUI::Menu::* classes
+    - t\01_constants.t new tests that Win32::GUI delegates to Win32::GUI::Constants
+    - samples\* Fix all samples not to warn under new constants
+    support.  Fix terrrible resource leaks inDraw.pl and region.pl.
+    use $FindBin::Dir where we use local files, so that they are
+    found even if the samples directory is not the working directory.
+    Add SPLASH.bmp so that the SplashScreen example does something.
+    - up version to 1.03_03
+    --- Win32::GUI::Constants ---
+    - Constants.PL add more constants: LVSIL_, LVIR_, THT_
+    - Tags.pm add new constants to suitable tags
+    - t\* fix tests not to warn under new constants support. Minor
+      typo corrections, add new constants to 52_tags.t
+
++ [Robert May] : 13 May 2006 - Add Win32::GUI::Constants
+    - add Win32-GUI-Constants directory and new files
+    - update MANIFEST
+
++ [Robert May] : 25 Apr 2006 - Add Win32::GUI::DropFiles
+    - add Win32-GUI-DropFiles directory and new files
+    - update MANIFEST
+
++ [Robert May] : 25 Apr 2006 - Fix build under cygwin/MSVC7
+    - RichEdit.xs fix precedence warning under VC7
+    - Makefile.PL fix LIBS under cygwin (add -lversion); fix
+      pasthru target under cygwin
+
++ [Robert May] : 20 Apr 2006 - Fix build under MinGW
+    - GUI.xs correct typo in type definition (LPCTSTR vs LPTSTR);
+      use 0xFFFFFFFF instead of -1 to avoid gcc warning when assigning
+      to UINT.
+
++ [Robert May] : 14 Apr 2006 - Fix build/test on Perl 5.6.1
+    - GUI.h GUI.xs add GetDllVersion call to replace use of
+      Win32::GetFileVersion that is not available in perl 5.6 (or
+      cygwin perl 5.8)
+    - GUI.pm Change use of Win32::GetFileVersion to
+      Win32::GUI::GetDllVersion.  Change position of bootstrap for
+      Win32::GUI so that we can call Win32::GUI::GetDllVersion
+    - t/05_NotifyIcon_01_Constructor.t add test to ensure that
+      $Win32::GUI::NotifyIcon::SHELLDLL_VERSION is set
+    - samples/NotifyIcon.pl Use new Win32::GUI::GetDllVersion and
+      a couple of minor bug-fixes under perl 5.6
+
++ [Robert May] : 13 Apr 2006 - Clean build under Cygwin
+    - TYPEMAP corrected various entries to use INT2PTR and PTR2INT
+      macros to eliminate warnings of casting to/from pointers with
+      different sizes.
+    - DC.xs, GUI.xs, GUI_Helpers.cpp, GUI_Options.cpp, TreeView.xs
+      used INT2PTR and PTR2INT wherever necessary to silence
+      compiler warnings.
+    - Makefile.PL corrected location of demos target, so that demos
+      are installed under cygwin
+
++ [Robert May] : 12 Apr 2006 - Start of DropFiles integration
+    - GUI.pm Add Acceptfiles method and documentation.
+    - GUI_Events.cpp Fix OEM callback to allow passing SV.
+    - GUI_MessageLoops.cpp modify WM_DROPFILES handling to pass
+      a Win32::GUI::DropFiles object, and update event documentation.
+    - GUI_Options.cpp Add -acceptfiles option for windows
+    - Makefile.PL set up W32G_CORE variable so that sub directories
+      can know if they arebeing called from a higher level Makefile,
+      and so that tests know how they are being run.
+    - docs/GUI/Reference/Options.pod added -acceptfiles documentation
+
++ [Robert May] : 12 Apr 2006 - Fix GetKeyState
+    - GUI.xs Changed stack macros in GetKeyStae to those that exist
+      in Perl 5.6
+
++ [Robert May] : 16 Mar 2006 - Changes from Reini Urban
+    - GUI.xs Add more options to DoEvents().  Add SetWindowPos().
+    - GUI.xs enhance LoadImage to try OEM resources
+    - ImageList.xs additional documentation
+    - other documentation typos
+
++ [Robert May] : 16 Mar 2006 - bug fix and addition of GetKeyState
+    - Added Win32::GUI::GetKeyState
+    - Listbox.xs fix to indexing error in SetTabStops().
+
++ [Robert May] : 11 Jan 2006 - bug fixes and add balloon tips for Notify Icon
+    - Label.xs correct -truncate option processing, as SS_.*ELLIPSIS.*
+      styles are not single bits
+    - NotifyIcon.xs, GUI_Options.cpp, GUI.pm re-work NofifyIcon
+    class. Add balloon tooltips. Add support for message behaviour. Add
+    support for setfocus.  Add documentation. (Tracker: 1065072)
+    - t\05_NotifyIcon*.t, MANIFEST Notify Icon Tests added
+    - samples\NotifyIcon.pl, MANIFEST add demo app
+    - GUI.pm Changed initial value of $Win32::GUI::MenuIdCounter to avoid ID
+      clash with predefined WM_COMMAND values (IDOK, IDCANCEL,  etc.)
+    - GUI.xs Fix SendMessageTimeout to match documentation and return
+      undef on failure. (XSRETURN_UNDEF rather than XSRETURN_NO).
+    - GUI.pm corrected documentation of default values for autohscroll
+      and autovscroll in Textfield documentation
+    - GUI_MessageLoops.cpp added processing of WM_NEXTDLGCTL to
+      CommonMessageLoop to allow for tabbing out of multiline Textfields
+      when using -dialogui
+    - GUI_MessageLoops.cpp fixed WM_ERASEBACKGROUND (Tracker:1363141)
+    - Splitter.xs, GUI_Helpers.cpp, GUI.h re-worked splitter class.
+      (Tracker:1363141)
+    - RichEdit.xs made -background and -foreground work
+    - GUI_MessageLoops.cpp made -background work for Splitter windows
+    - GUI_Helpers.cpp removed an unnecessary dTHX, replacing it with
+      PERLUD_FETCH
+    - Upped version to 1.03_02
+
++ [Robert May] : 3 Dec 2005 - bug fixes
+    - GUI.h change order of instructions in PERLUD_FREE macro to prevent
+      crashes (Trackers 1243378 and 1248578)
+    - GUI.pm up version to 1.03_01 and tidy up
+    - GUI.xs change logic in all message loops (Dialog, DoEvents, DoModal) to
+      prevent memory leak (Tracker: 1201190)
+    - Listbox.xs add documentation to differentiate between SetCurSel and
+      SetSel (Tracker: 1177898)
+
++ [Robert May] : 22 Nov 2005 - 1.03 release
     - Tagged head as Win32-GUI-1_03
 
-+ [Robert May] : 21 Nov 2003 - 1.03 release candidate
++ [Robert May] : 21 Nov 2005 - 1.03 release candidate
     - t\05_Timer_*.t change interval test to use milli-seconds using
-    Win32::GetTickCount() rather than time().
-    -t\01_basic.t add tests for Test::More availability and correct OS.
-    -t\98_Pod.t new test of POD syntax
+      Win32::GetTickCount() rather than time().
+    - t\01_basic.t add tests for Test::More availability and correct OS.
+    - t\98_Pod.t new test of POD syntax
     - various minor documentation edits to correct POD syntax
-    -Makefile.PL added test for presence of compiler to stop us failing CPAN
-    Smoke tests in test environments with no compilers.
+    - Makefile.PL added test for presence of compiler to stop us failing CPAN
+      Smoke tests in test environments with no compilers.
     - Up version to 1.03
 
 + [Robert May] : 13 Nov 2005 - Bug fixes and preparing for 1.03 release
     - Makefile.PL added code to remove Test::More dependence from PPD
     - GUI_MessageLoops.cpp, Window.xs change all mouse related handlers to
-    use GET_X_LPARAM and GET_Y_LPARAM rather than HIWORD and LOWORD
-    (Tracker: 1262098) 
+      use GET_X_LPARAM and GET_Y_LPARAM rather than HIWORD and LOWORD
+      (Tracker: 1262098) 
     - GUI.xs added INTERNAL function GetWindowObject to get the perl window
-    object from a window handle
+      object from a window handle
     - GUI.pm, t\05_Timer*.t, docs\GUI\Tutorial\Part4.pod - re-wrote
-    Win32::GUI::Timer implementation and updated docs to make it all
-    consistent, and to make destruction happen correctly.  Added full tests
-    for the package. 
+      Win32::GUI::Timer implementation and updated docs to make it all
+      consistent, and to make destruction happen correctly.  Added full tests
+      for the package. 
     - GUI.xs fixed GetAsyncKeyState(), which was checking the wrong bit of
-    window's return value. Updated documentation.
+      window's return value. Updated documentation.
     - MANIFEST updated with new samples and new tests
     - GUI.pm upped version to 1.02_03
 

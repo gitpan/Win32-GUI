@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Win32::GUI;
+use Win32::GUI();
 
 my $DOS = Win32::GUI::GetPerlWindow();
 Win32::GUI::Hide($DOS);

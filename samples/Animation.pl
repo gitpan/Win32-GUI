@@ -3,7 +3,7 @@
 # This samples show how use Animation control (You can only open silent AVI clips).
 #
 use strict;
-use Win32::GUI;
+use Win32::GUI();
 
 # Create your main window
 my $Window = new Win32::GUI::Window(
@@ -39,7 +39,7 @@ $Window->AddButton (
     -onClick  => 'LoadAviFile',           #  a string name sub
 );
 
-# Add a load button.
+# Add a start button.
 $Window->AddButton (
     -name    => "Start",
     -pos     => [65,5],
@@ -48,7 +48,7 @@ $Window->AddButton (
     -onClick => sub { $Animation->Play(); },
 );
 
-# Add a load button.
+# Add a stop button.
 $Window->AddButton (
     -name    => "Stop",
     -pos     => [115,5],

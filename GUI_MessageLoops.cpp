@@ -2,7 +2,7 @@
     ###########################################################################
     # message loops
     #
-    # $Id: GUI_MessageLoops.cpp,v 1.15 2005/11/13 18:57:52 robertemay Exp $
+    # $Id: GUI_MessageLoops.cpp,v 1.22 2006/07/16 11:08:27 robertemay Exp $
     #
     ###########################################################################
         */
@@ -75,15 +75,18 @@ LRESULT CommonMsgLoop(NOTXSPROC HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
     case WM_ERASEBKGND:
         perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong((HWND) hwnd, GWL_USERDATA);
         if(perlud && (perlud->dwPlStyle & PERLWIN32GUI_FLICKERFREE)) {
-           return (LRESULT) 1;
+            return (LRESULT) 1;
         }
         // If we're a window and we have a background brush, then use it
-        if(perlud && perlud->hBackgroundBrush &&
-        		(perlud->iClass == WIN32__GUI__WINDOW || perlud->iClass == WIN32__GUI__DIALOG) ) {
-					RECT rc;
-					GetUpdateRect((HWND)hwnd, &rc, 0); 
-					FillRect((HDC)wParam, &rc, perlud->hBackgroundBrush); 
-        	return (LRESULT) 1;
+        if(perlud && perlud->hBackgroundBrush && (perlud->iClass == WIN32__GUI__WINDOW ||
+                                                  perlud->iClass == WIN32__GUI__DIALOG ||
+						  perlud->iClass == WIN32__GUI__SPLITTER) ) {
+            // Although this looks like we paint the whole of the background
+            // the HDC passed in wParam is clipped to the update region
+            RECT rc;
+            GetClientRect(hwnd, &rc);
+            FillRect((HDC)wParam, &rc, perlud->hBackgroundBrush);
+            return (LRESULT) 1;
         }
         break;
     case WM_CTLCOLOREDIT:
@@ -94,11 +97,11 @@ LRESULT CommonMsgLoop(NOTXSPROC HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
             perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong((HWND) lParam, GWL_USERDATA);
             if( ValidUserData(perlud) ) {
                 if(uMsg == WM_CTLCOLORSTATIC) {
-                		if(perlud->iClass == WIN32__GUI__EDIT) // Read-only Edit control
-                			SetBkColor((HDC) wParam, GetSysColor(COLOR_BTNFACE));
-                		else
-											SetBkMode((HDC) wParam, TRANSPARENT);
-								}
+                    if(perlud->iClass == WIN32__GUI__EDIT) // Read-only Edit control
+               	        SetBkColor((HDC) wParam, GetSysColor(COLOR_BTNFACE));
+                    else
+                        SetBkMode((HDC) wParam, TRANSPARENT);
+                }
                 if(perlud->clrForeground != CLR_INVALID)
                     SetTextColor((HDC) wParam, perlud->clrForeground);
                 if(perlud->clrBackground != CLR_INVALID) {
@@ -107,9 +110,9 @@ LRESULT CommonMsgLoop(NOTXSPROC HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
                 }
             }
 
-						DWORD hbrBackground;
-						if(hbrBackground = GetClassLong((HWND)lParam, GCL_HBRBACKGROUND))
-								return ((LRESULT) hbrBackground);
+            DWORD hbrBackground;
+            if(hbrBackground = GetClassLong((HWND)lParam, GCL_HBRBACKGROUND))
+                return ((LRESULT) hbrBackground);
 
             switch(uMsg) {
             case WM_CTLCOLOREDIT:
@@ -151,6 +154,19 @@ LRESULT CommonMsgLoop(NOTXSPROC HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
                 }
             }
             break;
+        }
+
+    case WM_NEXTDLGCTL:
+        { 
+            perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(hwnd, GWL_USERDATA);
+            if( ValidUserData(perlud) && (perlud->dwPlStyle & PERLWIN32GUI_DIALOGUI) ) {
+		if(LOWORD(lParam))
+			SetFocus((HWND)wParam);
+		else
+			SetFocus(GetNextDlgTabItem(hwnd, GetFocus(), (BOOL)wParam));
+
+		return 0;
+	    }
         }
     }
 #ifdef PERLWIN32GUI_STRONGDEBUG
@@ -595,8 +611,10 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
         default:
             /*
              * (@)EVENT:MouseEvent(MSG)
-             * Sent when the user performs a mouse event on
+             * Sent when the user performs any other mouse event on
              * a NotifyIcon; MSG is the message code.
+	     * For shell.dll greater than V6 will also fire for balloon
+	     * events.
              * (@)APPLIES_TO:NotifyIcon
              */
             PerlResult = DoEvent_NotifyIcon (NOTXSCALL perlud, (int) wParam, "MouseEvent",
@@ -608,19 +626,35 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 
     case WM_DROPFILES:
         /*
-         * (@)EVENT:DropFiles(DROP_HANDLE)
-         * Sent when the window receives dropped files.
+         * (@)EVENT:DropFiles(DROP)
+         * Sent when the window receives dropped files.  To enable a window to
+         * be a target for files dragged from a shell window, you must set the
+         * window's L<-acceptfiles|Win32::GUI::Reference::Options/acceptfiles>
+         * option or call C<< $win->AcceptFiles(1) >> on the window (See
+         * L<AcceptFiles()|Win32::GUI::Reference::Methods/AcceptFiles>). The
+         * DROP parameter is either * a Win32 drop handle (see MSDN) or a
+         * L<Win32::GUI::DropFiles|Win32::GUI::DropFiles> object if you have
+         * done C<use Win32::GUI::DropFiles;> somewhere in your code.
          * (@)APPLIES_TO:*
          */
-        PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_DROPFILE, "DropFiles",
-                        PERLWIN32GUI_ARGTYPE_LONG, (LONG) wParam,
+        { HV *dropfiles_stash = gv_stashpv("Win32::GUI::DropFiles", 0);
+          if(dropfiles_stash) { /* Win32::GUI::DropFiles is available */
+            PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_DROPFILE, "DropFiles",
+                         PERLWIN32GUI_ARGTYPE_SV, CreateObjectWithHandle(NOTXSCALL "Win32::GUI::DropFiles", (HWND)wParam),
                         -1);
+	  } else { /* Win32::GUI::DropFiles is not available */
+            PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_DROPFILE, "DropFiles",
+                         PERLWIN32GUI_ARGTYPE_LONG, wParam,
+                        -1);
+            DragFinish((HDROP)wParam);
+	  }
+	}
         break;
     }
 
     // Hook processing
     if(perlud->avHooks != NULL) {
-        DoHook(NOTXSCALL perlud, uMsg, wParam, lParam, &PerlResult);
+        DoHook(NOTXSCALL perlud, uMsg, wParam, lParam, &PerlResult,0);
     }
 
     // Default processing
@@ -947,13 +981,22 @@ LRESULT CALLBACK ControlMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
         }
         break;
     case WM_DROPFILES:
-        PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_DROPFILE, "DropFiles",
-                        PERLWIN32GUI_ARGTYPE_LONG, (LONG) wParam,
+        { HV *dropfiles_stash = gv_stashpv("Win32::GUI::DropFiles", 0);
+          if(dropfiles_stash) { /* Win32::GUI::DropFiles is available */
+            PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_DROPFILE, "DropFiles",
+                         PERLWIN32GUI_ARGTYPE_SV, CreateObjectWithHandle(NOTXSCALL "Win32::GUI::DropFiles", (HWND)wParam),
                         -1);
+	  } else { /* Win32::GUI::DropFiles is not available */
+            PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_DROPFILE, "DropFiles",
+                         PERLWIN32GUI_ARGTYPE_LONG, wParam,
+                        -1);
+            DragFinish((HDROP)wParam);
+	  }
+	}
     }
 
     if (perlud->avHooks != NULL)
-        DoHook(NOTXSCALL perlud, uMsg,wParam,lParam,&PerlResult);
+        DoHook(NOTXSCALL perlud, uMsg,wParam,lParam,&PerlResult,0);
 
 
     if (PerlResult != 0) {
@@ -1059,7 +1102,7 @@ LRESULT CALLBACK CustomMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
 
     // Hook for non interactive control
     if (perlud->avHooks != NULL && !(perlud->dwPlStyle & PERLWIN32GUI_INTERACTIVE))
-        DoHook(NOTXSCALL perlud, uMsg,wParam,lParam,&PerlResult);
+        DoHook(NOTXSCALL perlud, uMsg,wParam,lParam,&PerlResult,0);
 
     if (PerlResult != 0) {
         // If interactive control, call ControlMsgLoop

@@ -2,7 +2,7 @@
     ###########################################################################
     #(@)PACKAGE:Win32::GUI::DC
     #
-    # $Id: DC.xs,v 1.12 2005/08/25 19:30:17 robertemay Exp $
+    # $Id: DC.xs,v 1.15 2006/06/26 18:22:52 robertemay Exp $
     #
     ###########################################################################
     */
@@ -46,7 +46,8 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:CreateCompatibleBitmap (WIDTH, HEIGHT)
-    # Creates a bitmap compatible with the device that is associated with the specified device context. 
+    # Creates a bitmap compatible with the device that is associated with
+    # the specified device context. 
 void
 CreateCompatibleBitmap(handle,width,height)
     HDC handle
@@ -100,7 +101,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:GetCurrentObject(HANDLE,OBJECTTYPE)
-    # Obtains a handle to a device context's currently selected object of a specified type.
+    # Obtains a handle to a device context's currently selected object of a
+    # specified type.
 HGDIOBJ
 GetCurrentObject(handle, Object)
     HDC  handle
@@ -233,8 +235,9 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:Chord(LEFT, TOP, RIGHT, BOTTOM, XF, YF, XS, YS)
-    # Draws a chord (a region bounded by the intersection of an ellipse and a line segment, called a "secant"). 
-    # The chord is outlined by using the current pen and filled by using the current brush.
+    # Draws a chord (a region bounded by the intersection of an ellipse and
+    # a line segment, called a "secant"). The chord is outlined by using the
+    # current pen and filled by using the current brush.
 BOOL
 Chord(handle, left, top, right, bottom, xf, yf, xs, ys)
     HDC handle
@@ -254,8 +257,9 @@ OUTPUT:
     ###########################################################################
     # (@)METHOD:Ellipse(LEFT, TOP, RIGHT, BOTTOM)
     # Draws an ellipse. 
-    # The center of the ellipse is the center of the specified bounding rectangle.
-    # The ellipse is outlined by using the current pen and is filled by using the current brush. 
+    # The center of the ellipse is the center of the specified bounding
+    # rectangle. The ellipse is outlined by using the current pen and is
+    # filled by using the current brush. 
 BOOL
 Ellipse(handle, left, top, right, bottom)
     HDC handle
@@ -294,7 +298,8 @@ OUTPUT:
     ###########################################################################
     # (@)METHOD:FillRect(LEFT, TOP, RIGHT, BOTTOM, BRUSH)
     # Fills a rectangle by using the specified brush. 
-    # This includes the left and top borders, but excludes the right and bottom borders of the rectangle. 
+    # This includes the left and top borders, but excludes the right and
+    # bottom borders of the rectangle. 
 BOOL
 FillRect(handle, left, top, right, bottom, hbr)
     HDC handle
@@ -316,8 +321,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:FrameRect(LEFT, TOP, RIGHT, BOTTOM, BRUSH)
-    # Draws a border around the specified rectangle by using the specified brush. 
-    # The width and height of the border are always one logical unit. 
+    # Draws a border around the specified rectangle by using the specified
+    # brush. The width and height of the border are always one logical unit. 
 BOOL
 FrameRect(handle, left, top, right, bottom, hbr)
     HDC handle
@@ -339,7 +344,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:InvertRect(LEFT, TOP, RIGHT, BOTTOM)
-    # Inverts a rectangle in a window by performing a logical NOT operation on the color values for each pixel in the rectangle's interior. 
+    # Inverts a rectangle in a window by performing a logical NOT operation
+    # on the color values for each pixel in the rectangle's interior. 
 BOOL
 InvertRect(handle, left, top, right, bottom)
     HDC handle
@@ -360,8 +366,9 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:Pie(LEFT, TOP, RIGHT, BOTTOM, XF, YF, XS, YS)
-    # Draws a pie-shaped wedge bounded by the intersection of an ellipse and two radials.
-    # The pie is outlined by using the current pen and filled by using the current brush. 
+    # Draws a pie-shaped wedge bounded by the intersection of an ellipse
+    # and two radials. The pie is outlined by using the current pen and
+    # filled by using the current brush. 
 BOOL
 Pie(handle, left, top, right, bottom, xf, yf, xs, ys)
     HDC handle
@@ -380,7 +387,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:Polygon([X,Y]+)
-    # Draws a polygon consisting of two or more vertices connected by straight lines.
+    # Draws a polygon consisting of two or more vertices connected by
+    # straight lines.
 BOOL
 Polygon(handle, ...)
     HDC handle
@@ -409,7 +417,8 @@ OUTPUT:
     ###########################################################################
     # (@)METHOD:Rectangle(LEFT, TOP, RIGHT, BOTTOM)
     # Draws a rectangle. 
-    # The rectangle is outlined by using the current pen and filled by using the current brush. 
+    # The rectangle is outlined by using the current pen and filled by
+    # using the current brush. 
 BOOL
 Rectangle(handle, left, top, right, bottom)
     HDC handle
@@ -425,7 +434,8 @@ OUTPUT:
     ###########################################################################
     # (@)METHOD:RoundRect(LEFT, TOP, RIGHT, BOTTOM, WIDTH, HEIGHT)
     # Draws a rectangle with rounded corners. 
-    # The rectangle is outlined by using the current pen and filled by using the current brush. 
+    # The rectangle is outlined by using the current pen and filled by using
+    # the current brush. 
 BOOL
 RoundRect(handle, left, top, right, bottom, width, height)
     HDC handle
@@ -446,7 +456,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:DrawText(STRING, LEFT, TOP, RIGHT, BOTTOM, WIDTH, HEIGHT, [FORMAT=DT_LEFT|DT_SINGLELINE|DT_TOP])
-    # Draws formatted text in the specified rectangle. It formats the text according to the specified method.
+    # Draws formatted text in the specified rectangle. It formats the text
+    # according to the specified method.
 int
 DrawText(handle, string, left, top, right, bottom, format=DT_LEFT|DT_SINGLELINE|DT_TOP)
     HDC handle
@@ -538,7 +549,8 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:GetTextFace()
-    # Retrieves the typeface name of the font that is selected into the specified device context. 
+    # Retrieves the typeface name of the font that is selected into the
+    # specified device context. 
 void
 GetTextFace(handle)
     HDC handle
@@ -552,7 +564,8 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:SetTextJustification(BREAKEXTRA, BREAKCOUNT)
-    # Specifies the amount of space the system should add to the break characters in a string of text
+    # Specifies the amount of space the system should add to the break
+    # characters in a string of text
 BOOL 
 SetTextJustification(handle, nBreakExtra, nBreakCount)
     HDC handle
@@ -585,9 +598,10 @@ OUTPUT:
     ###########################################################################
     # (@)METHOD:Arc(X, Y, RADIUS, START, SWEEP)
     # Draws a line segment and an arc. 
-    # The line segment is drawn from the current position to the beginning of the arc.
-    # The arc is drawn along the perimeter of a circle with the given radius and center.
-    # The length of the arc is defined by the given start and sweep angles.
+    # The line segment is drawn from the current position to the beginning
+    # of the arc. The arc is drawn along the perimeter of a circle with the
+    # given radius and center. The length of the arc is defined by the given
+    # start and sweep angles.
 BOOL
 Arc(handle, x, y, radius, start, sweep)
     HDC handle
@@ -603,7 +617,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:ArcDirection([DIRECTION])
-    # Gets or sets the drawing direction to be used for arc and rectangle functions. 
+    # Gets or sets the drawing direction to be used for arc and rectangle
+    # functions. 
 int
 ArcDirection(handle, direction = -1)
     HDC handle
@@ -683,11 +698,12 @@ OUTPUT:
     ###########################################################################
     # (@)METHOD:PolyBezier([X,Y]+)
     # Draws one or more Bézier curves. 
-    # The first curve is drawn from the first point to the fourth point by using 
-    # the second and third points as control points. 
+    # The first curve is drawn from the first point to the fourth point by
+    # using the second and third points as control points. 
     # Each subsequent curve in the sequence needs exactly three more points: 
     # the ending point of the previous curve is used as the starting point, the
-    # next two points in the sequence are control points, and the third is the ending point. 
+    # next two points in the sequence are control points, and the third is
+    # the ending point. 
 BOOL
 PolyBezier(handle, ...)
     HDC handle
@@ -716,8 +732,8 @@ OUTPUT:
     # Draws cubic Bézier curves.
     # The first curve is drawn from the current position to the third point by
     # using the first two points as control points. For each subsequent curve, 
-    # the function needs exactly three more points, and uses the ending point of
-    # the previous curve as the starting point for the next.
+    # the function needs exactly three more points, and uses the ending point
+    # of the previous curve as the starting point for the next.
 BOOL
 PolyBezierTo (handle, ...)
     HDC handle
@@ -827,7 +843,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:DrawFocusRect(LEFT, TOP, RIGHT, BOTTOM)
-    # Draws a rectangle in the style used to indicate that the rectangle has the focus. 
+    # Draws a rectangle in the style used to indicate that the rectangle has
+    # the focus. 
 BOOL
 DrawFocusRect(handle, left, top, right, bottom)
     HDC handle
@@ -907,8 +924,8 @@ OUTPUT:
     ###########################################################################
     # (@)METHOD:ROP2([MODE])
     # Gets or sets the foreground mix mode of the specified device context. 
-    # The mix mode specifies how the pen or interior color and the color already
-    # on the screen are combined to yield a new color.     
+    # The mix mode specifies how the pen or interior color and the color
+    # already on the screen are combined to yield a new color.     
 long
 ROP2(handle, mode=-1)
     HDC handle
@@ -948,7 +965,7 @@ PPCODE:
             self = (HV*) SvRV(handle);
             window = hv_fetch_mg(NOTXSCALL self, "-window", 7, 0);
             if(window != NULL) {
-                hwnd = (HWND) SvIV(*window);
+                hwnd = INT2PTR(HWND,SvIV(*window));
             } else {
                 XSRETURN_UNDEF;
             }
@@ -1002,7 +1019,7 @@ CODE:
             self = (HV*) SvRV(handle);
             window = hv_fetch_mg(NOTXSCALL self, szKey, strlen(szKey), 0);
             if(window != NULL) {
-                hwnd = (HWND) SvIV(*window);
+                hwnd = INT2PTR(HWND,SvIV(*window));
             } else {
                 XSRETURN_NO;
             }
@@ -1105,7 +1122,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:PathToRegion()
-    # Creates a region from the path that is selected into the specified device context. 
+    # Creates a region from the path that is selected into the specified
+    # device context. 
 HRGN
 PathToRegion(handle)
     HDC handle
@@ -1152,7 +1170,8 @@ OUTPUT:
     ###########################################################################
     # (@)METHOD:WidenPath()
     # Redefines the current path as the area that would be painted if the path
-    # were stroked using the pen currently selected into the given device context. 
+    # were stroked using the pen currently selected into the given device
+    # context. 
 BOOL
 WidenPath(handle)
     HDC handle
@@ -1270,7 +1289,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:DrawIcon(Icon,X, Y)
-    # The DrawIcon method draws an icon or cursor into the specified device context.
+    # The DrawIcon method draws an icon or cursor into the specified
+    # device context.
 int
 DrawIcon(handle, Icon, x, y)
     HDC handle
@@ -1284,8 +1304,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:SetBrushOrgEx(X, Y)
-    # The SetBrushOrgEx method sets the brush origin that GDI assigns to the next 
-    # brush an application selects into the specified device context. 
+    # The SetBrushOrgEx method sets the brush origin that GDI assigns to
+    # the next brush an application selects into the specified device context. 
     # Returns the (x,y) of the previous brush origin. 
 void
 SetBrushOrgEx(handle, x, y)
@@ -1303,7 +1323,8 @@ CODE:
 
     ###########################################################################
     # (@)METHOD:GetBrushOrgEx
-    # The GetBrushOrgEx method retrieves the current brush origin (x,y) for the specified device context. 
+    # The GetBrushOrgEx method retrieves the current brush origin (x,y)
+    # for the specified device context. 
 void
 GetBrushOrgEx(handle)
     HDC handle
@@ -1403,7 +1424,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:PaintRgn (Region)
-    # The PaintRgn function paints the specified region by using the brush currently selected into the device context. 
+    # The PaintRgn function paints the specified region by using the brush
+    # currently selected into the device context. 
 BOOL
 PaintRgn(handle,hrgn)
     HDC handle
@@ -1415,7 +1437,8 @@ OUTPUT:
     
     ###########################################################################
     # (@)METHOD:FrameRgn (Region,Brush,Width,Height)
-    # The FrameRgn function draws a border around the specified region by using the specified brush.  
+    # The FrameRgn function draws a border around the specified region
+    # by using the specified brush.  
     #
     # The Width Specifies the width of vertical brush strokes. 
     # The Height Specifies the height of horizontal brush strokes. 
@@ -1433,9 +1456,11 @@ OUTPUT:
     
     ###########################################################################
     # (@)METHOD:SelectClipRgn (Region)
-    # This method selects a region as the current clipping region for the specified device context.
+    # This method selects a region as the current clipping region for
+    # the specified device context.
     #
-    # If no region is passed, then this method will remove a device-context's clipping region. 
+    # If no region is passed, then this method will remove a
+    # device-context's clipping region. 
 BOOL
 SelectClipRgn(handle,hrgn=NULL)
     HDC handle
@@ -1636,7 +1661,8 @@ MODULE = Win32::GUI::DC     PACKAGE = Win32::GUI::Region
 
     ###########################################################################
     # (@)METHOD:CreateRectRgn (LEFT, TOP, RIGHT, BOTTOM)
-    # The CreateRectRgn function creates a rectangular region, returning a region object.
+    # The CreateRectRgn function creates a rectangular region, returning a
+    # region object.
 void   
 CreateRectRgn(Class="Win32::GUI::Region",left, top, right, bottom)
     char *Class
@@ -1654,11 +1680,13 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:CreateEllipticRgn (LEFT, TOP, RIGHT, BOTTOM)
-    # The CreateEllipticRgn function creates an elliptical region, returning a region object. 
+    # The CreateEllipticRgn function creates an elliptical region,
+    # returning a region object. 
     #
-    # The bounding rectangle defines the size, shape, and orientation of the region: The long 
-    # sides of the rectangle define the length of the ellipse's major axis; the short sides 
-    # define the length of the ellipse's minor axis; and the center of the rectangle defines 
+    # The bounding rectangle defines the size, shape, and orientation of
+    # the region: The long sides of the rectangle define the length of the
+    # ellipse's major axis; the short sides define the length of the
+    # ellipse's minor axis; and the center of the rectangle defines 
     # the intersection of the major and minor axes. 
 void 
 CreateEllipticRgn(Class="Win32::GUI::Region",left, top, right, bottom)
@@ -1676,9 +1704,11 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:CreateRoundRectRgn (LEFT, TOP, RIGHT, BOTTOM , WIDTH, HEIGHT)
-    # The CreateRoundRectRgn function creates a rectangular region with rounded corners, returning a region object.  
+    # The CreateRoundRectRgn function creates a rectangular region with
+    # rounded corners, returning a region object.  
     #
-    # The width and height is of the ellipse used to create the rounded corners. 
+    # The width and height is of the ellipse used to create the rounded
+    # corners. 
 void 
 CreateRoundRectRgn(Class="Win32::GUI::Region",left, top, right, bottom, width, height)
     char *Class
@@ -1696,24 +1726,81 @@ PPCODE:
     XPUSHs(CreateObjectWithHandle(NOTXSCALL "Win32::GUI::Region", (HWND) hrgn));
 
     ###########################################################################
+    # (@)METHOD:ExtCreateRegion (RGNDATA)
+    #
+    # The ExtCreateRgn function creates a region from data held in memory.
+    # The data is a win32 RGNDATA structure (See MSDN) that can be created by
+    # packing the appropriate structure, or more easily by using the
+    # L<GetRgnData()|Win32::GUI::Region/GetRegionData> method.
+    #
+    #   my $rgn = Win32::GUI::Region->CreateRoundRectRgn(0,0,100,100,50,50);
+    #   my $rgndata = $rgn->GetRegionData();
+    #   my $newrgn = Win32::GUI::Region->ExtCreateRegion($rgndata);
+    #
+    # Returns a Win32::GUI::Region object on success or undef on failure
+void
+ExtCreateRegion(Class="Win32::GUI::Region", svrgndata)
+    char *Class
+    SV *svrgndata
+PREINIT:
+    HRGN hrgn;
+    LPRGNDATA rgndata;
+    STRLEN len;
+PPCODE:
+    rgndata = (LPRGNDATA)SvPV(svrgndata, len);
+    /* TODO: XFORM transformation as first param? */
+    hrgn = ExtCreateRegion(NULL, (DWORD)len, rgndata);
+    if (hrgn== NULL) XSRETURN_UNDEF;
+    XPUSHs(CreateObjectWithHandle(NOTXSCALL "Win32::GUI::Region", (HWND) hrgn));
+
+    ###########################################################################
+    # (@)METHOD:GetRegionData ()
+    #
+    # The GetRegionData functions returns a representation of the region as a
+    # string of bytes that can be used to re-create an identical region using
+    # the L<ExtCreateRgn()|Win32::GUI::Region/ExtCreateRegion> method.
+    #
+    # Returns a string of bytes on success or undef on failure
+void
+GetRegionData(handle)
+    HRGN handle
+PREINIT:
+    SV *svrgndata;
+    STRLEN len1, len2;
+PPCODE:
+    len1 = (STRLEN)GetRegionData(handle, 0, NULL);
+    svrgndata = sv_2mortal(newSV(len1));
+    SvPOK_on(svrgndata);
+    SvCUR_set(svrgndata,len1);
+    len2 = (STRLEN)GetRegionData(handle, (DWORD)len1, (LPRGNDATA)SvPV_nolen(svrgndata));
+
+    if(len1 == len2) { /* success */
+        XPUSHs(svrgndata);
+        XSRETURN(1);
+    }
+    else {             /* failure */
+        XSRETURN_UNDEF;
+    }
+    
+
+    ###########################################################################
     # (@)METHOD:CombineRgn (source1,source2,CombineMode)
-    # The CombineRgn method combines two regions. The two regions are combined according to the 
-    # specified mode. 
+    # The CombineRgn method combines two regions. The two regions are
+    # combined according to the specified mode. 
     #
     # CombineMode:
-    #  RGN_AND (1) Creates the intersection of the two combined regions. 
-    #  RGN_COPY (5)  Creates a copy of the region identified by source1. 
+    #  RGN_AND  (1) Creates the intersection of the two combined regions. 
+    #  RGN_COPY (5) Creates a copy of the region identified by source1. 
     #  RGN_DIFF (4) Combines the parts of source1 that are not part of source2. 
-    #  RGN_OR (2) Creates the union of two combined regions. 
-    #  RGN_XOR (3) Creates the union of two combined regions except for any overlapping areas. 
+    #  RGN_OR   (2) Creates the union of two combined regions. 
+    #  RGN_XOR  (3) Creates the union of two combined regions except for any
+    #               overlapping areas. 
     #
-    # Return Values
-    #
-    #  NULLREGION (1) The region is empty. 
-    #  SIMPLEREGION (2) The region is a single rectangle. 
+    # Return Values:
+    #  NULLREGION    (1) The region is empty. 
+    #  SIMPLEREGION  (2) The region is a single rectangle. 
     #  COMPLEXREGION (3) The region is more than a single rectangle. 
-    #  ERROR No (0) region is created. 
-
+    #  ERROR         (0) No region is created. 
 int CombineRgn(destination,source1,source2,CombineMode)
   HRGN destination
   HRGN source1
@@ -1726,10 +1813,10 @@ OUTPUT:
     
     ###########################################################################
     # (@)METHOD:PtInRegion (X,Y)
-    # The PtInRegion method determines whether the specified point is inside the specified region. 
+    # The PtInRegion method determines whether the specified point is inside
+    # the specified region. 
     #
     # If the specified point is in the region, the return value is nonzero.
-    #
     # If the specified point is not in the region, the return value is zero. 
 BOOL
 PtInRegion(handle,x,y)
@@ -1743,11 +1830,14 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:RectInRegion (left, top, right, bottom)
-    # The RectInRegion method determines whether any part of the specified rectangle is within the boundaries of a region.  
+    # The RectInRegion method determines whether any part of the specified
+    # rectangle is within the boundaries of a region.  
     #
-    # If any part of the specified rectangle lies within the boundaries of the region, the return value is nonzero.
+    # If any part of the specified rectangle lies within the boundaries of
+    # the region, the return value is nonzero.
     #
-    # If no part of the specified rectangle lies within the boundaries of the region, the return value is zero.
+    # If no part of the specified rectangle lies within the boundaries of
+    # the region, the return value is zero.
 BOOL
 RectInRegion(handle,left, top, right, bottom)
     HRGN handle
@@ -1768,7 +1858,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:GetRgnBox ()
-    # The GetRgnBox function retrieves the bounding rectangle of the specified region. 
+    # The GetRgnBox function retrieves the bounding rectangle of the specified
+    # region. 
     # Returns the rectangle (as a four-element array containing left, top,
     # right, bottom coordinates)
 void
@@ -1787,7 +1878,9 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:EqualRgn (Region)
-    # The EqualRgn function checks the two specified regions to determine whether they are identical. The method considers two regions identical if they are equal in size and shape.
+    # The EqualRgn function checks the two specified regions to determine
+    # whether they are identical. The method considers two regions identical
+    # if they are equal in size and shape.
 BOOL
 EqualRgn(handle,other)
     HRGN handle
@@ -1799,7 +1892,8 @@ OUTPUT:
     
     ###########################################################################
     # (@)METHOD:SetRectRgn (left, top, right, bottom)
-    # The SetRectRgn function converts a region into a rectangular region with the specified coordinates. 
+    # The SetRectRgn function converts a region into a rectangular region
+    # with the specified coordinates. 
     #
 BOOL
 SetRectRgn(handle,left, top, right, bottom)
@@ -1817,7 +1911,8 @@ OUTPUT:
     # (@)METHOD:OffsetRgn (X,Y)
     # The OffsetRgn function moves a region by the specified offsets. 
     #
-    # The return value specifies the new region's complexity. It can be one of the following values. 
+    # The return value specifies the new region's complexity. It can be
+    # one of the following values. 
     #
     # 1 (NULLREGION)    Region is empty. 
     # 2 (SIMPLEREGION)  Region is a single rectangle. 

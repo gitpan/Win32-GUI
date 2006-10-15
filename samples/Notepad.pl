@@ -4,7 +4,9 @@
 #######################################################################
 
 use strict;
-use Win32::GUI;
+use warnings;
+use Win32::GUI qw( MB_ICONQUESTION MB_ICONINFORMATION MB_YESNOCANCEL
+                   MB_OK IDYES IDCANCEL );
 
 my $CurrentFile = "";
 

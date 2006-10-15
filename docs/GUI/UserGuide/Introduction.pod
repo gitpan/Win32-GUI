@@ -1,4 +1,4 @@
-=for comment $Id: Introduction.pod,v 1.1 2005/06/26 16:41:02 robertemay Exp $
+=for comment $Id: Introduction.pod,v 1.2 2006/07/16 11:09:32 robertemay Exp $
 
 =head1 NAME
 
@@ -20,12 +20,14 @@ It was a big fun for me to put it up, hope it will be a fun for you too
 =head2 Where to get it?
 
 The creator and chief maintainer of the Win32::GUI module is Aldo
-Calpini. The module and pertinent information can be found at
-L<http://dada.perl.it>. (See below for more information.)
-"The module is actually in beta testing so be warned that syntax and
-behavior can change with future builds; and of course, that there are
-many incomplete parts, sparse documentation (you can browse here the
-work in progress), and generally a lot of things to do."
+Calpini. The current active maintainer is Robert May.
+The module and pertinent information can be found at
+L<http://perl-win32-gui.sourceforge.net>. (See below for more information.)
+
+There are still some incomplete parts, and particularly some sparse
+documentation.  If you would like to contribute to the developement
+then plase contact Robert May (C<robertemay@users.sourceforge.net>)
+and join the perl-win32-gui-hackers mailing list.
 
 =head2 Other Information
 
@@ -34,6 +36,6 @@ contribution to the module; I follow the mailing list very closely (as
 always, time permitting...).
 To subscribe, goto:
 L<http://lists.sourceforge.net/lists/listinfo/perl-win32-gui-users> and
-follow the instructions on screen."
+follow the instructions on screen.
 
 __W32G_POSTAMBLE__

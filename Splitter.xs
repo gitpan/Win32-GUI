@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Splitter
     #
-    # $Id: Splitter.xs,v 1.4 2005/08/03 21:45:57 robertemay Exp $
+    # $Id: Splitter.xs,v 1.5 2006/01/11 21:26:16 robertemay Exp $
     #
     ###########################################################################
     */
@@ -81,89 +81,110 @@ int
 Splitter_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
     int PerlResult = 0;
-    BOOL tracking, horizontal;
     POINT pt;
     HWND phwnd, hwnd;
     RECT rc;
+    int w,h;
+
+    BOOL tracking = perlud->dwPlStyle & PERLWIN32GUI_TRACKING;
+    BOOL horizontal = perlud->dwPlStyle & PERLWIN32GUI_HORIZONTAL;
 
     switch(uMsg) {
     case WM_MOUSEMOVE:
-        tracking = perlud->dwPlStyle & PERLWIN32GUI_TRACKING;
         if(tracking) {
-            horizontal = perlud->dwPlStyle & PERLWIN32GUI_HORIZONTAL;
             hwnd  = handle_From (NOTXSCALL perlud->svSelf);
             phwnd = GetParent(hwnd);
-            GetCursorPos(&pt);
-            ScreenToClient(phwnd, &pt);
+            GetWindowRect(hwnd, &rc);
+            w = rc.right - rc.left;
+            h = rc.bottom - rc.top;
+            ScreenToClient(phwnd, (POINT*)&rc);
+            pt.x = GET_X_LPARAM(lParam);
+            pt.y = GET_Y_LPARAM(lParam);
+	    MapWindowPoints(hwnd, phwnd, (LPPOINT)&pt, 1);
+
             if(horizontal) {
-                pt.y = AdjustSplitterCoord(NOTXSCALL perlud, pt.y, phwnd);
-                DrawSplitter(NOTXSCALL hwnd);
-                GetWindowRect(hwnd, &rc);
-                ScreenToClient(phwnd, (POINT*)&rc);
-                SetWindowPos(hwnd, NULL, rc.left, pt.y, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
-                DrawSplitter(NOTXSCALL hwnd);
+                DrawSplitter(NOTXSCALL phwnd, rc.left, (int)(perlud->dwData), w, h);
+                pt.y = AdjustSplitterCoord(NOTXSCALL perlud, pt.y, h, phwnd);
+	        perlud->dwData = (DWORD)pt.y;
+                DrawSplitter(NOTXSCALL phwnd, rc.left, pt.y, w, h);
             } else {
-                pt.x = AdjustSplitterCoord(NOTXSCALL perlud, pt.x, phwnd);
-                DrawSplitter(NOTXSCALL hwnd);
-                GetWindowRect(hwnd, &rc);
-                ScreenToClient(phwnd, (POINT*)&rc);
-                SetWindowPos(hwnd, NULL, pt.x, rc.top, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
-                DrawSplitter(NOTXSCALL hwnd);
+                DrawSplitter(NOTXSCALL phwnd, (int)(perlud->dwData), rc.top, w, h);
+                pt.x = AdjustSplitterCoord(NOTXSCALL perlud, pt.x, w, phwnd);
+	        perlud->dwData = (DWORD)pt.x;
+                DrawSplitter(NOTXSCALL phwnd, pt.x, rc.top, w, h);
             }
         }
         break;
     case WM_LBUTTONDOWN:
-        SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_TRACKING, 1);        
-        horizontal = perlud->dwPlStyle & PERLWIN32GUI_HORIZONTAL;
         hwnd  = handle_From (NOTXSCALL perlud->svSelf);
         phwnd = GetParent(hwnd);
-        GetCursorPos(&pt);
-        ScreenToClient(phwnd, &pt);
+        GetWindowRect(hwnd, &rc);
+        w = rc.right - rc.left;
+        h = rc.bottom - rc.top;
+        ScreenToClient(phwnd, (POINT*)&rc);
+        pt.x = GET_X_LPARAM(lParam);
+        pt.y = GET_Y_LPARAM(lParam);
+        MapWindowPoints(hwnd, phwnd, (LPPOINT)&pt, 1);
 
         if(horizontal) {
-            pt.y = AdjustSplitterCoord(NOTXSCALL perlud, pt.y, phwnd);
-            DrawSplitter(NOTXSCALL hwnd);
-            SetCapture(hwnd);
+            pt.y = AdjustSplitterCoord(NOTXSCALL perlud, pt.y, h, phwnd);
+	    perlud->dwData = (DWORD)rc.top;
+            DrawSplitter(NOTXSCALL phwnd, rc.left, rc.top, w, h);
         } else {
-            pt.x = AdjustSplitterCoord(NOTXSCALL perlud, pt.x, phwnd);
-            DrawSplitter(NOTXSCALL hwnd);
-            SetCapture(hwnd);
+            pt.x = AdjustSplitterCoord(NOTXSCALL perlud, pt.x, w, phwnd);
+	    perlud->dwData = (DWORD)rc.left;
+            DrawSplitter(NOTXSCALL phwnd, rc.left, rc.top, w, h);
         }
+        SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_TRACKING, 1);        
+        SetCapture(hwnd);
         break;
     case WM_LBUTTONUP:
-        tracking = perlud->dwPlStyle & PERLWIN32GUI_TRACKING;
         if(tracking) {
-            horizontal = perlud->dwPlStyle & PERLWIN32GUI_HORIZONTAL;
+            ReleaseCapture();  // Sends us a WM_CAPTURECHANGED message
             hwnd  = handle_From (NOTXSCALL perlud->svSelf);
             phwnd = GetParent(hwnd);
-            GetCursorPos(&pt);
-            ScreenToClient(phwnd, &pt);
+            GetWindowRect(hwnd, &rc);
+            w = rc.right - rc.left;
+            h = rc.bottom - rc.top;
+            ScreenToClient(phwnd, (POINT*)&rc);
+
+            if(horizontal) {
+                MoveWindow(hwnd, rc.left, (int)(perlud->dwData), w, h, 1);
+            } else {
+                MoveWindow(hwnd, (int)(perlud->dwData), rc.top, w, h, 1);
+            }
+
             /*
             * (@)EVENT:Release(COORD)
             * Sent when the Splitter is released after being
             * dragged to a new location (identified by the
-            * COORD parameter).
+            * COORD parameter). COORD is the top coordinate
+	    * of a horizontal splitter or the left coordinate
+	    * of a vertical splitter.
             * (@)APPLIES_TO:Splitter
             */
+            PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL1, "Release",
+                                 PERLWIN32GUI_ARGTYPE_LONG, (long) perlud->dwData,
+                                 -1);
+
+        }
+        break;
+    case WM_CAPTURECHANGED:
+        if(tracking) {
+            hwnd  = handle_From (NOTXSCALL perlud->svSelf);
+            phwnd = GetParent(hwnd);
+            GetWindowRect(hwnd, &rc);
+            w = rc.right - rc.left;
+            h = rc.bottom - rc.top;
+            ScreenToClient(phwnd, (POINT*)&rc);
+            SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_TRACKING, 0);
+
             if(horizontal) {
-                pt.y = AdjustSplitterCoord(NOTXSCALL perlud, pt.y, phwnd);
-                DrawSplitter(NOTXSCALL hwnd);
-
-                PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL1, "Release",
-                                     PERLWIN32GUI_ARGTYPE_LONG, (long) pt.y,
-                                     -1);
-
+                DrawSplitter(NOTXSCALL phwnd, rc.left, (int)(perlud->dwData), w, h);
             } else {
-                pt.x = AdjustSplitterCoord(NOTXSCALL perlud, pt.x, phwnd);
-                DrawSplitter(NOTXSCALL hwnd);
-                PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL1, "Release",
-                                     PERLWIN32GUI_ARGTYPE_LONG, (long) pt.x,
-                                     -1);
+                DrawSplitter(NOTXSCALL phwnd, (int)(perlud->dwData), rc.top, w, h);
             }
         }
-        SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_TRACKING, 0);
-        SetWindowLong(hwnd, GWL_USERDATA, (LONG) perlud);
-        ReleaseCapture();
         break;
 
     default :
@@ -181,7 +202,9 @@ PROTOTYPES: DISABLE
 
     ###########################################################################
     # (@)METHOD:Min([VALUE])
-    # Get or Set Min value
+    # Get or Set Min value. The min value is the minimum position
+    # to which the left(top) of the splitter can be dragged, in
+    # the parent window for a horizontal(vertical) splitter.
 
 void
 Min(handle,...)
@@ -206,7 +229,9 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:Max([VALUE])
-    # Get or Set Max value
+    # Get or Set Max value. The max value is the maximum position
+    # to which the left(top) of the splitter can be dragged, in
+    # the parent window for a horizontal(vertical) splitter.
 
 void
 Max(handle,...)
@@ -231,7 +256,9 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:Horizontal([VALUE])
-    # Get or Set Horizontal value
+    # Get or Set Horizontal orientation.  If value is true, then sets
+    # the splitter orientation to horizontal.  If value is false, then
+    # sets the splitter to Vertical orintation.
 
 void
 Horizontal(handle,...)
@@ -256,7 +283,9 @@ PPCODE:
     }
     ###########################################################################
     # (@)METHOD:Vertical([VALUE])
-    # Get or Set Vertical value
+    # Get or Set Vertical orientation.  If value is true, then sets
+    # the splitter orientation to vertuical.  If value is false, then
+    # sets the splitter to horizontal orintation.
 
 void
 Vertical(handle,...)

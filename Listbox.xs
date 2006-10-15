@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Listbox
     #
-    # $Id: Listbox.xs,v 1.4 2005/10/16 08:03:20 jwgui Exp $
+    # $Id: Listbox.xs,v 1.6 2006/03/16 21:31:42 robertemay Exp $
     #
     ###########################################################################
     */
@@ -586,9 +586,11 @@ OUTPUT:
     RETVAL
 
     ###########################################################################
-    # (@)METHOD:SetCurSel(index)
+    # (@)METHOD:SetCurSel(INDEX)
     # (@)METHOD:Select(INDEX)
-    # Selects the zero-based INDEX item in the Listbox.
+    # Selects the zero-based INDEX item in the Listbox.  Can only be used
+    # with single selection listboxes.  For multiple-selection listboxes
+    # see SetSel().
 LRESULT
 SetCurSel(handle,index)
     HWND handle
@@ -660,9 +662,9 @@ SetTabStops(handle,tab,...)
     HWND handle
     UINT tab
 CODE:
-    DWORD * pBuf = (DWORD *) safemalloc(items * sizeof(DWORD));
+    DWORD * pBuf = (DWORD *) safemalloc((items-1) * sizeof(DWORD));
     for (int i = 1; i < items; i++)
-        pBuf[i] = SvIV(ST(i));
+        pBuf[i-1] = SvIV(ST(i));
     RETVAL = SendMessage(handle, LB_SETTABSTOPS, items-1, (LPARAM) pBuf);
     safefree(pBuf);
 OUTPUT:

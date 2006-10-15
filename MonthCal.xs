@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::MonthCal
     #
-    # $Id: MonthCal.xs,v 1.1 2004/05/08 17:31:21 lrocher Exp $
+    # $Id: MonthCal.xs,v 1.2 2006/06/23 18:35:33 robertemay Exp $
     #
     ###########################################################################
     */
@@ -135,7 +135,7 @@ MonthCal_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
                     if (sv && SvIOK(*sv))
                         lpnmDS->prgDayState[i] = SvIV(*sv);
                 }
-                av_undef(av);
+                SvREFCNT_dec(av);
             }
             break;
         }

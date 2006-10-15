@@ -1,8 +1,21 @@
-=for comment $Id: Tutorial.pod,v 1.1 2005/06/26 16:41:00 robertemay Exp $
+=for comment $Id: Tutorial.pod,v 1.2 2006/07/16 11:09:33 robertemay Exp $
 
 =head1 NAME
 
 Win32::GUI::Tutorial - An introduction to programming Win32::GUI
+
+=head1 Sample Code
+
+Sample code for the tutorials is installed with
+Win32::GUI, that should be found in the
+F<.../Win32/GUI/demos/> directory under your library
+installtion root (by default for ActiveState perl this
+is at F<C:/Perl/site/lib/Win32/GUI/demos>).
+
+There is a viewer/launcher application installed
+as well.  Type C<win32-gui-demos> at a command
+prompt.  The sample code for the tutorials should be
+found under the 'Misc' heading.
 
 =head1 Table of Contents
 

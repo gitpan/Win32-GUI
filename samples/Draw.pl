@@ -2,9 +2,12 @@
 #
 # Drawing sample
 #
-use Win32::GUI;
+use strict;
+use warnings;
 
-$Menu = Win32::GUI::MakeMenu(
+use Win32::GUI();
+
+my $Menu = Win32::GUI::MakeMenu(
     "&Draw" => "&Draw",
     ">  &Dots"   => "DrawDots",
     ">  &Lines"   => "DrawLines",
@@ -12,7 +15,7 @@ $Menu = Win32::GUI::MakeMenu(
     ">  &Circles" => "DrawCircles",
 );
 
-$Win = new Win32::GUI::Window(
+my $Win = new Win32::GUI::Window(
     -left   => 100,
     -top    => 100,
     -width  => 300,
@@ -22,7 +25,7 @@ $Win = new Win32::GUI::Window(
     -menu   => $Menu,
 );
 
-$Timer = $Win->AddTimer("Timer1", 1);
+my $Timer = $Win->AddTimer("Timer1", 1);
 
 srand();
 
@@ -74,7 +77,9 @@ sub Timer1_Timer {
     my $right;
     my $bottom;
     my $P;
+    my $oldP;
     my $B;
+    my $oldB;
 
     if($Menu->{DrawDots}->Checked) {
         for(1..20) {
@@ -92,8 +97,8 @@ sub Timer1_Timer {
         $B = new Win32::GUI::Brush(
             [ rand()*255, rand()*255, rand()*255 ]
         );
-        $DC->SelectObject($P);
-        $DC->SelectObject($B);
+        $oldP = $DC->SelectObject($P);
+        $oldB = $DC->SelectObject($B);
         $left   = rand()*$W;
         $top    = rand()*$H;
         $right  = $left + rand()*($W-$left);
@@ -107,8 +112,8 @@ sub Timer1_Timer {
         $B = new Win32::GUI::Brush(
             [ rand()*255, rand()*255, rand()*255 ]
         );
-        $DC->SelectObject($P);
-        $DC->SelectObject($B);
+        $oldP = $DC->SelectObject($P);
+        $oldB = $DC->SelectObject($B);
         $left   = rand()*$W;
         $top    = rand()*$H;
         $right  = $left + rand()*($W-$left);
@@ -119,14 +124,16 @@ sub Timer1_Timer {
             -color => [ rand()*255, rand()*255, rand()*255 ], 
             -width => rand()*5,
         );
-        $DC->SelectObject($P);
+        $oldP = $DC->SelectObject($P);
         $DC->BeginPath();
         $DC->MoveTo(rand()*$W, rand()*$H);
         $DC->LineTo(rand()*$W, rand()*$H);
         $DC->EndPath();
         $DC->StrokePath();
     }
+    
+    # put the old brush/pen back, so that the new ones are correctly
+    # released when their destructors are called
+    $DC->SelectObject($oldP) if defined $oldP;
+    $DC->SelectObject($oldB) if defined $oldB;
 }
-
-
-

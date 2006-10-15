@@ -1,4 +1,4 @@
-=for comment $Id: Readme.pod,v 1.5 2005/11/21 22:33:34 robertemay Exp $
+=for comment $Id: Readme.pod,v 1.6 2005/12/03 01:56:31 robertemay Exp $
 
 =head1 NAME
 
@@ -157,7 +157,7 @@ the following commands.
   nmake test
   nmake ppm
 
-This procedure will generate a PPM for you current perl environment,
+This procedure will generate a PPM for your current perl environment,
 including the HTML documentation, ready for installation as above.
 
 __W32G_POSTAMBLE__

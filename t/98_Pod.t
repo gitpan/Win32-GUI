@@ -1,6 +1,6 @@
 #!perl -wT
 # Win32::GUI test suite.
-# $Id: 98_Pod.t,v 1.1 2005/11/21 22:33:34 robertemay Exp $
+# $Id: 98_Pod.t,v 1.3 2006/03/16 21:11:13 robertemay Exp $
 
 # Testing RichEdit::GetCharFormat()
 

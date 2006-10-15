@@ -1,6 +1,6 @@
 #!perl -wT
 # Win32::GUI test suite.
-# $Id: 01_basic.t,v 1.3 2005/11/21 22:33:34 robertemay Exp $
+# $Id: 01_basic.t,v 1.6 2006/05/16 18:57:26 robertemay Exp $
 #
 # Basic tests:
 # - check module loads
@@ -37,7 +37,11 @@ pass("Correct OS");
 	
 # Check that Win32::GUI loads, and bail out of all
 # tests if it doesn't
-use_ok('Win32::GUI') or print STDOUT "Bail out! Can't load Win32::GUI";
+eval "use Win32::GUI()";
+if($@) {
+	print STDOUT "Bail out! Can't load Win32::GUI";
+}
+pass("Win32::GUI loaded OK");
 
 ok(defined $Win32::GUI::VERSION, "Win32::GUI version check");
 

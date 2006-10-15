@@ -4,30 +4,25 @@
 #
 # 29 Jan 1997 by Aldo Calpini <dada@perl.it>
 #
-# Version: 1.02 (10 July 2005)
-#
-# Copyright (c) 1997..2005 Aldo Calpini. All rights reserved.
+# Copyright (c) 1997..2006 Aldo Calpini. All rights reserved.
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: GUI.pm,v 1.35 2005/11/21 22:33:33 robertemay Exp $
+# $Id: GUI.pm,v 1.56 2006/10/15 14:07:45 robertemay Exp $
 #
 ###############################################################################
 package Win32::GUI;
 
-require Exporter;       # to export the constants to the main:: space
 require DynaLoader;     # to dynuhlode the module.
-
-# Reserves GUI in the main namespace for us (uhmmm...)
-*GUI:: = \%Win32::GUI::;
+@ISA = qw( DynaLoader );
 
 ###############################################################################
 # STATIC OBJECT PROPERTIES
 #
-$VERSION             = "1.03";        # For MakeMaker
+$VERSION             = "1.04";        # For MakeMaker
 $XS_VERSION          = $VERSION;      # For dynaloader
 $VERSION             = eval $VERSION; # For Perl  (see perldoc perlmodstyle)
-$MenuIdCounter       = 1;
+$MenuIdCounter       = 101;
 $TimerIdCounter      = 1;
 $NotifyIconIdCounter = 1;
 %Menus               = ();
@@ -35,424 +30,100 @@ $NotifyIconIdCounter = 1;
 $AcceleratorCounter  = 9001;
 %DefClassProc        = ();
 
-@ISA = qw( Exporter DynaLoader );
-@EXPORT = qw(
-    BS_3STATE
-    BS_AUTO3STATE
-    BS_AUTOCHECKBOX
-    BS_AUTORADIOBUTTON
-    BS_CHECKBOX
-    BS_DEFPUSHBUTTON
-    BS_GROUPBOX
-    BS_LEFTTEXT
-    BS_NOTIFY
-    BS_OWNERDRAW
-    BS_PUSHBUTTON
-    BS_RADIOBUTTON
-    BS_USERBUTTON
-    BS_BITMAP
-    BS_BOTTOM
-    BS_CENTER
-    BS_ICON
-    BS_LEFT
-    BS_MULTILINE
-    BS_RIGHT
-    BS_RIGHTBUTTON
-    BS_TEXT
-    BS_TOP
-    BS_VCENTER
-
-    COLOR_3DFACE
-    COLOR_ACTIVEBORDER
-    COLOR_ACTIVECAPTION
-    COLOR_APPWORKSPACE
-    COLOR_BACKGROUND
-    COLOR_BTNFACE
-    COLOR_BTNSHADOW
-    COLOR_BTNTEXT
-    COLOR_CAPTIONTEXT
-    COLOR_GRAYTEXT
-    COLOR_HIGHLIGHT
-    COLOR_HIGHLIGHTTEXT
-    COLOR_INACTIVEBORDER
-    COLOR_INACTIVECAPTION
-    COLOR_MENU
-    COLOR_MENUTEXT
-    COLOR_SCROLLBAR
-    COLOR_WINDOW
-    COLOR_WINDOWFRAME
-    COLOR_WINDOWTEXT
-
-    DS_3DLOOK
-    DS_ABSALIGN
-    DS_CENTER
-    DS_CENTERMOUSE
-    DS_CONTEXTHELP
-    DS_CONTROL
-    DS_FIXEDSYS
-    DS_LOCALEDIT
-    DS_MODALFRAME
-    DS_NOFAILCREATE
-    DS_NOIDLEMSG
-    DS_RECURSE
-    DS_SETFONT
-    DS_SETFOREGROUND
-    DS_SYSMODAL
-
-    DTS_UPDOWN
-    DTS_SHOWNONE
-    DTS_SHORTDATEFORMAT
-    DTS_LONGDATEFORMAT
-    DTS_TIMEFORMAT
-    DTS_APPCANPARSE
-    DTS_RIGHTALIGN
-
-    ES_AUTOHSCROLL
-    ES_AUTOVSCROLL
-    ES_CENTER
-    ES_LEFT
-    ES_LOWERCASE
-    ES_MULTILINE
-    ES_NOHIDESEL
-    ES_NUMBER
-    ES_OEMCONVERT
-    ES_PASSWORD
-    ES_READONLY
-    ES_RIGHT
-    ES_UPPERCASE
-    ES_WANTRETURN
-
-    GW_CHILD
-    GW_HWNDFIRST
-    GW_HWNDLAST
-    GW_HWNDNEXT
-    GW_HWNDPREV
-    GW_OWNER
-
-    IMAGE_BITMAP
-    IMAGE_CURSOR
-    IMAGE_ICON
-
-    IDABORT
-    IDCANCEL
-    IDIGNORE
-    IDNO
-    IDOK
-    IDRETRY
-    IDYES
-
-    LR_DEFAULTCOLOR
-    LR_MONOCHROME
-    LR_COLOR
-    LR_COPYRETURNORG
-    LR_COPYDELETEORG
-    LR_LOADFROMFILE
-    LR_LOADTRANSPARENT
-    LR_DEFAULTSIZE
-    LR_LOADMAP3DCOLORS
-    LR_CREATEDIBSECTION
-    LR_COPYFROMRESOURCE
-    LR_SHARED
-
-    MB_ABORTRETRYIGNORE
-    MB_OK
-    MB_OKCANCEL
-    MB_RETRYCANCEL
-    MB_YESNO
-    MB_YESNOCANCEL
-    MB_ICONEXCLAMATION
-    MB_ICONWARNING
-    MB_ICONINFORMATION
-    MB_ICONASTERISK
-    MB_ICONQUESTION
-    MB_ICONSTOP
-    MB_ICONERROR
-    MB_ICONHAND
-    MB_DEFBUTTON1
-    MB_DEFBUTTON2
-    MB_DEFBUTTON3
-    MB_DEFBUTTON4
-    MB_APPLMODAL
-    MB_SYSTEMMODAL
-    MB_TASKMODAL
-    MB_DEFAULT_DESKTOP_ONLY
-    MB_HELP
-    MB_RIGHT
-    MB_RTLREADING
-    MB_SETFOREGROUND
-    MB_TOPMOST
-    MB_SERVICE_NOTIFICATION
-    MB_SERVICE_NOTIFICATION_NT3X
-
-    MF_STRING
-    MF_POPUP
-
-    RBBS_BREAK
-    RBBS_CHILDEDGE
-    RBBS_FIXEDBMP
-    RBBS_FIXEDSIZE
-    RBBS_GRIPPERALWAYS
-    RBBS_HIDDEN
-    RBBS_NOGRIPPER
-    RBBS_NOVERT
-    RBBS_VARIABLEHEIGHT
-
-    SB_LINEUP
-    SB_LINELEFT
-    SB_LINEDOWN
-    SB_LINERIGHT
-    SB_PAGEUP
-    SB_PAGELEFT
-    SB_PAGEDOWN
-    SB_PAGERIGHT
-    SB_THUMBPOSITION
-    SB_THUMBTRACK
-    SB_TOP
-    SB_LEFT
-    SB_BOTTOM
-    SB_RIGHT
-    SB_ENDSCROLL
-
-    SBT_POPOUT
-    SBT_RTLREADING
-    SBT_NOBORDERS
-    SBT_OWNERDRAW
-
-    SM_ARRANGE
-    SM_CLEANBOOT
-    SM_CMOUSEBUTTONS
-    SM_CXBORDER
-    SM_CYBORDER
-    SM_CXCURSOR
-    SM_CYCURSOR
-    SM_CXDLGFRAME
-    SM_CYDLGFRAME
-    SM_CXDOUBLECLK
-    SM_CYDOUBLECLK
-    SM_CXDRAG
-    SM_CYDRAG
-    SM_CXEDGE
-    SM_CYEDGE
-    SM_CXFIXEDFRAME
-    SM_CYFIXEDFRAME
-    SM_CXFRAME
-    SM_CYFRAME
-    SM_CXFULLSCREEN
-    SM_CYFULLSCREEN
-    SM_CXHSCROLL
-    SM_CYHSCROLL
-    SM_CXHTHUMB
-    SM_CXICON
-    SM_CYICON
-    SM_CXICONSPACING
-    SM_CYICONSPACING
-    SM_CXMAXIMIZED
-    SM_CYMAXIMIZED
-    SM_CXMAXTRACK
-    SM_CYMAXTRACK
-    SM_CXMENUCHECK
-    SM_CYMENUCHECK
-    SM_CXMENUSIZE
-    SM_CYMENUSIZE
-    SM_CXMIN
-    SM_CYMIN
-    SM_CXMINIMIZED
-    SM_CYMINIMIZED
-    SM_CXMINSPACING
-    SM_CYMINSPACING
-    SM_CXMINTRACK
-    SM_CYMINTRACK
-    SM_CXSCREEN
-    SM_CYSCREEN
-    SM_CXSIZE
-    SM_CYSIZE
-    SM_CXSIZEFRAME
-    SM_CYSIZEFRAME
-    SM_CXSMICON
-    SM_CYSMICON
-    SM_CXSMSIZE
-    SM_CYSMSIZE
-    SM_CXVSCROLL
-    SM_CYVSCROLL
-    SM_CYCAPTION
-    SM_CYKANJIWINDOW
-    SM_CYMENU
-    SM_CYSMCAPTION
-    SM_CYVTHUMB
-    SM_DBCSENABLED
-    SM_DEBUG
-    SM_MENUDROPALIGNMENT
-    SM_MIDEASTENABLED
-    SM_MOUSEPRESENT
-    SM_MOUSEWHEELPRESENT
-    SM_NETWORK
-    SM_PENWINDOWS
-    SM_SECURE
-    SM_SHOWSOUNDS
-    SM_SLOWMACHINE
-    SM_SWAPBUTTON
-
-    TPM_LEFTBUTTON
-    TPM_RIGHTBUTTON
-    TPM_LEFTALIGN
-    TPM_CENTERALIGN
-    TPM_RIGHTALIGN
-    TPM_TOPALIGN
-    TPM_VCENTERALIGN
-    TPM_BOTTOMALIGN
-    TPM_HORIZONTAL
-    TPM_VERTICAL
-    TPM_NONOTIFY
-    TPM_RETURNCMD
-    TPM_RECURSE
-
-    TBSTATE_CHECKED
-    TBSTATE_ELLIPSES
-    TBSTATE_ENABLED
-    TBSTATE_HIDDEN
-    TBSTATE_INDETERMINATE
-    TBSTATE_MARKED
-    TBSTATE_PRESSED
-    TBSTATE_WRAP
-
-    TBSTYLE_ALTDRAG
-    TBSTYLE_CUSTOMERASE
-    TBSTYLE_FLAT
-    TBSTYLE_LIST
-    TBSTYLE_REGISTERDROP
-    TBSTYLE_TOOLTIPS
-    TBSTYLE_TRANSPARENT
-    TBSTYLE_WRAPABLE
-
-    BTNS_AUTOSIZE
-    BTNS_BUTTON
-    BTNS_CHECK
-    BTNS_CHECKGROUP
-    BTNS_DROPDOWN
-    BTNS_GROUP
-    BTNS_NOPREFIX
-    BTNS_SEP
-    BTNS_SHOWTEXT
-    BTNS_WHOLEDROPDOWN
-
-    TBSTYLE_AUTOSIZE
-    TBSTYLE_BUTTON
-    TBSTYLE_CHECK
-    TBSTYLE_CHECKGROUP
-    TBSTYLE_DROPDOWN
-    TBSTYLE_GROUP
-    TBSTYLE_NOPREFIX
-    TBSTYLE_SEP
-
-    TBSTYLE_EX_DRAWDDARROWS
-    TBSTYLE_EX_HIDECLIPPEDBUTTONS
-    TBSTYLE_EX_MIXEDBUTTONS
-
-    TBTS_TOP
-    TBTS_LEFT
-    TBTS_BOTTOM
-    TBTS_RIGHT
-
-    TVGN_CARET
-    TVGN_CHILD
-    TVGN_DROPHILITE
-    TVGN_FIRSTVISIBLE
-    TVGN_NEXT
-    TVGN_NEXTVISIBLE
-    TVGN_PARENT
-    TVGN_PREVIOUS
-    TVGN_PREVIOUSVISIBLE
-    TVGN_ROOT
-
-    WM_CREATE
-    WM_DESTROY
-    WM_MOVE
-    WM_SIZE
-    WM_ACTIVATE
-    WM_SETFOCUS
-    WM_KILLFOCUS
-    WM_ENABLE
-    WM_SETREDRAW
-    WM_COMMAND
-    WM_KEYDOWN
-    WM_SETCURSOR
-    WM_KEYUP
-
-    WS_BORDER
-    WS_CAPTION
-    WS_CHILD
-    WS_CHILDWINDOW
-    WS_CLIPCHILDREN
-    WS_CLIPSIBLINGS
-    WS_DISABLED
-    WS_DLGFRAME
-    WS_GROUP
-    WS_HSCROLL
-    WS_ICONIC
-    WS_MAXIMIZE
-    WS_MAXIMIZEBOX
-    WS_MINIMIZE
-    WS_MINIMIZEBOX
-    WS_OVERLAPPED
-    WS_OVERLAPPEDWINDOW
-    WS_POPUP
-    WS_POPUPWINDOW
-    WS_SIZEBOX
-    WS_SYSMENU
-    WS_TABSTOP
-    WS_THICKFRAME
-    WS_TILED
-    WS_TILEDWINDOW
-    WS_VISIBLE
-    WS_VSCROLL
-
-    WS_EX_ACCEPTFILES
-    WS_EX_APPWINDOW
-    WS_EX_CLIENTEDGE
-    WS_EX_CONTEXTHELP
-    WS_EX_CONTROLPARENT
-    WS_EX_DLGMODALFRAME
-    WS_EX_LEFT
-    WS_EX_LEFTSCROLLBAR
-    WS_EX_LTRREADING
-    WS_EX_MDICHILD
-    WS_EX_NOPARENTNOTIFY
-    WS_EX_OVERLAPPEDWINDOW
-    WS_EX_PALETTEWINDOW
-    WS_EX_RIGHT
-    WS_EX_RIGHTSCROLLBAR
-    WS_EX_RTLREADING
-    WS_EX_STATICEDGE
-    WS_EX_TOOLWINDOW
-    WS_EX_TOPMOST
-    WS_EX_TRANSPARENT
-    WS_EX_WINDOWEDGE
-);
-
 ###############################################################################
-# This AUTOLOAD is used to 'autoload' constants from the constant()
-# XS function.  If a constant is not found then control is passed
-# to the AUTOLOAD in AutoLoader.
+# SUPPORT FOR Win32 API defined constants
 #
 
-sub AUTOLOAD {
-    my($constname);
-    ($constname = $AUTOLOAD) =~ s/.*:://;
-    #reset $! to zero to reset any current errors.
-    $! = 0;
-    my $val = constant($constname, @_ ? $_[0] : 0);
-    if ($! != 0) {
-        if ($! =~ /Invalid/) {
-            $AutoLoader::AUTOLOAD = $AUTOLOAD;
-            goto &AutoLoader::AUTOLOAD;
-        } else {
-            my($pack,$file,$line) = caller; # undef $pack;
-            die "Can't find '$constname' in package '$pack' ".
-                "used at $file line $line.";
-        }
+###############################################################################
+# This import() function is used to delegate constants support to
+# Win32::GUI::Constants.
+# The default exports are deprecated, and will be removed in the future
+sub import {
+    my $pkg = shift;
+    my $callpkg = caller;
+    my @imports = @_;
+
+    # Don't let this import() get inherited
+    return unless $pkg eq 'Win32::GUI';
+
+    # use Win32::GUI; currently exports a load of constants for
+    # backwards compatibility with earlier Win32::GUI versions.
+    # This is deprecated, and in the future
+    #  use Win32::GUI;   and
+    #  use Win32::GUI();   will have the same behaviour.
+    if(@imports == 0) {
+        use warnings;
+	warnings::warnif 'deprecated',
+       	    "'use Win32::GUI;' is currently exporting constants into ".
+	    "the callers scope. This functionality is deprecated. ".
+	    "Use 'use Win32::GUI();' or list your required exports ".
+            "explicitly instead.";
+	@imports = qw(:compatibility_win32_gui);
     }
-    eval "sub $AUTOLOAD { $val }";
-    goto &$AUTOLOAD;
+    # Except for version checking, delegate everything else to
+    # Win32::GUI::Constants directly, noting any -exportpkg pragma
+    my @exports;
+    my $setpkg = 0;
+    for my $spec (@imports) {
+        # Always expect the export package name immediately after
+        # the -exportpkg pragma
+        $callpkg=$spec,$setpkg=0, next if $setpkg;
+        $setpkg=1,                next if $spec =~ /^-exportpkg$/;
+        $pkg->VERSION($spec),     next if $spec =~ /^\d/;    # inherit from UNIVERSAL
+	next if length $spec == 0;  # throw away ''.
+        push @exports, $spec;
+    }
+    # if called by use Win32::GUI 1.03,''; for version check only
+    # then there is nothign to export, so don't do require etc.
+    if(@exports) {
+        require Win32::GUI::Constants;
+        Win32::GUI::Constants->import("-exportpkg", $callpkg, @exports);
+    }
+}
+
+###############################################################################
+# This constant() function is used to delegate constants support to
+# Win32::GUI::Constants.  Usage of this is deprecated and will be removed
+# in the future
+sub constant {
+    my $constant = shift;
+    use warnings;
+    if($constant =~ /^WIN32__GUI__/) {
+        warnings::warnif 'deprecated', "Use of Win32::GUI::constant() is deprecated. ".
+            "Use Win32::GUI::_constant() instead for WIN32__GUI__* constants.";
+        return Win32::GUI::_constant($constant);
+    }
+
+    warnings::warnif 'deprecated', "Use of Win32::GUI::constant() is deprecated. ".
+        "Use Win32::GUI::Constants::constant() instead.";
+    require Win32::GUI::Constants;
+    return Win32::GUI::Constants::constant($constant);
+}
+
+###############################################################################
+# This AUTOLOAD is used to 'autoload' constants.  Constant support is now
+# delegated to Win32::GUI::Constants.  Use of this is deprecated, and will be
+# removed in the future
+
+sub AUTOLOAD {
+    my $constant = $AUTOLOAD;
+    $constant =~ s/.*:://;
+    my ($callpkg, $file, $line) = caller;
+    require Win32::GUI::Constants;
+    my $val = Win32::GUI::Constants::constant($constant);
+
+    if(defined $val) {
+        no warnings; # avoid perl 5.6 warning about prototype mismatches
+        eval "sub $AUTOLOAD() {$val}";
+        use warnings;
+        warnings::warnif 'deprecated',
+            "Use of '$AUTOLOAD' is deprecated. Use 'Win32::GUI::Constants::$constant' instead.";
+        goto &$AUTOLOAD;
+    }
+
+    #TODO - should we die?  Many unknown methods may also end up here - can we find a better wording?
+    die "Can't find '$constant' in package ". __PACKAGE__ .
+                ". Used at $file line $line.\n";
 }
 
 sub bootstrap_subpackage {
@@ -467,6 +138,8 @@ sub bootstrap_subpackage {
     );
     &{ "${package}::bootstrap" };
 }
+
+bootstrap Win32::GUI;
 
 ###############################################################################
 # PUBLIC METHODS
@@ -609,6 +282,195 @@ sub _new {
     }
 }
 
+    ###########################################################################
+    # (@)METHOD:AcceptFiles([FLAG])
+    # Gets/sets the L<-acceptfiles|Win32::GUI::Reference::Options/acceptfiles>
+    # options on a window.  If C<FLAG> is not provided, returns the current
+    # state.  If FLAG is provided it sets or unsets the state, returning the
+    # previous state.
+sub AcceptFiles {
+    my $win = shift;
+    my $accept = shift;
+
+    my $old_accept = $win->GetWindowLong(GWL_EXSTYLE) & WS_EX_ACCEPTFILES() ? 1 : 0;
+
+    if(defined $accept) {
+        $win->Change(-acceptfiles => $accept);
+    }
+
+    return $old_accept;
+}
+
+    ###########################################################################
+    # (@)METHOD:UserData([value])
+    # Sets or reads user data associated with the window or control.
+    #
+    #  my $data=$win->UserData();#retrieve any data associated with the window
+    #  $win->UserData('some string');#associate user data to the window
+    #
+    # User data can be any perl scalar or reference.
+    #
+    # When reading returns the stored user data, or undef if nothing is stored.
+    # When setting returns a true value if the user data is stored correctly, or
+    # a false value on error
+    #
+    # If you are writing a class that you expect others to use, then this
+    # method should B<NOT> be used to store class instance data. See
+    # L<ClassData()|Win32::GUI::Reference::Methods/ClassData> instead.
+sub UserData {
+    my $win = shift;
+    my $data = shift;
+
+    if(@_) { # more items than expected passed: someone probably tried
+             # passsing and array or hash
+        warn("UserData: too many arguments");
+        return 0;
+    }
+
+    if(defined $data) { # Setting user data
+        $win->_UserData()->{UserData} = $data;
+        return 1;
+    }
+    else {              # reading user data
+        return $win->_UserData()->{UserData};
+    }
+}
+
+    ###########################################################################
+    # (@)METHOD:ClassData([value])
+    # Sets or reads class instance data associated with the window or control.
+    #
+    #  my $data=$win->ClassData();#retrieve any data associated with the window
+    #  $win->ClassData('some string');#associate data to the window
+    #
+    # Class instance data can be any perl scalar or reference.
+    #
+    # When reading returns the stored instance data, or undef if nothing is
+    # stored.
+    # When setting returns a true value if the instance data is stored
+    # correctly, or a false value on error
+    #
+    # Class instance data is private to the package that sets the data.  I.e. it
+    # is only accessable as a method call from within the package that sets the
+    # data, not from a sub-class.  So, if you wish to make data stored this way
+    # accessible to sub-classes you must proved assessor methods in your package.
+sub ClassData {
+    my $win = shift;
+    my $data = shift;
+
+    if(@_) { # more items than expected passed: someone probably tried
+             # passsing and array or hash
+        warn("ClassData: too many arguments");
+        return 0;
+    }
+
+    my $callpkg = (caller())[0];
+
+    if(defined $data) { # Setting user data
+        $win->_UserData()->{$callpkg} = $data;
+        return 1;
+    }
+    else {              # reading user data
+        return $win->_UserData()->{$callpkg};
+    }
+}
+
+    ###########################################################################
+    # (@)METHOD:Animate(%OPTIONS)
+    # Apply special effects when showing or hiding a window.  Used instead of
+    # L<Show()|Win32::GUI::Reference::Methods/Show> or
+    # L<Hide()|Win32::GUI::Reference::Methods/Hide>.
+    #
+    # OPTIONS can take the following values:
+    #   -show      => (0|1)                             default: 1
+    #     Hide(0) or Show(1) the window
+    #
+    #   -activate  => (0|1)                             default: 0
+    #     Activate the window.  Ignored if hiding the
+    #     window
+    #
+    #   -animation => (roll|slide|blend|center)         default: 'roll'
+    #     Animation type:
+    #         roll:   use roll animation
+    #         slide:  use slide animation
+    #         blend:  use a fade effect.  Top-level
+    #                 windows only
+    #         center: expand out if showing, collapse
+    #                 in when hiding
+    #
+    #   -time      => time                              default: 200
+    #     Animation time in milli-seconds
+    #
+    #   -direction => (lr|tlbr|tb|trbl|rl|brtl|bt|blrt) default: 'lr'
+    #     Animation direction (l=left, r=right, t=top, b=bottom).
+    #     Ignored for animation types blend and center
+    #
+    # Returns a true value on success or a false value on failure
+    #
+    # NOTE: blend animation does not work on Win98.  It is recomended
+    # that you always check the return value from this function and
+    # issue a suitable Show() or Hide() on failure.
+sub Animate {
+    my $win = shift;
+
+   my %options = @_;
+   my $show      = delete $options{-show};
+   my $activate  = delete $options{-activate};
+   my $animation = delete $options{-animation};
+   my $time      = delete $options{-time};
+   my $direction = delete $options{-direction};
+
+   if(keys(%options) != 0) {
+       require Carp;
+       Carp::carp "Animate: Unrecognised options ".join(", ", keys(%options));
+       return undef
+   }
+
+   $show      = 1      unless defined $show;
+   $activate  = 0      unless defined $activate;
+   $animation = 'roll' unless defined $animation;
+   $time      = 200    unless defined $time;
+   $direction = 'lr'   unless defined $direction;
+
+   if($animation !~ /roll|slide|blend|center/) {
+       require Carp;
+       Carp::carp "Animate: Unrecognised animation type: $animation";
+       return undef;
+   }
+
+   if($direction !~ /lr|tlbr|tb|trbl|rl|brtl|bt|blrt/) {
+       require Carp;
+       Carp::carp "Animate: Unrecognised direction: $direction";
+       return undef;
+   }
+
+   # create the flags:
+   my $flags = 0;
+   $flags |= 65536  unless $show;              # AW_HIDE = 65536
+   $flags |= 131072 if ($activate && $show);   # AW_ACTIVATE = 131072
+
+   $flags |= 262144 if $animation eq 'slide';  # AW_SLIDE = 262144
+   $flags |= 16     if $animation eq 'center'; # AW_CENTER = 16
+   $flags |= 524288 if $animation eq 'blend';  # AW_BLEND = 524288
+
+   # horizontal direction
+   $direction =~ /([lr])/;
+   $flags |= 1 if defined $1 and $1 eq 'l';    # AW_HOR_POSITIVE = 1
+   $flags |= 2 if defined $1 and $1 eq 'r';    # AW_HOR_NEGATIVE = 2
+   
+   # vertical direction
+   $direction =~ /([tb])/;
+   $flags |= 4 if defined $1 and $1 eq 't';    # AW_VER_POSITIVE = 4
+   $flags |= 8 if defined $1 and $1 eq 'b';    # AW_VER_NEGATIVE = 8
+
+   # Do the animation
+   # TODO: AW_BLEND doesn't work under Win98.  There are other failure
+   # modes too (e.g. AW_BLEND on non-top-level window.  Should we detect
+   # failure and use Show() in that case? Or is that just confusing?
+   return $win->_Animate($time, $flags);
+}
+   
+    
 ###############################################################################
 # SUB-PACKAGES
 #
@@ -670,12 +532,22 @@ package Win32::GUI::Bitmap;
     #   2  cursor
     # You can eventually specify your desired size for the image with X and
     # Y and pass some FLAGS to the underlying LoadImage API (at your own risk)
+    #
+    # If FILENAME is a string, then it is first tried as a resource
+    # name, then a filename.  If FILENAME is a number it is tried
+    # as a resource identifier.
+    #
+    # Resources are searched for in the current exe (perl.exe unless
+    # you have packed your application using perl2exe, PAR or similar),
+    # then in the Win32::GUI GUI.dll, and finally as an OEM resource
+    # identifier
 sub new {
     my $class = shift;
     my $self = {};
 
     my $handle = Win32::GUI::LoadImage(@_);
 
+    # TODO: this gives us a bitmap object, even if we ask for a cursor!
     if($handle) {
         $self->{-handle} = $handle;
         bless($self, $class);
@@ -694,6 +566,15 @@ package Win32::GUI::Icon;
     ###########################################################################
     # (@)METHOD:new Win32::GUI::Icon(FILENAME)
     # Creates a new Icon object reading from FILENAME.
+    #
+    # If FILENAME is a string, then it is first tried as a resource
+    # name, then a filename.  If FILENAME is a number it is tried
+    # as a resource identifier.
+    #
+    # Resources are searched for in the current exe (perl.exe unless
+    # you have packed your application using perl2exe, PAR or similar),
+    # then in the Win32::GUI GUI.dll, and finally as an OEM resource
+    # identifier
 sub new {
     my $class = shift;
     my $file = shift;
@@ -701,7 +582,7 @@ sub new {
 
     my $handle = Win32::GUI::LoadImage(
         $file,
-        Win32::GUI::constant("IMAGE_ICON", 0),
+        1, #Win32::GUI::Constants::constant("IMAGE_ICON"),
     );
 
     if($handle) {
@@ -730,6 +611,15 @@ package Win32::GUI::Cursor;
     ###########################################################################
     # (@)METHOD:new Win32::GUI::Cursor(FILENAME)
     # Creates a new Cursor object reading from FILENAME.
+    #
+    # If FILENAME is a string, then it is first tried as a resource
+    # name, then a filename.  If FILENAME is a number it is tried
+    # as a resource identifier.
+    #
+    # Resources are searched for in the current exe (perl.exe unless
+    # you have packed your application using perl2exe, PAR or similar),
+    # then in the Win32::GUI GUI.dll, and finally as an OEM resource
+    # identifier
 sub new {
     my $class = shift;
     my $file = shift;
@@ -737,7 +627,7 @@ sub new {
 
     my $handle = Win32::GUI::LoadImage(
         $file,
-        Win32::GUI::constant("IMAGE_CURSOR", 0),
+        2, #Win32::GUI::Constants::constant("IMAGE_CURSOR"),
     );
 
     if($handle) {
@@ -760,7 +650,6 @@ sub DESTROY {
 # (@)PACKAGE:Win32::GUI::Class
 # Create Window classes
 package Win32::GUI::Class;
-@ISA = qw(Win32::GUI);
 
     ###########################################################################
     # (@)METHOD: new Win32::GUI::Class(%OPTIONS)
@@ -801,9 +690,9 @@ sub new {
           ($undef, $major, $minor) = Win32::GetOSVersion();
         }
         if($major == 5 && $minor > 0) {
-            $args{-color} = Win32::GUI::constant("COLOR_BTNFACE", 0)+1;
+            $args{-color} = 16; #Win32::GUI::Constants::constant("COLOR_BTNFACE")+1;
         } else {
-            $args{-color} = Win32::GUI::constant("COLOR_WINDOW", 0);
+            $args{-color} = 5; #Win32::GUI::Constants::constant("COLOR_WINDOW");
         }
     }
 
@@ -885,7 +774,7 @@ package Win32::GUI::Window;
     #   -dialogui => 0/1
     #     Act as a dialog box.
 sub new {
-    my $self = Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__WINDOW", 0), @_);
+    my $self = Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__WINDOW"), @_);
     if($self) {
         return $self;
     } else {
@@ -1034,6 +923,11 @@ sub AddMonthCal  { return Win32::GUI::MonthCal->new(@_); }
 sub AddGraphic  { return Win32::GUI::Graphic->new(@_); }
 
     ###########################################################################
+    # (@)METHOD:AddTooltip(%OPTIONS)
+    # See new Win32::GUI::Tooltip().
+sub AddTooltip  { return Win32::GUI::Tooltip->new(@_); }
+
+    ###########################################################################
     # (@)METHOD:AddMenu()
     # See new Win32::GUI::Menu().
 sub AddMenu {
@@ -1099,7 +993,7 @@ package Win32::GUI::DialogBox;
     # (@)METHOD:new Win32::GUI::DialogBox(%OPTIONS)
     # Creates a new DialogBox object. See new Win32::GUI::Window().
 sub new {
-    my $self = Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__DIALOG", 0), @_);
+    my $self = Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__DIALOG"), @_);
     if($self) {
         return $self;
     } else {
@@ -1124,7 +1018,7 @@ package Win32::GUI::MDIFrame;
     # Class specific B<%OPTIONS> are:
 
 sub new {
-    my $self = Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__MDIFRAME", 0), @_);
+    my $self = Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__MDIFRAME"), @_);
     if($self) {
         return $self;
     } else {
@@ -1218,7 +1112,7 @@ package Win32::GUI::MDIClient;
     # Class specific B<%OPTIONS> are:
 
 sub new {
-    my $self = Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__MDICLIENT", 0), @_);
+    my $self = Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__MDICLIENT"), @_);
     if($self) {
         return $self;
     } else {
@@ -1261,7 +1155,7 @@ package Win32::GUI::MDIChild;
     # Class specific B<%OPTIONS> are:
 
 sub new {
-    my $self = Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__MDICHILD", 0), @_);
+    my $self = Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__MDICHILD"), @_);
     if($self) {
         return $self;
     } else {
@@ -1325,7 +1219,7 @@ package Win32::GUI::Button;
     #       Set/Unset rightbutton style.
 
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__BUTTON", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__BUTTON"), @_);
 }
 
 
@@ -1346,7 +1240,7 @@ package Win32::GUI::RadioButton;
     #
     # B<%OPTIONS> are the same as Button (See new Win32::GUI::Button() ).
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__RADIOBUTTON", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__RADIOBUTTON"), @_);
 }
 
 
@@ -1367,7 +1261,7 @@ package Win32::GUI::Checkbox;
     #
     # B<%OPTIONS> are the same of Button (See new Win32::GUI::Button() ).
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__CHECKBOX", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__CHECKBOX"), @_);
 }
 
 ###############################################################################
@@ -1385,7 +1279,7 @@ package Win32::GUI::Groupbox;
     # Creates a new Groupbox object;
     # can also be called as PARENT->AddGroupbox(%OPTIONS).
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__GROUPBOX", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__GROUPBOX"), @_);
 }
 
 
@@ -1434,7 +1328,7 @@ package Win32::GUI::Label;
     #    -simple   => 0/1 (default 1)
     #       Set/Unset simple style.
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__STATIC", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__STATIC"), @_);
 }
 
 
@@ -1463,18 +1357,27 @@ package Win32::GUI::Textfield;
     #   -password      => 0/1 (default 0)
     #       masks the user input (like password prompts).
     #   -passwordchar  => CHAR (default '*')
-    #       The specified CHAR that is shown instead of the text with C<< -password => 1 >>.
+    #       The specified CHAR that is shown instead of the text with -password => 1
     #   -lowercase     => 0/1 (default 0)
     #       Convert all caracter into lowercase
     #   -uppercase     => 0/1 (default 0)
     #       Convert all caracter into uppercase
-    #   -autohscroll   => 0/1 (default 0)
-    #   -autovscroll   => 0/1 (default 0)
+    #   -autohscroll   => 0/1 (default 1 (0 for a multiline Textfield))
+    #       Automatically scroll to right as text is typed past the right
+    #       margin;  If 0 for a multiline Textfield, then wrap to the next
+    #       line.
+    #   -autovscroll   => 0/1 (default 1)
+    #       For a multiline Textfiled automatically scroll down as lines
+    #       pass the bottom of the control. 
     #   -number        => 0/1 (default 0)
     #       Allows only digits to be entered into the edit control
     #   -prompt        => (see below)
     #   -readonly      => 0/1 (default 0)
     #       text can't be changed.
+    #   -wantreturn    => 0/1 (default 0)
+    #       when dialogui => 1 is in effect, stops the <ENTER> key
+    #       behaving as a click on the default button, and allows the
+    #       key to be entered in a multi-line Textfield
     #
     # The C<-prompt> option is very special; if a string is passed, a
     # Win32::GUI::Label object (with text set to the string passed) is created
@@ -1565,7 +1468,7 @@ sub new {
         }
     }
     return Win32::GUI->_new(
-        Win32::GUI::constant("WIN32__GUI__EDIT", 0),
+        Win32::GUI::_constant("WIN32__GUI__EDIT"),
         $class, $parent, @options,
     );
 }
@@ -1601,7 +1504,7 @@ package Win32::GUI::Listbox;
     #    -disablenoscroll => 0/1 (default 0)
 
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__LISTBOX", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__LISTBOX"), @_);
 }
 
     ###########################################################################
@@ -1699,7 +1602,7 @@ package Win32::GUI::Combobox;
     #    Set/Unset uppercase style
 
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__COMBOBOX", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__COMBOBOX"), @_);
 }
 
 ###############################################################################
@@ -1723,7 +1626,7 @@ package Win32::GUI::ProgressBar;
     #     -vertical => 0/1 (default 0)
     #         display progress status vertically (from bottom to top).
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__PROGRESS", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__PROGRESS"), @_);
 }
 
 ###############################################################################
@@ -1746,7 +1649,7 @@ package Win32::GUI::StatusBar;
     #         Set/Unset size grip style.
 
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__STATUS", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__STATUS"), @_);
 }
 
 
@@ -1787,7 +1690,7 @@ package Win32::GUI::TabStrip;
     #   -vertical  => 0/1 (default 0)
     #   -tooltip => Win32::GUI::Tooltip object
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__TAB", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__TAB"), @_);
 }
 
 ###############################################################################
@@ -1817,13 +1720,13 @@ package Win32::GUI::Toolbar;
     #   -nodivider => 0/1
     #   -tooltip => Win32::GUI::Tooltip object
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__TOOLBAR", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__TOOLBAR"), @_);
 }
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::RichEdit
 # Create and manipulate Richedit controls.
-# Most of the methods and events that apply to a L<TextField|Win32::GUI::Textfield>
+# Most of the methods and events that apply to a L<Textfield|Win32::GUI::Textfield>
 # also apply to Win32::GUI::RichEdit.
 #
 # Note that in order for most events to be triggered you must call the
@@ -1841,10 +1744,12 @@ package Win32::GUI::RichEdit;
     # (@)METHOD:new Win32::GUI::RichEdit(PARENT, %OPTIONS)
     # Creates a new RichEdit object;
     # can also be called as PARENT->AddRichEdit(%OPTIONS).
-    # See new Win32::GUI::TextField() for B<%OPTIONS>
+    # See new Win32::GUI::Textfield() for B<%OPTIONS>
 sub new {
     $Win32::GUI::RICHED = Win32::GUI::LoadLibrary("RICHED32") unless defined $Win32::GUI::RICHED;
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__RICHEDIT", 0), @_);
+    #TODO: should FreeLibrary when last RichEdit control gets DESTROYed, rather than
+    #allowing the process tidy-up to do it.
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__RICHEDIT"), @_);
 }
 
 
@@ -1895,7 +1800,7 @@ package Win32::GUI::ListView;
     #   -underlinecold => 0/1
     #   -multiworkareas => 0/1
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__LISTVIEW", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__LISTVIEW"), @_);
 }
 
     ###########################################################################
@@ -2033,7 +1938,7 @@ package Win32::GUI::TreeView;
     #   -rtlreading => 0/1
     #   -singleexpand => 0/1
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__TREEVIEW", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__TREEVIEW"), @_);
 }
 
 ###############################################################################
@@ -2065,7 +1970,7 @@ package Win32::GUI::Trackbar;
     #   -both => 0/1
     #   -fixedlength => 0/1
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__TRACKBAR", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__TRACKBAR"), @_);
 }
 
 ###############################################################################
@@ -2112,13 +2017,35 @@ package Win32::GUI::UpDown;
     #     DOWN ARROW keys are pressed.
     #
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__UPDOWN", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__UPDOWN"), @_);
 }
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::Tooltip
 # Create and manipulate Tooltip controls
 #
+# Tooltip controls are probably one of the most unintuitave of the Win32
+# controls when you first come accross them.  A Tooltip control is a
+# single window that supports one or more 'tools'.  A tool is a window,
+# or an area of a window that when the mouse hovers over, the tooltip
+# window is displayed.  The Tooltip is always a top level window (so
+# don't try adding the WS_CHILD window style), and is typically owned
+# by the top level window of your application/dialog.
+#
+# Create a tooltip window:
+#
+#   my $tt = Win32::GUI::Tooltip->new(
+#     $main_window,
+#   );
+#
+# Add a tool to the tooltip:
+#
+#   $tt->AddTool(
+#     -window => $main_window,
+#     -text   => "Text that pops up",
+#   );
+#
+# and hover the mouse over an area of your main window.
 package Win32::GUI::Tooltip;
 @ISA = qw(
     Win32::GUI
@@ -2127,14 +2054,23 @@ package Win32::GUI::Tooltip;
 
     ###########################################################################
     # (@)METHOD:new Win32::GUI::Tooltip(PARENT, %OPTIONS)
-    # Creates a new Tooltip object
+    # Creates a new Tooltip object.
+    # Can also be called as PARENT->AddTooltip(%OPTIONS).
     #
     # Class specific B<%OPTIONS> are:
-    #   -alwaystip => 0/1
-    #   -noprefix => 0/1
+    #   -alwaystip => 0/1 (default: 1)
+    #      Show the tooltip, even if the window is not active.
+    #   -noprefix  => 0/1 (default: 0)
+    #      Prevent the tooltip control stripping '&' prefixes
+    #   -noanimate => 0/1 (default: 0)
+    #      Turn off tooltip window animation
+    #   -nofade    => 0/1 (default: 0)
+    #      Turn off tooltip window fading effect
+    #   -balloon   => 0/1 (default: 0)
+    #      Give the tooltip window 'balloon' style
 sub new {
     my $parent = $_[1];
-    my $new = Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__TOOLTIP", 0), @_);
+    my $new = Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__TOOLTIP"), @_);
     if($new) {
         if($parent->{-tooltips}) {
             push(@{$parent->{-tooltips}}, $new->{-handle});
@@ -2173,7 +2109,7 @@ package Win32::GUI::Animation;
     #   -transparent => 0/1 (default 0)
     #     Draws the animation using a transparent background.
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__ANIMATION", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__ANIMATION"), @_);
 }
 
 ###############################################################################
@@ -2214,7 +2150,7 @@ package Win32::GUI::Rebar;
     #     Set tooltip window.
 
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__REBAR", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__REBAR"), @_);
 }
 
 ###############################################################################
@@ -2251,7 +2187,7 @@ package Win32::GUI::Header;
     #   -imagelist => Win32::GUI::ImageList object.
     #     Set imagelist.
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__HEADER", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__HEADER"), @_);
 }
 
 ###############################################################################
@@ -2280,7 +2216,7 @@ package Win32::GUI::Splitter;
     #     Set range values.
 
 sub new {
-    my $new = Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__SPLITTER", 0), @_);
+    my $new = Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__SPLITTER"), @_);
     if($new) {
         $new->{-tracking} = 0;
         return $new;
@@ -2318,7 +2254,7 @@ package Win32::GUI::ComboboxEx;
     # Except for images, a ComboboxEx object acts like a Win32::GUI::Combobox
     # object. See also new Win32::GUI::Combobox().
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__COMBOBOXEX", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__COMBOBOXEX"), @_);
 }
 
 ###############################################################################
@@ -2346,7 +2282,7 @@ package Win32::GUI::DateTime;
     #   -updown   => 0/1 (default 0 for date, 1 for time format)
     #     Use updown control instead of the drop-down month calendar.
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__DTPICK", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__DTPICK"), @_);
 }
 
 ###############################################################################
@@ -2377,7 +2313,7 @@ package Win32::GUI::MonthCal;
     #     Set/Unset weeknumber style.
 
 sub new {
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__MONTHCAL", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__MONTHCAL"), @_);
 }
 
 ###############################################################################
@@ -2400,7 +2336,7 @@ package Win32::GUI::Graphic;
     #     Set/Unset interactive graphic.
 sub new {
 
-    return Win32::GUI->_new(Win32::GUI::constant("WIN32__GUI__GRAPHIC", 0), @_);
+    return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__GRAPHIC"), @_);
 }
 
     ###########################################################################
@@ -2474,7 +2410,6 @@ package Win32::GUI::Menu;
     # (@)METHOD:new Win32::GUI::Menu(...)
 sub new {
     my $class = shift;
-    $class = "Win32::" . $class if $class =~ /^GUI::/;
     my $self = {};
 
     if($#_ > 0) {
@@ -2504,13 +2439,11 @@ sub AddMenuButton {
 # Create and manipulate menu entries
 #
 package Win32::GUI::MenuButton;
-@ISA = qw(Win32::GUI);
 
     ###########################################################################
     # (@)METHOD:new Win32::GUI::MenuButton()
 sub new {
     my $class = shift;
-    $class = "Win32::" . $class if $class =~ /^GUI::/;
     my $menu = shift;
     $menu = $menu->{-handle} if ref($menu);
     # print "new MenuButton: menu=$menu\n";
@@ -2550,7 +2483,6 @@ sub AddMenuItem {
 # Create and manipulate menu entries
 #
 package Win32::GUI::MenuItem;
-@ISA = qw(Win32::GUI);
 
     ###########################################################################
     # (@)METHOD:new Win32::GUI::MenuItem()
@@ -2563,7 +2495,6 @@ package Win32::GUI::MenuItem;
     #       drawn in a bold font.
 sub new {
     my $class = shift;
-    $class = "Win32::" . $class if $class =~ /^GUI::/;
     my $menu = shift;
     return undef unless ref($menu) =~ /^Win32::GUI::Menu/;
     my %args = @_;
@@ -2630,7 +2561,6 @@ package Win32::GUI::Timer;
     # to more appropriate values. E.g. > 0x7fffffff or < 10
 sub new {
     my $class = shift;
-    $class = "Win32::" . $class if $class =~ /^GUI::/;
     my $window = shift;
     my $name = shift;
     my $elapse = shift;
@@ -2750,9 +2680,15 @@ sub DESTROY {
 
 ###############################################################################
 # (@)PACKAGE:Win32::GUI::NotifyIcon
-# Create and manipulate notify icons in the system tray
+# Create and manipulate icons and tooltips in the system tray
 #
+# The functionality of Win32::GUI::NotifyIcon is affected by the version
+# of shell32.dll installed with the windows system running your script. You
+# can find this version from $Win32::GUI::NotifyIcon::SHELLDLL_VERSION,
+# which contains the major version number of the shell32.dll library that
+# has been loaded.
 package Win32::GUI::NotifyIcon;
+our $SHELLDLL_VERSION = (Win32::GUI::GetDllVersion('shell32'))[0];
 
     ###########################################################################
     # (@)METHOD:new Win32::GUI::NotifyIcon(PARENT, %OPTIONS)
@@ -2761,31 +2697,70 @@ package Win32::GUI::NotifyIcon;
     #
     # B<%OPTIONS> are:
     #     -icon => Win32::GUI::Icon object
-    #     -id => NUMBER
-    #         a unique identifier for the NotifyIcon object
+    #         the icon to display in the taskbar
     #     -name => STRING
     #         the name for the object
     #     -tip => STRING
-    #         the text that will appear as tooltip when the mouse is
-    #         on the NotifyIcon
+    #         the text that will appear as a tooltip when the mouse is
+    #         hovering over the NotifyIcon.  For shell32.dll versions prior
+    #         to 5.0 the text length is limited to 63 characters;  For
+    #         later versions it is limited to 127 characters.  The string
+    #         provided will be truncated as necessary.
     #     -event => NEM Event Hash
     #        Set NEM event handler (you can also use -on Event Option).
-
+    #
+    # For shell32.dll version 5.0 and later balloon tooltips can be used,
+    # the following options control balloon tooltips.  If your version
+    # of shell32.dll does not support balloon tooltips, then these options
+    # are silently ignored:
+    #     -balloon => 0/1
+    #        A flag controlling whether the ballon tip is displayed by
+    #        new() or Change(), or whether the ShowBalloon() method
+    #        must be called to display the balloon tooltip.  Defaults
+    #        to 0 (not displayed).
+    #     -balloon_tip => STRING
+    #        Sets the text that will appear in the body of the balloon tip.
+    #        Will cause the balloon tip to be removed from the screen if set
+    #        to the empty string and displayed. The string is limited to
+    #        255 characters and will be truncated as necessary.
+    #     -balloon_title => STRING
+    #        Sets the text that appears as a title at the top of the balloon
+    #        tip. The string is limited to 63 characters and will be truncated
+    #        as necessary.
+    #     -balloon_icon  => STRING
+    #        Sets the icon that is displayed next to the balloon tip title. If
+    #        the balloon tip title is not set (or is set to the empty string),
+    #        then no icon is displayed.  Allowed values for STRING are:
+    #        error, info, warning, none.  Defaults to 'none'.
+    #    -balloon_timeout => NUMBER
+    #        The maximum time for which a balloon tooltip is displayed before
+    #        being removed, in milliseconds.  The system will limit the range
+    #        allowed (typically to between 10 and 30 seconds).  If a balloon
+    #        is being displayed and another taskbar icon tries to display a
+    #        balloon tip, then the one being displayed will be removed after
+    #        it has been displayed for the system minimum time (typically 10
+    #        seconds), and only then will the new tooltip be displayed.
+    #        Defaults to 10 seconds.
+    #
+    # Returns a Win32::GUI::NotifyIcon object on success, undef on failure
 sub new {
     my $class = shift;
-    $class = "Win32::" . $class if $class =~ /^GUI::/;
     my $window = shift;
 
     my %args = @_;
 
     if(!exists($args{-id})) {
-        $args{-id} = $Win32::GUI::NotifyIconIdCounter;
-        $Win32::GUI::NotifyIconIdCounter++;
+        $args{-id} = $Win32::GUI::NotifyIconIdCounter++; # TODO - deprecate
+    }
+    else {
+        warn qq(The -id option is deprecated, and you should not be setting it.);
     }
 
     if(!exists($args{-name})) {
         $args{-name} = "_NotifyIcon".$args{-id};
     }
+
+    $args{-balloon} = 0 unless exists $args{-balloon};
 
     my $self = {};
     bless($self, $class);
@@ -2793,53 +2768,173 @@ sub new {
     $self->{-id} = $args{-id};
     $self->{-name} = $args{-name};
     $self->{-handle} = $window->{-handle};
+    $self->{-balloon_tip} = $args{-balloon_tip};
+    $self->{-balloon_title} = $args{-balloon_title};
+    $self->{-balloon_timeout} = $args{-balloon_timeout};
+    $self->{-balloon_icon} = $args{-balloon_icon};
 
-    # Store name in notifyicons hash
+    my $result = Win32::GUI::NotifyIcon::_Add($self->{-handle}, %args);
+
+    return undef unless $result;
+
+    # Only modify parent if we were created successfully
+    # Store name in parent's notifyicons hash
     $window->{-notifyicons}->{$args{-id}} = $args{-name};
-    # AutoReference to parent
+    # Add NotifyIcon into parent's hash
     $window->{$args{-name}} = $self;
-    # Only if perl is circular ref-safe
-    if ($] > 5.006) {
-      $self->{-window} = \$window;
-    }
-
-    Win32::GUI::NotifyIcon::Add($self->{-handle}, %args);
 
     return $self;
 }
 
     ###########################################################################
     # (@)METHOD:Change(%OPTIONS)
-    # Change most option. See new Win32::GUI::NotifyIcon().
+    # Change all options. See new Win32::GUI::NotifyIcon().
+    #
+    # Returns 1 on success, 0 on failure
 sub Change {
     my $self = shift;
     my %args = @_;
-    return Win32::GUI::NotifyIcon::Modify($self->{-handle}, %args);
+
+    $args{-balloon} = 0 unless exists $args{-balloon};
+
+    $self->{-balloon_tip} = $args{-balloon_tip} if exists $args{-balloon_tip};
+    $self->{-balloon_title} = $args{-balloon_title} if exists $args{-balloon_title};
+    $self->{-balloon_timeout} = $args{-balloon_timeout} if exists $args{-balloon_timeout};
+    $self->{-balloon_icon} = $args{-balloon_icon} if exists $args{-balloon_icon};
+
+    if($self->{-balloon}) {
+        $args{-balloon_tip} = $self->{-balloon_tip};
+        $args{-balloon_title} = $self->{-balloon_title};
+        $args{-balloon_timeout} = $self->{-balloon_timeout};
+        $args{-balloon_icon} = $self->{-balloon_icon};
+    }
+
+    return Win32::GUI::NotifyIcon::_Modify($self->{-handle}, -id => $self->{-id}, %args);
+}
+
+    ###########################################################################
+    # (@)METHOD:ShowBalloon([FLAG=1])
+    # Only supported by shell32.dll v5.0 and above
+    #
+    # Show or hide a balloon tooltip with details supplied from the new() or
+    # Change() methods, using the -balloon_tip, -balloon_title, -balloon_timeout
+    # and -balloon_icon options.
+    #
+    # Set B<FLAG> to a true value to display the balloon tooltip, or to a false
+    # value to hide the tip (it will automatically be hidden by the system
+    # after -balloon_timeout millseconds).  If B<FLAG> is omitted, displays the
+    # tooltip.  If the tooltip is already showing, re-showing it queues
+    # a new balloon tooltip to be displayed once the existing one times out.
+    #
+    # Returns 1 on success, 0 on failure or undef if not supported.
+sub ShowBalloon {
+    return undef if $SHELLDLL_VERSION < 5;
+    my $self = shift;
+    my $flag = shift;
+    $flag = 1 unless defined $flag;
+
+    return Win32::GUI::NotifyIcon::_Modify(
+        $self->{-handle},
+        -id              => $self->{-id},
+        -balloon         => 1,
+        -balloon_tip     => $flag ? $self->{-balloon_tip} : '',
+        -balloon_title   => $self->{-balloon_title},
+        -balloon_timeout => $self->{-balloon_timeout},
+        -balloon_icon    => $self->{-balloon_icon},
+    );
+}
+
+    ###########################################################################
+    # (@)METHOD:HideBalloon([FLAG=1])
+    # Only supported by shell32.dll v5.0 and above
+    #
+    # Show or hide a balloon tooltip with details supplied from the new() or
+    # Change() methods, using the -balloon_tip, -balloon_title, -balloon_timeout
+    # and -balloon_icon options.
+    #
+    # Set B<FLAG> to a false value to display the balloon tooltip, or to a true
+    # value to hide the tip (it will automatically be hidden by the system
+    # after -balloon_timeout millseconds).  If B<FLAG> is omitted, hides the
+    # tooltip.  If the tooltip is already showing, re-showing it queues
+    # a new balloon tooltip to be displayed once the existing one times out.
+    #
+    # Returns 1 on success, 0 on failure or undef if not supported.
+sub HideBalloon {
+    return undef if $SHELLDLL_VERSION < 5;
+    my $self = shift;
+    my $flag = shift;
+    $flag = 1 unless defined $flag;
+
+    return $self->ShowBalloon(!$flag);
+}
+
+    ###########################################################################
+    # (@)METHOD:SetFocus()
+    # Only supported by shell32.dll v5.0 and above
+    #
+    # Return focus to the taskbar notification area.  For example if the
+    # taskbar icon displays a shortcut menu and the user cancels the menu
+    # with ESC, then use this method to return focus to the taskbar
+    # notification area.
+    #
+    # Returns 1 on success, 0 on failure and undef if not supported.
+sub SetFocus {
+    return undef if $SHELLDLL_VERSION < 5;
+    my $self = shift;
+    return Win32::GUI::NotifyIcon::_SetFocus($self->{-handle}, -id => $self->{-id});
+}
+
+    ###########################################################################
+    # (@)METHOD:SetBehaviour([FLAG])
+    # Only supported by shell32.dll v5.0 and above
+    #
+    # Set FLAG to a true value to get the Windows 2000 taskbar behaviour. set
+    # FLAG to a flase value to get Windows 95 taskbar behaviour.  See the MSDN
+    # documentation for Shell_NotifyIcon for more details.
+    #
+    # Returns 1 on success, 0 on failure and undef if not supported.
+sub SetBehaviour {
+    return undef if $SHELLDLL_VERSION < 5;
+    my $self = shift;
+    my $flag = shift || 0;
+    return Win32::GUI::NotifyIcon::_SetVersion($self->{-handle}, -id => $self->{-id}, -behaviour => $flag);
+}
+
+    ###########################################################################
+    # (@)METHOD:Remove()
+    # Remove the Notify Icon from the system tray, and free its related resources
+sub Remove {
+    my $self = shift;
+    $self->DESTROY();
+}
+
+    ###########################################################################
+    # (@)METHOD:Delete()
+    # Deprecated method for removing notify icon from the system tray.  Will be
+    # removed from future Win32::GUI versions without further warning.
+sub Delete {
+    warn qq(Win32::GUI::NotifyIcon::Delete() is deprecated, please use Win32::GUI::NofityIcon::Remove());
+    return Win32::GUI::NotifyIcon::_Delete(@_);
 }
 
     ###########################################################################
     # (@)INTERNAL:DESTROY(OBJECT)
 
 sub DESTROY {
+    my $self = shift;
 
-    my($self) = @_;
-    if ( defined $self &&
-         defined $self->{-handle} &&
-         defined $self->{-id} ) {
+    # Remove the notify icon
+    Win32::GUI::NotifyIcon::_Delete($self->{-handle}, -id => $self->{-id});
 
-        Win32::GUI::NotifyIcon::Delete(
-            $self->{-handle},
-            -id => $self->{-id},
-        );
-
-	if (defined $self->{-window}) {
-	  my $window = ${$self->{-window}};
-	  # Remove id from parent
-	  delete $window->{-notifyicons}->{$self->{-id}}
-	    if ref($window) and defined $window->{-notifyicons}->{$self->{-id}};
-	  # Remove name from parent
-	  delete $window->{$self->{-name}} if defined $window;
-	}
+    # We put this code to tidy up the parent here, rather than
+    # in NofifyIcon->Delete(), so that we still tidy up, even in the
+    # unlikely event of someone doing PARENT->{NotifyIcon name} = undef;
+    my $window = Win32::GUI::GetWindowObject($self->{-handle});
+    if(defined $window) {
+        # Remove id from -notifyicons hash
+        delete $window->{-notifyicons}->{$self->{-id}} if defined $window->{-notifyicons};
+        # Remove name from parent
+        delete $window->{$self->{-name}};
     }
 }
 
@@ -2860,7 +2955,6 @@ package Win32::GUI::DC;
     #
 sub new {
     my $class = shift;
-    $class = "Win32::" . $class if $class =~ /^GUI::/;
 
     my $self = {};
     bless($self, $class);
@@ -2917,7 +3011,6 @@ package Win32::GUI::Pen;
     #   -color => COLOR
 sub new {
     my $class = shift;
-    $class = "Win32::" . $class if $class =~ /^GUI::/;
 
     my $self = {};
     bless($self, $class);
@@ -2952,7 +3045,6 @@ package Win32::GUI::Brush;
     #   -color => COLOR
 sub new {
     my $class = shift;
-    $class = "Win32::" . $class if $class =~ /^GUI::/;
 
     my $handle = Create(@_);
 
@@ -3002,7 +3094,6 @@ package Win32::GUI::AcceleratorTable;
     #     F1..F12
 sub new {
     my $class = shift;
-    $class = "Win32::" . $class if $class =~ /^GUI::/;
     my($k, $v);
     my $flag = 0;
     my $key = 0;
@@ -3356,7 +3447,7 @@ sub DESTROY {
       untie %$self;
   }
 
-  # print "[DESTROY Fin] self='$self'\n";
+  # print "[DESTROY Fin  ] self='$self'\n";
 }
 
 ###############################################################################
@@ -3365,7 +3456,9 @@ sub DESTROY {
 
 package Win32::GUI;
 
-bootstrap Win32::GUI;
+# Need to bootstrap Win32::GUI early, so that we can call
+# Win32::GUI::GetDllVersion during use/compile time
+#bootstrap Win32::GUI;
 
 bootstrap_subpackage 'Animation';
 bootstrap_subpackage 'Bitmap';
@@ -3426,13 +3519,6 @@ $Win32::GUI::SplitterVertical = Win32::GUI::Class->new(
     -name    => "Win32::GUI::Splitter(vertical)",
     -widget  => "Splitter",
 );
-
-#$Win32::GUI::RICHED = Win32::GUI::LoadLibrary("RICHED32");
-
-#END {
-    # print "Freeing library RICHED32\n";
-#    Win32::GUI::FreeLibrary($Win32::GUI::RICHED);
-#}
 
 #Currently Autoloading is not implemented in Perl for win32
 # Autoload methods go after __END__, and are processed by the autosplit program.

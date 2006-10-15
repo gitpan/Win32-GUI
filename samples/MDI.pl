@@ -1,9 +1,10 @@
-#! perl 
+#! perl -w
 #
 #  MDI sample
 #
-use Win32::GUI;
 use strict;
+use warnings;
+use Win32::GUI();
 
 # My child counter for unique name.
 my $ChildCount = 0;

@@ -5,6 +5,7 @@ require Exporter;
 @EXPORT = qw(inline);
 
 $VERSION = "0.02";
+$VERSION = eval $VERSION;
 
 $Counter = 1;
 

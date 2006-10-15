@@ -1,6 +1,6 @@
 #!perl -wT
 # Win32::GUI test suite.
-# $Id: 03_button.t,v 1.2 2005/08/03 21:46:00 robertemay Exp $
+# $Id: 03_button.t,v 1.3 2006/05/16 18:57:26 robertemay Exp $
 #
 # Basic Button tsets:
 
@@ -11,7 +11,7 @@ BEGIN { $| = 1 } # Autoflush
 
 use Test::More tests => 19;
 
-use Win32::GUI;
+use Win32::GUI();
 
 can_ok("Win32::GUI::Window", qw(AddButton));
 can_ok("Win32::GUI::Button", qw(new Left Top Width Height Move Resize Text));

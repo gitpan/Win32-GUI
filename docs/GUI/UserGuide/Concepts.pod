@@ -1,4 +1,4 @@
-=for comment $Id: Concepts.pod,v 1.1 2005/06/26 16:41:02 robertemay Exp $
+=for comment $Id: Concepts.pod,v 1.2 2006/07/16 11:09:32 robertemay Exp $
 
 =head1 NAME
 
@@ -43,7 +43,7 @@ These objects are generally associated with
 your windows and controls (eg. you can set
 a windows or controls font); some of them,
 like pens and brushes, are used instead with
-the L<DC|/DC> package, which
+the L<DC|Win32::GUI::DC> package, which
 implement the drawing primitives.
 
 There are then some packages that simply don't

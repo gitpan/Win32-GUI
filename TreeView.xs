@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::TreeView
     #
-    # $Id: TreeView.xs,v 1.5 2004/05/08 17:32:41 lrocher Exp $
+    # $Id: TreeView.xs,v 1.8 2006/04/13 22:17:07 robertemay Exp $
     #
     ###########################################################################
     */
@@ -1100,7 +1100,7 @@ CODE:
         RETVAL = TreeView_DeleteAllItems(handle);
     else
         RETVAL = TreeView_Expand(handle,
-                                 (HTREEITEM) SvIV(ST(1)),
+                                 INT2PTR(HTREEITEM,SvIV(ST(1))),
                                  TVE_COLLAPSE | TVE_COLLAPSERESET);
 OUTPUT:
     RETVAL

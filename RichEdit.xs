@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::RichEdit
     #
-    # $Id: RichEdit.xs,v 1.6 2005/10/05 22:20:49 robertemay Exp $
+    # $Id: RichEdit.xs,v 1.8 2006/04/25 21:24:52 robertemay Exp $
     #
     ###########################################################################
     */
@@ -24,6 +24,22 @@ RichEdit_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATES
 
 void
 RichEdit_onPostCreate(NOTXSPROC HWND myhandle, LPPERLWIN32GUI_CREATESTRUCT perlcs) {
+
+    if(perlcs->clrForeground != CLR_INVALID) {
+        CHARFORMAT cf;
+        ZeroMemory(&cf, sizeof(CHARFORMAT));
+        cf.cbSize = sizeof(CHARFORMAT);
+        cf.dwMask = CFM_COLOR;
+        cf.crTextColor = perlcs->clrForeground;
+        SendMessage (myhandle, EM_SETCHARFORMAT, (WPARAM)SCF_ALL, (LPARAM)&cf);
+        perlcs->clrForeground = CLR_INVALID;  // Don't Store
+    }
+
+    if(perlcs->clrBackground != CLR_INVALID) {
+        SendMessage (myhandle, EM_SETBKGNDCOLOR, (WPARAM)0, (LPARAM)(perlcs->clrBackground));
+        perlcs->clrBackground = CLR_INVALID;  // Don't Store
+    }
+    
 }
 
 BOOL
@@ -277,7 +293,7 @@ PPCODE:
     if(dwMask & CFM_BOLD) {
         EXTEND(SP, 2);
         XST_mPV(si++, "-bold");
-        XST_mIV(si++, cf.dwEffects & CFE_BOLD > 0);
+        XST_mIV(si++, (cf.dwEffects & CFE_BOLD) ? 1 : 0);
     }
     if(dwMask & CFM_COLOR) {
         EXTEND(SP, 2);
@@ -292,7 +308,7 @@ PPCODE:
     if(dwMask & CFM_ITALIC) {
         EXTEND(SP, 2);
         XST_mPV(si++, "-italic");
-        XST_mIV(si++, cf.dwEffects & CFE_ITALIC > 0);
+        XST_mIV(si++, (cf.dwEffects & CFE_ITALIC) ? 1 : 0);
     }
     if(dwMask & CFM_SIZE) {
         EXTEND(SP, 2);
@@ -302,12 +318,12 @@ PPCODE:
     if(dwMask & CFM_STRIKEOUT) {
         EXTEND(SP, 2);
         XST_mPV(si++, "-strikeout");
-        XST_mIV(si++, cf.dwEffects & CFE_STRIKEOUT > 0);
+        XST_mIV(si++, (cf.dwEffects & CFE_STRIKEOUT) ? 1 : 0);
     }
     if(dwMask & CFM_UNDERLINE) {
         EXTEND(SP, 2);
         XST_mPV(si++, "-underline");
-        XST_mIV(si++, cf.dwEffects & CFE_UNDERLINE > 0);
+        XST_mIV(si++, (cf.dwEffects & CFE_UNDERLINE) ? 1 : 0);
     }
     XSRETURN(si);
 

@@ -11,12 +11,15 @@
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: GUI.xs,v 1.46 2005/11/13 18:57:52 robertemay Exp $
+# $Id: GUI.xs,v 1.62 2006/07/16 13:02:29 robertemay Exp $
 #
 ###############################################################################
  */
 
 #include "GUI.h"
+#ifdef __CYGWIN__
+#include <sys/cygwin.h>
+#endif
 
     /*
     ###########################################################################
@@ -29,19 +32,81 @@ MODULE = Win32::GUI     PACKAGE = Win32::GUI
 PROTOTYPES: DISABLE
 
      ##########################################################################
-     # (@)INTERNAL:constant(NAME, ARG)
+     # (@)INTERNAL:_constant(NAME)
 DWORD
-constant(name,arg)
+_constant(name)
     char *name
-    int arg
 CODE:
-    RETVAL = constant(NOTXSCALL name, arg);
+    if (strEQ(name, "WIN32__GUI__WINDOW"))
+        RETVAL = WIN32__GUI__WINDOW;
+    else if (strEQ(name, "WIN32__GUI__DIALOG"))
+        RETVAL = WIN32__GUI__DIALOG;
+    else if (strEQ(name, "WIN32__GUI__STATIC"))
+        RETVAL = WIN32__GUI__STATIC;
+    else if (strEQ(name, "WIN32__GUI__BUTTON"))
+        RETVAL = WIN32__GUI__BUTTON;
+    else if (strEQ(name, "WIN32__GUI__EDIT"))
+        RETVAL = WIN32__GUI__EDIT;
+    else if (strEQ(name, "WIN32__GUI__LISTBOX"))
+        RETVAL = WIN32__GUI__LISTBOX;
+    else if (strEQ(name, "WIN32__GUI__COMBOBOX"))
+        RETVAL = WIN32__GUI__COMBOBOX;
+    else if (strEQ(name, "WIN32__GUI__CHECKBOX"))
+        RETVAL = WIN32__GUI__CHECKBOX;
+    else if (strEQ(name, "WIN32__GUI__RADIOBUTTON"))
+        RETVAL = WIN32__GUI__RADIOBUTTON;
+    else if (strEQ(name, "WIN32__GUI__TOOLBAR"))
+        RETVAL = WIN32__GUI__TOOLBAR;
+    else if (strEQ(name, "WIN32__GUI__PROGRESS"))
+        RETVAL = WIN32__GUI__PROGRESS;
+    else if (strEQ(name, "WIN32__GUI__STATUS"))
+        RETVAL = WIN32__GUI__STATUS;
+    else if (strEQ(name, "WIN32__GUI__TAB"))
+        RETVAL = WIN32__GUI__TAB;
+    else if (strEQ(name, "WIN32__GUI__RICHEDIT"))
+        RETVAL = WIN32__GUI__RICHEDIT;
+    else if (strEQ(name, "WIN32__GUI__LISTVIEW"))
+        RETVAL = WIN32__GUI__LISTVIEW;
+    else if (strEQ(name, "WIN32__GUI__TREEVIEW"))
+        RETVAL = WIN32__GUI__TREEVIEW;
+    else if (strEQ(name, "WIN32__GUI__TRACKBAR"))
+        RETVAL = WIN32__GUI__TRACKBAR;
+    else if (strEQ(name, "WIN32__GUI__UPDOWN"))
+        RETVAL = WIN32__GUI__UPDOWN;
+    else if (strEQ(name, "WIN32__GUI__TOOLTIP"))
+        RETVAL = WIN32__GUI__TOOLTIP;
+    else if (strEQ(name, "WIN32__GUI__ANIMATION"))
+        RETVAL = WIN32__GUI__ANIMATION;
+    else if (strEQ(name, "WIN32__GUI__REBAR"))
+        RETVAL = WIN32__GUI__REBAR;
+    else if (strEQ(name, "WIN32__GUI__HEADER"))
+        RETVAL = WIN32__GUI__HEADER;
+    else if (strEQ(name, "WIN32__GUI__COMBOBOXEX"))
+        RETVAL = WIN32__GUI__COMBOBOXEX;
+    else if (strEQ(name, "WIN32__GUI__DTPICK"))
+        RETVAL = WIN32__GUI__DTPICK;
+    else if (strEQ(name, "WIN32__GUI__GRAPHIC"))
+        RETVAL = WIN32__GUI__GRAPHIC;
+    else if (strEQ(name, "WIN32__GUI__GROUPBOX"))
+        RETVAL = WIN32__GUI__GROUPBOX;
+    else if (strEQ(name, "WIN32__GUI__SPLITTER"))
+        RETVAL = WIN32__GUI__SPLITTER;
+    else if (strEQ(name, "WIN32__GUI__MDIFRAME"))
+        RETVAL = WIN32__GUI__MDIFRAME;
+    else if (strEQ(name, "WIN32__GUI__MDICLIENT"))
+        RETVAL = WIN32__GUI__MDICLIENT;
+    else if (strEQ(name, "WIN32__GUI__MDICHILD"))
+        RETVAL = WIN32__GUI__MDICHILD;
+    else if (strEQ(name, "WIN32__GUI__MONTHCAL"))
+        RETVAL = WIN32__GUI__MONTHCAL;
+    else
+        RETVAL = 0xFFFFFFFF;
 OUTPUT:
     RETVAL
 
 
     ##########################################################################
-    # (@)METHOD:GetAsyncKeyState(key)
+    # (@)METHOD:GetAsyncKeyState(keyCode)
     # Retrieve the status of the specified virtual key at the time the function
     # is called. The status specifies whether the key is up or down.
     #
@@ -53,10 +118,42 @@ LONG
 GetAsyncKeyState(key)
     int key
 CODE:
-    RETVAL = (GetAsyncKeyState(key) & 0x8000) >>16;
+    RETVAL = (GetAsyncKeyState(key) & 0x8000) >>15;
 OUTPUT:
     RETVAL
    
+    ##########################################################################
+    # (@)METHOD:GetKeyState(keyCode)
+    # Retrieve the status of the specified virtual key at the time the last
+    # keyboard message was retrieved from the message queue.
+    #
+    # In scalar context returns a value specifying whether the key is up(0)
+    # or down(1). In list context, returns a 2 element list with the first
+    # element as in scalar context and the second member specifying whether
+    # the key is toggled(1) or not(0) - this is only meaningful for keys that
+    # have a toggled state: Caps Lock, Num Lock etc.
+    #
+    # keyCode -- If A..Z0..9, use the ASCII code. Otherwise, use 
+    # a virtual key code. Example: VK_SHIFT
+void
+GetKeyState(key)
+    int key
+PREINIT:
+    USHORT result;
+PPCODE:
+    result = (USHORT)GetKeyState(key);
+    if(GIMME_V == G_ARRAY) {
+        /* list context */
+        EXTEND(SP, 2);
+        XST_mIV(0, (UV) ((result & 0x8000) >> 15));
+        XST_mIV(1, (UV) (result & 0x0001));
+        XSRETURN(2);
+    }
+    else {
+        /* scalar(and void) context */
+        XSRETURN_IV((UV) ((result & 0x8000) >> 15));
+    }
+
     ##########################################################################
     # (@)METHOD:GetKeyboardState()
     # Return array ref with the status of the 256 virtual keys. 
@@ -84,19 +181,54 @@ CODE:
 OUTPUT:
      RETVAL
 
-
-     ##########################################################################
-     # (@)METHOD:LoadLibrary(NAME)
-     # The LoadLibrary function maps the specified executable module into the address space of the calling process.
-     # The return value is a handle to the module.
+    ##########################################################################
+    # (@)METHOD:LoadLibrary(NAME)
+    # The LoadLibrary function maps the specified executable module into the
+    # address space of the calling process.
+    #
+    # The return value is a handle to the module, or undef on failure.
+    #
+    # Directory seperators are normalised to windows seperators (C<\>).
+    #
+    # Under Cygwin, cygwin paths are converted to windows paths
 HINSTANCE
 LoadLibrary(name)
     char *name;
+PREINIT:
+    char buffer[MAX_PATH+1];
+    int i;
 CODE:
-    RETVAL = LoadLibrary(name);
+#ifdef __CYGWIN__
+    /* Under Cygwin, convert paths to windows
+     * paths. E.g. convert /usr/local... and /cygdrive/c/...
+     */
+    if(cygwin_conv_to_win32_path(name,buffer) != 0)
+        XSRETURN_UNDEF;
+#else
+    /* LoadLibrary on Win98 (at least) doesn't like unix
+     * path seperators, so normalise to windows path seperators
+     */
+    for(i=0; *name && (i<MAX_PATH); ++name,++i) {
+        buffer[i] = (*name == '/' ? '\\' : *name);
+    }
+    if(*name) {
+        /* XXX Path too long - although this appears to be what
+         * LoadLibrary would return with such a path, it might be
+         * better to find a more specific error code.  E.g.
+         * ENAMETOOLONG?
+         */
+        SetLastError(ERROR_FILE_NOT_FOUND);
+        errno = ENOENT;
+        XSRETURN_UNDEF;
+    }
+    buffer[i] = 0;
+#endif
+    RETVAL = LoadLibrary(buffer);
+    if(!RETVAL)
+        XSRETURN_UNDEF;
 OUTPUT:
-    RETVAL
-
+    RETVAL 
+     
      ##########################################################################
      # (@)METHOD:FreeLibrary(LIBRARY)
      # The FreeLibrary function decrements the reference count of the loaded dynamic-link library (DLL) module.
@@ -445,7 +577,7 @@ PPCODE:
             }
             if(strcmp(option, "-instance") == 0) {
                 next_i = i + 1;
-                hInstance = (HINSTANCE) SvIV(ST(next_i));
+                hInstance = INT2PTR(HINSTANCE,SvIV(ST(next_i)));
             }
             if(strcmp(option, "-data") == 0) {
                 next_i = i + 1;
@@ -672,7 +804,7 @@ PPCODE:
                     SV** t;
                     t = hv_fetch_mg(NOTXSCALL perlcs.hvParent, "-tooltip", 8, 0);
                     if(t != NULL && SvOK( *t )) {
-                        perlcs.hTooltip = (HWND) SvIV(*t);
+                        perlcs.hTooltip = INT2PTR(HWND,SvIV(*t));
                     }
                 }
                 if(perlcs.hTooltip == NULL) {
@@ -949,20 +1081,13 @@ CODE:
                 acc = perlud->hAcc;
             }
 
-            if(fIsMDI && TranslateMDISysAccel((HWND)perlud->dwData, &msg)) {
-                continue;
+            if( !( (fIsMDI && TranslateMDISysAccel((HWND)perlud->dwData, &msg)) ||
+                   (acc && TranslateAccelerator(phwnd, acc, &msg))              ||
+                   (fIsDialog && IsDialogMessage(phwnd, &msg)) ) 
+              ){
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
             }
-
-            if(acc && TranslateAccelerator(phwnd, acc, &msg)) {
-                continue;
-            }
-
-            if(fIsDialog && IsDialogMessage(phwnd, &msg)) {
-                continue;
-            }
-
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
         }
 
         FREETMPS;
@@ -975,7 +1100,7 @@ OUTPUT:
 
 
     ###########################################################################
-    # (@)METHOD:DoEvents()
+    # (@)METHOD:DoEvents(hwnd=NULL,wMsgFilterMin=0,wMsgFilterMax=0,wRemoveMsg=PM_REMOVE)
     # Performs all pending GUI events and returns the status. If DoEvents()
     # returns -1, your GUI has normally terminated.
     #
@@ -985,8 +1110,11 @@ OUTPUT:
     #
     # see also Dialog()
 DWORD
-DoEvents(hwnd=NULL)
+DoEvents(hwnd=NULL,wMsgFilterMin=0,wMsgFilterMax=0,wRemoveMsg=PM_REMOVE)
     HWND hwnd
+    UINT wMsgFilterMin
+    UINT wMsgFilterMax
+    UINT wRemoveMsg
 PREINIT:
     MSG msg;
     HWND phwnd;
@@ -1000,7 +1128,7 @@ CODE:
     stayhere = 1;
     fIsDialog = FALSE;
     while(stayhere) {
-        stayhere = PeekMessage(&msg, hwnd, 0, 0, PM_REMOVE);
+        stayhere = PeekMessage(&msg, hwnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg);
 #ifdef PERLWIN32GUI_STRONGDEBUG
         printf("XS(DoEvents): PeekMessage returned %d\n", stayhere);
 #endif
@@ -1024,20 +1152,13 @@ CODE:
                     acc = perlud->hAcc;
                 }
 
-                if(fIsMDI && TranslateMDISysAccel((HWND)perlud->dwData, &msg)) {
-                    continue;
+                if( !( (fIsMDI && TranslateMDISysAccel((HWND)perlud->dwData, &msg)) ||
+                       (acc && TranslateAccelerator(phwnd, acc, &msg))              ||
+                       (fIsDialog && IsDialogMessage(phwnd, &msg)) ) 
+                  ){
+                    TranslateMessage(&msg);
+                    DispatchMessage(&msg);
                 }
-
-                if(acc && TranslateAccelerator(phwnd, acc, &msg)) {
-                    continue;
-                }
-
-                if(fIsDialog && IsDialogMessage(phwnd, &msg)) {
-                    continue;
-                }
-
-                TranslateMessage(&msg);
-                DispatchMessage(&msg);
             }
         }
         else
@@ -1135,20 +1256,13 @@ CODE:
                 acc = perlud->hAcc;
             }
 
-            if(fIsMDI && TranslateMDISysAccel((HWND)perlud->dwData, &msg)) {
-                continue;
+            if( !( (fIsMDI && TranslateMDISysAccel((HWND)perlud->dwData, &msg)) ||
+                   (acc && TranslateAccelerator(phwnd, acc, &msg))              ||
+                   (fIsDialog && IsDialogMessage(phwnd, &msg)) ) 
+              ){
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
             }
-
-            if(acc && TranslateAccelerator(handle, acc, &msg)) {
-                continue;
-            }
-
-            if(fIsDialog && IsDialogMessage(handle, &msg)) {
-                continue;
-            }
-
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
         }
 
         FREETMPS;
@@ -1371,6 +1485,7 @@ OUTPUT:
     #
     #my $hourglass=Win32::GUI::LoadCursor(32514);
     #    
+    #NOTE: it is better to use Win32::GUI::Cursor->new(ID);
 void
 LoadCursor(ID)
     long ID
@@ -1405,23 +1520,74 @@ OUTPUT:
     ###########################################################################
     # (@)INTERNAL:LoadImage(FILENAME, [TYPE, X, Y, FLAGS])
 HBITMAP
-LoadImage(filename,iType=IMAGE_BITMAP,iX=0,iY=0,iFlags=LR_LOADFROMFILE)
-    LPCTSTR filename
+LoadImage(filename,iType=IMAGE_BITMAP,iX=0,iY=0,iFlags=LR_DEFAULTCOLOR)
+    SV *filename
     UINT iType
     int iX
     int iY
     UINT iFlags
 PREINIT:
     HINSTANCE moduleHandle;
-    HBITMAP bitmap;
+    HBITMAP bitmap = NULL;
 CODE:
+    /* Try to find the resource in the current EXE */
     moduleHandle = GetModuleHandle(NULL);
-    // Attempt to load from current EXE:
-    bitmap = (HBITMAP) LoadImage((HINSTANCE) moduleHandle, filename, iType, iX, iY, LR_DEFAULTCOLOR);
-    if(bitmap == NULL) {
-        // Ok, that failed. So attempt to load from file:
-        bitmap = (HBITMAP) LoadImage((HINSTANCE) NULL, filename, iType, iX, iY, iFlags);
+
+    /* If filename looks like a string, attempt to load from current EXE: */
+    if((bitmap ==NULL) && SvPOK(filename) && !(iFlags & LR_LOADFROMFILE)) {
+        bitmap = (HBITMAP) LoadImage((HINSTANCE) moduleHandle,
+                SvPV_nolen(filename), iType, iX, iY, iFlags);
     }
+    
+    /* If filename looks like a number, try it as a resource id from the current EXE */
+    if((bitmap == NULL) && SvIOK(filename) && !(iFlags & LR_LOADFROMFILE)) {
+        bitmap = (HBITMAP) LoadImage((HINSTANCE) moduleHandle,
+                MAKEINTRESOURCE(SvIV(filename)), iType, iX, iY, iFlags);
+    }
+
+    /* Try to find the resource from GUI.dll */
+    moduleHandle = GetModuleHandle("GUI.dll");
+
+    /* If filename looks like a string, try it as a resource name from GUI.dll */
+    if((bitmap == NULL) && SvPOK(filename) && !(iFlags & LR_LOADFROMFILE)) {
+        bitmap = (HBITMAP) LoadImage((HINSTANCE) moduleHandle,
+                SvPV_nolen(filename), iType, iX, iY, iFlags);
+    }
+
+    /* If filename looks like a number, try it as a resource id from GUI.dll */
+    if((bitmap == NULL) && SvIOK(filename) && !(iFlags & LR_LOADFROMFILE)) {
+        bitmap = (HBITMAP) LoadImage((HINSTANCE) moduleHandle,
+                MAKEINTRESOURCE(SvIV(filename)), iType, iX, iY, iFlags);
+    }
+
+    /* Try to load from file or as an OEM resource */
+    moduleHandle = NULL;
+
+    /* if filename looks like a string, try it as a file name */
+    if((bitmap == NULL) && SvPOK(filename)) {
+        bitmap = (HBITMAP) LoadImage((HINSTANCE) moduleHandle,
+                SvPV_nolen(filename), iType, iX, iY, iFlags|LR_LOADFROMFILE);
+    }
+
+    /* If filename looks like a number, try it as an OEM resource id */
+    if((bitmap == NULL) && SvIOK(filename) && !(iFlags & LR_LOADFROMFILE)) {
+        bitmap = (HBITMAP) LoadImage((HINSTANCE) moduleHandle,
+                MAKEINTRESOURCE(SvIV(filename)), iType, iX, iY, iFlags);
+    }
+
+    /* Finally, if it looks like a number, try it as a pre-defined resource */
+    if((bitmap == NULL) && SvIOK(filename)) {
+        if(iType == IMAGE_BITMAP) {
+            bitmap = (HBITMAP)LoadBitmap(NULL, MAKEINTRESOURCE(SvIV(filename)));
+        }
+        else if (iType == IMAGE_ICON) {
+            bitmap = (HBITMAP)LoadIcon(NULL, MAKEINTRESOURCE(SvIV(filename)));
+        }
+        else if (iType == IMAGE_CURSOR) {
+            bitmap = (HBITMAP)LoadCursor(NULL, MAKEINTRESOURCE(SvIV(filename)));
+        }
+    }
+
     RETVAL = bitmap;
 OUTPUT:
     RETVAL
@@ -1650,43 +1816,26 @@ PPCODE:
   }
   
     ###########################################################################
-    # (@)METHOD:UserData([value])
-    # Sets or reads user data associated with the window or control.
-    #
-    #  my $data=$win->UserData();#retrieve any data associated with the window
-    #  $win->UserData('some string');#associate user data to the window
-    #
-    # User data can be any perl scalar or reference.
-void
-UserData(handle,...)
+    # (@)INTERNAL:_UserData()
+    # Return a reference to an HV, stored in the perlud.UserData member
+    # of the PERLWIN32GUI_USERDATA struct
+HV *
+_UserData(handle)
     HWND handle
 PREINIT:
     LPPERLWIN32GUI_USERDATA perlud;
-PPCODE:
-    if(items > 2) {
-      CROAK("Usage: UserData(handle, [value]);\n");
-    }
+CODE:
     perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(handle, GWL_USERDATA);
     if( ! ValidUserData(perlud) ) {
         XSRETURN_UNDEF;
-    } else {
-      if(items==1){//reading the user data
-        if (perlud->userData!=NULL) {
-          //Just return the SV
-          XPUSHs(perlud->userData);
-        } else {
-          XSRETURN_UNDEF;
-        }
-      }
-      else {//setting user data
-        //need to free previous!
-        if (perlud->userData!=NULL) {
-          SvREFCNT_dec(perlud->userData); 
-        }
-        perlud->userData=ST(1);
-        SvREFCNT_inc(perlud->userData);
-      }
     }
+
+    if(perlud->userData == NULL)
+        perlud->userData = (SV*)newHV();
+
+    RETVAL = (HV*)perlud->userData;
+OUTPUT:
+    RETVAL
 
     ###########################################################################
     # (@)METHOD:FindWindow(CLASSNAME, WINDOWNAME)
@@ -1732,6 +1881,49 @@ SetWindowLong(handle,index,value)
     LONG value
 CODE:
     RETVAL = SetWindowLong(handle, index, value);
+OUTPUT:
+    RETVAL
+
+
+    ###########################################################################
+    # (@)METHOD:SetWindowPos(INSERTAFTER,X,Y,cx,cy,FLAGS)
+    # The SetWindowPos function changes the size, position,
+    # and Z order of a child, pop-up, or top-level
+    # window. Child, pop-up, and top-level windows are
+    # ordered according to their appearance on the
+    # screen. The topmost window receives the highest rank
+    # and is the first window in the Z order.
+    #
+    # INSERTAFTER - window to precede the positioned window
+    # in the Z order. This parameter must be a window object,
+    # a window handle or one of the following integer values.
+    #   HWND_BOTTOM
+    #     Places the window at the bottom of the Z order. If
+    #     the WINDOW parameter identifies a topmost window,
+    #     the window loses its topmost status and is placed
+    #     at the bottom of all other windows.
+    #   HWND_NOTOPMOST
+    #     Places the window above all non-topmost windows
+    #     (that is, behind all topmost windows). This flag
+    #     has no effect if the window is already a
+    #     non-topmost window.
+    #   HWND_TOP
+    #     Places the window at the top of the Z order.
+    #   HWND_TOPMOST
+    #     Places the window above all non-topmost
+    #     windows. The window maintains its topmost position
+    #     even when it is deactivated.
+BOOL
+SetWindowPos(handle,insertafter,X,Y,cx,cy,flags)
+    HWND handle
+    HWND insertafter
+    int X
+    int Y
+    int cx
+    int cy
+    int flags
+CODE:
+    RETVAL = SetWindowPos(handle, insertafter, X, Y, cx, cy, flags);
 OUTPUT:
     RETVAL
 
@@ -1792,6 +1984,21 @@ CODE:
 OUTPUT:
     RETVAL
 
+
+    ###########################################################################
+    # (@)INTERNAL:_Animate(HANDLE, TIME, FLAGS)
+    # Wrapper for Win32 AnimateWindow call.  See Win32::GUI::Animate in GUI.pm
+    # for more details.
+BOOL
+_Animate(handle, time, flags)
+    HWND handle
+    DWORD time
+    DWORD flags
+CODE:
+    RETVAL = AnimateWindow(handle, time, flags);
+OUTPUT:
+    RETVAL
+    
 
     ###########################################################################
     # (@)METHOD:Hide()
@@ -2067,10 +2274,8 @@ SendMessageTimeout(handle,msg,wparam,lparam,flags=SMTO_NORMAL,timeout)
 PREINIT:
     DWORD result;
 PPCODE:
-    if(SendMessageTimeout(
-        handle, msg, wparam, lparam, flags, timeout, &result
-    ) == 0) {
-        XSRETURN_NO;
+    if(SendMessageTimeout(handle, msg, wparam, lparam, flags, timeout, &result) == 0) {
+        XSRETURN_UNDEF;
     } else {
         XSRETURN_IV(result);
     }
@@ -3426,10 +3631,10 @@ CODE:
           // handler ref:
           newarray = newAV();
           av_push(newarray, coderef);
-          SvREFCNT_inc(coderef);  // needed so that av_undef results in unchanged ref count.
+          SvREFCNT_inc(coderef);  // needed so that the ref count remains the same after we free
           if(av_store(perlud->avHooks, WM_TRACKPOPUP_MSGHOOK, newRV_noinc((SV*) newarray)) == NULL) {
             // Failed to store new array
-            av_undef(newarray);
+            SvREFCNT_dec((SV*) newarray);
             W32G_WARN("TrackPopupMenu failed to store 'coderef' - callback not applied");
             coderef = NULL;  // don't set up the hook
           }
@@ -3461,8 +3666,7 @@ CODE:
         UnhookWindowsHookEx(hhook); // release the windows hook
       }
       // remove the temporary value stored in the hooks array
-      av_undef(newarray);
-      av_delete(perlud->avHooks, WM_TRACKPOPUP_MSGHOOK, 0);
+      av_delete(perlud->avHooks, WM_TRACKPOPUP_MSGHOOK, G_DISCARD);
     }
 OUTPUT:
     RETVAL
@@ -3635,7 +3839,7 @@ CODE:
     if(tmp == NULL) {
         RETVAL = -1;
     } else {
-        hdc = (HDC) SvIV(*tmp);
+        hdc = INT2PTR(HDC,SvIV(*tmp));
         if(hmeta = GetEnhMetaFile(filename)) {
             GetClientRect(handle, &rect);
             RETVAL = PlayEnhMetaFile(hdc, hmeta, &rect);
@@ -3719,7 +3923,7 @@ CODE:
     if(tmp == NULL) {
         RETVAL = 0;
     } else {
-        hdc = (HDC) SvIV(*tmp);
+        hdc = INT2PTR(HDC,SvIV(*tmp));
         iWidthMM = GetDeviceCaps(hdc, HORZSIZE);
         iHeightMM = GetDeviceCaps(hdc, VERTSIZE);
         iWidthPels = GetDeviceCaps(hdc, HORZRES);
@@ -3861,7 +4065,7 @@ CODE:
     if(tmp == NULL) {
         RETVAL = -1;
     } else {
-        hdc = (HDC) SvIV(*tmp);
+        hdc = INT2PTR(HDC,SvIV(*tmp));
         textlen = strlen(text);
         RETVAL = (long) TextOut(hdc, x, y, text, textlen);
     }
@@ -3882,7 +4086,7 @@ CODE:
     if(tmp == NULL) {
         RETVAL = -1;
     } else {
-        hdc = (HDC) SvIV(*tmp);
+        hdc = INT2PTR(HDC,SvIV(*tmp));
         RETVAL = SetTextColor(hdc, color);
     }
 OUTPUT:
@@ -3901,7 +4105,7 @@ CODE:
     if(tmp == NULL) {
         RETVAL = -1;
     } else {
-        hdc = (HDC) SvIV(*tmp);
+        hdc = INT2PTR(HDC,SvIV(*tmp));
         RETVAL = GetTextColor(hdc);
     }
 OUTPUT:
@@ -3921,7 +4125,7 @@ CODE:
     if(tmp == NULL) {
         RETVAL = -1;
     } else {
-        hdc = (HDC) SvIV(*tmp);
+        hdc = INT2PTR(HDC,SvIV(*tmp));
         RETVAL = (long) SetBkMode(hdc, mode);
     }
 OUTPUT:
@@ -3940,7 +4144,7 @@ CODE:
     if(tmp == NULL) {
         RETVAL = -1;
     } else {
-        hdc = (HDC) SvIV(*tmp);
+        hdc = INT2PTR(HDC,SvIV(*tmp));
         RETVAL = GetBkMode(hdc);
     }
 OUTPUT:
@@ -3961,7 +4165,7 @@ CODE:
     if(tmp == NULL) {
         RETVAL = -1;
     } else {
-        hdc = (HDC) SvIV(*tmp);
+        hdc = INT2PTR(HDC,SvIV(*tmp));
         RETVAL = MoveToEx(hdc, x, y, NULL);
     }
 OUTPUT:
@@ -3984,7 +4188,7 @@ CODE:
     if(tmp == NULL) {
         RETVAL = -1;
     } else {
-        hdc = (HDC) SvIV(*tmp);
+        hdc = INT2PTR(HDC,SvIV(*tmp));
         if(height == -1) {
             width *= 2;
             height = width;
@@ -4010,7 +4214,7 @@ CODE:
     if(tmp == NULL) {
         RETVAL = -1;
     } else {
-        hdc = (HDC) SvIV(*tmp);
+        hdc = INT2PTR(HDC,SvIV(*tmp));
         RETVAL = LineTo(hdc, x, y);
     }
 OUTPUT:
@@ -4048,7 +4252,7 @@ PPCODE:
     PAINTSTRUCT ps;
     char tmprgb[16];
     self = (HV*) SvRV(ST(0));
-    hwnd = (HWND) SvIV(*hv_fetch(self, "-handle", 7, 0));
+    hwnd = INT2PTR(HWND,SvIV(*hv_fetch(self, "-handle", 7, 0)));
     if(hwnd) {
         if(hdc = BeginPaint(hwnd, &ps)) {
             hv_store(self, "-DC", 3, newSViv((long) hdc), 0);
@@ -4087,10 +4291,10 @@ PPCODE:
     if(self) {
         tmp = hv_fetch(self, "-handle", 7, 0);
         if(tmp == NULL) XSRETURN_NO;
-        hwnd = (HWND) SvIV(*tmp);
+        hwnd = INT2PTR(HWND,SvIV(*tmp));
         tmp = hv_fetch(self, "-ps.hdc", 7, 0);
         if(tmp == NULL) XSRETURN_NO;
-        ps.hdc = (HDC) SvIV(*tmp);
+        ps.hdc = INT2PTR(HDC,SvIV(*tmp));
         tmp = hv_fetch(self, "-ps.fErase", 10, 0);
         if(tmp == NULL) XSRETURN_NO;
         ps.fErase = (BOOL) SvIV(*tmp);
@@ -5023,7 +5227,7 @@ PPCODE:
             } else if(strcmp(option, "-root") == 0) {
                 next_i = i + 1;
                 if(SvIOK(ST(next_i))) {
-                    bi.pidlRoot = (LPCITEMIDLIST) SvIV(ST(next_i));
+                    bi.pidlRoot = INT2PTR(LPCITEMIDLIST,SvIV(ST(next_i)));
                 } else {
                     SHGetDesktopFolder(&pDesktopFolder);
                     MultiByteToWideChar(
@@ -5514,6 +5718,91 @@ CODE:
 OUTPUT:
     RETVAL
 
+
+    ###########################################################################
+    # (@)INTERNAL:GetDllVersion(DLLNAME)
+    # Replacement for Win32::GetFileVersion, which doesn't exist in perl 5.6 or
+    # cygwin perl 5.8
+    # In scalar contect returns dotted string of dll version
+    # In list context returns major version, minor version, build
+void
+GetDllVersion(filename)
+    LPTSTR filename
+PREINIT:
+    HINSTANCE hinstDll;
+    DWORD major = 0xFFFFFFFF;
+    DWORD minor = 0xFFFFFFFF;
+    DWORD build = 0xFFFFFFFF;
+PPCODE:
+    hinstDll = LoadLibrary(filename);
+
+    if(hinstDll) {
+        DLLGETVERSIONPROC pDllGetVersion;
+        pDllGetVersion = (DLLGETVERSIONPROC)GetProcAddress(hinstDll,"DllGetVersion");
+
+        if(pDllGetVersion) {
+            DLLVERSIONINFO dvi;
+            HRESULT hr;
+
+            ZeroMemory(&dvi, sizeof(dvi));
+            dvi.cbSize = sizeof(dvi);
+
+            hr = (*pDllGetVersion)(&dvi);
+    
+            if(SUCCEEDED(hr)) {
+                major = dvi.dwMajorVersion;
+                minor = dvi.dwMinorVersion;
+                build = dvi.dwBuildNumber;
+            }
+        }
+
+        FreeLibrary(hinstDll);
+    }
+
+    if(major == 0xFFFFFFFF) {
+        DWORD size;
+        DWORD handle;
+        char *data;
+
+        size = GetFileVersionInfoSize(filename, &handle);
+        if(size) {
+            New(0, data, size, char);
+            if(data) {
+                if(GetFileVersionInfo(filename, handle, size, data)) {
+                    VS_FIXEDFILEINFO *info;
+                    UINT len;
+                    if(VerQueryValue(data, "\\", (void**)&info, &len)) {
+                        major = (info->dwFileVersionMS>>16);
+                        minor = (info->dwFileVersionMS&0xffff);
+                        build = (info->dwFileVersionLS>>16);
+		    }
+		}
+
+                Safefree(data);
+	    }
+	}
+    }
+
+    if(major == 0xFFFFFFFF) {
+	    XSRETURN_UNDEF;
+    }
+
+    if (GIMME_V == G_ARRAY) {
+        EXTEND(SP, 3);
+        XST_mIV(0, major);
+        XST_mIV(1, minor);
+        XST_mIV(2, build);
+	items = 3;
+    }
+    else {
+       char version[50];
+       sprintf(version, "%d.%d.%d", major, minor, build);
+       XST_mPV(0, version);
+       items = 1;
+    }
+    XSRETURN(items);
+
+
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Menu
     ###########################################################################
@@ -5622,7 +5911,7 @@ PPCODE:
     if(SvROK(ST(0))) {
         parentmenu = hv_fetch((HV*)SvRV((ST(0))), "-menu", 5, 0);
         if(parentmenu != NULL) {
-            hMenu = (HMENU) SvIV(*parentmenu);
+            hMenu = INT2PTR(HMENU,SvIV(*parentmenu));
             myItem = SvIV(*(hv_fetch((HV*)SvRV(ST(0)), "-id", 3, 0)));
         } else {
             hMenu = (HMENU) handle_From(NOTXSCALL ST(0));
@@ -5664,7 +5953,7 @@ PPCODE:
     if(SvROK(ST(0))) {
         parentmenu = hv_fetch((HV*)SvRV((ST(0))), "-menu", 5, 0);
         if(parentmenu != NULL) {
-            hMenu = (HMENU) SvIV(*parentmenu);
+            hMenu = INT2PTR(HMENU,SvIV(*parentmenu));
             myItem = SvIV(*(hv_fetch((HV*)SvRV(ST(0)), "-id", 3, 0)));
             i = 1;
         } else {
@@ -5711,7 +6000,7 @@ PPCODE:
     if(SvROK(ST(0))) {
         parentmenu = hv_fetch((HV*)SvRV((ST(0))), "-menu", 5, 0);
         if(parentmenu != NULL) {
-            hMenu = (HMENU) SvIV(*parentmenu);
+            hMenu = INT2PTR(HMENU,SvIV(*parentmenu));
             myItem = SvIV(*(hv_fetch((HV*)SvRV(ST(0)), "-id", 3, 0)));
             i = 1;
         } else {

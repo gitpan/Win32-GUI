@@ -1,5 +1,7 @@
+#!perl -w
 use strict;
-use Win32::GUI;
+use warnings;
+use Win32::GUI();
 
 # This sample demonstrates GetOpenFileName
 
@@ -7,6 +9,7 @@ my $lastfile = 'foo.bar';
 
 # single file with graphics file filters
 
+{
 my ( @file, $file );
 my ( @parms );
 push @parms,
@@ -20,14 +23,14 @@ push @parms,
   -directory => "c:\\program files",
   -title => 'Select a file';
 push @parms, -file => $lastfile  if $lastfile;
-@file = & Win32::GUI::GetOpenFileName ( @parms );
+@file = Win32::GUI::GetOpenFileName ( @parms );
 print "$_\n" for @file;
 print "index of null:", index( $file[ 0 ], "\0" ), "\n";
 print "index of space:", index( $file[ 0 ], " " ), "\n";
-
+}
 
 # allow multiple files, only one filter
-
+{
 my ( @file, $file );
 my ( @parms );
 push @parms,
@@ -38,16 +41,16 @@ push @parms,
   -directory => "c:\\program files",
   -title => 'Select a file';
 push @parms, -file => $lastfile  if $lastfile;
-@file = & Win32::GUI::GetOpenFileName ( @parms );
+@file = Win32::GUI::GetOpenFileName ( @parms );
 print "$_\n" for @file;
 print "index of null:", index( $file[ 0 ], "\0" ), "\n";
 print "index of space:", index( $file[ 0 ], " " ), "\n";
-
+}
 
 # old style dialog, multiple file selection enabled, no filters.
 # User has to type in a filter, to see anything.  Always good to have a
 # filter.  But it isn't required....
-
+{
 my ( @file, $file );
 my ( @parms );
 push @parms, 
@@ -56,7 +59,8 @@ push @parms,
   -directory => "c:\\program files",
   -title => 'Select a file';
 push @parms, -file => $lastfile  if $lastfile;
-@file = & Win32::GUI::GetOpenFileName ( @parms );
+@file = Win32::GUI::GetOpenFileName ( @parms );
 print "$_\n" for @file;
 print "index of null:", index( $file[ 0 ], "\0" ), "\n";
 print "index of space:", index( $file[ 0 ], " " ), "\n";
+}

@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Win32::GUI;
+use Win32::GUI();
 
 # Create a window, saving it in variable $main
 my $main = Win32::GUI::Window->new(

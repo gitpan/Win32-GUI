@@ -97,7 +97,7 @@ source files.
 
 * Packages
   Introduced by a line containing the text:
-  (@)PACJAGE: Win32::GUI::PackageName
+  (@)PACKAGE: Win32::GUI::PackageName
 
   The first comment line, immediately following such a declaration is taken
   as the package abstract, and should be a short title for the package
@@ -146,7 +146,7 @@ source files.
 * LINKS
   If you wish to provide a link to a page from within the text, please use the
   form:
-    L<descrption|Win32::GUI::PackageName>
+    L<description|Win32::GUI::PackageName>
   even if this means that your link looks like:
     L<Win32::GUI::PackageName|Win32::GUI::PackageName>
   as the form without the description generates text like

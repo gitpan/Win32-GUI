@@ -1,4 +1,4 @@
-=for comment $Id: Part3.pod,v 1.2 2005/10/05 22:20:49 robertemay Exp $
+=for comment $Id: Part3.pod,v 1.3 2006/01/11 21:26:16 robertemay Exp $
 
 =head1 NAME
 
@@ -95,7 +95,7 @@ the choice is arbitrary. To switch types, the only change you need to make is
 the name of the constructor you use to create your application's main window.
 
 Recent versions of Win32::GUI have a C<-dialogui> option that controls the
-special keyboard handling. Setting this option to C<1> on a basic Window add the
+special keyboard handling. Setting this option to C<1> on a basic Window adds the
 special key handling to the window; setting it to C<0> on a DialogBox removes
 the special key handling.
 

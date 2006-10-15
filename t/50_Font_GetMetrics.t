@@ -1,6 +1,6 @@
 #!perl -wT
 # Win32::GUI test suite.
-# $Id: 50_Font_GetMetrics.t,v 1.1 2005/08/03 21:46:00 robertemay Exp $
+# $Id: 50_Font_GetMetrics.t,v 1.2 2006/05/16 18:57:26 robertemay Exp $
 
 use strict;
 use warnings;
@@ -9,7 +9,7 @@ BEGIN { $| = 1 } # Autoflush
 
 use Test::More tests => 7;
 
-use Win32::GUI;
+use Win32::GUI();
 
 my %font_metrics;
 
