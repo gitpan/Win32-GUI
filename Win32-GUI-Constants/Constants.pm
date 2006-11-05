@@ -1,6 +1,6 @@
 package Win32::GUI::Constants;
 
-# $Id: Constants.pm,v 1.6 2006/10/15 14:07:46 robertemay Exp $
+# $Id: Constants.pm,v 1.7 2006/10/31 22:21:49 robertemay Exp $
 # Win32::GUI::Constants, part of the Win32::GUI package
 # (c) Robert May, 2005..2006
 # released under the same terms as Perl.
@@ -338,7 +338,7 @@ L<http://sourceforge.net/mail/?group_id=16572>
 
 =head1 BUGS
 
-No all constants are covered.  If you find missing constants
+Not all constants are covered.  If you find missing constants
 please raise a feature request at
 L<http://sourceforge.net/tracker/?group_id=16572&atid=366572>
 

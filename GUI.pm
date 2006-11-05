@@ -8,7 +8,7 @@
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: GUI.pm,v 1.56 2006/10/15 14:07:45 robertemay Exp $
+# $Id: GUI.pm,v 1.58 2006/11/05 20:04:49 robertemay Exp $
 #
 ###############################################################################
 package Win32::GUI;
@@ -19,7 +19,7 @@ require DynaLoader;     # to dynuhlode the module.
 ###############################################################################
 # STATIC OBJECT PROPERTIES
 #
-$VERSION             = "1.04";        # For MakeMaker
+$VERSION             = "1.05";        # For MakeMaker
 $XS_VERSION          = $VERSION;      # For dynaloader
 $VERSION             = eval $VERSION; # For Perl  (see perldoc perlmodstyle)
 $MenuIdCounter       = 101;
@@ -2773,17 +2773,23 @@ sub new {
     $self->{-balloon_timeout} = $args{-balloon_timeout};
     $self->{-balloon_icon} = $args{-balloon_icon};
 
-    my $result = Win32::GUI::NotifyIcon::_Add($self->{-handle}, %args);
-
-    return undef unless $result;
-
-    # Only modify parent if we were created successfully
+    # ParseNotifyIconOptions() needs these values to be set in order
+    # to correctly sore NEM events, so set them before calling
+    # _Add().
     # Store name in parent's notifyicons hash
     $window->{-notifyicons}->{$args{-id}} = $args{-name};
     # Add NotifyIcon into parent's hash
     $window->{$args{-name}} = $self;
 
-    return $self;
+    my $result = Win32::GUI::NotifyIcon::_Add($self->{-handle}, %args);
+
+    return $self if $result;
+
+    # Failed to create the Notfiy Icon, so tidy up parent
+    delete $window->{-notifyicons}->{$args{-id}};
+    delete $window->{$args{-name}};
+
+    return; # return undef or empty list
 }
 
     ###########################################################################

@@ -1,10 +1,12 @@
-=head1 Win32::GUI::ReleaseNotes
+=head1 NAME
 
 Win32::GUI::ReleaseNotes - release notes for Win32::GUI
 
 =head1 Releases
 
 =over
+
+=item Release L<1.05|Win32::GUI::ReleaseNotes::RN_1_05>
 
 =item Release L<1.04|Win32::GUI::ReleaseNotes::RN_1_04>
 

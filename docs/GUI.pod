@@ -1,4 +1,4 @@
-=for comment $Id: GUI.pod,v 1.6 2006/07/16 11:09:33 robertemay Exp $
+=for comment $Id: GUI.pod,v 1.7 2006/11/05 20:04:50 robertemay Exp $
 
 =head1 NAME
 
@@ -149,9 +149,9 @@ although, for backwards compatibility the following are also supported:
 
 Will continue to export the same list of constants as earlier versions,
 but will generate a warning (under the C<use warnings;> pragma or with
-the C<-w> command line option to perl).  In the future (v1.05 and later)
-this syntax will stop exporting anything. v1.05 will generate a warning
-that nothing is being exported. v1.06 will silently export nothing.
+the C<-w> command line option to perl).  In the future (v1.06 and later)
+this syntax will stop exporting anything. v1.06 will generate a warning
+that nothing is being exported. v1.07 will silently export nothing.
 
 =item C<use Win32::GUI qw( ... );>
 

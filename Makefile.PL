@@ -397,7 +397,7 @@ DOC_FRAG
 # -- Win32::GUI ppm section --
 
 ppmdist: all htmldocs
-	$(TAR) --exclude="*.pod" -$(TARFLAGS) $(DISTNAME).tar blib
+	$(TAR) -$(TARFLAGS) $(DISTNAME).tar blib
 	$(COMPRESS) $(DISTNAME).tar
 
 ppm: readmedocs ppd ppmdist

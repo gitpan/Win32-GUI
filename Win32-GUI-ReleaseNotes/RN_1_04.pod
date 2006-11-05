@@ -1,6 +1,6 @@
-=head1 Win32::GUI::ReleaseNotes::RN_1_04
+=head1 NAME
 
-This is the release notes for Version 1.04 of Win32::GUI
+Win32::GUI::ReleaseNotes::RN_1_04 - This is the release notes for Version 1.04 of Win32::GUI
 
 =head1 Release Date
 
@@ -133,13 +133,13 @@ option on a Window.
 A L<-wantreturn|Win32::GUI::Textfield/wantreturn> option
 has been added to stop the <RETURN> key firing the default
 Click event for a multi-line Textfield when using the
-L<-dialogui|Win32::GUI::Reference::OPtions/dialogui>
+L<-dialogui|Win32::GUI::Reference::Options/dialogui>
 option on a Window.  This replaces the
 previous use of C<< -addstyle => ES_WANTRETURN >>.
 
 =item Ballon tooltips for NotifyIcon
 
-The L<Win32::GUI::NotifyIcon|Win32::GUI::NotifyIcon> pakage
+The L<Win32::GUI::NotifyIcon|Win32::GUI::NotifyIcon> package
 has been re-worked.  There is now no need to use the
 L<-id|/"Deprecated feature status"> option, and balloon
 tooltips are supported on Win2k and above.
@@ -186,7 +186,7 @@ option now works for splitter windows.
 The L<Win32::GUI::LoadLibrary()|Win32::GUI::Reference::Methods/LoadLibrary>
 function has been enhanced so that it converts any passed
 path to a Win32 representation before trying to use it.
-Specifically this means that slashes are canonicised to 'C<\>',
+Specifically this means that slashes are canonicalised to 'C<\>',
 and under Cygwin, cygwin style paths are converted to
 Win32 paths.
 
@@ -197,7 +197,7 @@ implementation has been re-worked to allow
 all the features to be used, and now there
 should be no crashes with many of the methods
 which had been incorrectly implemented.  The
-new implementaiton should be backwards compatable
+new implementation should be backwards compatible
 with what was there before, but read the documentation
 to find out about all the new features you can use.
 
@@ -230,7 +230,7 @@ a window handle or a tool id.
 
 =over
 
-=item -background and -forground options now work for RichEdit windows
+=item -background and -foreground options now work for RichEdit windows
 
 =item The SendMessageTimout implementation now matches the documentation
 
@@ -284,7 +284,7 @@ for the full allowable syntax.
 You are advised to fix your scripts now, as the next version will stop
 exporting any constants by default.
 
-Although not advised, you can supress the warnings by turning deprecated
+Although not advised, you can suppress the warnings by turning deprecated
 warnings off:
 
   no warnings 'deprecated';
@@ -309,9 +309,9 @@ the next release.  Use one of the following methods instead:
   ...
   -addstyle => A::B::WS_BORDER(),
 
-=item maintain compatibility of exising scripts
+=item maintain compatibility of existing scripts
 
-  use Win32::GUI::Constants qw(-exportpkg => Win32::GUI :compatability_win32_gui);
+  use Win32::GUI::Constants qw(-exportpkg => Win32::GUI :compatibility_win32_gui);
   ...
   -addstyle => Win32::GUI::WS_BORDER,
 

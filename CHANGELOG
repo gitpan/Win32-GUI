@@ -1,10 +1,34 @@
 ###############################################################################
 # CHANGELOG
-# $Id: CHANGELOG,v 1.103 2006/10/15 14:07:45 robertemay Exp $
+# $Id: CHANGELOG,v 1.106 2006/11/05 20:04:49 robertemay Exp $
 ###############################################################################
 
 Win32-GUI ChangeLog
 ===================
++ [Robert May] : 5 November 2006 - 1.05 Release
+    - docs/GUI.pod - update references to v1.05 to v1.06, and v1.06
+      to v1.07
+    - GUI.pm up version to 1.05
+    - MANIFEST - add ReleaseNotes/RN_1_05.pod
+    - Tag HEAD as Win32-GUI-1_05
+    --- Win32::GUI::ReleaseNotes ---
+    - RN_1_05.pod - add final info
+
++ [Robert May] : 2 November 2006 - Include POD docs in PPM
+    - Makefile.PL - remove --exclude="*.pod" switch from tar
+      command that packs the PPM in the ppm target
+    --- Win32::GUI::UserGuide ---
+    - FAQ.pod -  update freeimage website and version
+
++ [Robert May] : 30 October 2006 - Bug Fixes
+    - GUI.pm - up version to 1.04_01
+    - GUI.pm - Fix NEM events for NotifyIcon class (Tracker: 1585293)
+    - Combobox.xs - Fix SetEditSel method (Tracker: 1586617)
+    - GUI.xs - Fix AbsLeft and AbsTop method (Tracker: 1578492)
+    --- Win32::GUI::ReleaseNotes ---
+    - RN_1_05.pod - add file
+    - ReleaseNotes.pod - add 1.05 release notes
+
 + [Robert May] : 15 October 2006 - 1.04 Release
     - Win32::GUI 1.04 release.  Up versions, fix docs etc.
     - Tagged head as Win32-GUI-1_04

@@ -342,6 +342,7 @@ Win32-GUI-ReleaseNotes/RN_1_0.pod
 Win32-GUI-ReleaseNotes/RN_1_02.pod
 Win32-GUI-ReleaseNotes/RN_1_03.pod
 Win32-GUI-ReleaseNotes/RN_1_04.pod
+Win32-GUI-ReleaseNotes/RN_1_05.pod
 Win32-GUI-ReleaseNotes/t/98_pod.t
 Win32-GUI-Scintilla/Changes
 Win32-GUI-Scintilla/demos/Editor.pl

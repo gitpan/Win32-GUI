@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Combobox
     #
-    # $Id: Combobox.xs,v 1.7 2005/10/16 08:03:20 jwgui Exp $
+    # $Id: Combobox.xs,v 1.8 2006/10/31 22:24:15 robertemay Exp $
     #
     ###########################################################################
     */
@@ -551,14 +551,27 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:SetEditSel(START,END)
-    # Select characters in the textfield.
+    # Select characters in the textfield.  START and END are the
+    # (zero-based) index of the characters to be selected.  START
+    # is the index of the first character to be selected, and END
+    # is the index of the first character following the selection.
+    # For example to select the first 4 characters:
+    # 
+    #    $combobox->SetEditSel(0,4);
+    #
+    # If START is -1, the any selection is removed.  If END is -1,
+    # then the selection is from START to the last character in the
+    # textfield.
+    #
+    # Returns 1 on success, 0 on failure and -1 if sent to a
+    # Combobox that does not have a textfield (C<-dropdownlist => 1>).
 LRESULT
 SetEditSel(handle,start,end)
     HWND handle
-    WPARAM start
-    WPARAM end
+    UINT start
+    UINT end
 CODE:
-    RETVAL = SendMessage(handle, CB_SETEDITSEL, start, (LPARAM) end);
+    RETVAL = SendMessage(handle, CB_SETEDITSEL, 0, MAKELPARAM(start, end));
 OUTPUT:
     RETVAL
 

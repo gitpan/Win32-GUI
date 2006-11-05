@@ -1,6 +1,6 @@
-=head1 Win32::GUI::ReleaseNotes::RN_0_0_671
+=head1 NAME
 
-This is the release notes for Version 0.0.671 of Win32::GUI
+Win32::GUI::ReleaseNotes::RN_0_0_671 - This is the release notes for Version 0.0.671 of Win32::GUI
 
 =head1 Release Date
 

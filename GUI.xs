@@ -11,7 +11,7 @@
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: GUI.xs,v 1.62 2006/07/16 13:02:29 robertemay Exp $
+# $Id: GUI.xs,v 1.63 2006/10/31 22:24:15 robertemay Exp $
 #
 ###############################################################################
  */
@@ -2881,7 +2881,7 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:AbsLeft([LEFT])
-    # Gets or sets the absolute left co-ordinate of an object.
+    # Gets or sets the absolute left (screen) co-ordinate of a window.
     #
     # See also Left()
     # See also Move()
@@ -2890,32 +2890,38 @@ AbsLeft(handle,...)
     HWND handle
 PREINIT:
     RECT myRect;
+    HWND parent;
 PPCODE:
     if(!GetWindowRect(handle, &myRect)) {
         XSRETURN_UNDEF;
-    } else {
-        if(items > 1) {
-            if(SetWindowPos(
-                handle, (HWND) NULL,
-                (int) SvIV(ST(1)), (int) myRect.top, (int) myRect.right, (int) myRect.bottom,
-                SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_DEFERERASE
-            )) {
-                XSRETURN_YES;
-            }
-            else {
-                XSRETURN_NO;
-            }
+    }
+
+    /* Set */
+    if(items > 1) {
+        myRect.left = SvIV(ST(1));
+
+        /* If we're a child window convert to parent's client co-ordinates */
+        if(parent = GetAncestor(handle, GA_PARENT)) {
+            ScreenToClient(parent, (LPPOINT)&myRect);
+        }
+
+        if(SetWindowPos(handle, NULL, (int)myRect.left, (int)myRect.top,
+                         0, 0, SWP_NOZORDER | SWP_NOSIZE)) {
+            XSRETURN_YES;
         }
         else {
-            EXTEND(SP, 1);
-            XST_mIV(0, myRect.left);
-            XSRETURN(1);
+            XSRETURN_NO;
         }
     }
 
+    /* Get */
+    EXTEND(SP, 1);
+    XST_mIV(0, myRect.left);
+    XSRETURN(1);
+
     ###########################################################################
     # (@)METHOD:AbsTop([TOP])
-    # Gets or sets the absolute top co-ordinate of an object.
+    # Gets or sets the absolute top (screen) co-ordinate of a window.
     #
     # See also Top()
     # See also Move()
@@ -2924,28 +2930,34 @@ AbsTop(handle,...)
     HWND handle
 PREINIT:
     RECT myRect;
+    HWND parent;
 PPCODE:
     if(!GetWindowRect(handle, &myRect)) {
         XSRETURN_UNDEF;
-    } else {
-        if(items > 1) {
-            if(SetWindowPos(
-                handle, (HWND) NULL,
-                (int) myRect.left, (int) SvIV(ST(1)), (int) myRect.right, (int) myRect.bottom,
-                SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_DEFERERASE
-            )) {
-                XSRETURN_YES;
-            }
-            else {
-                XSRETURN_NO;
-            }
+    }
+
+    /* Set */
+    if(items > 1) {
+        myRect.top = SvIV(ST(1));
+
+        /* If we're a child window convert to parent's client co-ordinates */
+        if(parent = GetAncestor(handle, GA_PARENT)) {
+            ScreenToClient(parent, (LPPOINT)&myRect);
+        }
+
+        if(SetWindowPos(handle, NULL, (int)myRect.left, (int)myRect.top,
+                         0, 0, SWP_NOZORDER | SWP_NOSIZE)) {
+            XSRETURN_YES;
         }
         else {
-            EXTEND(SP, 1);
-            XST_mIV(0, myRect.top);
-            XSRETURN(1);
+            XSRETURN_NO;
         }
     }
+
+    /* Get */
+    EXTEND(SP, 1);
+    XST_mIV(0, myRect.top);
+    XSRETURN(1);
 
     ###########################################################################
     # (@)METHOD:ScreenToClient(X, Y)
