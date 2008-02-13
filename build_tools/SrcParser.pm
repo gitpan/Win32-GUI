@@ -5,7 +5,7 @@ package SrcParser;
 # documentation from within the source files.
 #
 # Author: Robert May , rmay@popeslane.clara.co.uk, 20 June 2005
-# $Id: SrcParser.pm,v 1.5 2006/03/16 23:14:31 robertemay Exp $
+# $Id: SrcParser.pm,v 1.6 2008/02/09 08:51:27 robertemay Exp $
 
 use strict;
 use warnings;
@@ -206,7 +206,10 @@ sub parse_file
 # returns a sorted list of all the packages
 sub get_package_list
 {
-  return sort { uc $a cmp uc $b } keys %PACKAGES;
+  my @tmp = sort { uc $a cmp uc $b } keys %PACKAGES;
+  # Extra @tmp copy needed on perl 5.6.1 to avoid error
+  # 'sort routine did not return numeric value'
+  return @tmp;
 }
 
 # get_package_abstract(package)

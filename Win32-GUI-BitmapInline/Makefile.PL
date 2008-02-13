@@ -1,0 +1,18 @@
+#!perl -w
+use strict;
+#use warnings;
+
+# Makefile.PL for Win32::GUI::BitmapInline
+# $Id: Makefile.PL,v 1.1 2008/01/13 11:42:57 robertemay Exp $
+
+use 5.006;
+use ExtUtils::MakeMaker;
+
+my %config = (
+    NAME          =>  'Win32::GUI::BitmapInline',
+    VERSION_FROM  =>  'BitmapInline.pm',
+    ABSTRACT_FROM =>  'BitmapInline.pm',
+    AUTHOR        =>  'Robert May <robertemay@users.sourceforge.net>',
+);
+
+WriteMakefile(%config);

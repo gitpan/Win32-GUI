@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Tooltip
     #
-    # $Id: Tooltip.xs,v 1.9 2006/08/30 21:57:58 robertemay Exp $
+    # $Id: Tooltip.xs,v 1.10 2007/01/20 17:09:22 robertemay Exp $
     #
     ###########################################################################
     */
@@ -1104,9 +1104,9 @@ PREINIT:
 CODE:
 	if(strcmp(icon, "error") == 0) {
 		i = 3;
-	} else if(strcmp(icon, "info") == 0) {
-		i = 2;
 	} else if(strcmp(icon, "warning") == 0) {
+		i = 2;
+	} else if(strcmp(icon, "info") == 0) {
 		i = 1;
 	} else if(strcmp(icon, "none") == 0) {
 		i = 0;

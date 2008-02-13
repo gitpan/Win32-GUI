@@ -6,6 +6,8 @@ Win32::GUI::ReleaseNotes - release notes for Win32::GUI
 
 =over
 
+=item Release L<1.06|Win32::GUI::ReleaseNotes::RN_1_06>
+
 =item Release L<1.05|Win32::GUI::ReleaseNotes::RN_1_05>
 
 =item Release L<1.04|Win32::GUI::ReleaseNotes::RN_1_04>

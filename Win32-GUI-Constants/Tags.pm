@@ -1,5 +1,5 @@
 package Win32::GUI::Constants::Tags;
-# $Id: Tags.pm,v 1.5 2006/08/03 22:20:38 robertemay Exp $
+# $Id: Tags.pm,v 1.7 2008/02/08 18:47:17 robertemay Exp $
 
 use strict;
 use warnings;
@@ -80,12 +80,12 @@ our %TAG_SPECS = (
     compatibility_win32_gui => undef,
 
     accelerator => [ qw( ^VK_ ) ],
-    animation   => [ qw( ^ACS_ ) ],
+    animation   => [ qw( ^ACS_ ^ACM_ ^ACN_ ) ],
     bitmap      => [ qw( ^OBM_ ) ],
     brush       => [ qw() ],
     button      => undef,
     class       => [ qw( ^COLOR_ ^CS_ ) ],
-    combobox    => [ qw( ^CBS_ ^CBES_ ) ],
+    combobox    => [ qw( ^CB_ ^CBS_ ^CBES_ ^CBN_ ) ],
     cursor      => [ qw( ^IDC_ ^OCR_ ) ],
     datetime    => [ qw( ^DTS_ ) ],
     dc          => undef,
@@ -93,19 +93,19 @@ our %TAG_SPECS = (
     header      => [ qw( ^HDS_ ) ],
     icon        => [ qw( ^IDI_ ^OIC_ ) ],
     imagelist   => [ qw( ^ILC_ ^ILD_ ^ILS_ ^CLR_NONE$ ^CLR_DEFAULT$ ^IMAGE_ ) ],
-    label       => [ qw( ^IMAGE_ ) ],
-    listbox     => [ qw( ^LBS_ ) ],
+    label       => [ qw( ^IMAGE_ ^STM_ ^STN_ ) ],
+    listbox     => [ qw( ^LB_ ^LBN_ ^LBS_ ) ],
     listview    => [ qw( ^LVS_ ^LVIS_ ^LVIR_ ^LVSIL_ ^CLR_NONE$ ) ],
     mdi         => [ qw() ],
     menu        => [ qw( ^MF_ ^SC_ ^TPM_ ) ],
     monthcal    => [ qw( ^MCS_ ^MCSC_ ) ],
     notifyicon  => [ qw() ],
     pen         => [ qw( ^PS_ ) ],
-    progressbar => [ qw( ^CLR_DEFAULT$ ) ],
+    progressbar => [ qw( ^PBS_ ^PBM_ ^CLR_DEFAULT$ ) ],
     rebar       => [ qw( ^CLR_DEFAULT$ ^RBBS_ ) ],
     region      => [ qw( ^RGN_ ) ],
-    richedit    => [ qw( ^CP_ ^EM_ ^ENM_ ^ES_ ^GT_ ^SF_ ^SFF_ ) ],
-    scrollbar   => [ qw( ^SB_ ) ],
+    richedit    => [ qw( ^CP_ ^EM_ ^ENM_ ^EN_ ^ES_ ^GT_ ^SF_ ^SFF_ ) ],
+    scrollbar   => [ qw( ^SB_ ^SBM_ ^SBS_ ) ],
     slider      => [ qw( ^TBTS_ ) ],
     splitter    => [ qw() ],
     statusbar   => [ qw( ^CLR_DEFAULT$ ^SBT_ ) ],
@@ -195,7 +195,8 @@ qw( ^BS_PUSHBUTTON$ ^BS_DEFPUSHBUTTON$ ^BS_CHECKBOX$ ^BS_AUTOCHECKBOX$ ^BS_RADIO
     ^BS_3STATE$ ^BS_AUTO3STATE$ ^BS_GROUPBOX$ ^BS_USERBUTTON$ ^BS_AUTORADIOBUTTON$
     ^BS_PUSHBOX$ ^BS_OWNERDRAW$ ^BS_TYPEMASK$ ^BS_LEFTTEXT$ ^BS_TEXT$ ^BS_ICON$
     ^BS_BITMAP$ ^BS_LEFT$ ^BS_RIGHT$ ^BS_CENTER$ ^BS_TOP$ ^BS_BOTTOM$ ^BS_VCENTER$
-    ^BS_PUSHLIKE$ ^BS_MULTILINE$ ^BS_NOTIFY$ ^BS_FLAT$ ^BS_RIGHTBUTTON$ ^IMAGE_ )
+    ^BS_PUSHLIKE$ ^BS_MULTILINE$ ^BS_NOTIFY$ ^BS_FLAT$ ^BS_RIGHTBUTTON$ ^IMAGE_ 
+    ^BM_ ^BCM_ ^BN_ )
 ] }
 sub tag_dc() { [
 qw( ^OPAQUE$ ^TRANSPARENT$ ^BDR_ ^EDGE_ ^BF_ ^CLR_INVALID$ ^HWND_DESKTOP$ ^DFC_ ^DFCS_

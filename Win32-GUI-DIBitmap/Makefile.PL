@@ -3,12 +3,15 @@ use strict;
 #use warnings;
 
 # Makefile.PL for Win32::GUI::DIBitmap
-# $Id: Makefile.PL,v 1.3 2006/06/11 21:00:15 robertemay Exp $
+# $Id: Makefile.PL,v 1.4 2008/02/01 13:29:49 robertemay Exp $
 
 use 5.006;
 use Config;
 use ExtUtils::MakeMaker;
 use File::Find();
+
+use lib '../build_tools';
+use MMUtil;
 
 my @demos;
 File::Find::find(sub { push @demos, $File::Find::name if $File::Find::name =~ /\.(pl|zip|bmp|png|tga|jpg)$/ }, 'demos');
@@ -53,6 +56,7 @@ __EXPLAIN
     ExtUtils::MakeMaker::WriteEmptyMakefile(NAME => 'Win32::GUI::DIBitmap');
 }
 else {
+    MMUtil::Extend_MM();
     WriteMakefile(%config);
 }
 

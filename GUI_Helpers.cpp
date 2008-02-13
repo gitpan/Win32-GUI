@@ -2,7 +2,7 @@
     ###########################################################################
     # helper routines
     #
-    # $Id: GUI_Helpers.cpp,v 1.22 2006/08/30 21:57:58 robertemay Exp $
+    # $Id: GUI_Helpers.cpp,v 1.25 2008/02/08 16:42:11 robertemay Exp $
     #
     ###########################################################################
         */
@@ -65,6 +65,7 @@ void Perlud_Free(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud) {
 
     // Check perlpud
     if (perlud != NULL) {
+        HWND hwnd_self = SvOK(perlud->svSelf) ? handle_From(NOTXSCALL perlud->svSelf) : NULL;
 
         // Free event hash
         if (perlud->hvEvents != NULL) {
@@ -88,11 +89,23 @@ void Perlud_Free(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud) {
         if (perlud->svSelf != NULL && SvREFCNT(perlud->svSelf) > 0) {
             /* Free into parent */
             if(SvOK(perlud->svSelf)) {
-                HWND parent = GetParent(handle_From(NOTXSCALL perlud->svSelf));
+                HWND parent = GetParent(hwnd_self);
                 if (parent != NULL && *perlud->szWindowName != '\0')  {
                     SV* SvParent = SV_SELF_FROM_WINDOW(parent);
                     if (SvParent != NULL && SvROK(SvParent)) {
-                        hv_delete((HV*) SvRV(SvParent), perlud->szWindowName, strlen(perlud->szWindowName), G_DISCARD);
+                        /* During global destruction it is possible that the
+                         * underlying object supporting our tied hash is
+                         * destroyed before the object itself, this results in
+                         * fatal errors "(during cleanup) Can't call method
+                         * "DELETE" on an undefined value" - so we check that
+                         * the tied magic is still there before we try to
+                         * delete from the parent
+                         */
+                        MAGIC* mg;
+                        if ( (mg = mg_find(SvRV(SvParent), PERL_MAGIC_tied)) && SvROK(mg->mg_obj) ) {
+                            hv_delete((HV*) SvRV(SvParent), perlud->szWindowName,
+                                        strlen(perlud->szWindowName), G_DISCARD);
+                        }
                     }
                 }
             }
@@ -109,6 +122,12 @@ void Perlud_Free(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud) {
 
             SvREFCNT_dec(perlud->userData);
             perlud->userData = NULL;
+        }
+        
+        // If we stored an original wndproc, then restore it so that
+        // WM_NCDESTORY messages get there.
+        if (hwnd_self && perlud->WndProc) {
+            SetWindowLong(hwnd_self, GWL_WNDPROC, (LONG)(perlud->WndProc));
         }
         
         // Free perlpud

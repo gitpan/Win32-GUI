@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use ExtUtils::MakeMaker;
 
-# $Id: ScintillaRC.PL,v 1.2 2006/06/11 21:00:16 robertemay Exp $
+# $Id: ScintillaRC.PL,v 1.3 2008/01/31 00:34:19 robertemay Exp $
 # perl script to produce the RC file for
 # Win32::GUI::Scintilla  create Resource
 # file with a VERSIONINFO section
@@ -11,7 +11,7 @@ use ExtUtils::MakeMaker;
 # The variables:
 my %info = (
     Version => MM->parse_version('Scintilla.PL'),
-    Dllname => 'SCintilla.dll',
+    Dllname => 'Scintilla.dll',
     Years   => '2003..2006',
     Win32GUIVersion => MM->parse_version('../GUI.pm'),
 );

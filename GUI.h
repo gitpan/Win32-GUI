@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------
-// $Id: GUI.h,v 1.30 2006/08/30 21:57:58 robertemay Exp $
+// $Id: GUI.h,v 1.31 2007/01/20 17:09:22 robertemay Exp $
 // --------------------------------------------------------------------
 // #### Uncomment the next two lines (in increasing verbose order)
 // #### for debugging info
@@ -365,6 +365,10 @@ typedef struct tagPERLWIN32GUI_MENUITEMDATA {
 
 #ifndef av_delete
 #	define av_delete(a,i,f)	av_store(a,i,&PL_sv_undef)
+#endif
+
+#ifndef PERL_MAGIC_tied
+#   define PERL_MAGIC_tied 'P' /* Tied array or hash */
 #endif
 
 /*

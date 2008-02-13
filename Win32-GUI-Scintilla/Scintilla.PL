@@ -4,7 +4,7 @@ use warnings;
 use File::Basename;
 use File::Path;
 
-# $Id: Scintilla.PL,v 1.5 2006/10/15 14:07:46 robertemay Exp $
+# $Id: Scintilla.PL,v 1.8 2008/02/09 12:53:44 robertemay Exp $
 
 my $iface_file = "Include/Scintilla.iface";
 
@@ -33,7 +33,7 @@ print <<'PREAMBLE';
 
 # This file created by the build process from Scintilla.PL
 # change made here will be lost.  Edit Scintilla.PL instead.
-# $Id: Scintilla.PL,v 1.5 2006/10/15 14:07:46 robertemay Exp $
+# $Id: Scintilla.PL,v 1.8 2008/02/09 12:53:44 robertemay Exp $
 
 package Win32::GUI::Scintilla;
 
@@ -46,7 +46,7 @@ require DynaLoader;
 
 our @ISA = qw(DynaLoader Win32::GUI::Window);
 
-our $VERSION = "1.90";
+our $VERSION = "1.91";
 our $XS_VERSION = $VERSION;
 $VERSION = eval $VERSION;
 
@@ -196,11 +196,11 @@ sub LoadFile {
   $self->Cancel();
   $self->SetUndoCollection(0);
 
-  open F, "<$file" or return 0;
-  while ( <F> ) {
+  open my $fh, "<$file" or return 0;
+  while ( <$fh> ) {
     $self->AppendText($_);
   }
-  close F;
+  close $fh;
 
   $self->SetUndoCollection(1);
   $self->EmptyUndoBuffer();
@@ -217,13 +217,13 @@ sub LoadFile {
 sub SaveFile {
   my ($self, $file) = @_;
 
-  open F, ">$file" or return 0;
+  open my $fh, ">$file" or return 0;
 
-  for my $i (0..$self->GetLineCount()) {
-    print F $self->GetLine ($i);
+  for my $i (0 .. ($self->GetLineCount() - 1)) {
+    print $fh $self->GetLine ($i);
   }
 
-  close F;
+  close $fh;
 
   $self->SetSavePoint();
 
@@ -388,9 +388,9 @@ while ( <$fh> )
         print 'sub GetCurLine {', "\n";
         print '  my ($self) = @_;',"\n";
         print '  my $line   = $self->GetLineFromPosition ($self->GetCurrentPos());',"\n";
-        print '  my $lenght = $self->LineLength($line);',"\n";
-        print '  my $text   = " " x ($lenght+1);',"\n\n";
-        print '  if ($self->SendMessageNP (2027, $lenght, $text)) {',"\n";
+        print '  my $length = $self->LineLength($line);',"\n";
+        print '  my $text   = " " x $length;',"\n\n";
+        print '  if ($self->SendMessageNP (2027, $length, $text)) {',"\n";
         print '    return $text;',"\n";
         print '  } else {',"\n";
         print '    return undef;',"\n";
@@ -402,8 +402,8 @@ while ( <$fh> )
         print '# Getline (line)', "\n";
         print 'sub GetLine {', "\n";
         print '  my ($self, $line)  = @_;', "\n";
-        print '  my $lenght = $self->LineLength($line);', "\n";
-        print '  my $text   = " " x ($lenght + 1);', "\n\n";
+        print '  my $length = $self->LineLength($line);', "\n";
+        print '  my $text   = " " x $length;', "\n\n";
         print '  if ($self->SendMessageNP (2153, $line, $text)) {', "\n";
         print '    return $text;', "\n";
         print '  } else {', "\n";
@@ -463,13 +463,11 @@ while ( <$fh> )
         print '# GetText() : Return all text', "\n";
         print 'sub GetText {', "\n";
         print '  my $self   = shift;', "\n";
-        print '  my $lenght = $self->GetTextLength() + 1;', "\n";
-        print '  my $text   = " " x ($lenght+1);', "\n\n";
-        print '  if ($self->SendMessageNP (2182, $lenght, $text)) {', "\n";
-        print '    return $text;', "\n";
-        print '  } else {', "\n";
-        print '    return undef;', "\n";
-        print '  }', "\n";
+        print '  my $length = $self->SendMessage(2182, 0, 0); # includes trailing NUL', "\n";
+        print '  my $text   = " " x $length;', "\n\n";
+        print '  $self->SendMessageNP (2182, $length, $text);', "\n";
+        print '  $text =~ s/.$//; # remove trailing NUL (regexp is faster than sbstr)', "\n";
+        print '  return $text;', "\n";
         print '}', "\n";
     }
     # FindText :
@@ -486,7 +484,7 @@ while ( <$fh> )
         print '  my $pos = $self->SendMessageNP (2150, $flag, $texttofind);', "\n";
         print '  return $pos unless defined wantarray;', "\n";
         print '  my @res = unpack("LLpLL", $texttofind);', "\n";
-        print '  return ($res[3], $res[4]); # pos , lenght', "\n";
+        print '  return ($res[3], $res[4]); # pos , length', "\n";
         print '}', "\n";
     }
     # GetProperty and GetPropertyExpanded :
@@ -704,7 +702,7 @@ sub FolderAll {
   my $lineNum;
 
   # find out if we are folding or unfolding
-  for $lineNum (1..$lineCount) {
+  for $lineNum (1..$lineCount) {    # XXX Should this be 0 .. $linecount - 1 ???
     if ($self->GetFoldLevel($lineNum) & Win32::GUI::Scintilla::SC_FOLDLEVELHEADERFLAG) {
       $expanding = not $self->GetFoldExpanded($lineNum);
       last;

@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Textfield
     #
-    # $Id: Textfield.xs,v 1.8 2006/06/23 23:08:07 robertemay Exp $
+    # $Id: Textfield.xs,v 1.9 2007/01/20 17:09:22 robertemay Exp $
     #
     ###########################################################################
     */
@@ -264,7 +264,11 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:GetLine(LINE)
-    # Return line of text.
+    # Get a line of text.
+    #  LINE: zero based index to the line to be retrieved
+    #
+    # Returns the text of the line.  Returns undef if LINE is
+    # greater than the number of lines in the Textfied.
 void
 GetLine(handle, line)
     HWND handle
@@ -272,25 +276,54 @@ GetLine(handle, line)
 ALIAS:
     Win32::GUI::RichEdit::GetLine = 1
 CODE:
-    UINT size = SendMessage(handle, EM_LINELENGTH, line, 0);    
-    if (size > 0) {
-        char * pBuf = (char *) safemalloc(size + 16);        
-        *((short*) pBuf) = size + 8;
-        size = SendMessage(handle, EM_GETLINE, line, (LPARAM) pBuf);
-        if (size > 0) {
-            pBuf[size] = '\0';
-            EXTEND(SP, 1);
-            XST_mPV(0, pBuf);
-            safefree(pBuf);
-            XSRETURN(1);
-        }
-        else {
-            safefree(pBuf);
-            XSRETURN_UNDEF;
-        }
-    }
-    else
+    LONG   index;
+    WORD   size;
+    LPTSTR pBuf;
+
+    index = (LONG)SendMessage(handle, EM_LINEINDEX, line, 0);
+    if (index < 0) { /* -1 if line greater than number of lines in control */
         XSRETURN_UNDEF;
+    }
+
+    size = (WORD)SendMessage(handle, EM_LINELENGTH, (WPARAM)index, 0);
+    /* we don't check the error condition of size == 0, as we have
+     * already checked the return value from EM_LINEINDEX, and have a valid
+     * index.  A return value of zero means we have an empty line, and
+     * should return that.
+     */
+
+    /* ensure buffer is big enough to hold a WORD */
+    if (size < sizeof(WORD) ) {
+        size = (sizeof(WORD)/sizeof(TCHAR));
+    }
+    /* allocate buffer, adding one for the NUL termination */
+    /* TODO: The strategy used here results in the buffer being
+    * copied twice: once from the textfield to pBuf, and then
+    * a second time from pBuf into the SV.  We should create
+    * an SV of the correct size, and pass the pointer to it's
+    * buffer to EM_GETLINE
+    */
+    New(0, pBuf, (int)(size+1), TCHAR);
+
+    /* put the size into the first word of the buffer */
+    *((WORD*)pBuf) = size;
+
+    /* get the text */
+    size = (WORD)SendMessage(handle, EM_GETLINE, line, (LPARAM)pBuf);
+    /* Again, we don't check the error condition of size == 0, as we have
+     * already checked the return value from EM_LINEINDEX, and have a valid
+     * line.  A return value of zero means we have an empty line, and
+     * should return that.
+     */
+
+    /* ensure we are NUL terminated  - this is NOT done by EM_GETLINE */
+    pBuf[size] = 0;
+
+    /* return the text */
+    EXTEND(SP, 1);
+    XST_mPV(0, pBuf);
+    Safefree(pBuf);
+    XSRETURN(1);
 
     ###########################################################################
     # (@)METHOD:GetLineCount()

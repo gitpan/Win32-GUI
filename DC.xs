@@ -2,7 +2,7 @@
     ###########################################################################
     #(@)PACKAGE:Win32::GUI::DC
     #
-    # $Id: DC.xs,v 1.15 2006/06/26 18:22:52 robertemay Exp $
+    # $Id: DC.xs,v 1.18 2007/07/15 18:39:51 robertemay Exp $
     #
     ###########################################################################
     */
@@ -386,7 +386,7 @@ OUTPUT:
     RETVAL
 
     ###########################################################################
-    # (@)METHOD:Polygon([X,Y]+)
+    # (@)METHOD:Polygon(X1, Y1, X2, Y2, [ X, Y, ... ])
     # Draws a polygon consisting of two or more vertices connected by
     # straight lines.
 BOOL
@@ -394,17 +394,17 @@ Polygon(handle, ...)
     HDC handle
 PREINIT:
     POINT *lpPoints;
-    int nCount, i;
+    int nCount, i, j;
 CODE:
-    if (items < 5 || (items - 1) % 2 != 0)
-        croak("Usage: Polygon([x, y]+);\n");
+    if (items < 5 || (items - 5) % 2 != 0)
+        croak("Usage: Polygon(X1, Y1, X2, Y2, [ X, Y, ... ]);\n");
     
     nCount   = (items - 1) / 2;
     lpPoints = (POINT *) safemalloc(nCount * sizeof(POINT));
 
-    for (i = 1; i < items; i += 2) {
-        lpPoints[i].x = SvIV(ST(i));
-        lpPoints[i].y = SvIV(ST(i+1));
+    for (i = 1, j = 0; i < items; i += 2, j++) {
+        lpPoints[j].x = SvIV(ST(i));
+        lpPoints[j].y = SvIV(ST(i+1));
     }
         
     RETVAL = Polygon(handle, lpPoints, nCount);
@@ -455,7 +455,7 @@ OUTPUT:
     ###########################################################################
 
     ###########################################################################
-    # (@)METHOD:DrawText(STRING, LEFT, TOP, RIGHT, BOTTOM, WIDTH, HEIGHT, [FORMAT=DT_LEFT|DT_SINGLELINE|DT_TOP])
+    # (@)METHOD:DrawText(STRING, LEFT, TOP, RIGHT, BOTTOM, [FORMAT=DT_LEFT|DT_SINGLELINE|DT_TOP])
     # Draws formatted text in the specified rectangle. It formats the text
     # according to the specified method.
 int
@@ -696,7 +696,7 @@ OUTPUT:
     RETVAL
 
     ###########################################################################
-    # (@)METHOD:PolyBezier([X,Y]+)
+    # (@)METHOD:PolyBezier(X1, Y1, X2, Y2, X3, Y3, X4, Y4, [ X, Y, ... ])
     # Draws one or more Bézier curves. 
     # The first curve is drawn from the first point to the fourth point by
     # using the second and third points as control points. 
@@ -709,17 +709,17 @@ PolyBezier(handle, ...)
     HDC handle
 PREINIT:
     POINT *lpPoints;
-    int nCount, i;
+    int nCount, i, j;
 CODE:
-    if (items < 9 || (items - 1) % 2 != 0)
-        croak("Usage: PolyBezier([x, y]+);\n");
+    if (items < 9 || (items - 9) % 6 != 0)
+        croak("Usage: PolyBezier(X1, Y1, X2, Y2, X3, Y3, X4, Y4, [ X, Y, ... ]);\n");
     
     nCount   = (items - 1) / 2;
     lpPoints = (POINT *) safemalloc(nCount * sizeof(POINT));
 
-    for (i = 1; i < items; i += 2) {
-        lpPoints[i].x = SvIV(ST(i));
-        lpPoints[i].y = SvIV(ST(i+1));
+    for (i = 1, j = 0; i < items; i += 2, j++) {
+        lpPoints[j].x = SvIV(ST(i));
+        lpPoints[j].y = SvIV(ST(i+1));
     }
         
     RETVAL = PolyBezier(handle, lpPoints, nCount);
@@ -728,7 +728,7 @@ OUTPUT:
     RETVAL
 
     ###########################################################################
-    # (@)METHOD:PolyBezierTo ([X,Y]+)
+    # (@)METHOD:PolyBezierTo(X1, Y1, X2, Y2, X3, Y3, [ X, Y, ... ])
     # Draws cubic Bézier curves.
     # The first curve is drawn from the current position to the third point by
     # using the first two points as control points. For each subsequent curve, 
@@ -739,17 +739,17 @@ PolyBezierTo (handle, ...)
     HDC handle
 PREINIT:
     POINT *lpPoints;
-    int nCount, i;
+    int nCount, i, j;
 CODE:
-    if (items < 7 || (items - 1) % 2 != 0)
-        croak("Usage: PolyBezier([x, y]+);\n");
+    if (items < 7 || (items - 7) % 6 != 0)
+        croak("Usage: PolyBezier(X1, Y1, X2, Y2, X3, Y3, [ X, Y, ... ]);\n");
     
     nCount   = (items - 1) / 2;
     lpPoints = (POINT *) safemalloc(nCount * sizeof(POINT));
 
-    for (i = 1; i < items; i += 2) {
-        lpPoints[i].x = SvIV(ST(i));
-        lpPoints[i].y = SvIV(ST(i+1));
+    for (i = 1, j = 0; i < items; i += 2, j++) {
+        lpPoints[j].x = SvIV(ST(i));
+        lpPoints[j].y = SvIV(ST(i+1));
     }
         
     RETVAL = PolyBezierTo (handle, lpPoints, nCount);
@@ -760,24 +760,24 @@ OUTPUT:
     # TODO : PolyDraw
 
     ###########################################################################
-    # (@)METHOD:Polyline ([X,Y]+)
+    # (@)METHOD:Polyline (X1, Y1, X2, Y2, [ X, Y, ... ])
     # Draws one or more straight lines.
 BOOL
 Polyline(handle, ...)
     HDC handle
 PREINIT:
     POINT *lpPoints;
-    int nCount, i;
+    int nCount, i, j;
 CODE:
-    if (items < 5 || (items - 1) % 2 != 0)
-        croak("Usage: PolyBezier([x, y]+);\n");
+    if (items < 5 || (items - 5) % 2 != 0)
+        croak("Usage: Polyline(X1, Y1, X2, Y2, [ X, Y, ... ]);\n");
     
     nCount   = (items - 1) / 2;
     lpPoints = (POINT *) safemalloc(nCount * sizeof(POINT));
 
-    for (i = 1; i < items; i += 2) {
-        lpPoints[i].x = SvIV(ST(i));
-        lpPoints[i].y = SvIV(ST(i+1));
+    for (i = 1, j = 0; i < items; i += 2, j++) {
+        lpPoints[j].x = SvIV(ST(i));
+        lpPoints[j].y = SvIV(ST(i+1));
     }
         
     RETVAL = Polyline (handle, lpPoints, nCount);
@@ -786,24 +786,24 @@ OUTPUT:
     RETVAL
 
     ###########################################################################
-    # (@)METHOD:PolylineTo ([X,Y]+)
+    # (@)METHOD:PolylineTo (X1, Y1, [ X, Y, ... ])
     # Draws one or more straight lines. 
 BOOL
 PolylineTo(handle, ...)
     HDC handle
 PREINIT:
     POINT *lpPoints;
-    int nCount, i;
+    int nCount, i, j;
 CODE:
-    if (items < 5 || (items - 1) % 2 != 0)
-        croak("Usage: PolyBezier([x, y]+);\n");
+    if (items < 3 || (items - 3) % 2 != 0)
+        croak("Usage: PolylineTo(X1, Y2, [ X, Y, ... ]);\n");
     
     nCount   = (items - 1) / 2;
     lpPoints = (POINT *) safemalloc(nCount * sizeof(POINT));
 
-    for (i = 1; i < items; i += 2) {
-        lpPoints[i].x = SvIV(ST(i));
-        lpPoints[i].y = SvIV(ST(i+1));
+    for (i = 1, j = 0; i < items; i += 2, j++) {
+        lpPoints[j].x = SvIV(ST(i));
+        lpPoints[j].y = SvIV(ST(i+1));
     }
         
     RETVAL = PolylineTo(handle, lpPoints, nCount);
@@ -866,25 +866,26 @@ OUTPUT:
     ###########################################################################
     # (@)METHOD:DrawFrameControl(LEFT, TOP, RIGHT, BOTTOM, TYPE, STATE)
     # Draws a frame control of the specified type and style.
+    #
+    # If STATE includes DFCS_ADJUSTRECT, then the input parameters
+    # LEFT, TOP, RIGHT, BOTTOM are ajusted to exclude the surrounding edge
+    # of the push button. If any of LEFT, TOP, RIGHT, BOTTOM are readonly,
+    # then DFCS_ADJUSTRECT will be ignored for the readonly parameters.
 BOOL
 DrawFrameControl(handle, left, top, right, bottom, type, state)
-    HDC handle
-    int left
-    int top
-    int right
-    int bottom
+    HDC  handle
+    RECT rc = { (LONG)SvIV(ST(1)), (LONG)SvIV(ST(2)), (LONG)SvIV(ST(3)), (LONG)SvIV(ST(4)) };
     UINT type
     UINT state
-PREINIT:
-    RECT rc;
-CODE:
-    rc.left = left;
-    rc.top = top;
-    rc.right = right;
-    rc.bottom = bottom;
-    RETVAL = DrawFrameControl(handle, &rc, type, state);
-OUTPUT:
-    RETVAL
+C_ARGS:
+    handle, &rc, type, state
+POSTCALL:
+    if (state & DFCS_ADJUSTRECT) {
+        if(!SvREADONLY(ST(1))) { sv_setiv_mg(ST(1), (IV)rc.left);   }
+        if(!SvREADONLY(ST(2))) { sv_setiv_mg(ST(2), (IV)rc.top);    }
+        if(!SvREADONLY(ST(3))) { sv_setiv_mg(ST(3), (IV)rc.right);  }
+        if(!SvREADONLY(ST(4))) { sv_setiv_mg(ST(4), (IV)rc.bottom); }
+    }
 
     ###########################################################################
     # (@)METHOD:BackColor([COLOR])

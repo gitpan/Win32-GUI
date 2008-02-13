@@ -19,7 +19,7 @@
 
 #
 # Author: Robert May , rmay@popeslane.clara.co.uk, 20 June 2005
-# $Id: doPodDocs.pl,v 1.5 2006/03/16 21:11:12 robertemay Exp $
+# $Id: doPodDocs.pl,v 1.6 2008/02/02 17:03:56 robertemay Exp $
 
 use strict;
 use warnings;
@@ -28,6 +28,17 @@ use SrcParser;
 use BuildTools;
 
 $SrcParser::DEBUG = 0;
+
+my @packages_with_own_pod = qw(
+    Win32::GUI::AxWindow
+    Win32::GUI::BitmapInline
+    Win32::GUI::Constants
+    Win32::GUI::DIBitmap
+    Win32::GUI::DropFiles
+    Win32::GUI::Grid
+    Win32::GUI::GridLayout
+    Win32::GUI::Scintilla
+);
 
 ######################################################################
 # (1) Parse the source fies for documentation.
@@ -66,7 +77,7 @@ $SrcParser::DEBUG = 0;
   # set up the PACKLIST macro
   my $packages = "";
 
-  for my $package (SrcParser::get_package_list()) {
+  for my $package (sort(SrcParser::get_package_list(), @packages_with_own_pod)) {
     (my $link = $package) =~ s/^Win32::GUI$/Win32::GUI::Reference::Methods/; # special case for Win32::GUI
     BuildTools::macro_set("PKGNAME", $package);
     BuildTools::macro_set("PKGLINK", $link);

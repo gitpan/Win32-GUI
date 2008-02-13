@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 # Display and run the Win32::GUI demonstrations
-# $Id: win32-gui-demos.pl,v 1.5 2006/10/15 12:09:27 robertemay Exp $
+# $Id: win32-gui-demos.pl,v 1.6 2008/01/13 20:21:16 robertemay Exp $
 # (c) Robert May, 2006.  This software is released
 # under the same terms as perl itself.
 
@@ -100,7 +100,7 @@ my $mw = Win32::GUI::Window->new(
     -left      => CW_USEDEFAULT,
     -size      => [750,500],
     -menu      => $menu,
-	-accel     => $accel,
+    -accel     => $accel,
     -class     => $class,
     -pushstyle => WS_CLIPCHILDREN,  # avoid flicker on resize
     -onResize  => \&mwResize,

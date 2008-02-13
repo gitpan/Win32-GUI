@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Combobox
     #
-    # $Id: Combobox.xs,v 1.8 2006/10/31 22:24:15 robertemay Exp $
+    # $Id: Combobox.xs,v 1.9 2007/07/15 18:23:06 robertemay Exp $
     #
     ###########################################################################
     */
@@ -23,15 +23,25 @@ Combobox_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATES
            
            if BitmaskOptionValue("-autohscroll",       perlcs->cs.style, CBS_AUTOHSCROLL)
     } else if BitmaskOptionValue("-disablenoscroll",   perlcs->cs.style, CBS_DISABLENOSCROLL)
-    } else if BitmaskOptionValue("-dropdown",          perlcs->cs.style, CBS_DROPDOWN)
-    } else if BitmaskOptionValue("-dropdownlist",      perlcs->cs.style, CBS_DROPDOWNLIST)
     } else if BitmaskOptionValue("-hasstring",         perlcs->cs.style, CBS_HASSTRINGS)
     } else if BitmaskOptionValue("-lowercase",         perlcs->cs.style, CBS_LOWERCASE)
     } else if BitmaskOptionValue("-nointegraleheight", perlcs->cs.style, CBS_NOINTEGRALHEIGHT)
-    } else if BitmaskOptionValue("-simple",            perlcs->cs.style, CBS_SIMPLE)
     } else if BitmaskOptionValue("-sort",              perlcs->cs.style, CBS_SORT)
     } else if BitmaskOptionValue("-uppercase",         perlcs->cs.style, CBS_UPPERCASE)
-    } else retval = FALSE;
+    }
+    else if(strcmp(option, "-simple") == 0) {
+        perlcs->cs.style &= ~CBS_DROPDOWNLIST;
+        perlcs->cs.style |=  CBS_SIMPLE;
+    }
+    else if(strcmp(option, "-dropdown") == 0) {
+        perlcs->cs.style &= ~CBS_DROPDOWNLIST;
+        perlcs->cs.style |=  CBS_DROPDOWN;
+    }
+    else if(strcmp(option, "-dropdownlist") == 0) {
+        perlcs->cs.style |=  CBS_DROPDOWNLIST;
+    }
+    else
+        retval = FALSE;
 
     return retval;
 }

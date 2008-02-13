@@ -2,12 +2,25 @@
     ###########################################################################
     # event processing routines
     #
-    # $Id: GUI_Events.cpp,v 1.14 2006/08/03 22:20:02 robertemay Exp $
+    # $Id: GUI_Events.cpp,v 1.15 2007/07/15 18:47:13 robertemay Exp $
     #
     ###########################################################################
         */
 
 #include "GUI.h"
+
+    /* IMPORTANT:
+     * Whenever we make a callback into perl, we cannot know what evil things
+     * the script writer will have done.  In particular, it is possible for
+     * the called code to cause the window for which the event is being
+     * handled to be destroyed before the callback returns.  If this happens
+     * we will have a non-NULL perlud pointer, but the underlying memory
+     * will have been freed.  Don't try to access perlud after a callback
+     * without checking that the window still exists.  Currently the code
+     * below gets the window handle BEFORE the callback (from perud->svSelf),
+     * and checks it afterwards with IsWindow().  This is not infallable as the
+     * hwnd could have been recycled - this is, however, unlikely
+     */
 
     /*
      ##########################################################################
@@ -46,6 +59,7 @@ int DoEvent(
     int argtype;
 
     int PerlResult = 1;
+    HWND hwnd = handle_From(NOTXSCALL perlud->svSelf);
     perlud->dwPlStyle &= ~PERLWIN32GUI_EVENTHANDLING;
 
     // NEM event
@@ -100,6 +114,8 @@ int DoEvent(
             FREETMPS;
             LEAVE;
 
+            if(!IsWindow(hwnd)) return PerlResult;
+            
             // Must set after event call because this event can generate more event.
             perlud->dwPlStyle |= PERLWIN32GUI_EVENTHANDLING;
         }
@@ -161,6 +177,8 @@ int DoEvent(
             PUTBACK;
             FREETMPS;
             LEAVE;
+
+            if(!IsWindow(hwnd)) return PerlResult;
 
             // Must set after event call because this event can generate more event.
             perlud->dwPlStyle |= PERLWIN32GUI_EVENTHANDLING;
@@ -278,6 +296,7 @@ int DoEvent_Accelerator(
     LPPERLWIN32GUI_USERDATA perlchild = NULL;
     SV* acc_sub = NULL;
     int PerlResult = 1;
+    HWND hwnd = handle_From(NOTXSCALL perlud->svSelf);
     perlud->dwPlStyle &= ~PERLWIN32GUI_EVENTHANDLING;
 
     // Search Accelerator information
@@ -297,13 +316,11 @@ int DoEvent_Accelerator(
 
             // Find for a child with AcceleratorName name
             if (strcmp (perlud->szWindowName, AcceleratorName) != 0) {
-
-                HWND hWndParent = handle_From(NOTXSCALL perlud->svSelf);
                 st_FindChildWindow st;
                 st.perlchild = NULL;
                 st.Name = AcceleratorName;
 
-                EnumChildWindows(hWndParent, (WNDENUMPROC) FindChildWindowsProc, (LPARAM) &st);
+                EnumChildWindows(hwnd, (WNDENUMPROC) FindChildWindowsProc, (LPARAM) &st);
                 perlchild = st.perlchild;
             }
         }
@@ -333,6 +350,8 @@ int DoEvent_Accelerator(
         FREETMPS;
         LEAVE;
 
+        if(!IsWindow(hwnd)) return PerlResult;
+
         // Must set after event call because this event can generate more event.
         perlud->dwPlStyle |= PERLWIN32GUI_EVENTHANDLING;
     }
@@ -361,6 +380,8 @@ int DoEvent_Accelerator(
             PUTBACK;
             FREETMPS;
             LEAVE;
+
+            if(!IsWindow(hwnd)) return PerlResult;
 
             // Must set after event call because this event can generate more event.
             perlud->dwPlStyle |= PERLWIN32GUI_EVENTHANDLING;
@@ -392,6 +413,8 @@ int DoEvent_Accelerator(
             PUTBACK;
             FREETMPS;
             LEAVE;
+
+            if(!IsWindow(hwnd)) return PerlResult;
 
             // Must set after event call because this event can generate more event.
             perlud->dwPlStyle |= PERLWIN32GUI_EVENTHANDLING;
@@ -425,6 +448,8 @@ int DoEvent_Accelerator(
             FREETMPS;
             LEAVE;
 
+            if(!IsWindow(hwnd)) return PerlResult;
+
             // Must set after event call because this event can generate more event.
             perlud->dwPlStyle |= PERLWIN32GUI_EVENTHANDLING;
         }
@@ -447,7 +472,8 @@ char*  DoEvent_NeedText(
     va_list args;
     int count;
     int argtype;
-    static char *textneeded = NULL;
+    HWND hwnd = handle_From(NOTXSCALL perlud->svSelf);
+    static char *textneeded = NULL;           /* XXX: Not Thread Safe */
     if(textneeded != NULL) {
         safefree(textneeded);
         textneeded = NULL;
@@ -513,6 +539,8 @@ char*  DoEvent_NeedText(
             PUTBACK;
             FREETMPS;
             LEAVE;
+
+            if(!IsWindow(hwnd)) return textneeded;
 
             // Must set after event call because this event can generate more event.
             perlud->dwPlStyle |= PERLWIN32GUI_EVENTHANDLING;
@@ -582,6 +610,8 @@ char*  DoEvent_NeedText(
             FREETMPS;
             LEAVE;
 
+            if(!IsWindow(hwnd)) return textneeded;
+
             // Must set after event call because this event can generate more event.
             perlud->dwPlStyle |= PERLWIN32GUI_EVENTHANDLING;
         }
@@ -608,6 +638,7 @@ int DoEvent_Timer (
     char TimerName[MAX_EVENT_NAME];
 
     int PerlResult = 1;
+    HWND hwnd = handle_From(NOTXSCALL perlud->svSelf);
     perlud->dwPlStyle &= ~PERLWIN32GUI_EVENTHANDLING;
 
     // SearchTimer information
@@ -673,6 +704,8 @@ int DoEvent_Timer (
             FREETMPS;
             LEAVE;
 
+            if(!IsWindow(hwnd)) return PerlResult;
+
             // Must set after event call because this event can generate more event.
             perlud->dwPlStyle |= PERLWIN32GUI_EVENTHANDLING;
         }
@@ -732,6 +765,8 @@ int DoEvent_Timer (
             FREETMPS;
             LEAVE;
 
+            if(!IsWindow(hwnd)) return PerlResult;
+
             // Must set after event call because this event can generate more event.
             perlud->dwPlStyle |= PERLWIN32GUI_EVENTHANDLING;
         }
@@ -757,6 +792,7 @@ int DoEvent_NotifyIcon (
     char NotifyIconName[MAX_EVENT_NAME];
     SV** events  = NULL;
     int PerlResult = 1;
+    HWND hwnd = handle_From(NOTXSCALL perlud->svSelf);
     perlud->dwPlStyle &=  ~PERLWIN32GUI_EVENTHANDLING;
 
     // NotifyIconName information
@@ -828,6 +864,8 @@ int DoEvent_NotifyIcon (
             FREETMPS;
             LEAVE;
 
+            if(!IsWindow(hwnd)) return PerlResult;
+
             // Must set after event call because this event can generate more event.
             perlud->dwPlStyle |= PERLWIN32GUI_EVENTHANDLING;
         }
@@ -887,6 +925,8 @@ int DoEvent_NotifyIcon (
             FREETMPS;
             LEAVE;
 
+            if(!IsWindow(hwnd)) return PerlResult;
+
             // Must set after event call because this event can generate more event.
             perlud->dwPlStyle |= PERLWIN32GUI_EVENTHANDLING;
         }
@@ -905,6 +945,7 @@ int DoEvent_Paint(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud) {
     int count;
     SV* newdc;
     int PerlResult = 1;
+    HWND hwnd = handle_From(NOTXSCALL perlud->svSelf);
     perlud->dwPlStyle &= ~PERLWIN32GUI_EVENTHANDLING;
 
     // NEM event
@@ -947,6 +988,8 @@ int DoEvent_Paint(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud) {
             PUTBACK;
             FREETMPS;
             LEAVE;
+
+            if(!IsWindow(hwnd)) return PerlResult;
 
             // Must set after event call because this event can generate more event.
             perlud->dwPlStyle |= PERLWIN32GUI_EVENTHANDLING;
@@ -996,6 +1039,8 @@ int DoEvent_Paint(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud) {
             PUTBACK;
             FREETMPS;
             LEAVE;
+
+            if(!IsWindow(hwnd)) return PerlResult;
 
             // Must set after event call because this event can generate more event.
             perlud->dwPlStyle |= PERLWIN32GUI_EVENTHANDLING;

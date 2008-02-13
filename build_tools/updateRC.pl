@@ -11,27 +11,29 @@
 
 #
 # Author: Robert May , rmay@popeslane.clara.co.uk
-# $Id: updateRC.pl,v 1.1 2005/08/03 21:45:58 robertemay Exp $
+# $Id: updateRC.pl,v 1.2 2007/07/30 22:04:49 robertemay Exp $
 
 use strict;
 use warnings;
 
 use BuildTools;
 
-my $rcfile = "GUI.rc";
+$|++; #AUTOFLUSH
+
+my $rcfile = 'GUI.rc';
 
 my $version = BuildTools::macro_subst('__W32G_VERSION__');
 my $year    = BuildTools::macro_subst('__W32G_YEAR__');
 
 my $changed = 0;
-my $outtext = '';
+my $outtext = q();
 
 # Parse $version into 4 parts:
-my($maj, $min, $rc, $extra) = split(/\.|_/, $version . ".00.00.00");
+my($maj, $min, $rc, $extra) = split(/\.|_/, $version . '.00.00.00');
 
-print "Checking RC file ... ";
+print 'Checking RC file ... ';
 
-open(my $in, "<$rcfile") or die "Filaed to open $rcfile for reading: $!";
+open(my $in, '<', $rcfile) or die "Failed to open $rcfile for reading: $!";
 while (my $inline = <$in>) {
 	my $outline = $inline;
 
@@ -59,12 +61,18 @@ while (my $inline = <$in>) {
 }
 close($in);
 
-# write out the new rcfile
-open(my $out, ">$rcfile") or die "Failed to open $rcfile for writing";
-print $out $outtext;
-close($out);
+# write out the new rcfile, if it changed
+if($changed) {
+    my $out;
+    if(!open($out, '>', $rcfile)) {
+        chmod 0644, $rcfile;
+        open($out, '>', $rcfile) or die "Failed to open $rcfile for writing";
+    }
+    print $out $outtext;
+    close($out);
+}
 
-print $changed ? "updated.\n" : "no change.\n";
+print $changed ? 'updated' : 'no change', ".\n";
 
 exit(0);
 

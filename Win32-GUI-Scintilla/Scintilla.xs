@@ -2,8 +2,6 @@
 /*                    S c i n t i l l a . x s                         */
 /**********************************************************************/
 
-#define PERL_NO_GET_CONTEXT     /* we want efficiency */
-
 //Bring in the Win32-GUI header files, this defines common structures that
 //we will need/use
 

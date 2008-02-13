@@ -11,7 +11,7 @@
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: GUI.xs,v 1.63 2006/10/31 22:24:15 robertemay Exp $
+# $Id: GUI.xs,v 1.67 2008/01/31 00:28:14 robertemay Exp $
 #
 ###############################################################################
  */
@@ -1049,6 +1049,7 @@ PREINIT:
     BOOL fIsMDI;
     HACCEL acc;
     LPPERLWIN32GUI_USERDATA perlud;
+    LPPERLWIN32GUI_USERDATA tperlud;
 CODE:
     stayhere = 1;
     fIsDialog = FALSE;
@@ -1080,10 +1081,22 @@ CODE:
                 fIsMDI    = perlud->dwPlStyle & (PERLWIN32GUI_MDIFRAME | PERLWIN32GUI_HAVECHILDWINDOW);
                 acc = perlud->hAcc;
             }
+            // ### If the parent window is a MDIFrame the active MDIChild 
+            // ### can be THE DialogBox
+            if(fIsMDI
+                && (thwnd = (HWND)SendMessage((HWND)perlud->dwData, WM_MDIGETACTIVE, (WPARAM) 0, (LPARAM) NULL))
+                && (tperlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(thwnd, GWL_USERDATA))
+                && ValidUserData(tperlud))
+            {
+                fIsDialog = tperlud->dwPlStyle & PERLWIN32GUI_DIALOGUI;
+            }
+            else {
+                thwnd = phwnd;
+            }
 
             if( !( (fIsMDI && TranslateMDISysAccel((HWND)perlud->dwData, &msg)) ||
                    (acc && TranslateAccelerator(phwnd, acc, &msg))              ||
-                   (fIsDialog && IsDialogMessage(phwnd, &msg)) ) 
+                   (fIsDialog && IsDialogMessage(thwnd, &msg)) ) 
               ){
                 TranslateMessage(&msg);
                 DispatchMessage(&msg);
@@ -1124,6 +1137,7 @@ PREINIT:
     BOOL fIsMDI;
     HACCEL acc;
     LPPERLWIN32GUI_USERDATA perlud;
+    LPPERLWIN32GUI_USERDATA tperlud;
 CODE:
     stayhere = 1;
     fIsDialog = FALSE;
@@ -1151,10 +1165,22 @@ CODE:
                     fIsMDI    = perlud->dwPlStyle & (PERLWIN32GUI_MDIFRAME | PERLWIN32GUI_HAVECHILDWINDOW);
                     acc = perlud->hAcc;
                 }
+                // ### If the parent window is a MDIFrame the active MDIChild 
+                // ### can be THE DialogBox
+                if(fIsMDI
+                    && (thwnd = (HWND)SendMessage((HWND)perlud->dwData, WM_MDIGETACTIVE, (WPARAM) 0, (LPARAM) NULL))
+                    && (tperlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(thwnd, GWL_USERDATA))
+                    && ValidUserData(tperlud))
+                {
+                    fIsDialog = tperlud->dwPlStyle & PERLWIN32GUI_DIALOGUI;
+                }
+                else {
+                    thwnd = phwnd;
+                }
 
                 if( !( (fIsMDI && TranslateMDISysAccel((HWND)perlud->dwData, &msg)) ||
                        (acc && TranslateAccelerator(phwnd, acc, &msg))              ||
-                       (fIsDialog && IsDialogMessage(phwnd, &msg)) ) 
+                       (fIsDialog && IsDialogMessage(thwnd, &msg)) ) 
                   ){
                     TranslateMessage(&msg);
                     DispatchMessage(&msg);
@@ -1290,13 +1316,13 @@ OUTPUT:
     RETVAL
 
     ###########################################################################
-    # (@)METHOD:Scroll(scrollbar,operation,position[,SB_THUMBTRACK_flag])
+    # (@)METHOD:Scroll(scrollbar,operation[,position, [thumbtrack_flag]])
     # Handles scrollbar scrolling if you don't want to do it yourself. This is
     # most useful in the Scroll event handler for a window or dialog box.
     #
     # B<scrollbar> can be:
-    #   0 : Horizontal scrollbar
-    #   1 : Vertical scrollbar
+    #   SB_HOR(0)  : Horizontal scrollbar
+    #   SB_VERT(1) : Vertical scrollbar
     #
     # B<operation> is an identifier for the operation being performed on the
     # scrollbar, this can be:
@@ -1304,54 +1330,72 @@ OUTPUT:
     #   SB_PAGELEFT, SB_PAGEDOWN, SB_PAGERIGHT, SB_THUMBPOSITION,
     #   SB_THUMBTRACK, SB_TOP, SB_LEFT, SB_BOTTOM, SB_RIGHT, or SB_ENDSCROLL
     #
-    # Returns the position of the scrollbar or undef on failure.
+    # B<position> is ignored unless B<operation> is SB_THUMBPOSITION, or
+    # B<operation> is SB_THUMBTRACK and B<thumbtrack_flag> is TRUE. If
+    # B<position> is not provided (or provided and equal to -1), then
+    # the position used is taken from the internal scrollbar structure:
+    # this is the prefered method of operation.
     #
-DWORD
-Scroll(handle, scrollbar, operation, position, ... )
+    # B<thumbtrack_flag> indicates whether SB_THUMBTRACK messages are
+    # processed (TRUE) or not (FALSE).  It defaults to false.
+    #
+    # Returns the new position of the scrollbar, or undef on failure.
+    #
+int
+Scroll(handle, scrollbar, operation, position = -1, thumbtrack_flag = 0)
     HWND handle
-    int scrollbar
-    int operation
-    int position
+    int  scrollbar
+    int  operation
+    int  position
+    BOOL thumbtrack_flag
 PREINIT:
     SCROLLINFO si;
 CODE:
-    si.cbSize = sizeof(SCROLLINFO);
+    si.cbSize = sizeof(si);
     si.fMask = SIF_ALL;
     if(GetScrollInfo(handle,scrollbar,&si)) {
         si.fMask = SIF_POS;
         switch(operation) {
             case SB_THUMBTRACK:
-                if (items <= 4  ||  ! SvIV(ST(4)))
-                { break;
+                if(!thumbtrack_flag) {
+                    /* No tracking */
+                    break;
                 }
-            /* fall through */
+                /* fall through */
             case SB_THUMBPOSITION:
-                if (position == -1)
-                { si.nPos = si.nTrackPos;
-                } else
-                { si.nPos = position;
+                if(position == -1) {
+                    si.nPos = si.nTrackPos;
                 }
-            break;
+                else {
+                    si.nPos = position;
+                }
+                break;
             case SB_LINEUP:
                 si.nPos--;
-            break;
+                break;
             case SB_LINEDOWN:
                 si.nPos++;
-            break;
+                break;
             case SB_PAGEUP:
                 si.nPos -= si.nPage;
-            break;
+                break;
             case SB_PAGEDOWN:
                 si.nPos += si.nPage;
-            break;
+                break;
             case SB_TOP:
                 si.nPos = si.nMin;
-            break;
+                break;
             case SB_BOTTOM:
                 si.nPos = si.nMax;
-            break;
+                break;
+            default:
+                XSRETURN_UNDEF;
+                break;
         }
         RETVAL = SetScrollInfo(handle, scrollbar, &si, 1);
+    }
+    else {
+        XSRETURN_UNDEF;
     }
 OUTPUT:
     RETVAL
@@ -1519,6 +1563,10 @@ OUTPUT:
 
     ###########################################################################
     # (@)INTERNAL:LoadImage(FILENAME, [TYPE, X, Y, FLAGS])
+    # The return value is a handle to the bitmap, or 0 on failure.
+    #
+    # Directory seperators are normalised to windows seperators (C<\>).
+    # Under Cygwin, cygwin paths are converted to windows paths
 HBITMAP
 LoadImage(filename,iType=IMAGE_BITMAP,iX=0,iY=0,iFlags=LR_DEFAULTCOLOR)
     SV *filename
@@ -1529,6 +1577,9 @@ LoadImage(filename,iType=IMAGE_BITMAP,iX=0,iY=0,iFlags=LR_DEFAULTCOLOR)
 PREINIT:
     HINSTANCE moduleHandle;
     HBITMAP bitmap = NULL;
+    char buffer[MAX_PATH+1];
+    char *name;
+    int i;
 CODE:
     /* Try to find the resource in the current EXE */
     moduleHandle = GetModuleHandle(NULL);
@@ -1565,8 +1616,34 @@ CODE:
 
     /* if filename looks like a string, try it as a file name */
     if((bitmap == NULL) && SvPOK(filename)) {
+        name = SvPV_nolen(filename);
+#ifdef __CYGWIN__
+        /* Under Cygwin, convert paths to windows
+         * paths. E.g. convert /usr/local... and /cygdrive/c/...
+         */
+        if(cygwin_conv_to_win32_path(name,buffer) != 0)
+            XSRETURN_UNDEF;
+#else
+        /* LoadImage on Win98 (at least) doesn't like unix
+         * path seperators, so normalise to windows path seperators
+         */
+        for(i=0; *name && (i<MAX_PATH); ++name,++i) {
+            buffer[i] = (*name == '/' ? '\\' : *name);
+        }
+        if(*name) {
+            /* XXX Path too long - although this appears to be what
+             * LoadImage would return with such a path, it might be
+             * better to find a more specific error code.  E.g.
+             * ENAMETOOLONG?
+             */
+            SetLastError(ERROR_FILE_NOT_FOUND);
+            errno = ENOENT;
+            XSRETURN_UNDEF;
+        }
+        buffer[i] = 0;
+#endif
         bitmap = (HBITMAP) LoadImage((HINSTANCE) moduleHandle,
-                SvPV_nolen(filename), iType, iX, iY, iFlags|LR_LOADFROMFILE);
+                buffer, iType, iX, iY, iFlags|LR_LOADFROMFILE);
     }
 
     /* If filename looks like a number, try it as an OEM resource id */
@@ -1817,7 +1894,7 @@ PPCODE:
   
     ###########################################################################
     # (@)INTERNAL:_UserData()
-    # Return a reference to an HV, stored in the perlud.UserData member
+    # Return a reference to an HV, stored in the perlud.userData member
     # of the PERLWIN32GUI_USERDATA struct
 HV *
 _UserData(handle)
@@ -5093,6 +5170,8 @@ PPCODE:
     #      owner window for the dialog box
     #  -printeronly => 0/1 (default 0)
     #      only enable printers to be selected
+    #  -directory => PATH
+    #      the default start directory for browsing
     #  -root => PATH or CONSTANT
     #      the root directory for browsing; this can be either a
     #      path or one of the following constants (minimum operating systems or

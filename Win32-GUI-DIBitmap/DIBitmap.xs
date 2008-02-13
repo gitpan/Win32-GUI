@@ -2,7 +2,7 @@
 /*                    D I B i t m a p . x s                           */
 /**********************************************************************/
 
-/* $Id: DIBitmap.xs,v 1.3 2006/08/03 22:24:37 robertemay Exp $ */
+/* $Id: DIBitmap.xs,v 1.4 2007/07/15 19:19:44 robertemay Exp $ */
 
 #include "EXTERN.h"
 #include "perl.h"
@@ -1610,6 +1610,7 @@ CODE:
           value.rgbReserved = (BYTE) ((sv = av_fetch(av, 3, 0)) ? SvIV(*sv) : 0xff);
         }
         else
+            /* XXX this looks wrong - the cast should be to UINT, not BYTE??? */
           *((UINT*)&value) = (BYTE) SvIV(ST(3));
       }
       else

@@ -2378,7 +2378,7 @@ Robert May (C<robertemay@users.sourceforge.net>).
 
 Copyright 2003..2005 by Laurent Rocher (lrocher@cpan.org).
 
-Copyright 2006 by Robert May (robertemay@users.sourceforge.net).
+Copyright 2006..2008 by Robert May (robertemay@users.sourceforge.net).
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

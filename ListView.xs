@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::ListView
     #
-    # $Id: ListView.xs,v 1.13 2006/03/16 23:14:31 robertemay Exp $
+    # $Id: ListView.xs,v 1.15 2008/01/13 11:42:57 robertemay Exp $
     #
     ###########################################################################
     */
@@ -229,8 +229,9 @@ ListView_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
             */        
 
         case LVN_BEGINLABELEDIT:
+            pItem = &((LV_DISPINFO*)lParam)->item;
             PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL6, "BeginLabelEdit",
-                PERLWIN32GUI_ARGTYPE_LONG, (LONG) lv_notify->iItem,
+                PERLWIN32GUI_ARGTYPE_LONG, (LONG) pItem->iItem,
                 -1);
 
            // Force result if event is handle
@@ -1973,7 +1974,8 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:SelectedItems()
-    # Retuns an array containing the zero-based indexes of selected items.
+    # Returns an array containing the zero-based indexes of selected items, or
+    # an empty list if no items are selected.
 void
 SelectedItems(handle)
     HWND handle
@@ -1993,8 +1995,8 @@ PPCODE:
             tcount++;
             index = ListView_GetNextItem(handle, index, LVNI_SELECTED);
         }
-        XSRETURN(scount);
+        XSRETURN(tcount);
     } else {
-        XSRETURN_UNDEF;
+        XSRETURN_EMPTY;
     }
 

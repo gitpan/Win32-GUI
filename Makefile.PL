@@ -1,13 +1,19 @@
 use strict;
 use warnings;
 
+use 5.006001;
+
 use File::Spec();
+use File::Find();
 # Bug in ExUtils::MakeMaker 5.45 that ships with ActiveState Perl
 # 5.6.1, writes the subdirs target with dmake syntax, that breaks
 # nmake.  Fixed in EU::MM 5.47
 # $(DIRFILESEP) macro requires EU::MM 6.06
 use ExtUtils::MakeMaker 6.06;
 use Config;
+
+use lib 'build_tools';
+use MMUtil();
 
 our $W32G_CORE = 1;
 $main::USERESOURCE = 1;
@@ -57,6 +63,18 @@ if (not $main::BUILDENV) {
       $main::BUILDENV = 'mingw';
     }
   }
+  else {
+      print STDERR <<"__OSUNSUPPORTED";
+
+Building on OS '$^O' is unsupported. Only 'MSWin32' and 'Cygwin' are valid
+build environments.
+
+__OSUNSUPPORTED
+
+      # Attempt to stop CPAN Testers reporting build failures
+      # for OS's like linux!
+      die("OS unsupported\n");
+  }
 }
 
 if (not $main::BUILDENV) {
@@ -72,7 +90,7 @@ __NOBUILDENV
 
   print "$_\t($allowed{$_})\n" for (keys %allowed);
 
-  exit(1);
+  die("Build Environment unsupported\n");
 }
 
 if ( not exists $allowed{$main::BUILDENV} ) {
@@ -85,7 +103,7 @@ __BADBUILDENV
 
 	print "$_\t($allowed{$_})\n" for (keys %allowed);
 
-  exit(1);
+  die("Build Environment unsupported\n");
 }
 
 print "\n\nBUILDENV=$main::BUILDENV  Used build environment is: $allowed{$main::BUILDENV}\n\n";
@@ -202,6 +220,11 @@ foreach (@subpackages) {
 
 $arg_object .= ' GUI.res' if $main::USERESOURCE;
 
+my @demos;
+File::Find::find(sub { push @demos, $File::Find::name if $File::Find::name =~ /\.(pl|bmp|ico|cur)$/ }, 'samples');
+
+(my $dist_ver = $Config{version}) =~ s/^(\d+\.\d+).*$/$1/;
+
 my %MakefileArgs = (
     NAME            => 'Win32::GUI',
     VERSION_FROM    => 'GUI.pm',
@@ -211,7 +234,6 @@ my %MakefileArgs = (
                        },
     PM              => {
                          'GUI.pm'          => '$(INST_LIBDIR)/GUI.pm',
-                         'BitmapInline.pm' => '$(INST_LIBDIR)/GUI/BitmapInline.pm',
                          'GridLayout.pm'   => '$(INST_LIBDIR)/GUI/GridLayout.pm',
                       },
     XS              => { %arg_xs },
@@ -231,8 +253,9 @@ my %MakefileArgs = (
     BINARY_LOCATION => 'Win32-GUI.tar.gz',
     macro           => {
                          BUILD_TOOLS  => './build_tools',
-                         INST_DEMO    => '$(INST_LIBDIR)/GUI/demos',
-                         PPMDISTVNAME => '$(DISTVNAME)-PPM-' . substr($Config{version},0,3),
+                         PPMDISTVNAME => '$(DISTVNAME)-PPM-' . $dist_ver,
+                         INST_DEMODIR => '$(INST_LIBDIR)/GUI/demos',
+                         DEMOS        => "@demos",
                        },
     clean           => {
                          FILES => 'comctrl32.def cygwin.o libcyg.a GUI.res',
@@ -251,6 +274,7 @@ if ($main::BUILDENV eq "cygwin") {
   $MakefileArgs{'MYEXTLIB'} = './libcyg.a';
 }
 
+MMUtil::Extend_MM();
 WriteMakefile( %MakefileArgs );
 
 # tweak the generated Makefile
@@ -362,6 +386,7 @@ RC_FRAG2
 
 GUI.rc: GUI.pm
 	$(PERL) -I$(BUILD_TOOLS) $(BUILD_TOOLS)/updateRC.pl
+	$(NOECHO) $(TOUCH) GUI.rc
 
 RC_FRAG3
 
@@ -380,11 +405,18 @@ poddocs:
 htmldocs: poddocs
 	$(NOECHO) $(PERL) -I$(BUILD_TOOLS) $(BUILD_TOOLS)/doHTMLDocs.pl
 
-demos:
-	$(MKPATH) $(INST_DEMO)
-	-$(CP) samples/* $(INST_DEMO)
+pure_all :: demo_to_blib
+	$(NOECHO) $(NOOP)
 
-all:: poddocs demos
+demo_to_blib: $(DEMOS)
+	$(NOECHO) $(MKPATH) $(INST_DEMODIR)
+	$(CP) $? $(INST_DEMODIR)
+	$(NOECHO) $(TOUCH) demo_to_blib
+
+clean ::
+	-$(RM_F) demo_to_blib
+
+all:: poddocs
 
 DOC_FRAG
 

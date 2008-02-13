@@ -11,7 +11,7 @@
 # 
 # (c) Robert May 2005, 2006
 #
-# $Id: Constants.PL,v 1.8 2006/10/15 12:16:22 robertemay Exp $
+# $Id: Constants.PL,v 1.10 2008/02/08 18:47:17 robertemay Exp $
 
 use strict;
 use warnings;
@@ -342,6 +342,15 @@ __DATA__
 TRANSPARENT                    1           
 OPAQUE                         2           
 
+# Animation Control Messages
+ACM_OPEN                1124  # (WM_USER+100)
+ACM_PLAY                1125  # (WM_USER+101)
+ACM_STOP                1126  # (WM_USER+102)
+
+# Animation Control Notifications
+ACN_START               1
+ACN_STOP                2
+
 # Animation control styles
 ACS_CENTER              0x0001
 ACS_TRANSPARENT         0x0002
@@ -392,6 +401,35 @@ BF_ADJUST                      0x2000
 BF_FLAT                        0x4000      
 BF_MONO                        0x8000      
 
+# Button Messages
+BM_GETCHECK        0x00F0
+BM_SETCHECK        0x00F1
+BM_GETSTATE        0x00F2
+BM_SETSTATE        0x00F3
+BM_SETSTYLE        0x00F4
+BM_CLICK           0x00F5
+BM_GETIMAGE        0x00F6
+BM_SETIMAGE        0x00F7
+BCM_FIRST          0x1600
+BCM_GETIDEALSIZE   0x1601 # (BCM_FIRST + 0x0001)
+BCM_SETIMAGELIST   0x1602 # (BCM_FIRST + 0x0002)
+BCM_GETIMAGELIST   0x1603 # (BCM_FIRST + 0x0003)
+BCM_SETTEXTMARGIN  0x1604 # (BCM_FIRST + 0x0004)
+BCM_GETTEXTMARGIN  0x1605 # (BCM_FIRST + 0x0005)
+
+# Button Notifications
+BN_CLICKED          0
+BN_PAINT            1
+BN_HILITE           2
+BN_UNHILITE         3
+BN_DISABLE          4
+BN_DOUBLECLICKED    5
+BN_PUSHED           2 # BN_HILITE
+BN_UNPUSHED         3 # BN_UNHILITE
+BN_DBLCLK           5 # BN_DOUBLECLICKED
+BN_SETFOCUS         6
+BN_KILLFOCUS        7
+
 # Button Styles:
 BS_PUSHBUTTON                  0x00000000  
 BS_DEFPUSHBUTTON               0x00000001  
@@ -434,6 +472,62 @@ BTNS_NOPREFIX                  0x0020      # TBSTYLE_NOPREFIX
 BTNS_SHOWTEXT                  0x0040      
 BTNS_WHOLEDROPDOWN             0x0080      
 
+# Combo Box return values
+CB_OKAY             0
+CB_ERR              -1
+CB_ERRSPACE         -2
+
+# Combo Box Messages
+CB_GETEDITSEL               0x0140
+CB_LIMITTEXT                0x0141
+CB_SETEDITSEL               0x0142
+CB_ADDSTRING                0x0143
+CB_DELETESTRING             0x0144
+CB_DIR                      0x0145
+CB_GETCOUNT                 0x0146
+CB_GETCURSEL                0x0147
+CB_GETLBTEXT                0x0148
+CB_GETLBTEXTLEN             0x0149
+CB_INSERTSTRING             0x014A
+CB_RESETCONTENT             0x014B
+CB_FINDSTRING               0x014C
+CB_SELECTSTRING             0x014D
+CB_SETCURSEL                0x014E
+CB_SHOWDROPDOWN             0x014F
+CB_GETITEMDATA              0x0150
+CB_SETITEMDATA              0x0151
+CB_GETDROPPEDCONTROLRECT    0x0152
+CB_SETITEMHEIGHT            0x0153
+CB_GETITEMHEIGHT            0x0154
+CB_SETEXTENDEDUI            0x0155
+CB_GETEXTENDEDUI            0x0156
+CB_GETDROPPEDSTATE          0x0157
+CB_FINDSTRINGEXACT          0x0158
+CB_SETLOCALE                0x0159
+CB_GETLOCALE                0x015A
+CB_GETTOPINDEX              0x015b
+CB_SETTOPINDEX              0x015c
+CB_GETHORIZONTALEXTENT      0x015d
+CB_SETHORIZONTALEXTENT      0x015e
+CB_GETDROPPEDWIDTH          0x015f
+CB_SETDROPPEDWIDTH          0x0160
+CB_INITSTORAGE              0x0161
+CB_MULTIPLEADDSTRING        0x0163
+CB_GETCOMBOBOXINFO          0x0164
+
+# Combo Box notifications
+CBN_ERRSPACE        -1
+CBN_SELCHANGE       1
+CBN_DBLCLK          2
+CBN_SETFOCUS        3
+CBN_KILLFOCUS       4
+CBN_EDITCHANGE      5
+CBN_EDITUPDATE      6
+CBN_DROPDOWN        7
+CBN_CLOSEUP         8
+CBN_SELENDOK        9
+CBN_SELENDCANCEL    10
+
 # Combo Box styles
 CBS_SIMPLE            0x0001
 CBS_DROPDOWN          0x0002
@@ -449,7 +543,7 @@ CBS_DISABLENOSCROLL   0x0800
 CBS_UPPERCASE         0x2000
 CBS_LOWERCASE         0x4000
 
-# Combo box extended styles
+# Extended Combo box styles
 CBES_EX_NOEDITIMAGE          0x00000001
 CBES_EX_NOEDITIMAGEINDENT    0x00000002
 CBES_EX_PATHWORDBREAKPROC    0x00000004
@@ -791,6 +885,36 @@ EM_CHARFROMPOS          0x00D7
 EM_SETIMESTATUS         0x00D8
 EM_GETIMESTATUS         0x00D9
 
+# (Rich)Edit control notification codes
+EN_MSGFILTER         0x0700
+EN_REQUESTRESIZE     0x0701
+EN_SELCHANGE         0x0702
+EN_DROPFILES         0x0703
+EN_PROTECTED         0x0704
+EN_CORRECTTEXT       0x0705
+EN_STOPNOUNDO        0x0706
+EN_IMECHANGE         0x0707
+EN_SAVECLIPBOARD     0x0708
+EN_OLEOPFAILED       0x0709
+EN_OBJECTPOSITIONS   0x070a
+EN_LINK              0x070b
+EN_DRAGDROPDONE      0x070c
+EN_PARAGRAPHEXPANDED 0x070d
+EN_PAGECHANGE        0x070e
+EN_LOWFIRTF          0x070f
+EN_ALIGNLTR          0x0710
+EN_ALIGNRTL          0x0711
+EN_SETFOCUS          0x0100
+EN_KILLFOCUS         0x0200
+EN_CHANGE            0x0300
+EN_UPDATE            0x0400
+EN_ERRSPACE          0x0500
+EN_MAXTEXT           0x0501
+EN_HSCROLL           0x0601
+EN_VSCROLL           0x0602
+EN_ALIGN_LTR_EC      0x0700
+EN_ALIGN_RTL_EC      0x0701
+
 # Richedit Event notification masks 
 ENM_NONE                       0x00000000  
 ENM_CHANGE                     0x00000001  
@@ -1076,6 +1200,91 @@ OIC_WINLOGO         32517
 OIC_WARNING         32515   # OIC_BANG
 OIC_ERROR           32513   # OIC_HAND
 OIC_INFORMATION     32516   # OIC_NOTE
+
+# Owner Draw Types
+ODT_MENU        1
+ODT_LISTBOX     2
+ODT_COMBOBOX    3
+ODT_BUTTON      4
+ODT_STATIC      5
+ODT_HEADER      100
+ODT_TAB         101
+ODT_LISTVIEW    102
+
+# Owner Draw Actions
+ODA_DRAWENTIRE  0x0001
+ODA_SELECT      0x0002
+ODA_FOCUS       0x0004
+
+# Owner Draw States
+ODS_SELECTED    0x0001
+ODS_GRAYED      0x0002
+ODS_DISABLED    0x0004
+ODS_CHECKED     0x0008
+ODS_FOCUS       0x0010
+ODS_DEFAULT         0x0020
+ODS_COMBOBOXEDIT    0x1000
+ODS_HOTLIGHT        0x0040
+ODS_INACTIVE        0x0080
+ODS_NOACCEL         0x0100
+ODS_NOFOCUSRECT     0x0200
+
+# Listbox return values
+LB_OKAY             0
+LB_ERR              -1
+LB_ERRSPACE         -2
+
+# Listbox messages
+LB_ADDSTRING            0x0180
+LB_INSERTSTRING         0x0181
+LB_DELETESTRING         0x0182
+LB_SELITEMRANGEEX       0x0183
+LB_RESETCONTENT         0x0184
+LB_SETSEL               0x0185
+LB_SETCURSEL            0x0186
+LB_GETSEL               0x0187
+LB_GETCURSEL            0x0188
+LB_GETTEXT              0x0189
+LB_GETTEXTLEN           0x018A
+LB_GETCOUNT             0x018B
+LB_SELECTSTRING         0x018C
+LB_DIR                  0x018D
+LB_GETTOPINDEX          0x018E
+LB_FINDSTRING           0x018F
+LB_GETSELCOUNT          0x0190
+LB_GETSELITEMS          0x0191
+LB_SETTABSTOPS          0x0192
+LB_GETHORIZONTALEXTENT  0x0193
+LB_SETHORIZONTALEXTENT  0x0194
+LB_SETCOLUMNWIDTH       0x0195
+LB_ADDFILE              0x0196
+LB_SETTOPINDEX          0x0197
+LB_GETITEMRECT          0x0198
+LB_GETITEMDATA          0x0199
+LB_SETITEMDATA          0x019A
+LB_SELITEMRANGE         0x019B
+LB_SETANCHORINDEX       0x019C
+LB_GETANCHORINDEX       0x019D
+LB_SETCARETINDEX        0x019E
+LB_GETCARETINDEX        0x019F
+LB_SETITEMHEIGHT        0x01A0
+LB_GETITEMHEIGHT        0x01A1
+LB_FINDSTRINGEXACT      0x01A2
+LB_SETLOCALE            0x01A5
+LB_GETLOCALE            0x01A6
+LB_SETCOUNT             0x01A7
+LB_INITSTORAGE          0x01A8
+LB_ITEMFROMPOINT        0x01A9
+LB_MULTIPLEADDSTRING    0x01B1
+LB_GETLISTBOXINFO       0x01B2
+
+# Listbox notifications
+LBN_ERRSPACE        -2
+LBN_SELCHANGE       1
+LBN_DBLCLK          2
+LBN_SELCANCEL       3
+LBN_SETFOCUS        4
+LBN_KILLFOCUS       5
 
 # Listbox styles
 LBS_NOTIFY            0x0001
@@ -1417,7 +1626,30 @@ SB_VERT                        1
 SB_CTL                         2           
 SB_BOTH                        3           
 
-# Status Bar styles (?)
+# Scroll bar messages
+SBM_SETPOS                  0x00E0
+SBM_GETPOS                  0x00E1
+SBM_SETRANGE                0x00E2
+SBM_SETRANGEREDRAW          0x00E6
+SBM_GETRANGE                0x00E3
+SBM_ENABLE_ARROWS           0x00E4
+SBM_SETSCROLLINFO           0x00E9
+SBM_GETSCROLLINFO           0x00EA
+SBM_GETSCROLLBARINFO        0x00EB
+
+# Scroll Bar styles
+SBS_HORZ                    0x0000
+SBS_VERT                    0x0001
+SBS_TOPALIGN                0x0002
+SBS_LEFTALIGN               0x0002
+SBS_BOTTOMALIGN             0x0004
+SBS_RIGHTALIGN              0x0004
+SBS_SIZEBOXTOPLEFTALIGN     0x0002
+SBS_SIZEBOXBOTTOMRIGHTALIGN 0x0004
+SBS_SIZEBOX                 0x0008
+SBS_SIZEGRIP                0x0010
+
+# Status Bar styles 
 SBT_OWNERDRAW                  0x1000      
 SBT_NOBORDERS                  0x0100      
 SBT_POPOUT                     0x0200      
@@ -1617,6 +1849,24 @@ HS_BDIAGONAL                   3
 HS_CROSS                       4           
 HS_DIAGCROSS                   5           
 
+# ProgressBar messages
+PBM_SETRANGE            1025 #(WM_USER+1)
+PBM_SETPOS              1026 #(WM_USER+2)
+PBM_DELTAPOS            1027 #(WM_USER+3)
+PBM_SETSTEP             1028 #(WM_USER+4)
+PBM_STEPIT              1029 #(WM_USER+5)
+PBM_SETRANGE32          1030 #(WM_USER+6)
+PBM_GETRANGE            1031 #(WM_USER+7)
+PBM_GETPOS              1032 #(WM_USER+8)
+PBM_SETBARCOLOR         1033 #(WM_USER+9)
+PBM_SETBKCOLOR          0x2001 #CCM_SETBKCOLOR (CCM_FIRST+1)
+PBM_SETMARQUEE          1035 #(WM_USER+10)
+
+# ProgressBar styles
+PBS_SMOOTH              0x01
+PBS_VERTICAL            0x04
+PBS_MARQUEE             0x08
+
 # Pen Styles
 PS_SOLID                       0           
 PS_DASH                        1           
@@ -1663,6 +1913,19 @@ SE_ERR_DDEFAIL                 29
 SE_ERR_DDEBUSY                 30          
 SE_ERR_NOASSOC                 31          
 
+# Static Control Messages
+STM_SETICON         0x0170
+STM_GETICON         0x0171
+STM_SETIMAGE        0x0172
+STM_GETIMAGE        0x0173
+STM_MSGMAX          0x0174
+
+# Static Control Notifications
+STN_CLICKED         0
+STN_DBLCLK          1
+STN_ENABLE          2
+STN_DISABLE         3
+
 # ShowWindow() commands
 SW_HIDE                        0           
 SW_SHOWNORMAL                  1           
@@ -1699,6 +1962,24 @@ HWND_TOP                       0
 HWND_BOTTOM                    1           
 HWND_TOPMOST                   -1          
 HWND_NOTOPMOST                 -2          
+
+# Text Align constants (use with SetTextAlign)
+TA_NOUPDATECP     0
+TA_UPDATECP       1
+TA_LEFT           0
+TA_RIGHT          2
+TA_CENTER         6
+TA_TOP            0
+TA_BOTTOM         8
+TA_BASELINE      24
+TA_RTLREADING   256
+TA_MASK         287 # (TA_BASELINE+TA_CENTER+TA_UPDATECP+TA_RTLREADING)
+VTA_BASELINE     24 # TA_BASELINE
+VTA_LEFT          8 # TA_BOTTOM
+VTA_RIGHT         0 # TA_TOP
+VTA_CENTER        6 # TA_CENTER
+VTA_BOTTOM        2 # TA_RIGHT
+VTA_TOP           0 # TA_LEFT
 
 # Toolbar button states
 TBSTATE_CHECKED                0x01        

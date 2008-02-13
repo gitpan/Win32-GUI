@@ -1,6 +1,5 @@
 Animation.xs
 Bitmap.xs
-BitmapInline.pm
 BUGS
 build_tools/BuildTools.pm
 build_tools/Config_mO.pm
@@ -9,6 +8,7 @@ build_tools/doPodDocs.pl
 build_tools/doReadme.pl
 build_tools/SrcParser.pm
 build_tools/updateRC.pl
+build_tools/MMUtil.pm
 Button.xs
 CHANGELOG
 Combobox.xs
@@ -132,6 +132,7 @@ t/06_Cursor.t
 t/06_Icon.t
 t/50_Font_GetMetrics.t
 t/50_Richedit_GetCharFormat.t
+t/97_Version.t
 t/98_Pod.t
 t/99_pod_coverage.t
 TabStrip.xs
@@ -166,10 +167,24 @@ Win32-GUI-AxWindow/demos/WMPControl.pl
 Win32-GUI-AxWindow/Makefile.PL
 Win32-GUI-AxWindow/t/01_load.t
 Win32-GUI-AxWindow/t/02_new.t
+Win32-GUI-AxWindow/t/97_Version.t
 Win32-GUI-AxWindow/t/98_pod.t
 Win32-GUI-AxWindow/t/99_pod_coverage.t
 Win32-GUI-AxWindow/TODO
 Win32-GUI-AxWindow/TYPEMAP
+Win32-GUI-BitmapInline/BitmapInline.pm
+Win32-GUI-BitmapInline/Makefile.PL
+Win32-GUI-BitmapInline/t/01_load.t
+Win32-GUI-BitmapInline/t/02_public_api.t
+Win32-GUI-BitmapInline/t/03_inline.t
+Win32-GUI-BitmapInline/t/04_new.t
+Win32-GUI-BitmapInline/t/05_newCursor.t
+Win32-GUI-BitmapInline/t/06_newIcon.t
+Win32-GUI-BitmapInline/t/98_pod.t
+Win32-GUI-BitmapInline/t/99_pod_coverage.t
+Win32-GUI-BitmapInline/t/test.bmp
+Win32-GUI-BitmapInline/t/test.cur
+Win32-GUI-BitmapInline/t/test.ico
 Win32-GUI-Constants/Changes
 Win32-GUI-Constants/Constants.PL
 Win32-GUI-Constants/Constants.pm
@@ -203,6 +218,7 @@ Win32-GUI-Constants/t/51_tags_all.t
 Win32-GUI-Constants/t/52_tags.t
 Win32-GUI-Constants/t/70_values.t
 Win32-GUI-Constants/t/71_invalid_values.t
+Win32-GUI-Constants/t/97_Version.t
 Win32-GUI-Constants/t/98_pod.t
 Win32-GUI-Constants/t/99_pod_coverage.t
 Win32-GUI-Constants/Tags.pm
@@ -257,6 +273,7 @@ Win32-GUI-DIBitmap/extlib/Readme.txt
 Win32-GUI-DIBitmap/Makefile.PL
 Win32-GUI-DIBitmap/t/01_load.t
 Win32-GUI-DIBitmap/t/02_new.t
+Win32-GUI-DIBitmap/t/97_Version.t
 Win32-GUI-DIBitmap/t/98_pod.t
 Win32-GUI-DIBitmap/t/99_pod_coverage.t
 Win32-GUI-DIBitmap/TODO
@@ -279,6 +296,7 @@ Win32-GUI-DropFiles/t/08_DragQueryPoint.t
 Win32-GUI-DropFiles/t/09_DragFinish.t
 Win32-GUI-DropFiles/t/10_Unicode.t
 Win32-GUI-DropFiles/t/11_invalid_handles.t
+Win32-GUI-DropFiles/t/97_Version.t
 Win32-GUI-DropFiles/t/98_pod.t
 Win32-GUI-DropFiles/t/99_pod_coverage.t
 Win32-GUI-DropFiles/t/DropTest.pm
@@ -326,6 +344,7 @@ Win32-GUI-Grid/MFCGrid/TitleTip.cpp
 Win32-GUI-Grid/MFCGrid/TitleTip.h
 Win32-GUI-Grid/t/01_load.t
 Win32-GUI-Grid/t/02_new.t
+Win32-GUI-Grid/t/97_Version.t
 Win32-GUI-Grid/t/98_pod.t
 Win32-GUI-Grid/t/99_pod_coverage.t
 Win32-GUI-Grid/TODO
@@ -343,6 +362,7 @@ Win32-GUI-ReleaseNotes/RN_1_02.pod
 Win32-GUI-ReleaseNotes/RN_1_03.pod
 Win32-GUI-ReleaseNotes/RN_1_04.pod
 Win32-GUI-ReleaseNotes/RN_1_05.pod
+Win32-GUI-ReleaseNotes/RN_1_06.pod
 Win32-GUI-ReleaseNotes/t/98_pod.t
 Win32-GUI-Scintilla/Changes
 Win32-GUI-Scintilla/demos/Editor.pl
@@ -361,6 +381,9 @@ Win32-GUI-Scintilla/Scintilla.xs
 Win32-GUI-Scintilla/ScintillaRC.PL
 Win32-GUI-Scintilla/t/01_load.t
 Win32-GUI-Scintilla/t/02_new.t
+Win32-GUI-Scintilla/t/03_LoadFile.t
+Win32-GUI-Scintilla/t/55_crash.t
+Win32-GUI-Scintilla/t/97_Version.t
 Win32-GUI-Scintilla/t/98_pod.t
 Win32-GUI-Scintilla/t/99_pod_coverage.t
 Win32-GUI-Scintilla/TODO

@@ -1,4 +1,4 @@
-=for comment $Id: GUI.pod,v 1.7 2006/11/05 20:04:50 robertemay Exp $
+=for comment $Id: GUI.pod,v 1.9 2008/02/02 17:03:56 robertemay Exp $
 
 =head1 NAME
 
@@ -57,9 +57,9 @@ and answers.
 
 =over
 
-=item * L<Core Packages|Win32::GUI::Reference::Packages>
+=item * L<Packages|Win32::GUI::Reference::Packages>
 
-Per package documentation for the core Win32::GUI packages.
+Per package documentation for Win32::GUI.
 
 =item * L<Common Events|Win32::GUI::Reference::Events>
 
@@ -73,48 +73,6 @@ the other packages).
 =item * L<Options|Win32::GUI::Reference::Options>
 
 Options common to most package constructors.
-
-=back
-
-=head2 Support Packages
-
-=over
-
-=item * L<Win32::GUI::AxWindow|Win32::GUI::AxWindow>
-
-Host AxticeX controls in Win32::GUI windows
-
-=item * L<Win32::GUI::BitmapInline|Win32::GUI::BitmapInline>
-
-Load bitmaps from within your script, rather than a seperate
-file.
-
-=item * L<Win32::GUI::Constants|Win32::GUI::Constants>
-
-Export any of over 1700 Win32 API constants for use with
-Win32::GUI functions and methods.
-
-=item * L<Win32::GUI::DIBitmap|Win32::GUI::DIBitmap>
-
-Support for creating bitmaps from other graphics file formats
-and more image manipulation.  Can interact with the perl GD
-package if more complex image manipulation is required.
-
-=item * L<Win32::GUI::DropFiles|Win32::GUI::DropFiles>
-
-Accept files dragged from the Windows shell to your application.
-
-=item * L<Win32::GUI::Grid|Win32::GUI::Grid>
-
-Tabular data entry and display.
-
-=item * L<Win32::GUI::GridLayout|Win32::GUI::GridLayout>
-
-A simple layout manager.
-
-=item * L<Win32::GUI::Scintilla|Win32::GUI::Scintilla>
-
-An advanced source code editor control.
 
 =back
 
@@ -149,9 +107,9 @@ although, for backwards compatibility the following are also supported:
 
 Will continue to export the same list of constants as earlier versions,
 but will generate a warning (under the C<use warnings;> pragma or with
-the C<-w> command line option to perl).  In the future (v1.06 and later)
-this syntax will stop exporting anything. v1.06 will generate a warning
-that nothing is being exported. v1.07 will silently export nothing.
+the C<-w> command line option to perl).  In the future (v1.07 and later)
+this syntax will stop exporting anything. v1.07 will generate a warning
+that nothing is being exported. v1.08 will silently export nothing.
 
 =item C<use Win32::GUI qw( ... );>
 

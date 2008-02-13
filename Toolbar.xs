@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Toolbar
     #
-    # $Id: Toolbar.xs,v 1.7 2006/03/16 21:11:12 robertemay Exp $
+    # $Id: Toolbar.xs,v 1.9 2008/01/31 00:21:40 robertemay Exp $
     #
     ###########################################################################
     */
@@ -124,17 +124,22 @@ PREINIT:
     TBADDBITMAP TbAddBitmap;
     HIMAGELIST imagelist;
     LPPERLWIN32GUI_USERDATA perlud;
+    BOOL hasBitmaps = 0;
 CODE:
     TbAddBitmap.hInst = (HINSTANCE) NULL;
     TbAddBitmap.nID = (UINT) bitmap;
     
+    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong((HWND) handle, GWL_USERDATA);
+    if( ValidUserData(perlud) )  {
+        hasBitmaps = (BOOL)(perlud->dwPlStyle & PERLWIN32GUI_TB_HASBITMAPS);
+    }
+
     imagelist = (HIMAGELIST) SendMessage(handle, TB_GETIMAGELIST, 0, 0);
-    if(imagelist != NULL) {
-        CROAK("AddBitmap() should not be used when toolbar has imagelist set");
+    if(imagelist && !hasBitmaps) {
+        CROAK("AddBitmap() cannot be used when the toolbar has imagelist set");
         XSRETURN_UNDEF;
     }
 
-    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong((HWND) handle, GWL_USERDATA);
     if( ValidUserData(perlud) )  {
         perlud->dwPlStyle |= PERLWIN32GUI_TB_HASBITMAPS;
     }
@@ -982,10 +987,10 @@ OUTPUT:
     RETVAL
 
     ###########################################################################
-    # (@)METHOD:LoadImages([IDBITAMP=IDB_HIST_LARGE_COLOR],[HINSTANCE=HINST_COMMCTRL])
+    # (@)METHOD:LoadImages([IDBITMAP=IDB_HIST_LARGE_COLOR],[HINSTANCE=HINST_COMMCTRL])
     # Loads bitmaps into a toolbar control's image list.  
     # 
-    # IDBITAMP when HINSTANCE == HINST_COMMCTRL,
+    # IDBITMAP when HINSTANCE == HINST_COMMCTRL,
     #   IDB_HIST_LARGE_COLOR = Explorer bitmaps in large size. 
     #   IDB_HIST_SMALL_COLOR = Explorer bitmaps in small size.  
     #   IDB_STD_LARGE_COLOR  = Standard bitmaps in large size.  

@@ -8,7 +8,7 @@
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: GUI.pm,v 1.58 2006/11/05 20:04:49 robertemay Exp $
+# $Id: GUI.pm,v 1.69 2008/02/13 15:24:04 robertemay Exp $
 #
 ###############################################################################
 package Win32::GUI;
@@ -19,7 +19,7 @@ require DynaLoader;     # to dynuhlode the module.
 ###############################################################################
 # STATIC OBJECT PROPERTIES
 #
-$VERSION             = "1.05";        # For MakeMaker
+$VERSION             = "1.06";        # For MakeMaker and CPAN
 $XS_VERSION          = $VERSION;      # For dynaloader
 $VERSION             = eval $VERSION; # For Perl  (see perldoc perlmodstyle)
 $MenuIdCounter       = 101;
@@ -292,7 +292,8 @@ sub AcceptFiles {
     my $win = shift;
     my $accept = shift;
 
-    my $old_accept = $win->GetWindowLong(GWL_EXSTYLE) & WS_EX_ACCEPTFILES() ? 1 : 0;
+    # my $old_accept = $win->GetWindowLong(GWL_EXSTYLE) & WS_EX_ACCEPTFILES() ? 1 : 0;
+    my $old_accept = $win->GetWindowLong(-20) & 0x00000010 ? 1 : 0;
 
     if(defined $accept) {
         $win->Change(-acceptfiles => $accept);
@@ -322,7 +323,7 @@ sub UserData {
     my $data = shift;
 
     if(@_) { # more items than expected passed: someone probably tried
-             # passsing and array or hash
+             # passsing an array or hash
         warn("UserData: too many arguments");
         return 0;
     }
@@ -359,7 +360,7 @@ sub ClassData {
     my $data = shift;
 
     if(@_) { # more items than expected passed: someone probably tried
-             # passsing and array or hash
+             # passsing an array or hash
         warn("ClassData: too many arguments");
         return 0;
     }
@@ -401,7 +402,7 @@ sub ClassData {
     #   -time      => time                              default: 200
     #     Animation time in milli-seconds
     #
-    #   -direction => (lr|tlbr|tb|trbl|rl|brtl|bt|blrt) default: 'lr'
+    #   -direction => (lr|tlbr|tb|trbl|rl|brtl|bt|bltr) default: 'lr'
     #     Animation direction (l=left, r=right, t=top, b=bottom).
     #     Ignored for animation types blend and center
     #
@@ -422,7 +423,7 @@ sub Animate {
 
    if(keys(%options) != 0) {
        require Carp;
-       Carp::carp "Animate: Unrecognised options ".join(", ", keys(%options));
+       Carp::carp("Animate: Unrecognised options ".join(", ", keys(%options)));
        return undef
    }
 
@@ -434,14 +435,14 @@ sub Animate {
 
    if($animation !~ /roll|slide|blend|center/) {
        require Carp;
-       Carp::carp "Animate: Unrecognised animation type: $animation";
+       Carp::carp("Animate: Unrecognised animation type: $animation");
        return undef;
    }
 
-   if($direction !~ /lr|tlbr|tb|trbl|rl|brtl|bt|blrt/) {
+   if($direction !~ /lr|tlbr|tb|trbl|rl|brtl|bt|bltr/) {
        require Carp;
-       Carp::carp "Animate: Unrecognised direction: $direction";
-       return undef;
+       Carp::carp("Animate: Unrecognised direction: $direction");
+       return undef unless $direction eq 'blrt'; # blrt allowed for deprection cycle
    }
 
    # create the flags:
@@ -1387,6 +1388,8 @@ package Win32::GUI::Textfield;
     #         -name   => "Username",
     #         -left   => 75,
     #         -top    => 150,
+    #         -width  => 100,
+    #         -height => 20,
     #         -prompt => "Your name:",
     #     );
     # Furthermore, the value to -prompt can be a reference to a list containing
@@ -1406,71 +1409,94 @@ package Win32::GUI::Textfield;
 sub new {
     my($class, $parent, @options) = @_;
     my %options = @options;
+
+    # Create the textfield, invisible, and we'll
+    # make it visible if necessary at the end
+    my $visible = exists $options{-visible} ? $options{-visible} : 1;
+    my $textfield = Win32::GUI->_new(
+        Win32::GUI::_constant("WIN32__GUI__EDIT"),
+        $class, $parent, @options, '-visible', 0
+    );
+
+    # If we failed to create it, then return undef
+    return undef unless $textfield;
+
+    # If we have a -prompt option, then we need to
+    # create a label, and position it and the
+    # textfield correctly
     if(exists $options{-prompt}) {
-        my $add = 0;
-        my ($text, $left, $width, $height, );
-        my $visible = 1;
-        # Convert -pos and -size options to -left, -top, -width and -height options
+        my ($text, $adjust);
+
+        # extract the information we need from
+        # the -prompt option
+        if(ref($options{-prompt}) eq "ARRAY") {
+            $text   = shift(@{$options{'-prompt'}});
+            $adjust = shift(@{$options{'-prompt'}}) || 0;
+        }
+        else {
+            $text = $options{-prompt};
+        }
+
+        # Convert -pos to -left and -top,
         if (exists $options{-pos}) {
           $options{-left} = $options{-pos}[0];
           $options{-top}  = $options{-pos}[1];
         }
-        if (exists $options{-size}) {
-          $options{-width}  = $options{-size}[0];
-          $options{-height} = $options{-size}[1];
-        }
 
-        if(ref($options{-prompt}) eq "ARRAY") {
-            $left = pop(@{$options{'-prompt'}});
-            $text = pop(@{$options{'-prompt'}});
-            if($left < 0) {
-                $width = -$left;
-                $left += $options{-left};
-            } else {
-                $width = $left;
-                $left  = $options{-left};
-                $add   = 1;
-            }
-        } else {
-            $text = $options{-prompt};
-        }
-        if(exists $options{-height}) {
-            $height = $options{-height}-3;
-        } else {
-            $height = 0;
-        }
-        if(exists $options{-visible}) {
-            $visible = $options{-visible};
-        }
+        ## Create the label; Setting width and height to
+        # zero creates it the right size for the text.
+        # XXX: This will inherit the font from the
+        # parent window, ignoring any -font option
+        # passed.
         my $prompt = new Win32::GUI::Label(
             $parent,
-            -name    => $options{-name} . '_Prompt',
-            -width   => $width,
-            -left    => $left,
-            -top     => $options{-top} + 3,
+            -name    => $textfield->{-name} . '_Prompt',
             -text    => $text,
-            -height  => $height,
-            -visible => $visible,
+            -left    => $options{-left} || 0,
+            -top     => ($options{-top} || 0) + 3,
+            -width   => 0,
+            -height  => 0,
+            -visible => 0,
         );
 
-        $options{-left} += $prompt->Width if $add;
+        # If we failed to create it, then return undef
+        return undef unless $prompt;
 
-        # Update array options
-        for (my $i = 0; $i < @options; $i += 2) {
-            if ($options[$i] eq '-left') {
-                $options[$i+1] = $options{-left};
-                last;
-            }
-            if ($options[$i] eq '-pos') {
-                $options[$i+1][0] = $options{-left};
-                last;
-            }
+        # Adjust the positions:
+        # $adjust < 0 : the textfield is in the correct
+        #               position, move the label left
+        # $adjust > 0 : the label is in the correct
+        #               position, move the textfield right
+        # $adjust == 0: both are correct, do nothing
+        # $adjust undefined: label needs moving to
+        #    the left of the textfield, which we will
+        #    do by setting $adjust appropriately
+        if(!defined $adjust) {
+            $adjust = -($prompt->Width() + 5);
         }
-    }
-    return Win32::GUI->_new(
-        Win32::GUI::_constant("WIN32__GUI__EDIT"),
-        $class, $parent, @options,
-    );
+
+        if($adjust < 0) {
+            my $left = $prompt->Left();
+            $prompt->Left($left + $adjust);
+        }
+        elsif ($adjust > 0) {
+            my $left = $textfield->Left();
+            $textfield->Left($left + $adjust);
+        }
+        else {
+            # Adjust is zero, or we have
+            # an error;  in either case
+            # do nothing
+        }
+
+        # Make the prompt visible if needed
+        $prompt->Show() if $visible;
+    } # finish processing prompt
+
+    # Make the textfield visible if needed
+    $textfield->Show() if $visible;
+
+    return $textfield;
 }
 
 ###############################################################################
@@ -1600,6 +1626,9 @@ package Win32::GUI::Combobox;
     #    Set/Unset sort style
     #  -uppercase => 0/1 (default 0)
     #    Set/Unset uppercase style
+    #
+    # Only one of -simple, -dropdown and -dropdownlist should be used. If
+    # more than one is used, only the last one will be acted on.
 
 sub new {
     return Win32::GUI->_new(Win32::GUI::_constant("WIN32__GUI__COMBOBOX"), @_);
@@ -2396,7 +2425,7 @@ sub Add {
 sub AddMasked {
     my($self, $bitmap, $colorMask) = @_;
     $bitmap = new Win32::GUI::Bitmap($bitmap) unless ref($bitmap);
-    return $self->AddBitmapMasked($bitmap);
+    return $self->AddBitmapMasked($bitmap, $colorMask);
 }
 
 ###############################################################################
@@ -2669,7 +2698,7 @@ sub DESTROY {
     # in Timer->Kill(1), so that we still tidy up, even in the
     # unlikely event of someone doing PARENT->{Timer name} = undef;
     my $window = Win32::GUI::GetWindowObject($self->{-handle});
-    if(defined $window) {
+    if(defined $window && tied %$window) {
         # Remove id from -timers hash
         delete $window->{-timers}->{$self->{-id}};
         # Remove name from parent
@@ -2936,7 +2965,7 @@ sub DESTROY {
     # in NofifyIcon->Delete(), so that we still tidy up, even in the
     # unlikely event of someone doing PARENT->{NotifyIcon name} = undef;
     my $window = Win32::GUI::GetWindowObject($self->{-handle});
-    if(defined $window) {
+    if(defined $window && tied %$window) {
         # Remove id from -notifyicons hash
         delete $window->{-notifyicons}->{$self->{-id}} if defined $window->{-notifyicons};
         # Remove name from parent

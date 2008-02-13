@@ -3,11 +3,14 @@ use strict;
 #use warnings;
 
 # Makefile.PL for Win32::GUI::DropFiles
-# $Id: Makefile.PL,v 1.4 2006/06/11 21:00:15 robertemay Exp $
+# $Id: Makefile.PL,v 1.5 2008/02/01 13:29:49 robertemay Exp $
 
 use 5.006;
 use Config;
 use ExtUtils::MakeMaker;
+
+use lib '../build_tools';
+use MMUtil;
 
 my %config = (
     NAME          => 'Win32::GUI::DropFiles',
@@ -39,6 +42,7 @@ if($Config{cc} =~ /gcc/i) {
 { no warnings 'once';
 delete $config{PREREQ_PM}->{'Win32::GUI'} if $main::W32G_CORE; }
 
+MMUtil::Extend_MM();
 WriteMakefile(%config);
 
 package MY;

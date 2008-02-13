@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::TreeView
     #
-    # $Id: TreeView.xs,v 1.8 2006/04/13 22:17:07 robertemay Exp $
+    # $Id: TreeView.xs,v 1.10 2008/01/31 00:36:11 robertemay Exp $
     #
     ###########################################################################
     */
@@ -483,7 +483,7 @@ PPCODE:
         XST_mIV(11, tv_item.state);
         XSRETURN(12);
     } else {
-        XSRETURN_UNDEF;
+        XSRETURN_EMPTY;
     }
 
     ###########################################################################
@@ -584,12 +584,30 @@ OUTPUT:
     ###########################################################################
     # (@)METHOD:GetParent(NODE)
     # Returns the handle of the parent node for the given B<NODE>.
+    #
+    # NOTE: With no B<NODE> parameter this is the standard
+    # L<GetParent()|Win32::GUI::Reference::Methods/GetParent>
+    # method, returning the parent window. 
 HTREEITEM
-GetParent(handle,item)
+GetParent(handle,item = NULL)
     HWND handle
     HTREEITEM item
 CODE:
-    RETVAL = TreeView_GetParent(handle, item);
+    if(items == 1) { /* NOTE this is the XS defined 'items' var, not 'item' */
+        SV   *SvParent;
+        HWND parentHandle = GetParent(handle);
+
+        if (parentHandle && (SvParent = SV_SELF_FROM_WINDOW(parentHandle)) && SvROK(SvParent)) {
+            XPUSHs(SvParent);
+            XSRETURN(1);
+        }
+        else {
+            XSRETURN_UNDEF;
+        }
+    }
+    else {
+        RETVAL = TreeView_GetParent(handle, item);
+    }
 OUTPUT:
     RETVAL
 

@@ -3,12 +3,14 @@ use strict;
 #use warnings;
 
 # Makefile.PL for Win32::GUI::Grid
-# $Id: Makefile.PL,v 1.4 2006/10/15 13:40:32 robertemay Exp $
+# $Id: Makefile.PL,v 1.5 2008/02/01 13:29:49 robertemay Exp $
 
 use 5.006;
 use Config;
 use ExtUtils::MakeMaker;
 use File::Find();
+
+use lib '../build_tools';
 
 my @demos;
 File::Find::find(sub { push @demos, $File::Find::name if $File::Find::name =~ /\.(pl|bmp)$/ }, 'demos');
@@ -51,6 +53,7 @@ __EXPLAIN
     ExtUtils::MakeMaker::WriteEmptyMakefile(NAME => 'Win32::GUI::Grid');
 }
 else {
+    MMUtil::Extend_MM();
     WriteMakefile(%config);
 }
 

@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::RichEdit
     #
-    # $Id: RichEdit.xs,v 1.8 2006/04/25 21:24:52 robertemay Exp $
+    # $Id: RichEdit.xs,v 1.9 2007/07/15 18:54:55 robertemay Exp $
     #
     ###########################################################################
     */
@@ -146,6 +146,7 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:LimiteText(LENGTH)
+    # (@)METHOD:LimitText(LENGTH)
     # (@)METHOD:SetMaxLength(LENGTH)
     # Sets the RichEdit control's maximum length (up to 2GB)
 LRESULT
@@ -154,6 +155,7 @@ LimiteText(handle,length)
     long length
 ALIAS:
     Win32::GUI::RichEdit::SetMaxLength = 1
+    Win32::GUI::RichEdit::LimitText = 2
 CODE:
     RETVAL = SendMessage(handle, EM_EXLIMITTEXT, 0, (LPARAM) length);
 OUTPUT:

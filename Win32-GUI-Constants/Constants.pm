@@ -1,6 +1,6 @@
 package Win32::GUI::Constants;
 
-# $Id: Constants.pm,v 1.7 2006/10/31 22:21:49 robertemay Exp $
+# $Id: Constants.pm,v 1.11 2008/02/09 08:51:27 robertemay Exp $
 # Win32::GUI::Constants, part of the Win32::GUI package
 # (c) Robert May, 2005..2006
 # released under the same terms as Perl.
@@ -16,7 +16,7 @@ Win32::GUI::Constants - exporter for Win32 API constants
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.04';
 our $XS_VERSION = $VERSION;
 eval $VERSION;
 
@@ -133,7 +133,7 @@ that are listed are not exported, and so must be used by their
 fully qualified package names.
 (e.g. C<Win32::GUI::Constants::CW_USEDEFAULT>)
 
-=item -B<exportpkg>, I<pkgname>
+=item B<-exportpkg>, I<pkgname>
 
 Causes exported symbols to be exported to the I<pkgname>
 namespace, rather than to the caller's namespace. I<pkgname>
@@ -271,7 +271,7 @@ speed and memory usage.
     if($oops) {
         # only require Carp if we need it
         require Carp;
-        Carp::croak qq(Can't continue after import errors);
+        Carp::croak(qq(Can't continue after import errors));
     }
 }
 
@@ -354,7 +354,7 @@ and assistance.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2005..2006 Robert May, All Rights Reserved.
+Copyright 2005..2008 Robert May, All Rights Reserved.
 
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

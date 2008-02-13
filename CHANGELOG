@@ -1,10 +1,156 @@
 ###############################################################################
 # CHANGELOG
-# $Id: CHANGELOG,v 1.106 2006/11/05 20:04:49 robertemay Exp $
+# $Id: CHANGELOG,v 1.146 2008/02/13 15:24:04 robertemay Exp $
 ###############################################################################
 
 Win32-GUI ChangeLog
 ===================
++ [Robert May] : 13 February 2008 - 1.06 Release
+    - Up version numbers to 1.06
+
++ [Robert May] : 9 February 2008 - Tweaks
+    --- Win32::GUI::Scintilla ---
+    - Scintilla.PL - fix SendMessageNN to SendMessage [Jeremy White]
+
++ [Robert May] : 9 February 2008 - Tweaks
+    - build_tools/SrcParser.pm - minor change for perl 5.6.1
+    --- Win32::GUI::Constants ---
+    - Constants.pm - update version
+
++ [Robert May] : 8 February 2008 - Add progress bar styles and messages
+    --- Win32::GUI::Constants ---
+    - Constants.PL, Tags.pm, 52_tags.t - add PBS_ and PBM_ constants
+
++ [Robert May] : 8 February 2008 - Get GUI.rc updated correctly
+    - Makefile.PL - make GUI.rc dependent on GUI.rc
+    - Add tests to all XS modules that the RC version number matches the
+      module
+    - MANIFEST - add new test files
+
++ [Robert May] : 8 February 2008 - Correct number of tests
+    - t\GUI_Helpers.cpp - fix another spot where we could be calling
+      handle_From() with a weak (and already freed) SV.
+
++ [Robert May] : 8 February 2008 - Correct number of tests
+    - t\02_window.t - correct test count for new test added
+
++ [Robert May] : 8 February 2008 - Prepare for 1.06 RC2
+    - GUI.pm - up version to 1.05_91 in preparation for 1.06 RC2
+
++ [Robert May] : 8 February 2008 - Fix $w->{-handle} availability
+    - GUI_Messageloops.cpp - when using WS_POPUP we discover that
+      we're not setting {-handle} early enough.  Fix this.
+    - t\02_window.t - add test for above problem
+
++ [Robert May] : 2 February 2008 - Fix make PPM on 5.10
+    - MANIFEST - add new Scintilla test files.
+
++ [Robert May] : 2 February 2008 - Fix make PPM on 5.10
+    - Makefile.PL - change how we generate the version for PPM to fix for 5.10
+      and remove dependency on File::Spec 0.9, as is messes PPM installs
+
++ [Robert May] : 1 February 2008 - Sample handling
+    - Makefile.PL - change how we handle build of the samples
+
++ [Robert May] : 1 February 2008 - Prepare for 1.06 release
+    - Increment version numbers of changed modules. Set Win32::GUI version
+      to 1.05_90 in preparation for RC1
+
++ [Robert May] : 1 February 2008 -  Fix compile with MinGW
+    - Update most Makefile.PLs, add build_tools/MMUtil.pm and update
+      MANIFEST to add -mms-bitfields support for mingw-gcc.
+
++ [Robert May] : 31 January 2008 -  Misc Fixes
+    - Makefile.PL - another attempt to prevent spurous CPAN tester reports
+      from linux testers.
+    - TreeView.xs - GetItem()/ItemInfo() return empty list rather than undef
+      on failure.
+    - GUI.xs - allow LoadImage to cope with cygwin paths
+    - Update ppport.h to the latest version to silence some compiler warnings
+    - Toolbar.xs - allow AddBitmap to be called multiple times
+    --- Win32::GUI::BitmapInline ---
+    - BitmapInline.pm - fix tained problem with tmpfile under perl 5.6.1
+    --- Win32::GUI::Scintilla ---
+    - Scintilla.xs - remove NO_GET_PERL_CONTEXT, as this is picked up from
+      GUI.h when needed, and was causing crash in cygwin (Reini Urban)
+    - t/02_new.t,03_LoadFile.t,55_crash.t - new tests added
+    --- Win32::GUI::ReleaseNotes ---
+    - RN_1_06.pod brought up to date.
+
++ [Reini Urban] : 13 January 2008 -  Fixes to build under Perl 5.10.0
+    - Changes to GUI.pm and Win32-GUI-Constants/Constants.pm to get
+      build and test to be successful with Perl 5.10.0
+
++ [Robert May] : 13 January 2008 -  Bug Fixes
+    - ListView.xs - SelectedItems now returns empty list (rather than
+      undef) if there are no selected items.
+
++ [Robert May] : 13 January 2008 -  Bug fixes/code re-org for BitmapInline
+    - BitmapInline.pm - move to its own subdirectory.
+    - Makefile.PL - change to reflect BitmapInline.pm move.
+    --- Win32::GUI::BitmapInline ---
+    - use a writable temporary directory instead of the current directory
+      (Tracker: 1586643)
+    - make it threadsafe
+    - add Makefile.PL and tests
+
++ [Robert May] : 30 July 2007 -  Bug Fixes
+    - build_tools/updateRC, Makefile - fix problem with GUI.rc being readonly
+      on cygwin, only re-write GUI.rc if it changes [Reini Urban]
+    - Makefile.PL - fix warnings from gcc 3.4 with
+      -Wdeclaration-after-statement [Reini Urban]
+
++ [Robert May] : 16 July 2007 -  Bug Fixes
+    - GUI.pm - fix Win32::GUI::Imagelist::AddMasked (Tracker: 1734697)
+    - GUI.pm - fix -prompt option to Textfield (Tracker: 1734697)
+    - GUI.pm - remove constants from AcceptFiles() [Joseph Cordero]
+    - Treeview.xs - fix GetParent() method to get the parent window, rather
+      than the parent node if called with no arguements. [Salvador Oritz]
+    - GUI.xs - modify Dialog() and DoEvents() to allow for dialog navigation
+      to work within MDI child windows. [Salvador Oritz]
+    --- Win32::GUI::ReleaseNotes ---
+    - RN_1_06.pod - bring up to date with new changes
+
++ [Robert May] : 15 July 2007 -  Bug Fixes
+    - GUI.pm - fix bltr direction in Animate Window [Tim Hansell]
+    - Comboxbox.xs, GUI.pm - fix options so use of -simple, -dropdown and
+      -dropdownlist together have a more predictable result.
+      Update docs. [Glenn Linderman]
+    - DC.xs - Fix Polygon(), PolyBezier(), PolyBezierTo(), PolyLine(),
+      PolyLineTo(). [George]
+    - DC.xs - Fix DrawText() documentation
+    - DC.xs - Rework DrawFrameControl() to allow DFCS_ADJUSTRECT to modify
+      input parameters
+    - GUI_Events.cpp, GUI_MessageLoops.cpp - handle window being destroyed in
+      callback by checking validity with IsWindow(hwnd) in many places
+    - Listview.xs - Correct second arg to OnBeginLabelEdit
+      [Glenn Munroe: Tracker 1706901]
+    - RichEdit.xs - add alias LimitText() to correct spelling of LimiteText()
+    - TYPEMAP - correct UINT to be T_UV
+    - Toolbar.xs - LoadImages() correct typo in docs
+    - GUI.xs - tidy up the implementation of the Scroll() function, make it
+      really return UNDEF on failure, and improve documentation.
+    --- Win32::GUI::Constants ---
+    - Constants.PL, Tags.pm, 52_tags.t - add a whole bunch more constants (mainly control
+      notification codes), and update tests
+    --- Win32::GUI::Scintilla ---
+    - Scintilla.PL - fix line count in SaveFile(). Fix buffer sizes in various
+      places.
+
++ [Robert May] : 20 January 2007 - Restore Original WndProc
+    - GUI_Helpers.cpp - restore the window's original wndproc
+      when freeing PERLUD, so that WM_NCDESTROY messages get
+      to the original wndproc, rather than DefwindowProc
+
++ [Robert May] : 20 January 2007 - Bug Fixes
+    - Tooltip.xs - SetTitle method had warning and info icons
+      swapped. [Brian Millham]
+    - GUI_Helpers.cpp, GUI.pm - fix deleting from parent during global
+      destruction.
+    - Textfield.xs - re-write GetLine() to fix truncation caused by
+      line number being used as a character index, and to correctly
+      return zero length lines
+
 + [Robert May] : 5 November 2006 - 1.05 Release
     - docs/GUI.pod - update references to v1.05 to v1.06, and v1.06
       to v1.07
