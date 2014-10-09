@@ -2,7 +2,7 @@
     ###########################################################################
     # helper routines
     #
-    # $Id: GUI_Helpers.cpp,v 1.25 2008/02/08 16:42:11 robertemay Exp $
+    # $Id: GUI_Helpers.cpp,v 1.28 2011/07/16 14:51:03 acalpini Exp $
     #
     ###########################################################################
         */
@@ -123,11 +123,16 @@ void Perlud_Free(NOTXSPROC LPPERLWIN32GUI_USERDATA perlud) {
             SvREFCNT_dec(perlud->userData);
             perlud->userData = NULL;
         }
-        
+
+        // If we stored a brush, destroy it
+        if (perlud->bDeleteBackgroundBrush && perlud->hBackgroundBrush != NULL) {
+                DeleteObject((HGDIOBJ) perlud->hBackgroundBrush);
+        }
+
         // If we stored an original wndproc, then restore it so that
         // WM_NCDESTORY messages get there.
         if (hwnd_self && perlud->WndProc) {
-            SetWindowLong(hwnd_self, GWL_WNDPROC, (LONG)(perlud->WndProc));
+            SetWindowLongPtr(hwnd_self, GWLP_WNDPROC, (LONG_PTR)(perlud->WndProc));
         }
         
         // Free perlpud
@@ -139,7 +144,7 @@ SV *
 SV_SELF_FROM_WINDOW(HWND hwnd) {
     LPPERLWIN32GUI_USERDATA perlud;
 
-    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(hwnd, GWL_USERDATA);
+    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(hwnd, GWLP_USERDATA);
     if( ValidUserData(perlud) ) {
         return perlud->svSelf;
     } else {
@@ -193,16 +198,21 @@ hv_store_mg(NOTXSPROC HV *hv, char *key, U32 klen, SV* val, U32 hash) {
      */
 HWND handle_From(NOTXSPROC SV *pSv) {
     HWND hReturn = 0;
+     //printf("handle_From %p \n",pSv);
 
     if(NULL != pSv)  {
         if( SvROK(pSv)) {
             SV **pHv;
+            //sv_dump(SvRV(pSv));
             pHv = hv_fetch_mg(NOTXSCALL (HV*) SvRV(pSv), "-handle", 7, 0);
             if(pHv != NULL) {
+
                 hReturn = INT2PTR(HWND,SvIV(*pHv));
+                //printf("hReturn(1) is %i \n",hReturn);
             }
         } else {
             hReturn = INT2PTR(HWND,SvIV(pSv));
+            //printf("hReturn(2) is %i \n",hReturn);
         }
     }
     return(hReturn);
@@ -253,7 +263,7 @@ WNDPROC GetDefClassProc (NOTXSPROC const char *Name) {
 BOOL SetDefClassProc (NOTXSPROC const char *Name, WNDPROC DefClassProc) {
 
     HV* hash    = perl_get_hv("Win32::GUI::DefClassProc", FALSE);
-    return (hv_store_mg(NOTXSCALL hash, (char*) Name, strlen(Name), newSViv((LONG) DefClassProc), 0) != NULL);
+    return (hv_store_mg(NOTXSCALL hash, (char*) Name, strlen(Name), newSViv((IV) DefClassProc), 0) != NULL);
 }
 
     /*
@@ -344,7 +354,7 @@ HWND CreateTooltip(
         SetWindowPos(
             hTooltip, HWND_TOPMOST,0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE
             );
-        hv_store_mg(NOTXSCALL parent, "-tooltip", 8, newSViv((long) hTooltip), 0);
+        hv_store_mg(NOTXSCALL parent, "-tooltip", 8, newSViv((IV) hTooltip), 0);
     }
     return hTooltip;
 }
@@ -402,7 +412,7 @@ BOOL GetObjectName(NOTXSPROC HWND hwnd, char *Name) {
 
     LPPERLWIN32GUI_USERDATA perlud;
 
-    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(hwnd, GWL_USERDATA);
+    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(hwnd, GWLP_USERDATA);
     if( ValidUserData(perlud) ) {
         if(NULL != perlud->szWindowName) {
             strcat(Name, (char *) perlud->szWindowName);
@@ -423,7 +433,7 @@ BOOL GetObjectName(NOTXSPROC HWND hwnd, char *Name) {
      */
 BOOL GetObjectNameAndClass(NOTXSPROC HWND hwnd, char *Name, int *obj_class) {
     LPPERLWIN32GUI_USERDATA perlud;
-    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(hwnd, GWL_USERDATA);
+    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(hwnd, GWLP_USERDATA);
     if( ValidUserData(perlud) ) {
         if(NULL != perlud->szWindowName) {
             strcat(Name, (char *) perlud->szWindowName);
@@ -444,7 +454,7 @@ BOOL GetObjectNameAndClass(NOTXSPROC HWND hwnd, char *Name, int *obj_class) {
      */
 SV* CreateObjectWithHandle(NOTXSPROC char* class_name, HWND handle) {
     HV* hv = newHV();
-    hv_store(hv, "-handle", 7, newSViv((int) handle), 0);
+    hv_store(hv, "-handle", 7, newSViv((IV) handle), 0);
     SV* cv = sv_2mortal(newRV((SV*)hv));
     sv_bless(cv, gv_stashpv(class_name, 0));
     SvREFCNT_dec(hv);
@@ -673,7 +683,7 @@ BOOL CALLBACK EnumMyWindowsProc(HWND hwnd, LPARAM lparam) {
     ary = (AV*) lparam;
     GetWindowThreadProcessId(hwnd, &pid);
     if(pid == GetCurrentProcessId()) {
-			av_push(ary, newSViv((long)hwnd));
+			av_push(ary, newSViv((IV)hwnd));
     }
     return TRUE;
 }
@@ -690,7 +700,7 @@ BOOL CALLBACK CountMyWindowsProc(HWND hwnd, LPARAM lparam) {
     i = (int *) lparam;
     GetWindowThreadProcessId(hwnd, &pid);
     if(pid == GetCurrentProcessId()) {
-        style = (DWORD) GetWindowLong(hwnd, GWL_STYLE);
+        style = (DWORD) GetWindowLongPtr(hwnd, GWL_STYLE);
         if(!(style & GW_CHILD)) {
             *i += 1;
         }
@@ -717,7 +727,7 @@ BOOL CALLBACK FindChildWindowsProc(HWND hwnd, LPARAM lParam) {
 
     st_FindChildWindow * st = (st_FindChildWindow*) lParam;
 
-    LPPERLWIN32GUI_USERDATA perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(hwnd, GWL_USERDATA);
+    LPPERLWIN32GUI_USERDATA perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(hwnd, GWLP_USERDATA);
     if( !ValidUserData(perlud) )
         return TRUE;
 
@@ -749,10 +759,15 @@ LRESULT CALLBACK WindowsHookMsgProc(int code, WPARAM wParam, LPARAM lParam) {
   if(code == MSGF_MENU) {
     PerlResult = 1;
     pmsg = (MSG *)lParam;
-    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(pmsg->hwnd, GWL_USERDATA);
+    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(pmsg->hwnd, GWLP_USERDATA);
 
     if(ValidUserData(perlud)) {
       PERLUD_FETCH;       /* fetch context */
+
+      //Tracker 1941264: Check if perlud->avHooks contains NULL. This was causing
+      //a crash although it should not be possible that this is zero. It's likely
+      //a bug elsewhere...No harm in the null pointer check though.
+      if (perlud->avHooks != NULL) {
 
       arrayref = av_fetch(perlud->avHooks, WM_TRACKPOPUP_MSGHOOK, 0);
       if(arrayref != NULL) {
@@ -805,6 +820,7 @@ LRESULT CALLBACK WindowsHookMsgProc(int code, WPARAM wParam, LPARAM lParam) {
         }
       }
     }
+  }
   }
 
   // pass message along hook chain

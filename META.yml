@@ -1,11 +1,25 @@
-# http://module-build.sourceforge.net/META-spec.html
-#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
-name:         Win32-GUI
-version:      1.06
-version_from: GUI.pm
-installdirs:  site
+---
+abstract: 'Perl-Win32 Graphical User Interface Extension'
+author:
+  - 'Aldo Calpini <dada@perl.it>'
+build_requires:
+  ExtUtils::MakeMaker: 0
+configure_requires:
+  ExtUtils::MakeMaker: 0
+dynamic_config: 1
+generated_by: 'ExtUtils::MakeMaker version 6.76, CPAN::Meta::Converter version 2.132510'
+license: unknown
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Win32-GUI
+no_index:
+  directory:
+    - t
+    - inc
 requires:
-    Test::More:                    0
-
-distribution_type: module
-generated_by: ExtUtils::MakeMaker version 6.30
+  Test::More: 0
+resources:
+  bugtracker: http://sourceforge.net/p/perl-win32-gui/bugs/
+  repository: http://sourceforge.net/p/perl-win32-gui/git/
+version: 1.07

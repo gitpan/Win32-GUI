@@ -2,7 +2,7 @@
     ###########################################################################
     #(@)PACKAGE:Win32::GUI::DC
     #
-    # $Id: DC.xs,v 1.18 2007/07/15 18:39:51 robertemay Exp $
+    # $Id: DC.xs,v 1.20 2010/04/08 21:26:48 jwgui Exp $
     #
     ###########################################################################
     */
@@ -1248,7 +1248,7 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:FloodFill(X, Y, COLOR)
-    # Fills an area of the display surface with the current brush. 
+    # Fills an area of the display surface with the current brush.
 BOOL
 FloodFill(handle, xs, ys, color)
     HDC handle
@@ -1257,6 +1257,100 @@ FloodFill(handle, xs, ys, color)
     COLORREF color
 CODE:
     RETVAL = ExtFloodFill(handle, xs, ys, color, FLOODFILLBORDER);
+OUTPUT:
+    RETVAL
+
+    ###########################################################################
+    # (@)METHOD:GradientFillTriangle(X0, Y0, COLOR0, X1, Y1, COLOR1, X2, Y2, COLOR2)
+    # Fills the area of the triangle using smooth shading from color0 at point
+    # zero through to the other points.
+    #
+
+BOOL
+GradientFillTriangle(handle, x0, y0, color0, x1, y1, color1, x2, y2, color2)
+    HDC handle
+    int x0
+    int y0
+    COLORREF color0
+    int x1
+    int y1
+    COLORREF color1
+    int x2
+    int y2
+    COLORREF color2
+CODE:
+    TRIVERTEX vertex[3];
+    vertex[0].x     = x0;
+    vertex[0].y     = y0;
+    vertex[0].Red   = (COLOR16) (GetRValue(color0) << 8);;
+    vertex[0].Green = (COLOR16) (GetGValue(color0) << 8);;
+    vertex[0].Blue  = (COLOR16) (GetBValue(color0) << 8);;
+    vertex[0].Alpha = 0x0000;
+
+    vertex[1].x     = x1;
+    vertex[1].y     = y1;
+    vertex[1].Red   = (COLOR16) (GetRValue(color1) << 8);;
+    vertex[1].Green = (COLOR16) (GetGValue(color1) << 8);;
+    vertex[1].Blue  = (COLOR16) (GetBValue(color1) << 8);;
+    vertex[1].Alpha = 0x0000;
+
+    vertex[2].x     = x2;
+    vertex[2].y     = y2; 
+    vertex[2].Red   = (COLOR16) (GetRValue(color2) << 8);;
+    vertex[2].Green = (COLOR16) (GetGValue(color2) << 8);;
+    vertex[2].Blue  = (COLOR16) (GetBValue(color2) << 8);; 
+    vertex[2].Alpha = 0x0000;
+
+    GRADIENT_TRIANGLE gTriangle;
+    gTriangle.Vertex1 = 0;
+    gTriangle.Vertex2 = 1;
+    gTriangle.Vertex3 = 2;
+
+    RETVAL = GradientFill(handle, vertex, 3, &gTriangle, 1, GRADIENT_FILL_TRIANGLE);
+OUTPUT:
+    RETVAL
+
+    ###########################################################################
+    # (@)METHOD:GradientFillRectangle(X0, Y0, COLOR0, X1, Y1, COLOR1, X2, Y2, COLOR2,DIRECTION)
+    # Fills the area of the Rectangle using smooth shading from color0 to color1.
+    # As a default the smoothing will be horizontal, to specify vertical smoothing pass any
+    # value as the final parameter.
+    #
+
+BOOL
+GradientFillRectangle(handle, x0, y0, x1, y1, color0,color1,direction=GRADIENT_FILL_RECT_H)
+    HDC handle
+    int x0
+    int y0
+    int x1
+    int y1
+    COLORREF color0
+    COLORREF color1
+    int direction
+CODE:
+    if (direction!=GRADIENT_FILL_RECT_H) {
+      direction = GRADIENT_FILL_RECT_V;
+    }
+    TRIVERTEX vertex[2] ;
+    vertex[0].x     = x0;
+    vertex[0].y     = y0;
+    vertex[0].Red   = (COLOR16) (GetRValue(color0) << 8);
+    vertex[0].Green = (COLOR16) (GetGValue(color0) << 8);
+    vertex[0].Blue  = (COLOR16) (GetBValue(color0) << 8);
+    vertex[0].Alpha = 0x0000;
+
+    vertex[1].x     = x1;
+    vertex[1].y     = x1; 
+    vertex[1].Red   = (COLOR16) (GetRValue(color1) << 8);
+    vertex[1].Green = (COLOR16) (GetGValue(color1) << 8);
+    vertex[1].Blue  = (COLOR16) (GetBValue(color1) << 8);
+    vertex[1].Alpha = 0x0000;
+
+    GRADIENT_RECT gRect;
+    gRect.UpperLeft  = 0;
+    gRect.LowerRight = 1;
+
+    RETVAL = GradientFill(handle, vertex, 2, &gRect, 1, direction);
 OUTPUT:
     RETVAL
 
@@ -1501,24 +1595,24 @@ PPCODE:
                 if(strcmp(option, "-pattern") == 0) {
                     next_i = i + 1;
                     lb.lbStyle = BS_PATTERN;
-                    lb.lbHatch = (LONG) handle_From(NOTXSCALL ST(next_i));
+                    lb.lbHatch = (LONG_PTR) handle_From(NOTXSCALL ST(next_i));
                 } else if(strcmp(option, "-hatch") == 0) {
                     next_i = i + 1;
                     lb.lbStyle = BS_HATCHED;
-                    lb.lbHatch = (LONG) SvIV(ST(next_i));
+                    lb.lbHatch = (LONG_PTR) SvIV(ST(next_i));
                 } else if(strcmp(option, "-color") == 0) {
                     next_i = i + 1;
                     lb.lbColor = SvCOLORREF(NOTXSCALL ST(next_i));
                 } else if(strcmp(option, "-system") == 0) {
                     next_i = i + 1;
-                    XSRETURN_IV((long) GetSysColorBrush(SvIV(ST(next_i))));
+                    XSRETURN_IV((IV) GetSysColorBrush(SvIV(ST(next_i))));
                 }
             } else {
                 next_i = -1;
             }
         }
     }
-    XSRETURN_IV((long) CreateBrushIndirect(&lb));
+    XSRETURN_IV((IV) CreateBrushIndirect(&lb));
 
     ###########################################################################
     # (@)METHOD:Info()
@@ -1615,7 +1709,7 @@ PPCODE:
             }
         }
     }
-    XSRETURN_IV((long) CreatePen(penstyle, penwidth, pencolor));
+    XSRETURN_IV((IV) CreatePen(penstyle, penwidth, pencolor));
 
     ###########################################################################
     # (@)METHOD:Info()

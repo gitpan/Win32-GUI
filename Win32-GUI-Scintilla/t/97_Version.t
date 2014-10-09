@@ -13,6 +13,7 @@ use Test::More tests => 4;
 
 use Win32::GUI();
 use Win32::GUI::Scintilla();
+use Config;
 
 my($maj_pm, $min_pm, $rc_pm);
 
@@ -21,7 +22,7 @@ if($version =~ m/^(\d+)\.(\d\d)(\d\d)/) {
     ($maj_pm, $min_pm, $rc_pm) = ($1, $2, $3);
 }
 
-my ($maj_rc, $min_rc, $rc_rc, $extra) = Win32::GUI::GetDllVersion('Scintilla.dll');
+my ($maj_rc, $min_rc, $rc_rc, $extra) = Win32::GUI::GetDllVersion('Scintilla.' . $Config{dlext});
 
 ok($maj_pm == $maj_rc, "Major Version numbers the same");
 ok($min_pm == $min_rc, "Minor Version numbers the same");

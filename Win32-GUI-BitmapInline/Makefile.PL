@@ -15,4 +15,9 @@ my %config = (
     AUTHOR        =>  'Robert May <robertemay@users.sourceforge.net>',
 );
 
+# if building using gcc (MinGW or cygwin)
+if($Config{cc} =~ /gcc/i) {
+    $config{CCFLAGS} = '-Wno-write-strings';
+}
+
 WriteMakefile(%config);

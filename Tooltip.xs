@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Tooltip
     #
-    # $Id: Tooltip.xs,v 1.10 2007/01/20 17:09:22 robertemay Exp $
+    # $Id: Tooltip.xs,v 1.11 2010/04/08 21:26:48 jwgui Exp $
     #
     ###########################################################################
     */
@@ -149,12 +149,12 @@ ToolInfoFromTool(NOTXSPROC HWND handle, SV* tool, TOOLINFO *ti) {
             if(alen > 0) {
                 value = av_fetch(array, 1, 0);
                 if(value) {
-                    ti->uId = (UINT)SvIV(*value);
+                    ti->uId = (IV)SvIV(*value);
                 } else {
                     CROAK("Problem with TOOL array reference, index 1");
                 }
             } else {
-                ti->uId = (UINT)ti->hwnd;
+                ti->uId = (IV)ti->hwnd;
             }
         } else {
             CROAK("TOOL array refence is empty");
@@ -165,11 +165,11 @@ ToolInfoFromTool(NOTXSPROC HWND handle, SV* tool, TOOLINFO *ti) {
          * handles clashing, but kept for
          * (1) backwards compatability
          * (2) allowing the most common simple case of WINDOW */
-        ti->uId  = (UINT)handle_From(NOTXSCALL tool);
+        ti->uId  = (IV)handle_From(NOTXSCALL tool);
         if(IsWindow((HWND)ti->uId)) {
             ti->hwnd = (HWND)ti->uId;
         } else {
-            ti->hwnd = (HWND)GetWindowLong(handle, GWL_HWNDPARENT);
+            ti->hwnd = (HWND)GetWindowLongPtr(handle, GWLP_HWNDPARENT);
         }
     }
 
@@ -261,7 +261,7 @@ PREINIT:
 CODE:
     ZeroMemory(&ti, sizeof(TOOLINFO));
     ti.cbSize = sizeof(TOOLINFO);
-    ti.hwnd = (HWND) GetWindowLong(handle, GWL_HWNDPARENT);
+    ti.hwnd = (HWND) GetWindowLongPtr(handle, GWLP_HWNDPARENT);
     ParseTooltipOptions(NOTXSCALL sp, mark, ax, items, 1, &ti);
     RETVAL = SendMessage(handle, TTM_ADDTOOL, 0, (LPARAM) &ti);
 OUTPUT:
@@ -1139,7 +1139,7 @@ PREINIT:
 CODE:
     ZeroMemory(&ti, sizeof(TOOLINFO));
     ti.cbSize = sizeof(TOOLINFO);
-    ti.hwnd = (HWND) GetWindowLong(handle, GWL_HWNDPARENT);
+    ti.hwnd = (HWND) GetWindowLongPtr(handle, GWLP_HWNDPARENT);
     ParseTooltipOptions(NOTXSCALL sp, mark, ax, items, 1, &ti);
     RETVAL = SendMessage(handle, TTM_SETTOOLINFO, 0, (LPARAM) &ti);
 OUTPUT:

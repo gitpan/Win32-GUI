@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::TabStrip
     #
-    # $Id: TabStrip.xs,v 1.3 2004/04/08 21:23:39 lrocher Exp $
+    # $Id: TabStrip.xs,v 1.4 2010/04/08 21:26:48 jwgui Exp $
     #
     ###########################################################################
     */
@@ -394,7 +394,7 @@ InsertItem(handle,...)
 PREINIT:
     TC_ITEM Item;
     int iIndex;
-    unsigned int chText;
+    STRLEN chText;
     int i, next_i;
 CODE:
     ZeroMemory(&Item, sizeof(TC_ITEM));
@@ -506,7 +506,7 @@ ALIAS:
     Win32::GUI::TabStrip::ChangeItem = 1     
 PREINIT:
     TC_ITEM Item;
-    unsigned int chText;
+    STRLEN chText;
     int i, next_i;
 CODE:
     ZeroMemory(&Item, sizeof(TC_ITEM));

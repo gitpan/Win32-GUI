@@ -6,9 +6,9 @@ build_tools/Config_mO.pm
 build_tools/doHTMLDocs.pl
 build_tools/doPodDocs.pl
 build_tools/doReadme.pl
+build_tools/MMUtil.pm
 build_tools/SrcParser.pm
 build_tools/updateRC.pl
-build_tools/MMUtil.pm
 Button.xs
 CHANGELOG
 Combobox.xs
@@ -64,8 +64,8 @@ ListView.xs
 Makefile.PL
 Makefile_m.pl
 MANIFEST			This list of files
-MANIFEST.SKIP
 MDI.xs
+META.yml			Module meta-data (added by MakeMaker)
 MonthCal.xs
 NotifyIcon.xs
 ProgressBar.xs
@@ -81,6 +81,7 @@ samples/DateTime.pl
 samples/Draw.pl
 samples/EventModel.pl
 samples/GetOpenFileName.pl
+samples/GradientFill.pl
 samples/guiperl.ico
 samples/harrow.cur
 samples/listview_drag_drop.pl
@@ -112,6 +113,7 @@ scripts/win32-gui-demos.pl
 Splitter.xs
 StatusBar.xs
 t/01_basic.t
+t/02_background.t
 t/02_constants.t
 t/02_window.t
 t/03_button.t
@@ -370,7 +372,8 @@ Win32-GUI-Scintilla/demos/test.pl
 Win32-GUI-Scintilla/demos/test2.pl
 Win32-GUI-Scintilla/Include/License.txt
 Win32-GUI-Scintilla/Include/Readme.txt
-Win32-GUI-Scintilla/Include/SciLexer.dll
+Win32-GUI-Scintilla/Include/SciLexer32.dll
+Win32-GUI-Scintilla/Include/SciLexer64.dll
 Win32-GUI-Scintilla/Include/Scintilla.h
 Win32-GUI-Scintilla/Include/Scintilla.iface
 Win32-GUI-Scintilla/Makefile.PL
@@ -389,4 +392,4 @@ Win32-GUI-Scintilla/t/99_pod_coverage.t
 Win32-GUI-Scintilla/TODO
 Win32-GUI-Scintilla/Typemap
 Window.xs
-META.yml                                 Module meta-data (added by MakeMaker)
+META.json                                Module JSON meta-data (added by MakeMaker)

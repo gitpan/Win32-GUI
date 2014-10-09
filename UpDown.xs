@@ -117,7 +117,7 @@ PREINIT:
     HWND oldbuddy;
 CODE:
     oldbuddy = (HWND) SendMessage(handle, UDM_GETBUDDY, 0, 0);
-    //RETVAL = (HV*) GetWindowLong(oldbuddy, GWL_USERDATA);
+    //RETVAL = (HV*) GetWindowLongPtr(oldbuddy, GWLP_USERDATA);
     RETVAL = oldbuddy;
 OUTPUT:
     RETVAL
@@ -269,10 +269,10 @@ PREINIT:
 CODE:
     if(items == 1) {
         oldbuddy = (HWND) SendMessage(handle, UDM_GETBUDDY, 0, 0);
-        //RETVAL = (HV*) GetWindowLong(oldbuddy, GWL_USERDATA);
+        //RETVAL = (HV*) GetWindowLongPtr(oldbuddy, GWLP_USERDATA);
     } else {
         oldbuddy = (HWND) SendMessage(handle, UDM_SETBUDDY, (WPARAM) buddy, 0);
-        //RETVAL = (HV*) GetWindowLong(oldbuddy, GWL_USERDATA);
+        //RETVAL = (HV*) GetWindowLongPtr(oldbuddy, GWLP_USERDATA);
     }
     RETVAL = oldbuddy;
 OUTPUT:

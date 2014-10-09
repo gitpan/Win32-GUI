@@ -228,7 +228,7 @@ File::Find::find(sub { push @demos, $File::Find::name if $File::Find::name =~ /\
 my %MakefileArgs = (
     NAME            => 'Win32::GUI',
     VERSION_FROM    => 'GUI.pm',
-    LIBS            => [':nosearch -lcomctl32 -lcomdlg32 -lshell32 -lgdi32 -luser32 -lversion'],
+    LIBS            => [':nosearch -lcomctl32 -lcomdlg32 -lshell32 -lgdi32 -luser32 -lversion -lmsimg32'],
     PREREQ_PM       => {
                          'Test::More' => 0,
                        },
@@ -241,10 +241,25 @@ my %MakefileArgs = (
     OBJECT          => $arg_object,
     EXE_FILES       => [ 'scripts/win32-gui-demos.pl', ],
     DL_FUNCS        => { 'Win32::GUI' => [ @arg_dl_funcs ] },
+    META_MERGE       => {
+      resources => {
+        #homepage   => 'http://perl-win32-gui.sourceforge.net',
+        repository => 'http://sourceforge.net/p/perl-win32-gui/git/',
+        bugtracker => 'http://sourceforge.net/p/perl-win32-gui/bugs/',
+      },
+    },
     dist            => {
+                         $^O eq 'cygwin' ?
+                         (
+                         TAR => 'ptar',
+                         TARFLAGS => '-c -C -f',
+                         )
+                         :
+                         (
                          ZIP => 'zip',
                          ZIPFLAGS => '-r9',
                          DIST_DEFAULT => 'zipdist',
+                         )
                        },
   ($] < 5.005 ? () : (
     AUTHOR          => 'Aldo Calpini <dada@perl.it>',
@@ -268,8 +283,12 @@ my %MakefileArgs = (
                        },
 );
 
+if($Config{cc} =~ /gcc/i) {
+  $MakefileArgs{CCFLAGS} = '-Wno-write-strings';
+}
+
 if ($main::BUILDENV eq "cygwin") {
-  $MakefileArgs{'LIBS'} = ['-L/usr/lib/w32api -lcomctl32 -lcomdlg32 -lshell32 -lgdi32 -luser32 -lversion'];
+  $MakefileArgs{'LIBS'} = ['-L/usr/lib/w32api -lcomctl32 -lcomdlg32 -lshell32 -lgdi32 -luser32 -lversion -lmsimg32'];
   $MakefileArgs{'DEFINE'} = '-UWIN32';
   $MakefileArgs{'MYEXTLIB'} = './libcyg.a';
 }

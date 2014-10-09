@@ -11,7 +11,7 @@
 # This program is free software; you can redistribute it and/or
 # modify it under the same terms as Perl itself.
 #
-# $Id: GUI.xs,v 1.67 2008/01/31 00:28:14 robertemay Exp $
+# $Id: GUI.xs,v 1.69 2011/07/16 14:51:03 acalpini Exp $
 #
 ###############################################################################
  */
@@ -253,7 +253,7 @@ PREINIT:
     SV** eventhandler;
     LPPERLWIN32GUI_USERDATA perlud;
 PPCODE:
-    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong((HWND) handle, GWL_USERDATA);
+    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr((HWND) handle, GWLP_USERDATA);
     if(perlud == NULL || perlud->hvEvents == NULL) XSRETURN_UNDEF;
     eventhandler = hv_fetch(perlud->hvEvents,name,strlen(name),0);
     if(eventhandler != NULL) {
@@ -278,7 +278,7 @@ PREINIT:
     PERLWIN32GUI_CREATESTRUCT perlcs;
 PPCODE:
     ZeroMemory(&perlcs, sizeof(PERLWIN32GUI_CREATESTRUCT));
-    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong((HWND) handle, GWL_USERDATA);
+    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr((HWND) handle, GWLP_USERDATA);
     if(perlud == NULL) XSRETURN_UNDEF;
 
     if ( perlud->hvEvents == NULL ) {
@@ -375,17 +375,17 @@ PPCODE:
 #else
     hinstanceFound = GetModuleHandle("GUI.DLL");
 #endif
-    // hinstanceFound = (HINSTANCE) GetWindowLong(hwndFound, GWL_HINSTANCE);
+    // hinstanceFound = (HINSTANCE) GetWindowLongPtr(hwndFound, GWL_HINSTANCE);
     // sv_hinstance = perl_get_sv("Win32::GUI::hinstance", TRUE);
     // sv_setiv(sv_hinstance, (IV) hinstanceFound);
     SetConsoleTitle(OldPerlWindowTitle);
     if(GIMME == G_ARRAY) {
         EXTEND(SP, 2);
-        XST_mIV(0, (long) hwndFound);
-        XST_mIV(1, (long) hinstanceFound);
+        XST_mIV(0, (IV) hwndFound);
+        XST_mIV(1, (IV) hinstanceFound);
         XSRETURN(2);
     } else {
-        XSRETURN_IV((long) hwndFound);
+        XSRETURN_IV((IV) hwndFound);
     }
 
 
@@ -615,7 +615,7 @@ PPCODE:
                                  hMenu,
                                  hInstance,
                                  pPointer)) {
-        XSRETURN_IV((long) myhandle);
+        XSRETURN_IV((IV) myhandle);
     } else {
         XSRETURN_NO;
     }
@@ -730,15 +730,16 @@ PPCODE:
     perlud->clrForeground = perlcs.clrForeground;
     perlud->clrBackground = perlcs.clrBackground;
     perlud->hBackgroundBrush = perlcs.hBackgroundBrush;
+    perlud->bDeleteBackgroundBrush = perlcs.bDeleteBackgroundBrush;
     perlud->hvEvents = perlcs.hvEvents;
     perlud->dwEventMask = perlcs.dwEventMask;
-    perlud->dwData = (DWORD) perlcs.cs.lpCreateParams;
+    perlud->dwData = perlcs.cs.lpCreateParams;
     pPointer = perlud;
 
     // #### the following can be vital for the window
     // #### because as soon as it is created the message
     // #### loop is activated and data needs to be there
-    storing = newSViv((long) perlcs.iClass);
+    storing = newSViv((IV) perlcs.iClass);
     stored = hv_store_mg(NOTXSCALL perlcs.hvSelf, "-type", 5, storing, 0);  // TODO : used ?
     storing = newSVpv((char *)perlcs.szWindowName, 0);
     stored = hv_store_mg(NOTXSCALL perlcs.hvSelf, "-name", 5, storing, 0);
@@ -770,17 +771,17 @@ PPCODE:
 #ifdef PERLWIN32GUI_STRONGDEBUG
         printf("XS(Create): storing -handle...\n");
 #endif
-        storing = newSViv((long) myhandle);
+        storing = newSViv((IV) myhandle);
         stored = hv_store_mg(NOTXSCALL perlcs.hvSelf, "-handle", 7, storing, 0);
         // #### set the font for the control
 #ifdef PERLWIN32GUI_STRONGDEBUG
         printf("XS(Create): storing -font...\n");
 #endif
         if(perlcs.hFont != NULL) {
-            storing = newSViv((long) perlcs.hFont);
+            storing = newSViv((IV) perlcs.hFont);
             stored = hv_store_mg(NOTXSCALL perlcs.hvSelf, "-font", 5, storing, 0);
             SendMessage(myhandle, WM_SETFONT, (WPARAM) perlcs.hFont, 0);
-        } else if(perlcs.cs.hwndParent != NULL) {
+        } else if(perlcs.cs.hwndParent != NULL && perlcs.hvParent != NULL) {
             font = hv_fetch_mg(NOTXSCALL perlcs.hvParent, "-font", 5, FALSE);
             if(font != NULL && SvOK(*font)) {
                 perlcs.hFont = (HFONT) handle_From(NOTXSCALL *font);
@@ -846,31 +847,31 @@ PPCODE:
 
         // #### store a pointer to the Perl object in the window's USERDATA
 #ifdef PERLWIN32GUI_STRONGDEBUG
-        printf("XS(Create): storing GWL_USERDATA...\n");
+        printf("XS(Create): storing GWLP_USERDATA...\n");
 #endif
 
         // Specific MDI_CLIENT : SubClass Window
         // We need subclass after window creation for IDFirstChild work.
         if(perlcs.iClass == WIN32__GUI__MDICLIENT ) {
-            perlud->dwPlStyle |= PERLWIN32GUI_CUSTOMCLASS;
-            perlud->WndProc = (WNDPROC) SetWindowLong(myhandle, GWL_WNDPROC, (LONG) MDIClientMsgLoop);
-            SetWindowLong(myhandle, GWL_USERDATA, (LONG) perlud);
+            perlud->dwPlStyle |= PERLWIN32GUI_CUSTOMCLASS;           
+            perlud->WndProc = (WNDPROC) SetWindowLongPtr(myhandle, GWLP_WNDPROC, (LONG_PTR) MDIClientMsgLoop);
+            SetWindowLongPtr(myhandle, GWLP_USERDATA, (LONG_PTR) perlud);
         }
 
         // Sub class all standard window control as child control (no WM_CREATE or WN_NCCREATE catch)
         if( !(perlud->dwPlStyle & PERLWIN32GUI_CUSTOMCLASS) ) {
             LPPERLWIN32GUI_USERDATA testud;
-            testud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(myhandle, GWL_USERDATA);
+            testud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(myhandle, GWLP_USERDATA);
             if (!ValidUserData(testud) ) {
-                perlud->WndProc = (WNDPROC) SetWindowLong(myhandle, GWL_WNDPROC, (LONG) ControlMsgLoop);
-                SetWindowLong(myhandle, GWL_USERDATA, (LONG) perlud);
+                perlud->WndProc = (WNDPROC) SetWindowLongPtr(myhandle, GWLP_WNDPROC, (LONG_PTR) ControlMsgLoop);
+                SetWindowLongPtr(myhandle, GWLP_USERDATA, (LONG_PTR) perlud);
             }
         }
 
         // #### (try to) figure out which MsgLoop procedure to use
         if (perlcs.hvParent != NULL) {
             LPPERLWIN32GUI_USERDATA parentud;
-            parentud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(perlcs.cs.hwndParent, GWL_USERDATA);
+            parentud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(perlcs.cs.hwndParent, GWLP_USERDATA);
             if( ValidUserData(parentud) ) {
                 if(parentud->iClass != WIN32__GUI__WINDOW && 
                    parentud->iClass != WIN32__GUI__DIALOG &&
@@ -884,7 +885,7 @@ PPCODE:
 #ifdef PERLWIN32GUI_STRONGDEBUG
         printf("XS(Create): DONE!\n");
 #endif
-        XSRETURN_IV((long) myhandle);
+        XSRETURN_IV((IV) myhandle);
     } else {
 #ifdef PERLWIN32GUI_STRONGDEBUG
         printf("XS(Create): CreateWindowEx failed, returning undef\n");
@@ -903,7 +904,7 @@ PPCODE:
     LPPERLWIN32GUI_USERDATA perlud;
 
     handle = (HWND) handle_From(NOTXSCALL ST(0));
-    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(handle, GWL_USERDATA);
+    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(handle, GWLP_USERDATA);
 
     ZeroMemory(&perlcs, sizeof(PERLWIN32GUI_CREATESTRUCT));
     if( ! ValidUserData(perlud) ) {
@@ -911,8 +912,8 @@ PPCODE:
     }
 
     perlcs.hvSelf = (HV*) SvRV(perlud->svSelf);
-    perlcs.cs.style = GetWindowLong(handle, GWL_STYLE);
-    perlcs.cs.dwExStyle = GetWindowLong(handle, GWL_EXSTYLE);
+    perlcs.cs.style = GetWindowLongPtr(handle, GWL_STYLE);
+    perlcs.cs.dwExStyle = GetWindowLongPtr(handle, GWL_EXSTYLE);
     if(perlcs.hvSelf != NULL) {
         // #### retrieve windows data
         perlcs.iClass = perlud->iClass;
@@ -926,6 +927,7 @@ PPCODE:
         perlcs.clrForeground = perlud->clrForeground;
         perlcs.clrBackground = perlud->clrBackground;
         perlcs.hBackgroundBrush = perlud->hBackgroundBrush;
+        perlcs.bDeleteBackgroundBrush = perlud->bDeleteBackgroundBrush;
         perlcs.hvEvents    = perlud->hvEvents;
         perlcs.dwEventMask = perlud->dwEventMask;
 #ifdef PERLWIN32GUI_STRONGDEBUG
@@ -943,6 +945,7 @@ PPCODE:
         printf("XS(Change): BEFORE clrForeground = 0x%x\n", perlcs.clrForeground);
         printf("XS(Change): BEFORE clrBackground = 0x%x\n", perlcs.clrBackground);
         printf("XS(Change): BEFORE hBackgroundBrush = 0x%x\n", perlcs.hBackgroundBrush);
+        printf("XS(Change): BEFORE bDeleteBackgroundBrush = %d\n", perlcs.bDeleteBackgroundBrush);
 #endif
         // #### parse new window options
         ParseWindowOptions(NOTXSCALL sp, mark, ax, items, 1, &perlcs);
@@ -969,6 +972,7 @@ PPCODE:
         printf("XS(Change): AFTER clrForeground = 0x%x\n", perlcs.clrForeground);
         printf("XS(Change): AFTER clrBackground = 0x%x\n", perlcs.clrBackground);
         printf("XS(Change): AFTER hBackgroundBrush = 0x%x\n", perlcs.hBackgroundBrush);
+        printf("XS(Change): AFTER bDeleteBackgroundBrush = %d\n", perlcs.bDeleteBackgroundBrush);
 #endif
         // #### Perform changes
         if(NULL != perlcs.szWindowName) {
@@ -986,14 +990,15 @@ PPCODE:
         perlud->clrForeground = perlcs.clrForeground;
         perlud->clrBackground = perlcs.clrBackground;
         perlud->hBackgroundBrush = perlcs.hBackgroundBrush;
+        perlud->bDeleteBackgroundBrush = perlcs.bDeleteBackgroundBrush;
         perlud->hvEvents    = perlcs.hvEvents;
         perlud->dwEventMask = perlcs.dwEventMask;
        
         if(perlcs.cs.lpszName != NULL)
             SetWindowText(handle, perlcs.cs.lpszName);
 
-        SetWindowLong(handle, GWL_STYLE, perlcs.cs.style);
-        SetWindowLong(handle, GWL_EXSTYLE, perlcs.cs.dwExStyle);
+        SetWindowLongPtr(handle, GWL_STYLE, perlcs.cs.style);
+        SetWindowLongPtr(handle, GWL_EXSTYLE, perlcs.cs.dwExStyle);
 
         if(perlcs.cs.x != 0 || perlcs.cs.y != 0)
             SetWindowPos(handle, (HWND) NULL, perlcs.cs.x, perlcs.cs.y, 0, 0,
@@ -1005,7 +1010,7 @@ PPCODE:
             SetMenu(handle, perlcs.cs.hMenu);
 
         if(perlcs.hFont != NULL) {
-            hv_store_mg(NOTXSCALL perlcs.hvSelf, "-font", 5, newSViv((long) perlcs.hFont), 0);
+            hv_store_mg(NOTXSCALL perlcs.hvSelf, "-font", 5, newSViv((IV) perlcs.hFont), 0);
             SendMessage(handle, WM_SETFONT, (WPARAM) perlcs.hFont, 0);
         }
 
@@ -1075,7 +1080,7 @@ CODE:
             // #### now see if the parent window is a DialogBox
             fIsDialog = fIsMDI = FALSE;
             acc = NULL;
-            perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(phwnd, GWL_USERDATA);
+            perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(phwnd, GWLP_USERDATA);
             if( ValidUserData(perlud) ) {
                 fIsDialog = perlud->dwPlStyle & PERLWIN32GUI_DIALOGUI;
                 fIsMDI    = perlud->dwPlStyle & (PERLWIN32GUI_MDIFRAME | PERLWIN32GUI_HAVECHILDWINDOW);
@@ -1085,7 +1090,7 @@ CODE:
             // ### can be THE DialogBox
             if(fIsMDI
                 && (thwnd = (HWND)SendMessage((HWND)perlud->dwData, WM_MDIGETACTIVE, (WPARAM) 0, (LPARAM) NULL))
-                && (tperlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(thwnd, GWL_USERDATA))
+                && (tperlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(thwnd, GWLP_USERDATA))
                 && ValidUserData(tperlud))
             {
                 fIsDialog = tperlud->dwPlStyle & PERLWIN32GUI_DIALOGUI;
@@ -1159,7 +1164,7 @@ CODE:
                 // #### now see if the parent window is a DialogBox
                 fIsDialog = fIsMDI = FALSE;
                 acc = NULL;
-                perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(phwnd, GWL_USERDATA);
+                perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(phwnd, GWLP_USERDATA);
                 if( ValidUserData(perlud) ) {
                     fIsDialog = perlud->dwPlStyle & PERLWIN32GUI_DIALOGUI;
                     fIsMDI    = perlud->dwPlStyle & (PERLWIN32GUI_MDIFRAME | PERLWIN32GUI_HAVECHILDWINDOW);
@@ -1169,7 +1174,7 @@ CODE:
                 // ### can be THE DialogBox
                 if(fIsMDI
                     && (thwnd = (HWND)SendMessage((HWND)perlud->dwData, WM_MDIGETACTIVE, (WPARAM) 0, (LPARAM) NULL))
-                    && (tperlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(thwnd, GWL_USERDATA))
+                    && (tperlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(thwnd, GWLP_USERDATA))
                     && ValidUserData(tperlud))
                 {
                     fIsDialog = tperlud->dwPlStyle & PERLWIN32GUI_DIALOGUI;
@@ -1227,7 +1232,7 @@ PREINIT:
     HWND parent;
 CODE:
     // Set ISMODAL flag
-    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(handle, GWL_USERDATA);
+    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(handle, GWLP_USERDATA);
     if( !ValidUserData(perlud) || (perlud->dwPlStyle & PERLWIN32GUI_ISMODAL) )
         XSRETURN_NO;
 
@@ -1275,7 +1280,7 @@ CODE:
             // #### now see if the parent window is a DialogBox
             fIsDialog = fIsMDI = FALSE;
             acc = NULL;
-            perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(phwnd, GWL_USERDATA);
+            perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(phwnd, GWLP_USERDATA);
             if( ValidUserData(perlud) ) {
                 fIsDialog = perlud->dwPlStyle & PERLWIN32GUI_DIALOGUI;
                 fIsMDI    = perlud->dwPlStyle & (PERLWIN32GUI_MDIFRAME | PERLWIN32GUI_HAVECHILDWINDOW);
@@ -1307,7 +1312,7 @@ CODE:
     // Active parent
     SetActiveWindow(parent);
     // UnSet ISMODAL flag
-    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(handle, GWL_USERDATA);
+    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(handle, GWLP_USERDATA);
     if( ValidUserData(perlud))
        perlud->dwPlStyle &= ~PERLWIN32GUI_ISMODAL;
 
@@ -1716,7 +1721,7 @@ ChangeCursor(handle, cursor)
     HWND handle
     HCURSOR cursor
 CODE:
-    RETVAL = (HCURSOR) SetClassLong(handle, GCL_HCURSOR, (LONG) cursor);
+    RETVAL = (HCURSOR) SetClassLongPtr(handle, GCLP_HCURSOR, (LONG_PTR) cursor);
 OUTPUT:
     RETVAL
 
@@ -1792,8 +1797,8 @@ ChangeIcon(handle, icon)
     HWND handle
     HICON icon
 CODE:
-    SetClassLong(handle, GCL_HICONSM, (LONG) icon);
-    RETVAL = (HICON) SetClassLong(handle, GCL_HICON, (LONG) icon);
+    SetClassLongPtr(handle, GCLP_HICONSM, (LONG_PTR) icon);
+    RETVAL = (HICON) SetClassLongPtr(handle, GCLP_HICON, (LONG_PTR) icon);
 OUTPUT:
     RETVAL
 
@@ -1807,7 +1812,7 @@ ChangeSmallIcon(handle, icon)
     HWND handle
     HICON icon
 CODE:
-    RETVAL = (HICON) SetClassLong(handle, GCL_HICONSM, (LONG) icon);
+    RETVAL = (HICON) SetClassLongPtr(handle, GCLP_HICONSM, (LONG_PTR) icon);
 OUTPUT:
     RETVAL
 
@@ -1902,7 +1907,7 @@ _UserData(handle)
 PREINIT:
     LPPERLWIN32GUI_USERDATA perlud;
 CODE:
-    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(handle, GWL_USERDATA);
+    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(handle, GWLP_USERDATA);
     if( ! ValidUserData(perlud) ) {
         XSRETURN_UNDEF;
     }
@@ -1942,7 +1947,7 @@ GetWindowLong(handle,index)
     HWND handle
     int index
 CODE:
-    RETVAL = GetWindowLong(handle, index);
+    RETVAL = GetWindowLongPtr(handle, index);
 OUTPUT:
     RETVAL
 
@@ -1957,7 +1962,7 @@ SetWindowLong(handle,index,value)
     int  index
     LONG value
 CODE:
-    RETVAL = SetWindowLong(handle, index, value);
+    RETVAL = SetWindowLongPtr(handle, index, value);
 OUTPUT:
     RETVAL
 
@@ -2349,12 +2354,12 @@ SendMessageTimeout(handle,msg,wparam,lparam,flags=SMTO_NORMAL,timeout)
     UINT flags
     UINT timeout
 PREINIT:
-    DWORD result;
+    PDWORD result;
 PPCODE:
-    if(SendMessageTimeout(handle, msg, wparam, lparam, flags, timeout, &result) == 0) {
+    if(SendMessageTimeout(handle, msg, wparam, lparam, flags, timeout, (PDWORD_PTR)&result) == 0) {
         XSRETURN_UNDEF;
     } else {
-        XSRETURN_IV(result);
+        XSRETURN_IV((IV)result);
     }
 
 
@@ -2404,7 +2409,7 @@ CODE:
     if(message != &PL_sv_undef) {
         if(SvROK(message) && SvTYPE(SvRV(message)) == SVt_PVAV) {
             av_clear((AV*) SvRV(message));
-            av_push((AV*) SvRV(message), newSViv((long) msg.hwnd));
+            av_push((AV*) SvRV(message), newSViv((IV) msg.hwnd));
             av_push((AV*) SvRV(message), newSViv(msg.message));
             av_push((AV*) SvRV(message), newSViv(msg.wParam));
             av_push((AV*) SvRV(message), newSViv(msg.lParam));
@@ -2482,7 +2487,7 @@ PPCODE:
     if(msg < 0) { msg = 0 - msg; }; // Looks wrong but if hooks are used correctly this should be OK.
     if(SvOK(coderef) && SvROK(coderef) && SvTYPE(SvRV(coderef)) == SVt_PVCV) {
         // We have a code reference.
-        perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(handle, GWL_USERDATA);
+        perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(handle, GWLP_USERDATA);
         if(perlud->avHooks == NULL) {
             perlud->avHooks = newAV();
         }
@@ -2551,7 +2556,7 @@ PPCODE:
         XSRETURN_NO;
     }
     else {
-    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(handle, GWL_USERDATA);
+    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(handle, GWLP_USERDATA);
         if(perlud->avHooks == NULL) {
             XSRETURN_NO;
         }
@@ -2596,7 +2601,7 @@ Result(handle, result)
 PREINIT:
     LPPERLWIN32GUI_USERDATA perlud;
 CODE:
-    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(handle, GWL_USERDATA);
+    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(handle, GWLP_USERDATA);
     if(ValidUserData(perlud)) {
         perlud->forceResult = (LRESULT) result;
         XSRETURN_YES;
@@ -3498,16 +3503,16 @@ OUTPUT:
     #
     # Open a text file in nodepad
     #   my $exitval = $win->ShellExecute('open','notepad.exe','readme.txt','',1) ;
-int
+IV
 ShellExecute(window,operation,file,parameters,directory,showcmd)
     HWND window
     LPCTSTR operation
     LPCTSTR file
     LPCTSTR parameters
     LPCTSTR directory
-    int showcmd
+    INT showcmd
 CODE:
-    RETVAL = (int) ShellExecute(window,operation,file,parameters,directory,showcmd);
+    RETVAL = (IV) ShellExecute(window,operation,file,parameters,directory,showcmd);
 OUTPUT:
     RETVAL
     
@@ -3708,7 +3713,7 @@ CODE:
     // it in the callback, and if successful, register the callback hook handler
     if(coderef != NULL) {
 
-      perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(handle, GWL_USERDATA);
+      perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(handle, GWLP_USERDATA);
       if(ValidUserData(perlud)) {
         if(perlud->avHooks == NULL) {
           perlud->avHooks = newAV();
@@ -3832,7 +3837,7 @@ PPCODE:
         CROAK("Usage: DialogUI(handle, [value]);\n");
     }
 
-    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(handle, GWL_USERDATA);
+    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(handle, GWLP_USERDATA);
     if( ! ValidUserData(perlud) ) {
         XSRETURN_UNDEF;
     } else {
@@ -4344,18 +4349,18 @@ PPCODE:
     hwnd = INT2PTR(HWND,SvIV(*hv_fetch(self, "-handle", 7, 0)));
     if(hwnd) {
         if(hdc = BeginPaint(hwnd, &ps)) {
-            hv_store(self, "-DC", 3, newSViv((long) hdc), 0);
-            hv_store(self, "-ps.hdc", 7, newSViv((long) ps.hdc), 0);
-            hv_store(self, "-ps.fErase", 10, newSViv((long) ps.fErase), 0);
-            hv_store(self, "-ps.rcPaint.left", 16, newSViv((long) ps.rcPaint.left), 0);
-            hv_store(self, "-ps.rcPaint.top", 15, newSViv((long) ps.rcPaint.top), 0);
-            hv_store(self, "-ps.rcPaint.right", 17, newSViv((long) ps.rcPaint.right), 0);
-            hv_store(self, "-ps.rcPaint.bottom", 18, newSViv((long) ps.rcPaint.bottom), 0);
-            hv_store(self, "-ps.fRestore", 12, newSViv((long) ps.fRestore), 0);
-            hv_store(self, "-ps.fIncUpdate", 14, newSViv((long) ps.fIncUpdate), 0);
+            hv_store(self, "-DC", 3, newSViv((IV) hdc), 0);
+            hv_store(self, "-ps.hdc", 7, newSViv((IV) ps.hdc), 0);
+            hv_store(self, "-ps.fErase", 10, newSViv((IV) ps.fErase), 0);
+            hv_store(self, "-ps.rcPaint.left", 16, newSViv((IV) ps.rcPaint.left), 0);
+            hv_store(self, "-ps.rcPaint.top", 15, newSViv((IV) ps.rcPaint.top), 0);
+            hv_store(self, "-ps.rcPaint.right", 17, newSViv((IV) ps.rcPaint.right), 0);
+            hv_store(self, "-ps.rcPaint.bottom", 18, newSViv((IV) ps.rcPaint.bottom), 0);
+            hv_store(self, "-ps.fRestore", 12, newSViv((IV) ps.fRestore), 0);
+            hv_store(self, "-ps.fIncUpdate", 14, newSViv((IV) ps.fIncUpdate), 0);
             for(i=0;i<=31;i++) {
                 sprintf(tmprgb, "-ps.rgbReserved%02d", i);
-                hv_store(self, tmprgb, 17, newSViv((long) ps.rgbReserved[i]), 0);
+                hv_store(self, tmprgb, 17, newSViv((IV) ps.rgbReserved[i]), 0);
             }
             XSRETURN_YES;
         } else {
@@ -5165,6 +5170,10 @@ PPCODE:
     #      only enable folders to be selected
     #  -includefiles => 0/1 (default 0)
     #      the list will include files as well folders
+    #  -newui => 0/1 (default 0)
+    #      use the "new" user interface (which has a "New folder" button)
+    #  -nonewfolder => 0/1 (default 0)
+    #      hides the "New folder" button (only meaningful with -newui => 1)
     #  -owner => WINDOW
     #      A Win32::GUI::Window or Win32::GUI::DialogBox object specifiying the
     #      owner window for the dialog box
@@ -5311,6 +5320,11 @@ PPCODE:
             } else BitmaskOption("-folderonly", bi.ulFlags, BIF_RETURNONLYFSDIRS)
             } else BitmaskOption("-includefiles", bi.ulFlags, BIF_BROWSEINCLUDEFILES)
             } else BitmaskOption("-printeronly", bi.ulFlags, BIF_BROWSEFORPRINTER)
+            } else BitmaskOption("-newui", bi.ulFlags, BIF_NEWDIALOGSTYLE)
+#ifdef BIF_NONEWFOLDERBUTTON
+            /* not defined on old cygwin */
+            } else BitmaskOption("-nonewfolder", bi.ulFlags, BIF_NONEWFOLDERBUTTON)
+#endif
             } else if(strcmp(option, "-directory") == 0) {
                 next_i = i + 1;
                 bi.lParam = (LPARAM) SvPV_nolen(ST(next_i));

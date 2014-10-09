@@ -2,7 +2,7 @@
     ###########################################################################
     # options parsing routines
     #
-    # $Id: GUI_Options.cpp,v 1.16 2006/08/03 22:20:19 robertemay Exp $
+    # $Id: GUI_Options.cpp,v 1.18 2011/07/16 14:51:03 acalpini Exp $
     #
     ###########################################################################
     */
@@ -200,14 +200,24 @@ void ParseWindowOptions(
                     ZeroMemory(&lb, sizeof(LOGBRUSH));
                     lb.lbStyle = BS_SOLID;
                     lb.lbColor = perlcs->clrBackground;
-                    if(perlcs->hBackgroundBrush != NULL) {
+                    if(perlcs->hBackgroundBrush != NULL && perlcs->bDeleteBackgroundBrush) {
                         DeleteObject((HGDIOBJ) perlcs->hBackgroundBrush);
                     }
                     perlcs->hBackgroundBrush = CreateBrushIndirect(&lb);
+                    perlcs->bDeleteBackgroundBrush = TRUE;
                 }
-                storing = newSViv((long) perlcs->clrBackground);
+                storing = newSViv((IV) perlcs->clrBackground);
                 stored = hv_store_mg(NOTXSCALL perlcs->hvSelf, "-background", 11, storing, 0);
-                storing = newSViv((long) perlcs->hBackgroundBrush);
+                storing = newSViv((IV) perlcs->hBackgroundBrush);
+                stored = hv_store_mg(NOTXSCALL perlcs->hvSelf, "-backgroundbrush", 16, storing, 0);
+            } else if(strcmp(option, "-backgroundbrush") == 0) {
+                next_i = i + 1;
+				if(perlcs->hBackgroundBrush != NULL && perlcs->bDeleteBackgroundBrush) {
+					DeleteObject((HGDIOBJ) perlcs->hBackgroundBrush);
+				}
+                perlcs->hBackgroundBrush = (HBRUSH) handle_From(NOTXSCALL ST(next_i));;
+                perlcs->bDeleteBackgroundBrush = FALSE;
+                storing = newSViv((IV) perlcs->hBackgroundBrush);
                 stored = hv_store_mg(NOTXSCALL perlcs->hvSelf, "-backgroundbrush", 16, storing, 0);
             } else if(strcmp(option, "-size") == 0) {
                 next_i = i + 1;
@@ -345,7 +355,7 @@ void ParseMenuItemOptions(
 
     int i, next_i;
     char * option;
-    unsigned int textlength;
+    STRLEN textlength;
     next_i = -1;
 #ifdef PERLWIN32GUI_STRONGDEBUG
     printf("!XS(ParseMenuItemOptions) called with items=%d, from_i=%d\n", items, from_i);
@@ -418,7 +428,7 @@ void ParseMenuItemOptions(
 #endif
                 strcpy( (perlmid->szName), SvPV_nolen(ST(next_i)) );
                 SwitchBit(mii->fMask, MIIM_DATA, 1);
-                mii->dwItemData = (DWORD) perlmid;
+                mii->dwItemData = (IV) perlmid;
 #ifdef PERLWIN32GUI_STRONGDEBUG
                 printf("!XS(ParseMenuItemOptions) done -name ('%s')\n", perlmid->szName);
 #endif
@@ -430,7 +440,7 @@ void ParseMenuItemOptions(
                 SwitchBit(mii->fMask, MIIM_DATA, 1);
                 /* perlmid->svCode = newSVsv(ST(next_i)); */
                 sv_setsv(perlmid->svCode, ST(next_i));
-                mii->dwItemData = (DWORD) perlmid;
+                mii->dwItemData = (IV) perlmid;
 #ifdef PERLWIN32GUI_STRONGDEBUG
                 printf("!XS(ParseMenuItemOptions) done -onClick newSVsv\n");
 #endif
@@ -458,7 +468,7 @@ void ParseHeaderItemOptions(
 
     int i, next_i;
     char * option;
-    unsigned int tlen;
+    STRLEN tlen;
 
     next_i = -1;
     for(i = from_i; i < items; i++) {
@@ -546,7 +556,7 @@ void ParseListViewColumnItemOptions(
 
     int i, next_i;
     char * option;
-    unsigned int tlen;
+    STRLEN tlen;
 
     next_i = -1;
     for(i = from_i; i < items; i++) {
@@ -615,7 +625,7 @@ void ParseRebarBandOptions(
     
     int i, next_i;
     char * option;
-    unsigned int tlen;
+    STRLEN tlen;
 
     next_i = -1;
     for(i = from_i; i < items; i++) {
@@ -692,7 +702,7 @@ void ParseComboboxExItemOptions(
 
     int i, next_i;
     char * option;
-    unsigned int tlen;
+    STRLEN tlen;
 
     next_i = -1;
     for(i = from_i; i < items; i++) {
@@ -809,7 +819,7 @@ void ParseTooltipOptions(
     }
 
 	if( ti->uFlags & TTF_IDISHWND) {
-		ti->uId = (UINT)ti->hwnd;  /* TODO: can hwnd be NULL? */
+		ti->uId = (IV)ti->hwnd;  /* TODO: can hwnd be NULL? */
 	} else {
 		/* if rect not supplied, use hwnd co-ordinates */
 		if(ti->rect.left == 0 && ti->rect.right == 0 && ti->rect.top == 0 && ti->rect.bottom == 0) {
@@ -825,7 +835,7 @@ void ParseTooltipOptions(
     HWND parent = GetAncestor(ti->hwnd, GA_PARENT);
     if(parent) {
         LPPERLWIN32GUI_USERDATA ud;
-        ud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(ti->hwnd, GWL_USERDATA);
+        ud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(ti->hwnd, GWLP_USERDATA);
         if( ValidUserData(ud) ) {
                 ud->dwPlStyle |= PERLWIN32GUI_CONTAINER;
         }

@@ -34,6 +34,7 @@ my %config = (
 if($Config{cc} =~ /gcc/i) {
     $config{macro}->{RC} =      'windres';
     $config{macro}->{RCFLAGS} = '-O coff -o $*.res';
+    $config{CCFLAGS} = '-Wno-write-strings';
 }
 
 # if building as part of the Win32::GUI core, then remove

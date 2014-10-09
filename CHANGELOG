@@ -1,10 +1,52 @@
 ###############################################################################
 # CHANGELOG
-# $Id: CHANGELOG,v 1.146 2008/02/13 15:24:04 robertemay Exp $
+# $Id: CHANGELOG,v 1.150 2011/07/16 14:51:03 acalpini Exp $
 ###############################################################################
 
 Win32-GUI ChangeLog
 ===================
++ [kmx] : 8 October 2014
+   - CVS > GIT migration
+   - merging strawberry perl related fixes
+   - relese 1.07
+
++ [Aldo Calpini] : 16 July 2011 - Fixed -background GDI object leak, added -newui option for BrowseForFolder
+   - GUI.h
+   - GUI.xs
+   - GUI_Helpers.cpp
+   - GUI_Options.cpp
+
++ [Jeremy White] : 08 April 2010 - Initial change to build with a 64bit compiler
+   - DC.xs
+   - Font.xs
+   - GUI.h
+   - GUI.xs
+   - GUI_Events.cpp
+   - GUI_Helpers.cpp
+   - GUI_MessageLoops.cpp
+   - GUI_Options.cpp
+   - Header.xs
+   - ListView.xs
+   - MDI.xs
+   - Rebar.xs
+   - RichEdit.xs
+   - Splitter.xs
+   - TabStrip.xs
+   - Textfield.xs
+   - Toolbar.xs
+   - Tooltip.xs
+   - TreeView.xs
+   - Window.xs
+   - Scintilla.xs
+   
++ [Jeremy White] : 22 February 2010 - Added methods to DC.xs
+   - DC.xs - added GradientFillTriangle and GradientFillRectangle
+   - Makefile.PL - added lib lmsimg32
+   - GradientFill.pl - added sample showing how to use new methods
+
++ [Jeremy White] : 20 February 2010 - Bug fix
+   - GUI_Helpers.cpp fix of bug #1941264 causing crash with menus
+
 + [Robert May] : 13 February 2008 - 1.06 Release
     - Up version numbers to 1.06
 

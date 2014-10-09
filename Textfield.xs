@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Textfield
     #
-    # $Id: Textfield.xs,v 1.9 2007/01/20 17:09:22 robertemay Exp $
+    # $Id: Textfield.xs,v 1.10 2010/04/08 21:25:29 jwgui Exp $
     #
     ###########################################################################
     */
@@ -10,7 +10,7 @@
 #include "GUI.h"
 
 
-void 
+void
 Textfield_onPreCreate(NOTXSPROC LPPERLWIN32GUI_CREATESTRUCT perlcs) {
 
     perlcs->cs.lpszClass = "EDIT";
@@ -21,7 +21,7 @@ Textfield_onPreCreate(NOTXSPROC LPPERLWIN32GUI_CREATESTRUCT perlcs) {
 BOOL
 Textfield_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATESTRUCT perlcs) {
     BOOL retval;
-    
+
     if(strcmp(option, "-align") == 0) {
         if(strcmp(SvPV_nolen(value), "left") == 0) {
             SwitchBit(perlcs->cs.style, ES_LEFT, 1);
@@ -157,7 +157,7 @@ Textfield_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM w
    /*
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Textfield
-    ########################################################################### 
+    ###########################################################################
     */
 
 MODULE = Win32::GUI::Textfield     PACKAGE = Win32::GUI::Textfield
@@ -205,7 +205,7 @@ PPCODE:
 
     ###########################################################################
     # (@)METHOD:EmptyUndoBuffer()
-    # Reset the undo flag of an Textfield. 
+    # Reset the undo flag of an Textfield.
 LRESULT
 EmptyUndoBuffer(handle)
     HWND handle
@@ -220,7 +220,7 @@ OUTPUT:
     # (@)METHOD:FmtLines(FLAG)
     # Set the inclusion flag of soft line break characters on or off within a multiline TextField.
     # A soft line break consists of two carriage returns and a linefeed and is inserted at the end of a line that is broken because of word wrapping.
- 
+
 LRESULT
 FmtLines(handle, value)
     HWND   handle
@@ -328,7 +328,7 @@ CODE:
     ###########################################################################
     # (@)METHOD:GetLineCount()
     # Return the number of lines in a multiline Textfield.
-     
+
 LRESULT
 GetLineCount(handle)
     HWND handle
@@ -341,7 +341,7 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:GetMargins()
-    # Return an array with right and left margins.     
+    # Return an array with right and left margins.
 void
 GetMargins(handle)
     HWND handle
@@ -359,7 +359,7 @@ PPCODE:
     ###########################################################################
     # (@)METHOD:GetModify()
     # Determine whether the content of a Textfield has been modified.
-     
+
 LRESULT
 GetModify(handle)
     HWND handle
@@ -373,7 +373,7 @@ OUTPUT:
     ###########################################################################
     # (@)METHOD:GetPasswordChar()
     # Return the password character displayed .
-     
+
 LRESULT
 GetPasswordChar(handle)
     HWND handle
@@ -385,7 +385,7 @@ OUTPUT:
     ###########################################################################
     # (@)METHOD:GetRect()
     # Return formatting rectangle is the limiting rectangle of the text.
-     
+
 void
 GetRect(handle)
     HWND handle
@@ -407,7 +407,7 @@ PPCODE:
     # (@)METHOD:Selection()
     # Returns a 2 item list giving the index of the start and end of the current
     # selection
-    
+
 void
 GetSel(handle)
     HWND handle
@@ -426,7 +426,7 @@ PPCODE:
     ###########################################################################
     # (@)METHOD:GetThumb()
     # Return  the position of the scroll box (thumb) in a multiline Textfield.
-     
+
 LRESULT
 GetThumb(handle)
     HWND handle
@@ -437,7 +437,7 @@ CODE:
 OUTPUT:
     RETVAL
 
-    # TODO : EM_GETWORDBREAKPROC 
+    # TODO : EM_GETWORDBREAKPROC
 
     # EM_LIMITTEXT = EM_SETLIMITTEXT
 
@@ -808,7 +808,7 @@ CODE:
     RETVAL = IsClipboardFormatAvailable(CF_TEXT);
 OUTPUT:
     RETVAL
-    
+
 
     ###########################################################################
     # (@)METHOD:ReadOnly([FLAG])
@@ -819,7 +819,7 @@ CODE:
     if(items > 1)
         RETVAL = SendMessage(handle, EM_SETREADONLY, (WPARAM) (BOOL) SvIV(ST(1)), 0);
     else
-        RETVAL = (GetWindowLong(handle, GWL_STYLE) & ES_READONLY);
+        RETVAL = (GetWindowLongPtr(handle, GWL_STYLE) & ES_READONLY);
 OUTPUT:
     RETVAL
 

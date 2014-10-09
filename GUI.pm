@@ -19,7 +19,7 @@ require DynaLoader;     # to dynuhlode the module.
 ###############################################################################
 # STATIC OBJECT PROPERTIES
 #
-$VERSION             = "1.06";        # For MakeMaker and CPAN
+$VERSION             = "1.07";        # For MakeMaker and CPAN
 $XS_VERSION          = $VERSION;      # For dynaloader
 $VERSION             = eval $VERSION; # For Perl  (see perldoc perlmodstyle)
 $MenuIdCounter       = 101;

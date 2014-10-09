@@ -23,13 +23,13 @@ our @ISA = qw(Win32::GUI::Constants);
 package main;
 
 #use Win32::ABC qw(CW_USEDEFAULT);
-Win32::ABC->import qw(CW_USEDEFAULT);  # Equililent to use() when package doesn't come from seperate file
+Win32::ABC->import('CW_USEDEFAULT');  # Equililent to use() when package doesn't come from seperate file
 
 # Test exporting of default constant
 can_ok("main", "CW_USEDEFAULT");
 
 ok(!defined(&CW_USEDEFAULT), "default constant not defined");
-is(CW_USEDEFAULT(), 2147483648, "correct value");
+is(&CW_USEDEFAULT, 2147483648, "correct value");
 ok(defined(&CW_USEDEFAULT), "default constant defined after calling it");
 
 # Test other symbol not exported

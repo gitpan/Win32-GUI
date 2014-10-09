@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::ListView
     #
-    # $Id: ListView.xs,v 1.15 2008/01/13 11:42:57 robertemay Exp $
+    # $Id: ListView.xs,v 1.16 2010/04/08 21:26:48 jwgui Exp $
     #
     ###########################################################################
     */
@@ -1139,7 +1139,7 @@ InsertItem(handle,...)
     HWND handle
 PREINIT:
     LV_ITEM Item;
-    unsigned int tlen;
+    STRLEN tlen;
     int i, next_i;
     char * option;
     AV* texts;
@@ -1261,7 +1261,7 @@ SetBkImage(handle, ...)
     HWND handle
 PREINIT:
     LVBKIMAGE BkImage;
-    unsigned int tlen;
+    STRLEN tlen;
     int i, next_i;
     char * option;
 CODE:
@@ -1459,7 +1459,7 @@ ALIAS:
     Win32::GUI::ListView::ChangeItem = 1
 PREINIT:
     LV_ITEM Item;
-    unsigned int tlen;
+    STRLEN tlen;
     int i, next_i;
     char * option;
 CODE:
@@ -1691,7 +1691,7 @@ CODE:
     if (item < -1 || item >= iCount) XSRETURN_UNDEF;
     if (item == -1) {  // All items
         // Get the current window style.
-        dwStyle = GetWindowLong(handle, GWL_STYLE);
+        dwStyle = GetWindowLongPtr(handle, GWL_STYLE);
         if (dwStyle & LVS_SINGLESEL) XSRETURN_UNDEF; // Not in singlesel mode
         mask = LVIS_SELECTED;
         state = 0xFFFFFFFF;    // Select all
@@ -1723,7 +1723,7 @@ PREINIT:
     UINT mask;
 CODE:
     // Get the current window style.
-    dwStyle = GetWindowLong(handle, GWL_STYLE);
+    dwStyle = GetWindowLongPtr(handle, GWL_STYLE);
     if (dwStyle & LVS_SINGLESEL) XSRETURN_UNDEF; // Not in singlesel mode
     mask = LVIS_SELECTED;
     state = 0xFFFFFFFF;    // Select all
@@ -1779,7 +1779,7 @@ Add(handle,...)
     HWND handle
 PREINIT:
     LV_ITEM Item;
-    unsigned int tlen;
+    STRLEN tlen;
     int item_i, i;
     char * option;
     AV* texts;
@@ -1859,12 +1859,12 @@ PREINIT:
     DWORD dwStyle;
 CODE:
     // Get the current window style.
-    dwStyle = GetWindowLong(handle, GWL_STYLE);
+    dwStyle = GetWindowLongPtr(handle, GWL_STYLE);
     if(items == 2) {
         // Only set the window style if the view bits have changed.
         if ((dwStyle & LVS_TYPEMASK) != view)
-            SetWindowLong(handle, GWL_STYLE,  (dwStyle & ~LVS_TYPEMASK) | view);
-        dwStyle = GetWindowLong(handle, GWL_STYLE);
+            SetWindowLongPtr(handle, GWL_STYLE,  (dwStyle & ~LVS_TYPEMASK) | view);
+        dwStyle = GetWindowLongPtr(handle, GWL_STYLE);
         RETVAL = (dwStyle & LVS_TYPEMASK);
     } else
         RETVAL = (dwStyle & LVS_TYPEMASK);

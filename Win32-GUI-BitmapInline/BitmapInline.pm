@@ -98,7 +98,7 @@ sub new {
     # On perl 5.6 we have problems with tainted data in open().
     # so (naughtily) untaint our TMP file name.  In later versions
     # of File::Spec tmpdir() won't give us a tained answer.
-    if($[ < 5.008000) {
+    if($] < 5.008000) {
         $tmpfile =~ /^(.*)$/;
         $tmpfile = $1;
     }

@@ -43,6 +43,7 @@ if($Config{cc} =~ /gcc/i) {
     if( $^O =~ /cygwin/i ) {
         $config{MYEXTLIB}     = 'extlib/libFreeImage-cygwin.a';
     }
+    $config{CCFLAGS} = '-Wno-write-strings';
 }
 
 # Can't build with gcc (yet).

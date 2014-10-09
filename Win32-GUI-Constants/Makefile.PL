@@ -28,6 +28,10 @@ my %config = (
                       DEMOS => 'demos/ConstantsDemo.pl' },
     clean         => {FILES => '*.rc *.res constants.src constants.h t/70_values.def phash.inc phash.def', },
     depend        => {'Constants.c' => 'constants.h phash.def phash.inc', },
+    ##### depend        => {'Constants.o' => 'Constants.c constants.h phash.inc',
+    #####                   ##'phash.inc' => 'phash.def',
+    #####                   ##'phash.def' => 'constants.src'
+    #####                  },
 );
 
 # if building using gcc (MinGW or cygwin) use windres
@@ -35,6 +39,7 @@ my %config = (
 if($Config{cc} =~ /gcc/i) {
     $config{macro}->{RC} =      'windres';
     $config{macro}->{RCFLAGS} = '-O coff -o $*.res';
+    $config{CCFLAGS} = '-Wno-write-strings';
 }
 
 MMUtil::Extend_MM();

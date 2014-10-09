@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Toolbar
     #
-    # $Id: Toolbar.xs,v 1.9 2008/01/31 00:21:40 robertemay Exp $
+    # $Id: Toolbar.xs,v 1.10 2010/04/08 21:26:48 jwgui Exp $
     #
     ###########################################################################
     */
@@ -127,9 +127,9 @@ PREINIT:
     BOOL hasBitmaps = 0;
 CODE:
     TbAddBitmap.hInst = (HINSTANCE) NULL;
-    TbAddBitmap.nID = (UINT) bitmap;
+    TbAddBitmap.nID = (IV) bitmap;
     
-    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong((HWND) handle, GWL_USERDATA);
+    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr((HWND) handle, GWLP_USERDATA);
     if( ValidUserData(perlud) )  {
         hasBitmaps = (BOOL)(perlud->dwPlStyle & PERLWIN32GUI_TB_HASBITMAPS);
     }
@@ -237,7 +237,7 @@ AddString(handle,string)
     char * string
 PREINIT:
     char *Strings;
-    unsigned int szLen, totLen;
+    STRLEN szLen, totLen;
 CODE:
     totLen = 0;
     #    // the function should accept an array of strings,
@@ -1163,7 +1163,7 @@ PREINIT:
     TBBUTTONINFO button;
     int i, next_i;
     char * option;
-    unsigned int tlen;
+    STRLEN tlen;
 CODE:
     ZeroMemory(&button, sizeof(TBBUTTONINFO));
     button.cbSize = sizeof(TBBUTTONINFO);
@@ -1466,7 +1466,7 @@ SetImageList(handle, imagelist)
 PREINIT:
     LPPERLWIN32GUI_USERDATA perlud;
 CODE:
-    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong((HWND) handle, GWL_USERDATA);
+    perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr((HWND) handle, GWLP_USERDATA);
     if(perlud->dwPlStyle & PERLWIN32GUI_TB_HASBITMAPS) {
         CROAK("Cannot add imagelist to a toolbar that has already had AddBitmap() called");
         XSRETURN_UNDEF;

@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Window
     #
-    # $Id: Window.xs,v 1.12 2006/03/16 21:11:12 robertemay Exp $
+    # $Id: Window.xs,v 1.13 2010/04/08 21:26:48 jwgui Exp $
     #
     ###########################################################################
     */
@@ -79,7 +79,7 @@ Window_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATESTR
     ||        strcmp(option, "-accelerators") == 0
     ||        strcmp(option, "-acceleratortable") == 0) {
         perlcs->hAcc = (HACCEL) handle_From(NOTXSCALL value);
-        storing = newSViv((LONG) handle_From(NOTXSCALL value));
+        storing = newSViv((IV) handle_From(NOTXSCALL value));
         stored = hv_store_mg(NOTXSCALL perlcs->hvSelf, "-accel", 6, storing, 0);
     } else if(strcmp(option, "-hasmaximize") == 0
     ||        strcmp(option, "-maximizebox") == 0) {

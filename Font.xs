@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Font
     #
-    # $Id: Font.xs,v 1.3 2004/04/08 21:23:39 lrocher Exp $
+    # $Id: Font.xs,v 1.4 2010/04/08 21:26:48 jwgui Exp $
     #
     ###########################################################################
     */
@@ -125,7 +125,7 @@ PPCODE:
             next_i = -1;
         }
     }
-    XSRETURN_IV((long) CreateFont(
+    XSRETURN_IV((IV) CreateFont(
         nHeight,
         nWidth,
         nEscapement,

@@ -127,12 +127,12 @@ sub new {
   my %out;
 
   ### Filtering option
-  for my $option qw(
+  for my $option (qw(
         -name -parent
         -left -top -width -height -pos -size
         -pushstyle -addstyle -popstyle -remstyle -notstyle -negstyle
         -exstyle -pushexstyle -addexstyle -popexstyle -remexstyle -notexstyle
-        ) {
+        )) {
     $out{$option} = $in{$option} if exists $in{$option};
   }
 

@@ -16,6 +16,8 @@ use MMUtil();
 my @demos;
 File::Find::find(sub { push @demos, $File::Find::name if $File::Find::name =~ /\.pl$/ }, 'demos');
 
+my $sc = ($Config{archname} =~ /x64/) ? 'SciLexer64.dll' : 'SciLexer32.dll';
+
 my %config = (
     NAME          =>  'Win32::GUI::Scintilla',
     VERSION_FROM  =>  'Scintilla.PL',
@@ -23,7 +25,7 @@ my %config = (
     AUTHOR        =>  'ROCHER Laurent (lrocher@cpan.org)',
     PM            => {'Scintilla.pod'        => '$(INST_LIBDIR)/Scintilla.pod',
                       'Perl.pm'              => '$(INST_LIBDIR)/Scintilla/Perl.pm',
-                      'Include/SciLexer.dll' => '$(INST_ARCHAUTODIR)/SciLexer.dll', },
+                      "Include/$sc"          => '$(INST_ARCHAUTODIR)/SciLexer.dll', },
     PL_FILES      => {'Scintilla.PL'   => '$(INST_LIBDIR)/Scintilla.pm',
                       'ScintillaRC.PL' => '$(BASEEXT).rc', },
     OBJECT        =>  '$(BASEEXT)$(OBJ_EXT) $(BASEEXT).res',
@@ -40,6 +42,7 @@ my %config = (
 if($Config{cc} =~ /gcc/i) {
     $config{macro}->{RC} =      'windres';
     $config{macro}->{RCFLAGS} = '-O coff -o $*.res';
+    $config{CCFLAGS} = '-Wno-write-strings';
 }
 
 MMUtil::Extend_MM();

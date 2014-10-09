@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------
-// $Id: GUI.h,v 1.31 2007/01/20 17:09:22 robertemay Exp $
+// $Id: GUI.h,v 1.33 2011/07/16 14:51:03 acalpini Exp $
 // --------------------------------------------------------------------
 // #### Uncomment the next two lines (in increasing verbose order)
 // #### for debugging info
@@ -97,7 +97,7 @@ extern "C" {
 #   define PERLUD_FETCH   PERLUD_DECLARE = perlud->pPerl
 #else
 #   ifdef PERL_NO_GET_CONTEXT
-#       pragma message( "\n*** Using Preserved Perl context.\n" )
+/*#       pragma message( "\n*** Using Preserved Perl context.\n" )*/
 #       define NOTXSPROC pTHX_
 #       define NOTXSCALL aTHX_
 #       ifdef USE_THREADS
@@ -108,7 +108,7 @@ extern "C" {
 #       define PERLUD_STORE   perlud->aTHX = aTHX;
 #       define PERLUD_FETCH   PERLUD_DECLARE = perlud->aTHX;
 #   else
-#       pragma message( "\n*** Using an implicit Perl context.\n" )
+/*#       pragma message( "\n*** Using an implicit Perl context.\n" )*/
 #       define NOTXSPROC
 #       define NOTXSCALL
 #       define PERLUD_DECLARE
@@ -270,6 +270,7 @@ typedef struct tagPERLWIN32GUI_CREATESTRUCT {
     COLORREF    clrForeground;
     COLORREF    clrBackground;
     HBRUSH      hBackgroundBrush;
+    BOOL        bDeleteBackgroundBrush;
     HV*         hvEvents;
     DWORD       dwEventMask;
     DWORD       dwFlags;
@@ -295,12 +296,13 @@ typedef struct tagPERLWIN32GUI_USERDATA {
     COLORREF    clrForeground;
     COLORREF    clrBackground;
     HBRUSH      hBackgroundBrush;
+    BOOL        bDeleteBackgroundBrush;
     WNDPROC     WndProc;
     HV*         hvEvents;
     DWORD       dwEventMask;
     AV*         avHooks;
     LRESULT     forceResult;
-    DWORD       dwData;                                                // Internal DATA usage
+    void*       dwData;                                                // Internal DATA usage
     SV*         userData;                                              // user data
 } PERLWIN32GUI_USERDATA, *LPPERLWIN32GUI_USERDATA;
 
@@ -313,7 +315,7 @@ typedef struct tagPERLWIN32GUI_MENUITEMDATA {
 
 #define ValidUserData(ptr) (ptr != NULL && ptr->dwSize == sizeof(PERLWIN32GUI_USERDATA))
 #define PERLUD_FROM_WND(hwnd) \
-    LPPERLWIN32GUI_USERDATA perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(hwnd, GWL_USERDATA); \
+    LPPERLWIN32GUI_USERDATA perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(hwnd, GWLP_USERDATA); \
     if( !ValidUserData(perlud) ) return 0;
 #define PERL_OBJECT_FROM_WINDOW(hwnd) \
         PERLUD_FROM_WND(hwnd) \
@@ -322,7 +324,7 @@ typedef struct tagPERLWIN32GUI_MENUITEMDATA {
 #undef WORD
 #define WORD __TEMP_WORD
 
-#define PERLUD_FREE SetWindowLong(hwnd, GWL_USERDATA, (LONG) NULL); Perlud_Free(NOTXSCALL perlud);
+#define PERLUD_FREE SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR) NULL); Perlud_Free(NOTXSCALL perlud);
 /*
  * Section for the constant definitions.
  */
@@ -765,7 +767,7 @@ int  MonthCal_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPAR
   #ifndef TBSTATE_ELLIPSES
     #define TBSTATE_ELLIPSES  0x40
   #endif
-  HIMAGELIST  WINAPI ImageList_Duplicate(HIMAGELIST himl); //TODO: remove?
+  /* HIMAGELIST  WINAPI ImageList_Duplicate(HIMAGELIST himl); //TODO: remove? */
   #ifndef MCM_GETUNICODEFORMAT
     #define MCM_GETUNICODEFORMAT     CCM_GETUNICODEFORMAT
   #endif

@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::RichEdit
     #
-    # $Id: RichEdit.xs,v 1.9 2007/07/15 18:54:55 robertemay Exp $
+    # $Id: RichEdit.xs,v 1.10 2010/04/08 21:26:48 jwgui Exp $
     #
     ###########################################################################
     */
@@ -984,7 +984,7 @@ CODE:
     hfile = CreateFile(
         filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL
     );
-    estream.dwCookie = (DWORD) hfile;
+    estream.dwCookie = (IV) hfile;
     estream.dwError = 0;
     estream.pfnCallback = (EDITSTREAMCALLBACK) RichEditSave;
 
@@ -1009,7 +1009,7 @@ CODE:
     hfile = CreateFile(
         filename, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL
     );
-    estream.dwCookie = (DWORD) hfile;
+    estream.dwCookie = (IV) hfile;
     estream.dwError = 0;
     estream.pfnCallback = (EDITSTREAMCALLBACK) RichEditLoad;
 

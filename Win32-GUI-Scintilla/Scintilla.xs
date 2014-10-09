@@ -196,7 +196,7 @@ LRESULT WINAPI CallWndProc(int nCode, WPARAM wParam, LPARAM lParam)
 
       if (memcmp (Name, "Scintilla", 9) == 0)
       {
-        LPPERLWIN32GUI_USERDATA perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(lpnmhdr->hwndFrom, GWL_USERDATA);
+	LPPERLWIN32GUI_USERDATA perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(lpnmhdr->hwndFrom, GWLP_USERDATA);
 
         if (perlud != NULL)
         {
@@ -221,8 +221,8 @@ LRESULT WINAPI CallWndProc(int nCode, WPARAM wParam, LPARAM lParam)
 
       if (memcmp (Name, "Scintilla", 9) == 0)
       {
-        // Perl contexte
-        LPPERLWIN32GUI_USERDATA perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong((HWND) msg->lParam, GWL_USERDATA);
+        // Perl contexte        
+	LPPERLWIN32GUI_USERDATA perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr((HWND) msg->lParam, GWLP_USERDATA);
         if (perlud != NULL)
         {
           //fetch the perl context from perlud

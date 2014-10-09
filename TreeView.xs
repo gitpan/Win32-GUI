@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::TreeView
     #
-    # $Id: TreeView.xs,v 1.10 2008/01/31 00:36:11 robertemay Exp $
+    # $Id: TreeView.xs,v 1.11 2010/04/08 21:26:48 jwgui Exp $
     #
     ###########################################################################
     */
@@ -106,7 +106,7 @@ TreeView_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
             */        
            pItem = &((TV_DISPINFO*)lParam)->item;
            PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL6, "BeginLabelEdit",
-                PERLWIN32GUI_ARGTYPE_LONG, (LONG) pItem->hItem,
+                PERLWIN32GUI_ARGTYPE_LONG, (IV) pItem->hItem,
                 -1);
            
            // Force result if event is handle
@@ -127,13 +127,13 @@ TreeView_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
            pItem = &((TV_DISPINFO*)lParam)->item;
            if ( pItem->pszText != NULL) {
              PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL7, "EndLabelEdit",
-                PERLWIN32GUI_ARGTYPE_LONG, (LONG) pItem->hItem,PERLWIN32GUI_ARGTYPE_STRING,pItem->pszText,
+                PERLWIN32GUI_ARGTYPE_LONG, (IV) pItem->hItem,PERLWIN32GUI_ARGTYPE_STRING,pItem->pszText,
                 -1);
              }
            else {
              //user has canceled the edit
              PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL7, "EndLabelEdit",
-                PERLWIN32GUI_ARGTYPE_LONG, (LONG) pItem->hItem,
+                PERLWIN32GUI_ARGTYPE_LONG, (IV) pItem->hItem,
                 -1);           
            }
            
@@ -146,7 +146,7 @@ TreeView_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
              * (@)APPLIES_TO:TreeView
              */
             PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL1, "NodeClick",
-                PERLWIN32GUI_ARGTYPE_LONG, (LONG) tv_notify->itemNew.hItem,
+                PERLWIN32GUI_ARGTYPE_LONG, (IV) tv_notify->itemNew.hItem,
                 -1);
             break;
 
@@ -158,7 +158,7 @@ TreeView_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
                  * (@)APPLIES_TO:TreeView
                  */
                 PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL2, "Collapse",
-                    PERLWIN32GUI_ARGTYPE_LONG, (LONG) tv_notify->itemNew.hItem,
+                    PERLWIN32GUI_ARGTYPE_LONG, (IV) tv_notify->itemNew.hItem,
                     -1);
             } else {
                 /*
@@ -167,7 +167,7 @@ TreeView_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
                  * (@)APPLIES_TO:TreeView
                  */
                 PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL3, "Expand",
-                    PERLWIN32GUI_ARGTYPE_LONG, (LONG) tv_notify->itemNew.hItem,
+                    PERLWIN32GUI_ARGTYPE_LONG, (IV) tv_notify->itemNew.hItem,
                     -1);
             }
             break;
@@ -184,7 +184,7 @@ TreeView_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
                  * (@)APPLIES_TO:TreeView
                  */
                 PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL4, "Collapsing",
-                    PERLWIN32GUI_ARGTYPE_LONG, (LONG) tv_notify->itemNew.hItem,
+                    PERLWIN32GUI_ARGTYPE_LONG, (IV) tv_notify->itemNew.hItem,
                     -1);
             } else {
                 /*
@@ -196,7 +196,7 @@ TreeView_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
                  * (@)APPLIES_TO:TreeView
                  */
                 PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL5, "Expanding",
-                    PERLWIN32GUI_ARGTYPE_LONG, (LONG) tv_notify->itemNew.hItem,
+                    PERLWIN32GUI_ARGTYPE_LONG, (IV) tv_notify->itemNew.hItem,
                     -1);
             }
 
@@ -478,7 +478,7 @@ PPCODE:
         XST_mPV(6, "-children");
         XST_mIV(7, tv_item.cChildren);
         XST_mPV(8, "-parent");
-        XST_mIV(9, (long) TreeView_GetParent(handle, item));
+        XST_mIV(9, (IV) TreeView_GetParent(handle, item));
         XST_mPV(10, "-state");
         XST_mIV(11, tv_item.state);
         XSRETURN(12);
@@ -734,11 +734,11 @@ PPCODE:
     TreeView_HitTest(handle, &ht);
     if(GIMME == G_ARRAY) {
         EXTEND(SP, 2);
-        XST_mIV(0, (long) ht.hItem);
+        XST_mIV(0, (IV) ht.hItem);
         XST_mIV(1, ht.flags);
         XSRETURN(2);
     } else {
-        XSRETURN_IV((long) ht.hItem);
+        XSRETURN_IV((IV) ht.hItem);
     }
 
     ###########################################################################
@@ -973,7 +973,7 @@ ALIAS:
     Win32::GUI::TreeView::ChangeItem = 1
 PREINIT:
     int i, next_i, imageSeen, selectedImageSeen;
-    unsigned int tlen;
+    STRLEN tlen;
     TV_ITEM Item;
     char * option;
 CODE:

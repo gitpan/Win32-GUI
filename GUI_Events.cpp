@@ -2,7 +2,7 @@
     ###########################################################################
     # event processing routines
     #
-    # $Id: GUI_Events.cpp,v 1.15 2007/07/15 18:47:13 robertemay Exp $
+    # $Id: GUI_Events.cpp,v 1.16 2010/04/08 21:26:48 jwgui Exp $
     #
     ###########################################################################
         */
@@ -231,7 +231,7 @@ int DoEvent_Menu(
     // NEM Event call
     if( SvOK(event) ) {
 
-        LPPERLWIN32GUI_USERDATA perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(hwnd, GWL_USERDATA);
+        LPPERLWIN32GUI_USERDATA perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(hwnd, GWLP_USERDATA);
         PerlResult = 0;
 
         dSP;

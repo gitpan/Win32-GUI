@@ -2,7 +2,7 @@
     ###########################################################################
     # (@)PACKAGE:Win32::GUI::Header
     #
-    # $Id: Header.xs,v 1.5 2006/03/16 21:11:11 robertemay Exp $
+    # $Id: Header.xs,v 1.6 2010/04/08 21:26:48 jwgui Exp $
     #
     ###########################################################################
     */
@@ -239,7 +239,7 @@ CODE:
         XST_mPV( 2, "-image");
         XST_mIV( 3, Item.iImage);
         XST_mPV( 4, "-bitmap");
-        XST_mIV( 5, (long)Item.hbm);
+        XST_mIV( 5, (IV)Item.hbm);
         XST_mPV( 6, "-bitmaponright");
         XST_mIV( 7, (Item.fmt & HDF_BITMAP_ON_RIGHT));
         XST_mPV( 8, "-cxy");

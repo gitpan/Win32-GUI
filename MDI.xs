@@ -2,7 +2,7 @@
     ###########################################################################
     # Win32::GUI Mutiple Document Interface
     #
-    # $Id: MDI.xs,v 1.3 2005/06/26 16:40:59 robertemay Exp $
+    # $Id: MDI.xs,v 1.4 2010/04/08 21:26:48 jwgui Exp $
     #
     ###########################################################################
     */
@@ -90,12 +90,12 @@ MDIClient_onPostCreate(NOTXSPROC HWND myhandle, LPPERLWIN32GUI_CREATESTRUCT perl
     // Register Client handler into parent data
     if (perlcs->hvParent != NULL) {
         LPPERLWIN32GUI_USERDATA parentud;
-        parentud = (LPPERLWIN32GUI_USERDATA) GetWindowLong(perlcs->cs.hwndParent, GWL_USERDATA);
+        parentud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(perlcs->cs.hwndParent, GWLP_USERDATA);
 
         if (parentud->dwPlStyle & PERLWIN32GUI_MDIFRAME &&
             !(parentud->dwPlStyle & PERLWIN32GUI_HAVECHILDWINDOW)) {
             parentud->dwPlStyle |= PERLWIN32GUI_HAVECHILDWINDOW;
-            parentud->dwData = (DWORD) myhandle;
+            parentud->dwData = (void*) myhandle;
         }
     }
 }
@@ -169,7 +169,7 @@ MDIChild_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
 
     case WM_MDIACTIVATE :
 
-        if( perlud->dwData == (DWORD) wParam ) {
+        if( perlud->dwData == (void*) wParam ) {
             /*
              * (@)EVENT:Deactivate()
              * Sent when the window is deactivated.

@@ -39,6 +39,7 @@ if($Config{cc} =~ /gcc/i) {
     $config{macro}->{RC} =      'windres';
     $config{macro}->{RCFLAGS} = '-O coff -o $*.res';
     $config{LIBS} = [':nodefault -lcomctl32 -lmsvcp60'];
+    $config{CCFLAGS} = '-Wno-write-strings';
 }
 
 # Can only build with mscv.
