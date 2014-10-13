@@ -279,6 +279,8 @@ sub newFromFile {
 1; # End of DIBitmap.pm
 __END__
 
+=encoding ISO8859-1
+
 =head1 NAME
 
 Win32::GUI::DIBitmap - add new reading/writing image formats to Win32::GUI

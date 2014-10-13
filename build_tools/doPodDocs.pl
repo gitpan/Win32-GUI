@@ -29,6 +29,8 @@ use BuildTools;
 
 $SrcParser::DEBUG = 0;
 
+my $ROOTDIR = $ARGV[0] || 'blib/lib';
+
 my @packages_with_own_pod = qw(
     Win32::GUI::AxWindow
     Win32::GUI::BitmapInline
@@ -111,7 +113,7 @@ my @packages_with_own_pod = qw(
 # (3) Copy the static POD documentation
 {
   my $static_pod_root = "docs";           # the starting point to find POD sources
-  my $blib_pod_root   = "blib/lib/Win32"; # the matching root for placing processed POD docs
+  my $blib_pod_root   = "$ROOTDIR/Win32"; # the matching root for placing processed POD docs
 
   print BuildTools::macro_subst(
       "Copying static POD from $static_pod_root for Win32::GUI v__W32G_VERSION__ on __W32G_DATE__\n"
@@ -123,7 +125,7 @@ my @packages_with_own_pod = qw(
 
 # (4) Generate the per package documentation
 {
-  my $blib_pod_root = "blib/lib";
+  my $blib_pod_root = $ROOTDIR;
   my $package_template_file  = "docs/per_package.tpl";
   my $package_methodsec_file  = "docs/per_package_method_section.tpl";
   my $pp_method_file  = "docs/per_package_method.tpl";

@@ -19,6 +19,7 @@ no_index:
     - inc
     - build_tools
     - samples
+    - docs
     - Win32-GUI_DIBitmap/demos
     - Win32-GUI_Scintilla/demos
     - Win32-GUI_Grid/demos
@@ -30,4 +31,4 @@ requires:
 resources:
   bugtracker: http://sourceforge.net/p/perl-win32-gui/bugs/
   repository: http://sourceforge.net/p/perl-win32-gui/git/
-version: 1.08
+version: 1.08_01

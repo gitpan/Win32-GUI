@@ -292,7 +292,7 @@ bad-looking data to your script...
 =item * File::Spec must be able to find a writable temporary directory.
 
 When inlined data is used in your script (with
-C<Win32::GUI::BitmapInline->new( ... )>),
+C<< Win32::GUI::BitmapInline->new( ... ) >>),
 then a temporary file is created, loaded as a regular bitmap and then
 immediately deleted. This will fail if Win32::GUI::BitmapInline script
 is not able to create and delete files in a suitable temporary

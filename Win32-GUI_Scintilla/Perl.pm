@@ -9,6 +9,8 @@ use Win32::GUI::Scintilla();
 
 our $VERSION = "0.02";
 
+=encoding ISO8859-1
+
 =head1 NAME
 
 Win32::GUI::Scintilla::Perl -- Scintilla control with Perl awareness.

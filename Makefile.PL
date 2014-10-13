@@ -249,13 +249,14 @@ my %MakefileArgs = (
         bugtracker => 'http://sourceforge.net/p/perl-win32-gui/bugs/',
       },
       no_index => {
-        directory => [qw( build_tools samples
+        directory => [qw( build_tools samples docs
                           Win32-GUI_DIBitmap/demos Win32-GUI_Scintilla/demos Win32-GUI_Grid/demos
                           Win32-GUI_DropFiles/demos Win32-GUI_Constants/demos Win32-GUI_AxWindow/demos )
                      ]
       },
     },
     dist            => {
+                         PREOP => '$(PERL) -Ibuild_tools build_tools/doPodDocs.pl $(DISTVNAME)/GENERATED',
                          $^O eq 'cygwin' ?
                          (
                          TAR => 'ptar',

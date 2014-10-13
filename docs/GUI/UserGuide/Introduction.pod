@@ -1,3 +1,5 @@
+=encoding ISO8859-1
+
 =for comment $Id: Introduction.pod,v 1.2 2006/07/16 11:09:32 robertemay Exp $
 
 =head1 NAME

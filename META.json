@@ -19,6 +19,7 @@
          "inc",
          "build_tools",
          "samples",
+         "docs",
          "Win32-GUI_DIBitmap/demos",
          "Win32-GUI_Scintilla/demos",
          "Win32-GUI_Grid/demos",
@@ -44,7 +45,7 @@
          }
       }
    },
-   "release_status" : "stable",
+   "release_status" : "testing",
    "resources" : {
       "bugtracker" : {
          "web" : "http://sourceforge.net/p/perl-win32-gui/bugs/"
@@ -53,5 +54,5 @@
          "url" : "http://sourceforge.net/p/perl-win32-gui/git/"
       }
    },
-   "version" : "1.08"
+   "version" : "1.08_01"
 }
