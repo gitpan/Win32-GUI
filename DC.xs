@@ -697,7 +697,7 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:PolyBezier(X1, Y1, X2, Y2, X3, Y3, X4, Y4, [ X, Y, ... ])
-    # Draws one or more Bézier curves. 
+    # Draws one or more Bezier curves. 
     # The first curve is drawn from the first point to the fourth point by
     # using the second and third points as control points. 
     # Each subsequent curve in the sequence needs exactly three more points: 
@@ -729,7 +729,7 @@ OUTPUT:
 
     ###########################################################################
     # (@)METHOD:PolyBezierTo(X1, Y1, X2, Y2, X3, Y3, [ X, Y, ... ])
-    # Draws cubic Bézier curves.
+    # Draws cubic Bezier curves.
     # The first curve is drawn from the current position to the third point by
     # using the first two points as control points. For each subsequent curve, 
     # the function needs exactly three more points, and uses the ending point

@@ -37,8 +37,8 @@ $year += 1900;
                  FILE           => $unknown_file,
                  WEB_HOMEPAGE   => 'http://perl-win32-gui.sourceforge.net/',
                  WEB_USERMAIL   => 'http://lists.sourceforge.net/lists/listinfo/perl-win32-gui-users',
-                 WEB_MAILARCHIVE => 'http://sourceforge.net/mail/?group_id=16572',
-                 WEB_FILES      => 'http://sourceforge.net/project/showfiles.php?group_id=16572',
+                 WEB_MAILARCHIVE => 'http://sourceforge.net/p/perl-win32-gui/mailman/perl-win32-gui-users/',
+                 WEB_FILES      => 'http://sourceforge.net/projects/perl-win32-gui/files/',
                  EMAIL_USERLIST => 'perl-win32-gui-users@lists.sourceforge.net',
                );
 
