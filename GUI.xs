@@ -202,8 +202,14 @@ CODE:
     /* Under Cygwin, convert paths to windows
      * paths. E.g. convert /usr/local... and /cygdrive/c/...
      */
+#ifdef __x86_64__
+    i = cygwin_conv_path(CCP_POSIX_TO_WIN_A|CCP_RELATIVE,name,buffer,MAX_PATH+1);
+    if (i < 0) XSRETURN_UNDEF;
+#else
+    /* old cygwin api */
     if(cygwin_conv_to_win32_path(name,buffer) != 0)
         XSRETURN_UNDEF;
+#endif
 #else
     /* LoadLibrary on Win98 (at least) doesn't like unix
      * path seperators, so normalise to windows path seperators
@@ -1626,8 +1632,14 @@ CODE:
         /* Under Cygwin, convert paths to windows
          * paths. E.g. convert /usr/local... and /cygdrive/c/...
          */
-        if(cygwin_conv_to_win32_path(name,buffer) != 0)
-            XSRETURN_UNDEF;
+#ifdef __x86_64__
+    i = cygwin_conv_path(CCP_POSIX_TO_WIN_A|CCP_RELATIVE,name,buffer,MAX_PATH+1);
+    if (i < 0) XSRETURN_UNDEF;
+#else
+    /* old cygwin api */
+    if(cygwin_conv_to_win32_path(name,buffer) != 0)
+        XSRETURN_UNDEF;
+#endif
 #else
         /* LoadImage on Win98 (at least) doesn't like unix
          * path seperators, so normalise to windows path seperators

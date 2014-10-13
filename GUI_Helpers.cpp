@@ -590,14 +590,14 @@ BOOL GetNotifyIconName(NOTXSPROC HWND hwnd, UINT nID, char *Name) {
 }
 
 
-DWORD CALLBACK RichEditSave(DWORD dwCookie, LPBYTE pbBuff, LONG cb, LONG FAR *pcb) {
+DWORD CALLBACK RichEditSave(DWORD_PTR dwCookie, LPBYTE pbBuff, LONG cb, LONG FAR *pcb) {
     HANDLE hfile;
     hfile = (HANDLE) dwCookie;
     WriteFile(hfile, (LPCVOID) pbBuff, (DWORD) cb, (LPDWORD) pcb, NULL);
     return(0);
 }
 
-DWORD CALLBACK RichEditLoad(DWORD dwCookie, LPBYTE pbBuff, LONG cb, LONG FAR *pcb) {
+DWORD CALLBACK RichEditLoad(DWORD_PTR dwCookie, LPBYTE pbBuff, LONG cb, LONG FAR *pcb) {
     HANDLE hfile;
     hfile = (HANDLE) dwCookie;
     ReadFile(hfile, (LPVOID) pbBuff, (DWORD) cb, (LPDWORD) pcb, NULL);

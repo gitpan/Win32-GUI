@@ -16,7 +16,7 @@ use MMUtil();
 my @demos;
 File::Find::find(sub { push @demos, $File::Find::name if $File::Find::name =~ /\.pl$/ }, 'demos');
 
-my $sc = ($Config{archname} =~ /x64/) ? 'SciLexer64.dll' : 'SciLexer32.dll';
+my $sc = ($Config{archname} =~ /x64/ || $Config{myuname} =~ /x86_64/) ? 'SciLexer64.dll' : 'SciLexer32.dll';
 
 my %config = (
     NAME          =>  'Win32::GUI::Scintilla',

@@ -21,6 +21,7 @@ my $oldfh = select $fh;
 my $nologo = "";
 my $output = '-o $@';
 my $cflags = "-O";
+my $ldflags = $Config{libs} =~ /(bufferoverflow.*?\.lib)/ ? $1 : '';
 
 if($Config{cc} =~ /gcc/) {  # gcc, e.g. MinGW
     $cflags .= " -fno-builtin-log2";
@@ -38,13 +39,14 @@ PERL=$Config{perlpath}
 RM_RF= \$(PERL) -MExtUtils::Command -e rm_rf
 CC=$Config{cc}
 CFLAGS=$cflags
+LDFLAGS=$ldflags
 NOLOGO=$nologo
 OBJECT= lookupa$Config{obj_ext} recycle$Config{obj_ext} perfhex$Config{obj_ext} perfect$Config{obj_ext}
 
 all: perfect.exe
 
 perfect.exe: \$(OBJECT)
-	\$(CC) \$(NOLOGO) $output \$(OBJECT)
+	\$(CC) \$(NOLOGO) \$(LDFLAGS) $output \$(OBJECT)
 
 .c$Config{obj_ext}:
 	\$(CC) \$(NOLOGO) \$(CFLAGS) -c \$<

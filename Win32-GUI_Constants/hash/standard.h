@@ -25,9 +25,9 @@ typedef    signed long long  sb8;
 #define UB8BITS 64
 #define SB8MAXVAL 0x7fffffffffffffffLL
 
-typedef  unsigned long  int  ub4;   /* unsigned 4-byte quantities */
+typedef  unsigned int  ub4;   /* unsigned 4-byte quantities */
 #define UB4MAXVAL 0xffffffff
-typedef    signed long  int  sb4;
+typedef    signed int  sb4;
 #define UB4BITS 32
 #define SB4MAXVAL 0x7fffffff
 typedef  unsigned short int  ub2;

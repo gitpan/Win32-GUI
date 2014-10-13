@@ -16,7 +16,15 @@
    "no_index" : {
       "directory" : [
          "t",
-         "inc"
+         "inc",
+         "build_tools",
+         "samples",
+         "Win32-GUI_DIBitmap/demos",
+         "Win32-GUI_Scintilla/demos",
+         "Win32-GUI_Grid/demos",
+         "Win32-GUI_DropFiles/demos",
+         "Win32-GUI_Constants/demos",
+         "Win32-GUI_AxWindow/demos"
       ]
    },
    "prereqs" : {
@@ -45,5 +53,5 @@
          "url" : "http://sourceforge.net/p/perl-win32-gui/git/"
       }
    },
-   "version" : "1.07"
+   "version" : "1.08"
 }

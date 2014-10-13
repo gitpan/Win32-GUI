@@ -73,7 +73,8 @@ __OSUNSUPPORTED
 
       # Attempt to stop CPAN Testers reporting build failures
       # for OS's like linux!
-      die("OS unsupported\n");
+      print("OS unsupported\n");
+      exit(0);
   }
 }
 
@@ -247,6 +248,12 @@ my %MakefileArgs = (
         repository => 'http://sourceforge.net/p/perl-win32-gui/git/',
         bugtracker => 'http://sourceforge.net/p/perl-win32-gui/bugs/',
       },
+      no_index => {
+        directory => [qw( build_tools samples
+                          Win32-GUI_DIBitmap/demos Win32-GUI_Scintilla/demos Win32-GUI_Grid/demos
+                          Win32-GUI_DropFiles/demos Win32-GUI_Constants/demos Win32-GUI_AxWindow/demos )
+                     ]
+      },
     },
     dist            => {
                          $^O eq 'cygwin' ?
@@ -273,7 +280,7 @@ my %MakefileArgs = (
                          DEMOS        => "@demos",
                        },
     clean           => {
-                         FILES => 'comctrl32.def cygwin.o libcyg.a GUI.res',
+                         FILES => 'comctl32.def cygwin.o libcyg.a GUI.res',
                        },
     realclean       => {
                          FILES => '$(PPMDISTVNAME) Readme.old Readme.html.old',
@@ -345,7 +352,7 @@ sub postamble {
     my $defs = `nm -g /usr/lib/w32api/libcomctl32.a`;
     for (qw(ImageList_Duplicate@4 ImageList_DrawIndirect@4 ImageList_Copy@20)) {
       unless ($defs =~ / _$_/) {
-        $missing .= "\t" . '$(NOECHO)$(ECHO) "' . $_ . '" >$@' . "\n";
+        $missing .= "\t" . '$(NOECHO)$(ECHO) "' . $_ . '" >>$@' . "\n";
       }
     }
     if($missing) {
@@ -355,7 +362,7 @@ sub postamble {
 
 comctl32.def: 
 	$(NOECHO)$(ECHO) "LIBRARY COMCTL32.DLL" >$@
-	$(NOECHO)$(ECHO) "EXPORTS" >$@
+	$(NOECHO)$(ECHO) "EXPORTS" >>$@
 %s
 
 libcyg.a: comctl32.def cygwin.o

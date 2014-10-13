@@ -2,7 +2,7 @@
 use strict;
 #use warnings;
 
-# Makefile.PL for Win32::GUI::AxWindow
+# Makefile.PL for Win32::GUI::DIBitmap
 # $Id: Makefile.PL,v 1.4 2008/02/01 13:29:49 robertemay Exp $
 
 use 5.006;
@@ -14,17 +14,17 @@ use lib '../build_tools';
 use MMUtil;
 
 my @demos;
-File::Find::find(sub { push @demos, $File::Find::name if $File::Find::name =~ /\.(pl|pm|avi)$/ }, 'demos');
+File::Find::find(sub { push @demos, $File::Find::name if $File::Find::name =~ /\.(pl|zip|bmp|png|tga|jpg)$/ }, 'demos');
 
 my %config = (
-    NAME          =>  'Win32::GUI::AxWindow',
-    VERSION_FROM  =>  'AxWindow.pm',
-    ABSTRACT_FROM =>  'AxWindow.pm',
+    NAME          =>  'Win32::GUI::DIBitmap',
+    VERSION_FROM  =>  'DIBitmap.pm',
+    ABSTRACT_FROM =>  'DIBitmap.pm',
     AUTHOR        =>  'ROCHER Laurent (lrocher@cpan.org)',
-    PL_FILES      => {'AxWindowRC.PL' => '$(BASEEXT).rc', },
-    XS            => {'AxWindow.xs' => 'AxWindow.cpp' },
+    PL_FILES      => {'DIBitmapRC.PL' => '$(BASEEXT).rc', },
     OBJECT        =>  '$(BASEEXT)$(OBJ_EXT) $(BASEEXT).res',
-    LIBS          => ['-latl'],
+    LIBS          => ['-lmsvcprt'],
+    MYEXTLIB      => 'extlib/FreeImage.lib',
     macro         => {RC => 'rc.exe',
                       RCFLAGS => '',
                       INST_DEMODIR => '$(INST_LIB)/Win32/GUI/demos/$(BASEEXT)',
@@ -36,22 +36,25 @@ my %config = (
 # as the resource compiler
 # and the MinGW C++ standard library
 if($Config{cc} =~ /gcc/i) {
-    $config{macro}->{RC} =      'windres';
+    $config{macro}->{RC}      =      'windres';
     $config{macro}->{RCFLAGS} = '-O coff -o $*.res';
-    $config{LIBS} = [':nodefault -lcomctl32 -lmsvcp60'];
+    $config{LIBS}             = [':nosearch -lstdc++'];
+    $config{MYEXTLIB}         = 'extlib/libFreeImage-mingw.a';
+    if( $^O =~ /cygwin/i ) {
+        $config{MYEXTLIB}     = 'extlib/libFreeImage-cygwin.a';
+    }
     $config{CCFLAGS} = '-Wno-write-strings';
 }
 
-# Can only build with mscv.
-if($Config{cc} !~ /cl/i) {
+# Can't build with gcc (yet).
+if($Config{cc} =~ /gcc/i || $Config{archname} =~ /x64/) {
     print <<__EXPLAIN;
 
-Win32::GUI::AxWindow can only be built using MSVC, not '$Config{cc}',
-as it depends on the Microsoft Active Template Library (ATL).
-Win32::GUI::AxWindow will be skipped during the current build process.
+At this time Win32::GUI::DIBitmap cannot be build using gcc or 64bit msvc.
+Win32::GUI::DIBitmap will be skipped during the current build process.
 
 __EXPLAIN
-    ExtUtils::MakeMaker::WriteEmptyMakefile(NAME => 'Win32::GUI::AxWindow');
+    ExtUtils::MakeMaker::WriteEmptyMakefile(NAME => 'Win32::GUI::DIBitmap');
 }
 else {
     MMUtil::Extend_MM();
@@ -64,12 +67,6 @@ sub special_targets {
     my $inherited = shift->SUPER::special_targets(@_);
     $inherited =~ s/^(.SUFFIXES.*)$/$1 .rc .res/m;
     return $inherited;
-}
-
-sub xs_c {
-  my $inherited = shift->SUPER::xs_c(@_);
-  $inherited =~ s/\.c/.cpp/g;
-  return $inherited;
 }
 
 # Add rule for .rc to .res conversion

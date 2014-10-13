@@ -29,7 +29,7 @@ my %config = (
                       RCFLAGS => '',
                       INST_DEMODIR => '$(INST_LIB)/Win32/GUI/demos/$(BASEEXT)',
                       DEMOS => "@demos", },
-    clean         => {FILES => '*.rc *.res', },
+    clean         => {FILES => '*.rc *.res MFCGrid/Build/* MFCGrid/Lib/* ', },
 );
 
 # if building using gcc (MinGW or cygwin) use windres

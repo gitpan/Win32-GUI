@@ -19,7 +19,7 @@ require DynaLoader;     # to dynuhlode the module.
 ###############################################################################
 # STATIC OBJECT PROPERTIES
 #
-$VERSION             = "1.07";        # For MakeMaker and CPAN
+$VERSION             = "1.08";        # For MakeMaker and CPAN
 $XS_VERSION          = $VERSION;      # For dynaloader
 $VERSION             = eval $VERSION; # For Perl  (see perldoc perlmodstyle)
 $MenuIdCounter       = 101;
@@ -37,7 +37,6 @@ $AcceleratorCounter  = 9001;
 ###############################################################################
 # This import() function is used to delegate constants support to
 # Win32::GUI::Constants.
-# The default exports are deprecated, and will be removed in the future
 sub import {
     my $pkg = shift;
     my $callpkg = caller;
@@ -46,20 +45,6 @@ sub import {
     # Don't let this import() get inherited
     return unless $pkg eq 'Win32::GUI';
 
-    # use Win32::GUI; currently exports a load of constants for
-    # backwards compatibility with earlier Win32::GUI versions.
-    # This is deprecated, and in the future
-    #  use Win32::GUI;   and
-    #  use Win32::GUI();   will have the same behaviour.
-    if(@imports == 0) {
-        use warnings;
-	warnings::warnif 'deprecated',
-       	    "'use Win32::GUI;' is currently exporting constants into ".
-	    "the callers scope. This functionality is deprecated. ".
-	    "Use 'use Win32::GUI();' or list your required exports ".
-            "explicitly instead.";
-	@imports = qw(:compatibility_win32_gui);
-    }
     # Except for version checking, delegate everything else to
     # Win32::GUI::Constants directly, noting any -exportpkg pragma
     my @exports;
@@ -81,54 +66,8 @@ sub import {
     }
 }
 
-###############################################################################
-# This constant() function is used to delegate constants support to
-# Win32::GUI::Constants.  Usage of this is deprecated and will be removed
-# in the future
-sub constant {
-    my $constant = shift;
-    use warnings;
-    if($constant =~ /^WIN32__GUI__/) {
-        warnings::warnif 'deprecated', "Use of Win32::GUI::constant() is deprecated. ".
-            "Use Win32::GUI::_constant() instead for WIN32__GUI__* constants.";
-        return Win32::GUI::_constant($constant);
-    }
-
-    warnings::warnif 'deprecated', "Use of Win32::GUI::constant() is deprecated. ".
-        "Use Win32::GUI::Constants::constant() instead.";
-    require Win32::GUI::Constants;
-    return Win32::GUI::Constants::constant($constant);
-}
-
-###############################################################################
-# This AUTOLOAD is used to 'autoload' constants.  Constant support is now
-# delegated to Win32::GUI::Constants.  Use of this is deprecated, and will be
-# removed in the future
-
-sub AUTOLOAD {
-    my $constant = $AUTOLOAD;
-    $constant =~ s/.*:://;
-    my ($callpkg, $file, $line) = caller;
-    require Win32::GUI::Constants;
-    my $val = Win32::GUI::Constants::constant($constant);
-
-    if(defined $val) {
-        no warnings; # avoid perl 5.6 warning about prototype mismatches
-        eval "sub $AUTOLOAD() {$val}";
-        use warnings;
-        warnings::warnif 'deprecated',
-            "Use of '$AUTOLOAD' is deprecated. Use 'Win32::GUI::Constants::$constant' instead.";
-        goto &$AUTOLOAD;
-    }
-
-    #TODO - should we die?  Many unknown methods may also end up here - can we find a better wording?
-    die "Can't find '$constant' in package ". __PACKAGE__ .
-                ". Used at $file line $line.\n";
-}
-
 sub bootstrap_subpackage {
     my($package) = @_;
-    $package = 'Win32::GUI::' . $package;
     my $symbol = $package;
     $symbol =~ s/\W/_/g;
     no strict 'refs';
@@ -3495,34 +3434,34 @@ package Win32::GUI;
 # Win32::GUI::GetDllVersion during use/compile time
 #bootstrap Win32::GUI;
 
-bootstrap_subpackage 'Animation';
-bootstrap_subpackage 'Bitmap';
-bootstrap_subpackage 'Button';
-bootstrap_subpackage 'Combobox';
-bootstrap_subpackage 'DateTime';
-bootstrap_subpackage 'DC';
-bootstrap_subpackage 'Font';
-bootstrap_subpackage 'Header';
-bootstrap_subpackage 'ImageList';
-bootstrap_subpackage 'Label';
-bootstrap_subpackage 'Listbox';
-bootstrap_subpackage 'ListView';
-bootstrap_subpackage 'NotifyIcon';
-bootstrap_subpackage 'ProgressBar';
-bootstrap_subpackage 'Rebar';
-bootstrap_subpackage 'RichEdit';
-bootstrap_subpackage 'Splitter';
-bootstrap_subpackage 'TabStrip';
-bootstrap_subpackage 'Textfield';
-bootstrap_subpackage 'Toolbar';
-bootstrap_subpackage 'Tooltip';
-bootstrap_subpackage 'Trackbar';
-bootstrap_subpackage 'TreeView';
-bootstrap_subpackage 'StatusBar';
-bootstrap_subpackage 'UpDown';
-bootstrap_subpackage 'Window';
-bootstrap_subpackage 'MDI';
-bootstrap_subpackage 'MonthCal';
+bootstrap_subpackage 'Win32::GUI::Animation';
+bootstrap_subpackage 'Win32::GUI::Bitmap';
+bootstrap_subpackage 'Win32::GUI::Button';
+bootstrap_subpackage 'Win32::GUI::Combobox';
+bootstrap_subpackage 'Win32::GUI::DateTime';
+bootstrap_subpackage 'Win32::GUI::DC';
+bootstrap_subpackage 'Win32::GUI::Font';
+bootstrap_subpackage 'Win32::GUI::Header';
+bootstrap_subpackage 'Win32::GUI::ImageList';
+bootstrap_subpackage 'Win32::GUI::Label';
+bootstrap_subpackage 'Win32::GUI::Listbox';
+bootstrap_subpackage 'Win32::GUI::ListView';
+bootstrap_subpackage 'Win32::GUI::NotifyIcon';
+bootstrap_subpackage 'Win32::GUI::ProgressBar';
+bootstrap_subpackage 'Win32::GUI::Rebar';
+bootstrap_subpackage 'Win32::GUI::RichEdit';
+bootstrap_subpackage 'Win32::GUI::Splitter';
+bootstrap_subpackage 'Win32::GUI::TabStrip';
+bootstrap_subpackage 'Win32::GUI::Textfield';
+bootstrap_subpackage 'Win32::GUI::Toolbar';
+bootstrap_subpackage 'Win32::GUI::Tooltip';
+bootstrap_subpackage 'Win32::GUI::Trackbar';
+bootstrap_subpackage 'Win32::GUI::TreeView';
+bootstrap_subpackage 'Win32::GUI::StatusBar';
+bootstrap_subpackage 'Win32::GUI::UpDown';
+bootstrap_subpackage 'Win32::GUI::Window';
+bootstrap_subpackage 'Win32::GUI::MDI';
+bootstrap_subpackage 'Win32::GUI::MonthCal';
 
 # Preloaded methods go here.
 

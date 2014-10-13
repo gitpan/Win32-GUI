@@ -11,7 +11,7 @@ use warnings;
 
 BEGIN { $| = 1 } # Autoflush
 
-use Test::More tests => 14;
+use Test::More tests => 11;
 
 use Win32::GUI();
 
@@ -28,11 +28,11 @@ use Win32::GUI();
 
     $warning = '';
     eval "use Win32::GUI";
-    like($warning, '/deprecated/i', "Unadorned 'use Win32::GUI' deprecated warning");
+    is($warning, '', "No warning from 'use Win32::GUI'");
 
     $warning = '';
     eval "use Win32::GUI 1.03";
-    like($warning, '/deprecated/i', "Unadorned 'use Win32::GUI 1.03' deprecated warning");
+    is($warning, '', "No warning from 'use Win32::GUI 1.03'");
 
     $warning = '';
     eval "use Win32::GUI 1.03,''";
@@ -45,31 +45,8 @@ eval "use Win32::GUI qw(CW_USEDEFAULT)";
 ok(!defined &main::CW_USEDEFAULT, "CW_USEDEFAULT still not defined in main package");
 is(CW_USEDEFAULT(), 0x80000000, "CW_USEDEFAULT autoloaded");
 ok(defined &main::CW_USEDEFAULT, "CW_USEDEFAULT defined in main package after calling it");
+ok(defined &Win32::GUI::Constants::CW_USEDEFAULT, "CW_USEDEFAULT defined in Win32::GUI::Constants package after calling it");
 
-# Check warnings from Win32::GUI::constants()
-{
-    my $warning;
-    local $SIG{__WARN__} = sub {
-        $warning = $_[0];
-    };
-
-    $warning = '';
-    is(Win32::GUI::constant("CW_USEDEFAULT"), 0x80000000, "Win32::GUI::constant lookup OK");
-    like($warning, '/deprecated/i', "Win32::GUI::constant() deprecated warning");
-}
-
-# Check warnings from autoload of Win32::GUI::SOME_CONSTANT
-{
-    my $warning;
-    local $SIG{__WARN__} = sub {
-        $warning = $_[0];
-    };
-
-    ok(!defined &Win32::GUI::CW_USEDEFAULT, "CW_USEDEFAULT not defined in Win32::GUI package");
-    $warning = '';
-    is(Win32::GUI::CW_USEDEFAULT(), 0x80000000, "Win32::GUI constant AUTOLOAD OK");
-    like($warning, '/deprecated/i', "Win32::GUI constant AUTOLAD deprecated warning");
-    ok(defined &Win32::GUI::CW_USEDEFAULT, "CW_USEDEFAULT defined in Win32::GUI package after calling it");
-}
-
-# Check warnings from autoload of Win32::GUI::SOME_CONSTANT
+# deprecated Win32::GUI::constant was removed in 1.08
+ok(!defined &Win32::GUI::constant, "Win32::GUI::constant() was removed");
+ok(defined &Win32::GUI::_constant, "Win32::GUI::_constant() exists");

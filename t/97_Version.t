@@ -9,7 +9,7 @@ use warnings;
 
 BEGIN { $| = 1 } # Autoflush
 
-use Test::More tests => 4;
+use Test::More;
 
 use Win32::GUI();
 use Config;
@@ -23,7 +23,10 @@ if($version =~ m/^(\d+)\.(\d\d)(\d\d)/) {
 
 my ($maj_rc, $min_rc, $rc_rc, $extra) = Win32::GUI::GetDllVersion('GUI.' . $Config{dlext});
 
-ok($maj_pm == $maj_rc, "Major Version numbers the same");
-ok($min_pm == $min_rc, "Minor Version numbers the same");
-ok($rc_pm  ==  $rc_rc,  "RC numbers the same");
+plan skip_all => "BEWARE old cygwin DLL version bug detected" if $^O eq 'cygwin' && $maj_rc==1 && $min_rc==0 && $rc_rc==0;
+plan tests => 4;
+
+ok($maj_pm == $maj_rc, "Major Version numbers the same: ($version) vs. ($maj_rc.$min_rc.$rc_rc)");
+ok($min_pm == $min_rc, "Minor Version numbers the same: ($version) vs. ($maj_rc.$min_rc.$rc_rc)");
+ok($rc_pm  ==  $rc_rc,  "RC numbers the same: ($version) vs. ($maj_rc.$min_rc.$rc_rc)");
 ok(!defined $extra,     "No extra information");

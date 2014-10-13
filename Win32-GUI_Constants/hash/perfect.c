@@ -54,6 +54,9 @@ determined a perfect hash for the whole set of keys.
 ------------------------------------------------------------------------------
 */
 
+#include <stdlib.h>
+#include <string.h>
+
 #ifndef STANDARD
 #include "standard.h"
 #endif
@@ -444,7 +447,7 @@ int     rollback;          /* FALSE applies augmenting path, TRUE rolls back */
       else if (tabh[hash].key_h)
       {
 	/* very rare: roll back any changes */
-	(void *)apply(tabb, tabh, tabq, blen, scramble, tail, TRUE);
+	apply(tabb, tabh, tabq, blen, scramble, tail, TRUE);
 	return FALSE;                                  /* failure, collision */
       }
       tabh[hash].key_h = mykey;
@@ -1239,12 +1242,12 @@ hstuff  *tabh;             /* pointer to array of keys indexed by hash value */
   {
     if (blen < 16)
     {
-      for (i=0; i<blen; ++i) fprintf(f, "%3d,", scramble[tab[i].val_b]);
+      for (i=0; i<blen; ++i) fprintf(f, "%u,", scramble[tab[i].val_b]);
     }
     else if (blen <= 1024)
     {
       for (i=0; i<blen; i+=16)
-	fprintf(f, "%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld,\n",
+	fprintf(f, "%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,\n",
 		scramble[tab[i+0].val_b], scramble[tab[i+1].val_b], 
 		scramble[tab[i+2].val_b], scramble[tab[i+3].val_b], 
 		scramble[tab[i+4].val_b], scramble[tab[i+5].val_b], 
@@ -1257,7 +1260,7 @@ hstuff  *tabh;             /* pointer to array of keys indexed by hash value */
     else if (blen < USE_SCRAMBLE)
     {
       for (i=0; i<blen; i+=8)
-	fprintf(f, "%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld,\n",
+	fprintf(f, "%u,%u,%u,%u,%u,%u,%u,%u,\n",
 		scramble[tab[i+0].val_b], scramble[tab[i+1].val_b], 
 		scramble[tab[i+2].val_b], scramble[tab[i+3].val_b], 
 		scramble[tab[i+4].val_b], scramble[tab[i+5].val_b], 
@@ -1266,7 +1269,7 @@ hstuff  *tabh;             /* pointer to array of keys indexed by hash value */
     else 
     {
       for (i=0; i<blen; i+=16)
-	fprintf(f, "%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld,%ld,\n",
+	fprintf(f, "%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,\n",
 		tab[i+0].val_b, tab[i+1].val_b, 
 		tab[i+2].val_b, tab[i+3].val_b, 
 		tab[i+4].val_b, tab[i+5].val_b, 
