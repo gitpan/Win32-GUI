@@ -46,4 +46,4 @@ requires:
 resources:
   bugtracker: http://sourceforge.net/p/perl-win32-gui/bugs/
   repository: http://sourceforge.net/p/perl-win32-gui/git/
-version: 1.08_04
+version: 1.08_06

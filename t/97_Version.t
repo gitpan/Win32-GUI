@@ -23,7 +23,6 @@ if($version =~ m/^(\d+)\.(\d\d)(\d\d)/) {
 
 my ($maj_rc, $min_rc, $rc_rc, $extra) = Win32::GUI::GetDllVersion('GUI.' . $Config{dlext});
 
-plan skip_all => "BEWARE old cygwin DLL version bug detected" if $^O eq 'cygwin' && $maj_rc==1 && $min_rc==0 && $rc_rc==0;
 plan tests => 4;
 
 ok($maj_pm == $maj_rc, "Major Version numbers the same: ($version) vs. ($maj_rc.$min_rc.$rc_rc)");

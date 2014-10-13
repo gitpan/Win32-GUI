@@ -31,6 +31,12 @@ my $outtext = q();
 # Parse $version into 4 parts:
 my($maj, $min, $rc, $extra) = split(/\.|_/, $version . '.00.00.00');
 
+# strip leading zeroes (old cygwin does not like it)
+$maj   *= 1;
+$min   *= 1;
+$rc    *= 1;
+$extra *= 1;
+
 print 'Checking RC file ... ';
 
 open(my $in, '<', $rcfile) or die "Failed to open $rcfile for reading: $!";
