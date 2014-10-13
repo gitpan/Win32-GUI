@@ -150,7 +150,7 @@ if($main::USERESOURCE == -1) {
 } else {
   print <<____EXPLAIN;
 
-NOTE: Makefile.PL will add the instruction to use the Resource Compiler to 
+NOTE: Makefile.PL will add the instruction to use the Resource Compiler to
 your Makefile; if you don't want to compile resources with your extension,
 call this script with this additional argument:
 
@@ -250,9 +250,17 @@ my %MakefileArgs = (
       },
       no_index => {
         directory => [qw( build_tools samples docs
+                          Win32-GUI_Constants/hash
+                          Win32-GUI_AxWindow/t Win32-GUI_BitmapInline/t Win32-GUI_Constants/t Win32-GUI_DIBitmap/t
+                          Win32-GUI_DropFiles/t Win32-GUI_Grid/t Win32-GUI_ReleaseNotes/t Win32-GUI_Scintilla/t
                           Win32-GUI_DIBitmap/demos Win32-GUI_Scintilla/demos Win32-GUI_Grid/demos
-                          Win32-GUI_DropFiles/demos Win32-GUI_Constants/demos Win32-GUI_AxWindow/demos )
-                     ]
+                          Win32-GUI_DropFiles/demos Win32-GUI_Constants/demos Win32-GUI_AxWindow/demos
+                     )],
+        file      => [qw( Win32-GUI_DIBitmap/extlib/Readme.txt
+                          Win32-GUI_DropFiles/Readme.txt
+                          Win32-GUI_Scintilla/Include/Readme.txt
+                          Readme.html
+                     )],
       },
     },
     dist            => {
@@ -361,7 +369,7 @@ sub postamble {
 
 # -- Win32::GUI Cygwin section --
 
-comctl32.def: 
+comctl32.def:
 	$(NOECHO)$(ECHO) "LIBRARY COMCTL32.DLL" >$@
 	$(NOECHO)$(ECHO) "EXPORTS" >>$@
 %s
@@ -397,7 +405,7 @@ GUI.res: GUI.rc
 	rc.exe /l 0x409 /fo"GUI.res" GUI.rc
 
 RC_FRAG1
-	
+
     } else {                        # cygwin and MinGW
       $rc_frag = <<'RC_FRAG2';
 

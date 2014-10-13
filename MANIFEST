@@ -69,8 +69,8 @@ META.yml			Module meta-data (added by MakeMaker)
 MonthCal.xs
 NotifyIcon.xs
 ProgressBar.xs
-Readme
-Readme.html
+README
+README.html
 Rebar.xs
 resource.h
 RichEdit.xs
@@ -199,7 +199,7 @@ Win32-GUI_Constants/hash/Makefile.PL
 Win32-GUI_Constants/hash/perfect.c
 Win32-GUI_Constants/hash/perfect.h
 Win32-GUI_Constants/hash/perfhex.c
-Win32-GUI_Constants/hash/README
+Win32-GUI_Constants/hash/Readme.txt
 Win32-GUI_Constants/hash/recycle.c
 Win32-GUI_Constants/hash/recycle.h
 Win32-GUI_Constants/hash/standard.h
@@ -286,7 +286,7 @@ Win32-GUI_DropFiles/DropFiles.xs
 Win32-GUI_DropFiles/DropFilesRC.PL
 Win32-GUI_DropFiles/Makefile.PL
 Win32-GUI_DropFiles/ppport.h
-Win32-GUI_DropFiles/README
+Win32-GUI_DropFiles/Readme.txt
 Win32-GUI_DropFiles/t/01_load.t
 Win32-GUI_DropFiles/t/02_old_callback.t
 Win32-GUI_DropFiles/t/03_new_callback.t

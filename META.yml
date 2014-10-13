@@ -20,15 +20,29 @@ no_index:
     - build_tools
     - samples
     - docs
+    - Win32-GUI_Constants/hash
+    - Win32-GUI_AxWindow/t
+    - Win32-GUI_BitmapInline/t
+    - Win32-GUI_Constants/t
+    - Win32-GUI_DIBitmap/t
+    - Win32-GUI_DropFiles/t
+    - Win32-GUI_Grid/t
+    - Win32-GUI_ReleaseNotes/t
+    - Win32-GUI_Scintilla/t
     - Win32-GUI_DIBitmap/demos
     - Win32-GUI_Scintilla/demos
     - Win32-GUI_Grid/demos
     - Win32-GUI_DropFiles/demos
     - Win32-GUI_Constants/demos
     - Win32-GUI_AxWindow/demos
+  file:
+    - Win32-GUI_DIBitmap/extlib/Readme.txt
+    - Win32-GUI_DropFiles/Readme.txt
+    - Win32-GUI_Scintilla/Include/Readme.txt
+    - Readme.html
 requires:
   Test::More: 0
 resources:
   bugtracker: http://sourceforge.net/p/perl-win32-gui/bugs/
   repository: http://sourceforge.net/p/perl-win32-gui/git/
-version: 1.08_01
+version: 1.08_02

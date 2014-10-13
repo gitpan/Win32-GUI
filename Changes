@@ -1,6 +1,6 @@
 Revision history for Perl module Win32::GUI
 
-1.08_01 2014-10-13
+1.08_02 2014-10-13
 
     * tuning POD to be correctly published on metacpan.org and search.cpan.org
 

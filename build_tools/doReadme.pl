@@ -23,9 +23,9 @@ use Pod::Text;
 use Pod::Html;
 
 my $src = "docs/GUI/UserGuide/Readme.pod";  # The name of the source file to read from
-my $tmp = "Readme.pod";       # Temporary POD document as intermediate (removed)
-my $txt = "Readme";       # The name of the output TXT file to generate
-my $htm = "Readme.html";      # The name of the output HTML file to generate
+my $tmp = "README.pod";       # Temporary POD document as intermediate (removed)
+my $txt = "README";       # The name of the output TXT file to generate
+my $htm = "README.html";      # The name of the output HTML file to generate
 my $postamble_file  = "docs/pod_postamble.tpl";  # template for the POD postamble macro
 
 # set up the pod POSTAMBLE

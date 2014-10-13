@@ -93,6 +93,13 @@ command with:
 
   perl -Ibuild_tools -MConfig_mO Makefile.PL
 
+=head2 Strawberry Perl
+
+  perl Makefile.PL
+  dmake
+  dmake test
+  dmake install
+
 =head2 Cygwin
 
 Build requirements (over and above the runtime requirements above):
