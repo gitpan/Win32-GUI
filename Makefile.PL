@@ -250,6 +250,7 @@ my %MakefileArgs = (
       },
       no_index => {
         directory => [qw( build_tools samples docs
+                          Win32-GUI_ReleaseNotes
                           Win32-GUI_Constants/hash
                           Win32-GUI_AxWindow/t Win32-GUI_BitmapInline/t Win32-GUI_Constants/t Win32-GUI_DIBitmap/t
                           Win32-GUI_DropFiles/t Win32-GUI_Grid/t Win32-GUI_ReleaseNotes/t Win32-GUI_Scintilla/t

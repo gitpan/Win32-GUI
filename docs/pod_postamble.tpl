@@ -11,7 +11,7 @@ Edit F<__W32G_FILE__> instead.
 
 Homepage: L<__W32G_WEB_HOMEPAGE__>.
 
-For further support join the users mailing list(C<__W32G_EMAIL_USERLIST__>) from the website
+For further support join the users mailing list from the website
 at L<__W32G_WEB_USERMAIL__>.  There is a searchable list archive at L<__W32G_WEB_MAILARCHIVE__>.
 
 =head1 COPYRIGHT and LICENCE
