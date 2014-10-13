@@ -228,6 +228,7 @@ File::Find::find(sub { push @demos, $File::Find::name if $File::Find::name =~ /\
 
 my %MakefileArgs = (
     NAME            => 'Win32::GUI',
+    LICENSE         => 'perl',
     VERSION_FROM    => 'GUI.pm',
     LIBS            => [':nosearch -lcomctl32 -lcomdlg32 -lshell32 -lgdi32 -luser32 -lversion -lmsimg32'],
     PREREQ_PM       => {
@@ -260,7 +261,7 @@ my %MakefileArgs = (
         file      => [qw( Win32-GUI_DIBitmap/extlib/Readme.txt
                           Win32-GUI_DropFiles/Readme.txt
                           Win32-GUI_Scintilla/Include/Readme.txt
-                          Readme.html
+                          README.html
                      )],
       },
     },

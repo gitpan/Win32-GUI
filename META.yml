@@ -8,7 +8,7 @@ configure_requires:
   ExtUtils::MakeMaker: 0
 dynamic_config: 1
 generated_by: 'ExtUtils::MakeMaker version 6.76, CPAN::Meta::Converter version 2.132510'
-license: unknown
+license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
@@ -40,10 +40,10 @@ no_index:
     - Win32-GUI_DIBitmap/extlib/Readme.txt
     - Win32-GUI_DropFiles/Readme.txt
     - Win32-GUI_Scintilla/Include/Readme.txt
-    - Readme.html
+    - README.html
 requires:
   Test::More: 0
 resources:
   bugtracker: http://sourceforge.net/p/perl-win32-gui/bugs/
   repository: http://sourceforge.net/p/perl-win32-gui/git/
-version: 1.08_06
+version: 1.08_07
