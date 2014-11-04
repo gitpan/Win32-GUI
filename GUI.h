@@ -14,6 +14,7 @@
 #define WINVER 0x501
 #undef NOTRACKMOUSEEVENT
 #include <stdarg.h>
+#include <string.h>
 #include <windows.h>
 #include <commctrl.h>
 #include <commdlg.h>
