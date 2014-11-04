@@ -302,7 +302,7 @@ typedef struct tagPERLWIN32GUI_USERDATA {
     DWORD       dwEventMask;
     AV*         avHooks;
     LRESULT     forceResult;
-    void*       dwData;                                                // Internal DATA usage
+    IV          dwData;                                                // Internal DATA usage
     SV*         userData;                                              // user data
 } PERLWIN32GUI_USERDATA, *LPPERLWIN32GUI_USERDATA;
 

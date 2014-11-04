@@ -16,11 +16,11 @@ HTREEITEM    T_PTR
 LONG         T_IV
 LPCTSTR      T_PV
 LPTSTR       T_PV
-DWORD        T_IV
+DWORD        T_UV
 UINT         T_UV
 INT          T_IV
 BOOL         T_IV
-WPARAM       T_IV
+WPARAM       T_UV
 LPARAM       T_LPARAM
 LRESULT      T_IV
 HINSTANCE    T_PTR
@@ -30,6 +30,8 @@ HENHMETAFILE T_PTR
 FLOAT        T_FLOAT
 LPVOID       T_PV
 HACCEL       T_PTR
+UINT_PTR     T_PTR
+LONG_PTR     T_PTR
 
 ################################################################################
 INPUT

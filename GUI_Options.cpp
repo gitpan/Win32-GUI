@@ -206,9 +206,9 @@ void ParseWindowOptions(
                     perlcs->hBackgroundBrush = CreateBrushIndirect(&lb);
                     perlcs->bDeleteBackgroundBrush = TRUE;
                 }
-                storing = newSViv((IV) perlcs->clrBackground);
+                storing = newSViv(PTR2IV(perlcs->clrBackground));
                 stored = hv_store_mg(NOTXSCALL perlcs->hvSelf, "-background", 11, storing, 0);
-                storing = newSViv((IV) perlcs->hBackgroundBrush);
+                storing = newSViv(PTR2IV(perlcs->hBackgroundBrush));
                 stored = hv_store_mg(NOTXSCALL perlcs->hvSelf, "-backgroundbrush", 16, storing, 0);
             } else if(strcmp(option, "-backgroundbrush") == 0) {
                 next_i = i + 1;
@@ -217,7 +217,7 @@ void ParseWindowOptions(
 				}
                 perlcs->hBackgroundBrush = (HBRUSH) handle_From(NOTXSCALL ST(next_i));;
                 perlcs->bDeleteBackgroundBrush = FALSE;
-                storing = newSViv((IV) perlcs->hBackgroundBrush);
+                storing = newSViv(PTR2IV(perlcs->hBackgroundBrush));
                 stored = hv_store_mg(NOTXSCALL perlcs->hvSelf, "-backgroundbrush", 16, storing, 0);
             } else if(strcmp(option, "-size") == 0) {
                 next_i = i + 1;
@@ -315,7 +315,6 @@ void ParseWindowOptions(
                 } else {
                     W32G_WARN("Win32::GUI: Invalid value for -eventmodel!");
                 }
-
             } else BitmaskOption("-visible", perlcs->cs.style, WS_VISIBLE)
             } else BitmaskOption("-disabled", perlcs->cs.style, WS_DISABLED)
             } else BitmaskOption("-group", perlcs->cs.style, WS_GROUP)
@@ -428,7 +427,7 @@ void ParseMenuItemOptions(
 #endif
                 strcpy( (perlmid->szName), SvPV_nolen(ST(next_i)) );
                 SwitchBit(mii->fMask, MIIM_DATA, 1);
-                mii->dwItemData = (IV) perlmid;
+                mii->dwItemData = (ULONG_PTR) perlmid;
 #ifdef PERLWIN32GUI_STRONGDEBUG
                 printf("!XS(ParseMenuItemOptions) done -name ('%s')\n", perlmid->szName);
 #endif
@@ -440,7 +439,7 @@ void ParseMenuItemOptions(
                 SwitchBit(mii->fMask, MIIM_DATA, 1);
                 /* perlmid->svCode = newSVsv(ST(next_i)); */
                 sv_setsv(perlmid->svCode, ST(next_i));
-                mii->dwItemData = (IV) perlmid;
+                mii->dwItemData = (ULONG_PTR) perlmid;
 #ifdef PERLWIN32GUI_STRONGDEBUG
                 printf("!XS(ParseMenuItemOptions) done -onClick newSVsv\n");
 #endif
@@ -819,7 +818,7 @@ void ParseTooltipOptions(
     }
 
 	if( ti->uFlags & TTF_IDISHWND) {
-		ti->uId = (IV)ti->hwnd;  /* TODO: can hwnd be NULL? */
+		ti->uId = (UINT_PTR)(ti->hwnd);  /* TODO: can hwnd be NULL? */
 	} else {
 		/* if rect not supplied, use hwnd co-ordinates */
 		if(ti->rect.left == 0 && ti->rect.right == 0 && ti->rect.top == 0 && ti->rect.bottom == 0) {

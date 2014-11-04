@@ -149,12 +149,12 @@ ToolInfoFromTool(NOTXSPROC HWND handle, SV* tool, TOOLINFO *ti) {
             if(alen > 0) {
                 value = av_fetch(array, 1, 0);
                 if(value) {
-                    ti->uId = (IV)SvIV(*value);
+                    ti->uId = INT2PTR(UINT_PTR, SvIV(*value));
                 } else {
                     CROAK("Problem with TOOL array reference, index 1");
                 }
             } else {
-                ti->uId = (IV)ti->hwnd;
+                ti->uId = (UINT_PTR)(ti->hwnd);
             }
         } else {
             CROAK("TOOL array refence is empty");
@@ -165,7 +165,7 @@ ToolInfoFromTool(NOTXSPROC HWND handle, SV* tool, TOOLINFO *ti) {
          * handles clashing, but kept for
          * (1) backwards compatability
          * (2) allowing the most common simple case of WINDOW */
-        ti->uId  = (IV)handle_From(NOTXSCALL tool);
+        ti->uId  = (UINT_PTR)(handle_From(NOTXSCALL tool));
         if(IsWindow((HWND)ti->uId)) {
             ti->hwnd = (HWND)ti->uId;
         } else {
@@ -409,7 +409,7 @@ CODE:
         EXTEND(SP, 12);
         XST_mPV(count++, "-window");
         if(ti.uFlags & TTF_IDISHWND) {
-            XST_mIV(count++, (IV) ti.uId);
+            XST_mIV(count++, PTR2IV(ti.uId));
         } else {
             XST_mIV(count++, PTR2IV(ti.hwnd));
             XST_mPV(count++, "-id");
@@ -532,7 +532,7 @@ CODE:
         EXTEND(SP, 12);
         XST_mPV(count++, "-window");
         if(ti.uFlags & TTF_IDISHWND) {
-            XST_mIV(count++, (IV) ti.uId);
+            XST_mIV(count++, PTR2IV(ti.uId));
         } else {
             XST_mIV(count++, PTR2IV(ti.hwnd));
             XST_mPV(count++, "-id");
@@ -806,7 +806,7 @@ CODE:
         EXTEND(SP, 12);
         XST_mPV(count++, "-window");
         if(ti.uFlags & TTF_IDISHWND) {
-            XST_mIV(count++, (IV) ti.uId);
+            XST_mIV(count++, PTR2IV(ti.uId));
         } else {
             XST_mIV(count++, PTR2IV(ti.hwnd));
             XST_mPV(count++, "-id");
@@ -888,7 +888,7 @@ CODE:
         EXTEND(SP, 12);
         XST_mPV(count++, "-window");
         if(hti.ti.uFlags & TTF_IDISHWND) {
-            XST_mIV(count++, (IV) hti.ti.uId);
+            XST_mIV(count++, PTR2IV(hti.ti.uId));
         } else {
             XST_mIV(count++, PTR2IV(hti.ti.hwnd));
             XST_mPV(count++, "-id");

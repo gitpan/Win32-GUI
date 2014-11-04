@@ -803,15 +803,15 @@ CODE:
                 }
             } else if(strcmp(option, "-offset") == 0) {
                 next_i = i + 1;
-                pf.dxOffset = SvIV(ST(next_i));
+                pf.dxOffset = (LONG)SvIV(ST(next_i));
                 pf.dwMask = pf.dwMask | PFM_OFFSET;
             } else if(strcmp(option, "-startindent") == 0) {
                 next_i = i + 1;
-                pf.dxStartIndent = SvIV(ST(next_i));
+                pf.dxStartIndent = (LONG)SvIV(ST(next_i));
                 pf.dwMask = pf.dwMask | PFM_STARTINDENT;
             } else if(strcmp(option, "-right") == 0) {
                 next_i = i + 1;
-                pf.dxRightIndent = SvIV(ST(next_i));
+                pf.dxRightIndent = (LONG)SvIV(ST(next_i));
                 pf.dwMask = pf.dwMask | PFM_RIGHTINDENT;
             }
         } else {
@@ -984,7 +984,7 @@ CODE:
     hfile = CreateFile(
         filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL
     );
-    estream.dwCookie = (IV) hfile;
+    estream.dwCookie = (DWORD_PTR) hfile;
     estream.dwError = 0;
     estream.pfnCallback = (EDITSTREAMCALLBACK) RichEditSave;
 
@@ -1009,7 +1009,7 @@ CODE:
     hfile = CreateFile(
         filename, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL
     );
-    estream.dwCookie = (IV) hfile;
+    estream.dwCookie = (DWORD_PTR) hfile;
     estream.dwError = 0;
     estream.pfnCallback = (EDITSTREAMCALLBACK) RichEditLoad;
 

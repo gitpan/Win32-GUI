@@ -1170,10 +1170,10 @@ CODE:
             } else if(strcmp(option, "-item") == 0
             || strcmp(option, "-index") == 0) {
                 next_i = i + 1;
-                Item.iItem = SvIV(ST(next_i));
+                Item.iItem = (int)SvIV(ST(next_i));
             } else if(strcmp(option, "-image") == 0) {
                 next_i = i + 1;
-                Item.iImage = SvIV(ST(next_i));
+                Item.iImage = (int)SvIV(ST(next_i));
                 SwitchBit(Item.mask, LVIF_IMAGE, 1);
             } else if(strcmp(option, "-selected") == 0) {
                 next_i = i + 1;
@@ -1182,7 +1182,7 @@ CODE:
                 SwitchBit(Item.mask, LVIF_STATE, 1);
             } else if(strcmp(option, "-indent") == 0) {
                 next_i = i + 1;
-                Item.iIndent = SvIV(ST(next_i));
+                Item.iIndent = (int)SvIV(ST(next_i));
                 SwitchBit(Item.mask, LVIF_INDENT, 1);
             }
         } else {
@@ -1280,10 +1280,10 @@ CODE:
                 BkImage.ulFlags |= (SvIV(ST(next_i)) ? LVBKIF_STYLE_TILE : LVBKIF_STYLE_NORMAL);
             } else if(strcmp(option, "-xOffsetPercent") == 0) {
                 next_i = i + 1;
-                BkImage.xOffsetPercent = SvIV(ST(next_i));
+                BkImage.xOffsetPercent = (int)SvIV(ST(next_i));
             } else if(strcmp(option, "-yOffsetPercent") == 0) {
                 next_i = i + 1;
-                BkImage.yOffsetPercent = SvIV(ST(next_i));
+                BkImage.yOffsetPercent = (int)SvIV(ST(next_i));
             }
         } else {
             next_i = -1;
@@ -1334,7 +1334,7 @@ PREINIT:
 CODE:
     lpiArray = (int *) safemalloc (items * sizeof(int));
     for (int i = 1; i < items; i++)
-        lpiArray[i] = SvIV(ST(i));
+        lpiArray[i] = (int)SvIV(ST(i));
     RETVAL = ListView_SetColumnOrderArray(handle, items-1, &lpiArray[1]);
     safefree (lpiArray);
 OUTPUT:
@@ -1476,13 +1476,13 @@ CODE:
             } else if(strcmp(option, "-item") == 0
             || strcmp(option, "-index") == 0) {
                 next_i = i + 1;
-                Item.iItem = SvIV(ST(next_i));
+                Item.iItem = (int)SvIV(ST(next_i));
             } else if(strcmp(option, "-subitem") == 0) {
                 next_i = i + 1;
-                Item.iSubItem = SvIV(ST(next_i));
+                Item.iSubItem = (int)SvIV(ST(next_i));
             } else if(strcmp(option, "-image") == 0) {
                 next_i = i + 1;
-                Item.iImage = SvIV(ST(next_i));
+                Item.iImage = (int)SvIV(ST(next_i));
                 Item.mask = Item.mask | LVIF_IMAGE;
             }
         } else {
@@ -1691,7 +1691,7 @@ CODE:
     if (item < -1 || item >= iCount) XSRETURN_UNDEF;
     if (item == -1) {  // All items
         // Get the current window style.
-        dwStyle = GetWindowLongPtr(handle, GWL_STYLE);
+        dwStyle = (DWORD)GetWindowLongPtr(handle, GWL_STYLE);
         if (dwStyle & LVS_SINGLESEL) XSRETURN_UNDEF; // Not in singlesel mode
         mask = LVIS_SELECTED;
         state = 0xFFFFFFFF;    // Select all
@@ -1723,7 +1723,7 @@ PREINIT:
     UINT mask;
 CODE:
     // Get the current window style.
-    dwStyle = GetWindowLongPtr(handle, GWL_STYLE);
+    dwStyle = (DWORD)GetWindowLongPtr(handle, GWL_STYLE);
     if (dwStyle & LVS_SINGLESEL) XSRETURN_UNDEF; // Not in singlesel mode
     mask = LVIS_SELECTED;
     state = 0xFFFFFFFF;    // Select all
@@ -1816,16 +1816,16 @@ CODE:
                     }
                 } else if(strcmp(option, "-item") == 0
                 || strcmp(option, "-index") == 0) {
-                    Item.iItem = SvIV(sv_value);
+                    Item.iItem = (int)SvIV(sv_value);
                 } else if(strcmp(option, "-image") == 0) {
-                    Item.iImage = SvIV(sv_value);
+                    Item.iImage = (int)SvIV(sv_value);
                     SwitchBit(Item.mask, LVIF_IMAGE, 1);
                 } else if(strcmp(option, "-selected") == 0) {
                     SwitchBit(Item.state, LVIS_SELECTED, SvIV(sv_value));
                     SwitchBit(Item.stateMask, LVIS_SELECTED, 1);
                     SwitchBit(Item.mask, LVIF_STATE, 1);
                 } else if(strcmp(option, "-indent") == 0) {
-                    Item.iIndent = SvIV(sv_value);
+                    Item.iIndent = (int)SvIV(sv_value);
                     SwitchBit(Item.mask, LVIF_INDENT, 1);
                 }
             }
@@ -1859,12 +1859,12 @@ PREINIT:
     DWORD dwStyle;
 CODE:
     // Get the current window style.
-    dwStyle = GetWindowLongPtr(handle, GWL_STYLE);
+    dwStyle = (DWORD)GetWindowLongPtr(handle, GWL_STYLE);
     if(items == 2) {
         // Only set the window style if the view bits have changed.
         if ((dwStyle & LVS_TYPEMASK) != view)
             SetWindowLongPtr(handle, GWL_STYLE,  (dwStyle & ~LVS_TYPEMASK) | view);
-        dwStyle = GetWindowLongPtr(handle, GWL_STYLE);
+        dwStyle = (DWORD)GetWindowLongPtr(handle, GWL_STYLE);
         RETVAL = (dwStyle & LVS_TYPEMASK);
     } else
         RETVAL = (dwStyle & LVS_TYPEMASK);

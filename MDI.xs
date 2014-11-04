@@ -75,7 +75,7 @@ MDIClient_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATE
         LPCLIENTCREATESTRUCT ccs = (LPCLIENTCREATESTRUCT) perlcs->cs.lpCreateParams;
 
         if(strcmp(option, "-firstchild") == 0) {
-            ccs->idFirstChild = SvIV(value);
+            ccs->idFirstChild = (UINT)SvIV(value);
         } else if(strcmp(option, "-windowmenu") == 0) {
             ccs->hWindowMenu = handle_From(NOTXSCALL value);
         } else retval = FALSE;
@@ -95,7 +95,7 @@ MDIClient_onPostCreate(NOTXSPROC HWND myhandle, LPPERLWIN32GUI_CREATESTRUCT perl
         if (parentud->dwPlStyle & PERLWIN32GUI_MDIFRAME &&
             !(parentud->dwPlStyle & PERLWIN32GUI_HAVECHILDWINDOW)) {
             parentud->dwPlStyle |= PERLWIN32GUI_HAVECHILDWINDOW;
-            parentud->dwData = (void*) myhandle;
+            parentud->dwData = PTR2IV(myhandle);
         }
     }
 }
@@ -169,7 +169,7 @@ MDIChild_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
 
     case WM_MDIACTIVATE :
 
-        if( perlud->dwData == (void*) wParam ) {
+        if( perlud->dwData == PTR2IV(wParam) ) {
             /*
              * (@)EVENT:Deactivate()
              * Sent when the window is deactivated.
@@ -191,7 +191,7 @@ MDIChild_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
         PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_GOTFOCUS, "GotFocus", -1 );
         // Force SetFocus on first child if not handle
         if ( !(perlud->dwPlStyle & PERLWIN32GUI_EVENTHANDLING) ) {
-            HWND child = GetWindow((HWND)perlud->dwData, GW_CHILD);
+            HWND child = GetWindow(INT2PTR(HWND, perlud->dwData), GW_CHILD);
             if (child) {
                 SetFocus(child);
             }

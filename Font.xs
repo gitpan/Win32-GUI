@@ -62,7 +62,7 @@ PPCODE:
                 HDC hDisplay;
                 next_i = i + 1;
                 hDisplay = CreateDC("DISPLAY", NULL, NULL, NULL);
-                nHeight = (int) -MulDiv(SvIV(ST(next_i)), GetDeviceCaps(hDisplay, LOGPIXELSY), 72);
+                nHeight = (int) -MulDiv((int)SvIV(ST(next_i)), GetDeviceCaps(hDisplay, LOGPIXELSY), 72);
                 DeleteDC(hDisplay);
             }
             else if(strcmp(option, "-width") == 0) {
@@ -125,7 +125,7 @@ PPCODE:
             next_i = -1;
         }
     }
-    XSRETURN_IV((IV) CreateFont(
+    XSRETURN_IV(PTR2IV(CreateFont(
         nHeight,
         nWidth,
         nEscapement,
@@ -140,7 +140,7 @@ PPCODE:
         fdwQuality,
         fdwPitchAndFamily,
         (LPCTSTR) lpszFace)
-    );
+    ));
 
 
     ###########################################################################

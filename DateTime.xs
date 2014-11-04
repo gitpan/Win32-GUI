@@ -149,7 +149,7 @@ GetMonthCalColor(handle,icolor)
     HWND handle
     int  icolor
 CODE:
-    RETVAL = DateTime_GetMonthCalColor(handle, icolor);
+    RETVAL = (COLORREF)DateTime_GetMonthCalColor(handle, icolor);
 OUTPUT:
     RETVAL
 

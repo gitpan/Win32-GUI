@@ -720,7 +720,7 @@ SetTabStops(handle,tab,...)
 CODE:
     DWORD * pBuf = (DWORD *) safemalloc(items * sizeof(DWORD));
     for (int i = 1; i < items; i++)
-        pBuf[i] = SvIV(ST(i));
+        pBuf[i] = (DWORD)SvIV(ST(i));
     RETVAL = SendMessage(handle, EM_SETTABSTOPS, items-1, (LPARAM) pBuf);
     safefree(pBuf);
 OUTPUT:
@@ -819,7 +819,7 @@ CODE:
     if(items > 1)
         RETVAL = SendMessage(handle, EM_SETREADONLY, (WPARAM) (BOOL) SvIV(ST(1)), 0);
     else
-        RETVAL = (GetWindowLongPtr(handle, GWL_STYLE) & ES_READONLY);
+        RETVAL = (((LONG)GetWindowLongPtr(handle, GWL_STYLE)) & ES_READONLY);
 OUTPUT:
     RETVAL
 

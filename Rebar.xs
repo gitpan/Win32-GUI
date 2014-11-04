@@ -267,9 +267,9 @@ CODE:
         XST_mPV( 6, "-image");
         XST_mIV( 7, rbbi.iImage);
         XST_mPV( 8, "-child");
-        XST_mIV( 9, (IV) rbbi.hwndChild);
+        XST_mIV( 9, PTR2IV(rbbi.hwndChild));
         XST_mPV(10, "-bitmap");
-        XST_mIV(11, (IV) rbbi.hbmBack);
+        XST_mIV(11, PTR2IV(rbbi.hbmBack));
         XST_mPV(12, "-width");
         XST_mIV(13, rbbi.cx);
         XST_mPV(14, "-minwidth");
@@ -313,7 +313,7 @@ PPCODE:
     if (SendMessage(handle, RB_GETBARINFO , (WPARAM) 0, (LPARAM) &rbinfo) ) {
         EXTEND(SP, 2);
         XST_mPV( 0, "-imagelist");
-        XST_mIV( 1, (IV) rbinfo.himl);
+        XST_mIV( 1, PTR2IV(rbinfo.himl));
         XSRETURN(2);
     }
     else {

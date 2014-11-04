@@ -1721,7 +1721,7 @@ CODE:
       {
 
         // Store HWnd Handle
-        storing = newSViv((long) container->GethWnd());
+        storing = newSViv(PTR2IV(container->GethWnd()));
         stored  = hv_store_mg(hvSelf, "-handle", 7, storing, 0);
 
         ret = TRUE;
@@ -1734,7 +1734,7 @@ CODE:
     }
 
     // Always store CContainer Object pointer (Avoid destroy problem)
-    storing = newSViv((long) container);
+    storing = newSViv(PTR2IV(container));
     stored  = hv_store_mg(hvSelf, "-CContainer", 11, storing, 0);
 
     RETVAL = ret;

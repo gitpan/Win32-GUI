@@ -34,11 +34,11 @@ Splitter_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATES
     } else if(strcmp(option, "-min") == 0) {
         storing = newSViv((LONG) SvIV(value));
         stored = hv_store_mg(NOTXSCALL perlcs->hvSelf, "-min", 4, storing, 0);
-        perlcs->iMinWidth = SvIV(value);
+        perlcs->iMinWidth = (int)SvIV(value);
     } else if(strcmp(option, "-max") == 0) {
         storing = newSViv((LONG) SvIV(value));
         stored = hv_store_mg(NOTXSCALL perlcs->hvSelf, "-max", 4, storing, 0);
-        perlcs->iMaxWidth = SvIV(value);
+        perlcs->iMaxWidth = (int)SvIV(value);
     } else if(strcmp(option, "-range") == 0) {
         if(SvROK(value) && SvTYPE(SvRV(value)) == SVt_PVAV) {
             SV** t;
@@ -46,13 +46,13 @@ Splitter_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATES
             if(t != NULL) {
                 storing = newSViv((LONG) SvIV(*t));
                 stored = hv_store_mg(NOTXSCALL perlcs->hvSelf, "-min", 4, storing, 0);
-                perlcs->iMinWidth = SvIV(*t);
+                perlcs->iMinWidth = (int)SvIV(*t);
             }
             t = av_fetch((AV*)SvRV(value), 1, 0);
             if(t != NULL) {
                 storing = newSViv((LONG) SvIV(*t));
                 stored = hv_store_mg(NOTXSCALL perlcs->hvSelf, "-max", 4, storing, 0);
-                perlcs->iMaxWidth = SvIV(*t);
+                perlcs->iMaxWidth = (int)SvIV(*t);
             }
         } else {
             W32G_WARN("Win32::GUI: Argument to -range is not an array reference!");
@@ -103,14 +103,14 @@ Splitter_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
 	    MapWindowPoints(hwnd, phwnd, (LPPOINT)&pt, 1);
 
             if(horizontal) {
-                DrawSplitter(NOTXSCALL phwnd, rc.left, (IV)(perlud->dwData), w, h);
+                DrawSplitter(NOTXSCALL phwnd, rc.left, (int)perlud->dwData, w, h);
                 pt.y = AdjustSplitterCoord(NOTXSCALL perlud, pt.y, h, phwnd);
-	        perlud->dwData = (void*)pt.y;
+	        perlud->dwData = (IV)(pt.y);
                 DrawSplitter(NOTXSCALL phwnd, rc.left, pt.y, w, h);
             } else {
-                DrawSplitter(NOTXSCALL phwnd, (IV)(perlud->dwData), rc.top, w, h);
+                DrawSplitter(NOTXSCALL phwnd, (int)perlud->dwData, rc.top, w, h);
                 pt.x = AdjustSplitterCoord(NOTXSCALL perlud, pt.x, w, phwnd);
-	        perlud->dwData = (void*)pt.x;
+	        perlud->dwData = (IV)(pt.x);
                 DrawSplitter(NOTXSCALL phwnd, pt.x, rc.top, w, h);
             }
         }
@@ -128,11 +128,11 @@ Splitter_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
 
         if(horizontal) {
             pt.y = AdjustSplitterCoord(NOTXSCALL perlud, pt.y, h, phwnd);
-	    perlud->dwData = (void*)rc.top;
+	    perlud->dwData = (IV)(rc.top);
             DrawSplitter(NOTXSCALL phwnd, rc.left, rc.top, w, h);
         } else {
             pt.x = AdjustSplitterCoord(NOTXSCALL perlud, pt.x, w, phwnd);
-	    perlud->dwData = (void*)rc.left;
+	    perlud->dwData = (IV)(rc.left);
             DrawSplitter(NOTXSCALL phwnd, rc.left, rc.top, w, h);
         }
         SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_TRACKING, 1);        
@@ -149,9 +149,9 @@ Splitter_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
             ScreenToClient(phwnd, (POINT*)&rc);
 
             if(horizontal) {
-                MoveWindow(hwnd, rc.left, (IV)(perlud->dwData), w, h, 1);
+                MoveWindow(hwnd, rc.left, (int)perlud->dwData, w, h, 1);
             } else {
-                MoveWindow(hwnd, (IV)(perlud->dwData), rc.top, w, h, 1);
+                MoveWindow(hwnd, (int)perlud->dwData, rc.top, w, h, 1);
             }
 
             /*
@@ -164,7 +164,7 @@ Splitter_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
             * (@)APPLIES_TO:Splitter
             */
             PerlResult = DoEvent(NOTXSCALL perlud, PERLWIN32GUI_NEM_CONTROL1, "Release",
-                                 PERLWIN32GUI_ARGTYPE_LONG, (IV) perlud->dwData,
+                                 PERLWIN32GUI_ARGTYPE_LONG, perlud->dwData,
                                  -1);
 
         }
@@ -180,9 +180,9 @@ Splitter_onEvent (NOTXSPROC LPPERLWIN32GUI_USERDATA perlud, UINT uMsg, WPARAM wP
             SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_TRACKING, 0);
 
             if(horizontal) {
-                DrawSplitter(NOTXSCALL phwnd, rc.left, (IV)(perlud->dwData), w, h);
+                DrawSplitter(NOTXSCALL phwnd, rc.left, (int)perlud->dwData, w, h);
             } else {
-                DrawSplitter(NOTXSCALL phwnd, (IV)(perlud->dwData), rc.top, w, h);
+                DrawSplitter(NOTXSCALL phwnd, (int)perlud->dwData, rc.top, w, h);
             }
         }
         break;
@@ -220,7 +220,7 @@ PPCODE:
         if(items == 1) {
             XSRETURN_IV(perlud->iMinWidth);
         } else {
-            perlud->iMinWidth = SvIV(ST(1));
+            perlud->iMinWidth = (int)SvIV(ST(1));
             XSRETURN_YES;
         }
     } else {
@@ -247,7 +247,7 @@ PPCODE:
         if(items == 1) {
             XSRETURN_IV(perlud->iMaxWidth);
         } else {
-            perlud->iMaxWidth = SvIV(ST(1));
+            perlud->iMaxWidth = (int)SvIV(ST(1));
             XSRETURN_YES;
         }
     } else {

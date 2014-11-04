@@ -799,12 +799,12 @@ CODE:
             } else if(strcmp(option, "-image") == 0) {
                 next_i = i + 1;
                 imageSeen = 1;
-                Item.iImage = SvIV(ST(next_i));
+                Item.iImage = (int)SvIV(ST(next_i));
                 SwitchBit(Item.mask, TVIF_IMAGE, 1);
             } else if(strcmp(option, "-selectedimage") == 0) {
                 next_i = i + 1;
                 selectedImageSeen = 1;
-                Item.iSelectedImage = SvIV(ST(next_i));
+                Item.iSelectedImage = (int)SvIV(ST(next_i));
                 SwitchBit(Item.mask, TVIF_SELECTEDIMAGE, 1);
             } else if(strcmp(option, "-parent") == 0) {
                 next_i = i + 1;
@@ -993,12 +993,12 @@ CODE:
             } else if(strcmp(option, "-image") == 0) {
                 next_i = i + 1;
                 imageSeen = 1;
-                Item.iImage = SvIV(ST(next_i));
+                Item.iImage = (int)SvIV(ST(next_i));
                 SwitchBit(Item.mask, TVIF_IMAGE, 1);
             } else if(strcmp(option, "-selectedimage") == 0) {
                 next_i = i + 1;
                 selectedImageSeen = 1;
-                Item.iSelectedImage = SvIV(ST(next_i));
+                Item.iSelectedImage = (int)SvIV(ST(next_i));
                 SwitchBit(Item.mask, TVIF_SELECTEDIMAGE, 1);
             } else if(strcmp(option, "-bold") == 0) {
                 next_i = i + 1;

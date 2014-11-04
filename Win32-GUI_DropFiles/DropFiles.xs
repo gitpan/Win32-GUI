@@ -95,7 +95,7 @@ PPCODE:
         mXPUSHu(count);
         XSRETURN(1);
     } else if (items == 2) {
-        item = SvIV(ST(1));
+        item = (UINT)SvIV(ST(1));
         if(item < count) {  /* item is in range */
 #ifndef W32G_NO_WIN9X
             if(IsWin9X()) {

@@ -239,7 +239,7 @@ CODE:
         XST_mPV( 2, "-image");
         XST_mIV( 3, Item.iImage);
         XST_mPV( 4, "-bitmap");
-        XST_mIV( 5, (IV)Item.hbm);
+        XST_mIV( 5, PTR2IV(Item.hbm));
         XST_mPV( 6, "-bitmaponright");
         XST_mIV( 7, (Item.fmt & HDF_BITMAP_ON_RIGHT));
         XST_mPV( 8, "-cxy");
@@ -452,7 +452,7 @@ PREINIT:
 CODE:
     lpiArray = (int *) safemalloc (items * sizeof(int));
     for (int i = 1; i < items; i++)
-        lpiArray[i] = SvIV(ST(i));
+        lpiArray[i] = (int)SvIV(ST(i));
     RETVAL = Header_SetOrderArray(handle, items-1, &lpiArray[1]);
     safefree (lpiArray);
 OUTPUT:

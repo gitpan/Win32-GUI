@@ -18,6 +18,7 @@
 
 #include "GUI.h"
 #ifdef __CYGWIN__
+#include <cygwin/version.h>
 #include <sys/cygwin.h>
 #endif
 
@@ -202,7 +203,7 @@ CODE:
     /* Under Cygwin, convert paths to windows
      * paths. E.g. convert /usr/local... and /cygdrive/c/...
      */
-#ifdef __x86_64__
+#if CYGWIN_VERSION_API_MAJOR > 0 || CYGWIN_VERSION_API_MINOR >= 181
     i = cygwin_conv_path(CCP_POSIX_TO_WIN_A|CCP_RELATIVE,name,buffer,MAX_PATH+1);
     if (i < 0) XSRETURN_UNDEF;
 #else
@@ -383,15 +384,15 @@ PPCODE:
 #endif
     // hinstanceFound = (HINSTANCE) GetWindowLongPtr(hwndFound, GWL_HINSTANCE);
     // sv_hinstance = perl_get_sv("Win32::GUI::hinstance", TRUE);
-    // sv_setiv(sv_hinstance, (IV) hinstanceFound);
+    // sv_setiv(sv_hinstance, PTR2IV(hinstanceFound));
     SetConsoleTitle(OldPerlWindowTitle);
     if(GIMME == G_ARRAY) {
         EXTEND(SP, 2);
-        XST_mIV(0, (IV) hwndFound);
-        XST_mIV(1, (IV) hinstanceFound);
+        XST_mIV(0, PTR2IV(hwndFound));
+        XST_mIV(1, PTR2IV(hinstanceFound));
         XSRETURN(2);
     } else {
-        XSRETURN_IV((IV) hwndFound);
+        XSRETURN_IV(PTR2IV(hwndFound));
     }
 
 
@@ -446,7 +447,7 @@ PPCODE:
                 wcx.lpszClassName = (char *) SvPV_nolen(ST(next_i));
             } else if(strcmp(option, "-color") == 0) {
                 next_i = i + 1;
-                wcx.hbrBackground = (HBRUSH) SvCOLORREF(NOTXSCALL ST(next_i));
+                wcx.hbrBackground = CreateSolidBrush(SvCOLORREF(NOTXSCALL ST(next_i)));
             } else if(strcmp(option, "-brush") == 0) {
                 next_i = i + 1;
                 wcx.hbrBackground = (HBRUSH) handle_From(NOTXSCALL ST(next_i));
@@ -474,7 +475,7 @@ PPCODE:
                 }
             } else if(strcmp(option, "-style") == 0) {
                 next_i = i + 1;
-                wcx.style = SvIV(ST(next_i));
+                wcx.style = (UINT)SvIV(ST(next_i));
             } else if(strcmp(option, "-icon") == 0) {
                 next_i = i + 1;
                 wcx.hIcon = (HICON) handle_From(NOTXSCALL ST(next_i));
@@ -621,7 +622,7 @@ PPCODE:
                                  hMenu,
                                  hInstance,
                                  pPointer)) {
-        XSRETURN_IV((IV) myhandle);
+        XSRETURN_IV(PTR2IV(myhandle));
     } else {
         XSRETURN_NO;
     }
@@ -650,7 +651,7 @@ PPCODE:
 
     perlcs.cs.hInstance = GetModuleHandle(NULL);
     perlcs.hvSelf = (HV*) SvRV(self);
-    perlcs.iClass = SvIV(ST(1));
+    perlcs.iClass = (int)SvIV(ST(1));
     perlcs.clrForeground = CLR_INVALID;
     perlcs.clrBackground = CLR_INVALID;
     perlcs.iMinWidth = -1;
@@ -739,7 +740,7 @@ PPCODE:
     perlud->bDeleteBackgroundBrush = perlcs.bDeleteBackgroundBrush;
     perlud->hvEvents = perlcs.hvEvents;
     perlud->dwEventMask = perlcs.dwEventMask;
-    perlud->dwData = perlcs.cs.lpCreateParams;
+    perlud->dwData = PTR2IV(perlcs.cs.lpCreateParams);
     pPointer = perlud;
 
     // #### the following can be vital for the window
@@ -777,14 +778,14 @@ PPCODE:
 #ifdef PERLWIN32GUI_STRONGDEBUG
         printf("XS(Create): storing -handle...\n");
 #endif
-        storing = newSViv((IV) myhandle);
+        storing = newSViv(PTR2IV(myhandle));
         stored = hv_store_mg(NOTXSCALL perlcs.hvSelf, "-handle", 7, storing, 0);
         // #### set the font for the control
 #ifdef PERLWIN32GUI_STRONGDEBUG
         printf("XS(Create): storing -font...\n");
 #endif
         if(perlcs.hFont != NULL) {
-            storing = newSViv((IV) perlcs.hFont);
+            storing = newSViv(PTR2IV(perlcs.hFont));
             stored = hv_store_mg(NOTXSCALL perlcs.hvSelf, "-font", 5, storing, 0);
             SendMessage(myhandle, WM_SETFONT, (WPARAM) perlcs.hFont, 0);
         } else if(perlcs.cs.hwndParent != NULL && perlcs.hvParent != NULL) {
@@ -891,7 +892,7 @@ PPCODE:
 #ifdef PERLWIN32GUI_STRONGDEBUG
         printf("XS(Create): DONE!\n");
 #endif
-        XSRETURN_IV((IV) myhandle);
+        XSRETURN_IV(PTR2IV(myhandle));
     } else {
 #ifdef PERLWIN32GUI_STRONGDEBUG
         printf("XS(Create): CreateWindowEx failed, returning undef\n");
@@ -918,8 +919,8 @@ PPCODE:
     }
 
     perlcs.hvSelf = (HV*) SvRV(perlud->svSelf);
-    perlcs.cs.style = GetWindowLongPtr(handle, GWL_STYLE);
-    perlcs.cs.dwExStyle = GetWindowLongPtr(handle, GWL_EXSTYLE);
+    perlcs.cs.style = (LONG)GetWindowLongPtr(handle, GWL_STYLE);
+    perlcs.cs.dwExStyle = (DWORD)GetWindowLongPtr(handle, GWL_EXSTYLE);
     if(perlcs.hvSelf != NULL) {
         // #### retrieve windows data
         perlcs.iClass = perlud->iClass;
@@ -1016,7 +1017,7 @@ PPCODE:
             SetMenu(handle, perlcs.cs.hMenu);
 
         if(perlcs.hFont != NULL) {
-            hv_store_mg(NOTXSCALL perlcs.hvSelf, "-font", 5, newSViv((IV) perlcs.hFont), 0);
+            hv_store_mg(NOTXSCALL perlcs.hvSelf, "-font", 5, newSViv(PTR2IV(perlcs.hFont)), 0);
             SendMessage(handle, WM_SETFONT, (WPARAM) perlcs.hFont, 0);
         }
 
@@ -1048,7 +1049,7 @@ PPCODE:
     #
     # See also DoEvents()
     # See also DoModal()
-DWORD
+WPARAM
 Dialog(hwnd=NULL)
     HWND hwnd
 PREINIT:
@@ -1095,7 +1096,7 @@ CODE:
             // ### If the parent window is a MDIFrame the active MDIChild 
             // ### can be THE DialogBox
             if(fIsMDI
-                && (thwnd = (HWND)SendMessage((HWND)perlud->dwData, WM_MDIGETACTIVE, (WPARAM) 0, (LPARAM) NULL))
+                && (thwnd = (HWND)SendMessage(INT2PTR(HWND, perlud->dwData), WM_MDIGETACTIVE, (WPARAM) 0, (LPARAM) NULL))
                 && (tperlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(thwnd, GWLP_USERDATA))
                 && ValidUserData(tperlud))
             {
@@ -1105,7 +1106,7 @@ CODE:
                 thwnd = phwnd;
             }
 
-            if( !( (fIsMDI && TranslateMDISysAccel((HWND)perlud->dwData, &msg)) ||
+            if( !( (fIsMDI && TranslateMDISysAccel(INT2PTR(HWND, perlud->dwData), &msg)) ||
                    (acc && TranslateAccelerator(phwnd, acc, &msg))              ||
                    (fIsDialog && IsDialogMessage(thwnd, &msg)) ) 
               ){
@@ -1133,7 +1134,7 @@ OUTPUT:
     # windows.
     #
     # see also Dialog()
-DWORD
+WPARAM
 DoEvents(hwnd=NULL,wMsgFilterMin=0,wMsgFilterMax=0,wRemoveMsg=PM_REMOVE)
     HWND hwnd
     UINT wMsgFilterMin
@@ -1179,7 +1180,7 @@ CODE:
                 // ### If the parent window is a MDIFrame the active MDIChild 
                 // ### can be THE DialogBox
                 if(fIsMDI
-                    && (thwnd = (HWND)SendMessage((HWND)perlud->dwData, WM_MDIGETACTIVE, (WPARAM) 0, (LPARAM) NULL))
+                    && (thwnd = (HWND)SendMessage(INT2PTR(HWND, perlud->dwData), WM_MDIGETACTIVE, (WPARAM) 0, (LPARAM) NULL))
                     && (tperlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr(thwnd, GWLP_USERDATA))
                     && ValidUserData(tperlud))
                 {
@@ -1189,7 +1190,7 @@ CODE:
                     thwnd = phwnd;
                 }
 
-                if( !( (fIsMDI && TranslateMDISysAccel((HWND)perlud->dwData, &msg)) ||
+                if( !( (fIsMDI && TranslateMDISysAccel(INT2PTR(HWND, perlud->dwData), &msg)) ||
                        (acc && TranslateAccelerator(phwnd, acc, &msg))              ||
                        (fIsDialog && IsDialogMessage(thwnd, &msg)) ) 
                   ){
@@ -1222,7 +1223,7 @@ OUTPUT:
     #
     # See also Dialog()
     # See also DoEvents()
-BOOL
+WPARAM
 DoModal(handle, all=FALSE)
     HWND handle
     BOOL all
@@ -1293,7 +1294,7 @@ CODE:
                 acc = perlud->hAcc;
             }
 
-            if( !( (fIsMDI && TranslateMDISysAccel((HWND)perlud->dwData, &msg)) ||
+            if( !( (fIsMDI && TranslateMDISysAccel(INT2PTR(HWND, perlud->dwData), &msg)) ||
                    (acc && TranslateAccelerator(phwnd, acc, &msg))              ||
                    (fIsDialog && IsDialogMessage(phwnd, &msg)) ) 
               ){
@@ -1431,8 +1432,8 @@ CODE:
     si.fMask = SIF_RANGE;
     if(scrollbar > 1) XSRETURN_UNDEF;
     if(items > 2) {
-        si.nMin = SvIV(ST(2));
-        si.nMax = SvIV(ST(3));
+        si.nMin = (int)SvIV(ST(2));
+        si.nMax = (int)SvIV(ST(3));
         SetScrollInfo(handle, scrollbar, &si, 1);
     }
     if(GetScrollInfo(handle,scrollbar,&si)) {
@@ -1464,7 +1465,7 @@ CODE:
     if(scrollbar > 1) XSRETURN_UNDEF;
     si.fMask = SIF_PAGE;
     if(items > 2) {
-        si.nPage = SvIV(ST(2));
+        si.nPage = (UINT)SvIV(ST(2));
         SetScrollInfo(handle, scrollbar, &si, 1);
     }
     if(GetScrollInfo(handle,scrollbar,&si)) {
@@ -1492,7 +1493,7 @@ CODE:
     if(scrollbar > 1) XSRETURN_UNDEF;
     if(items > 2) {
         si.fMask = SIF_POS;
-        si.nPos = SvIV(ST(2));
+        si.nPos = (int)SvIV(ST(2));
         SetScrollInfo(handle, scrollbar, &si, 1);
     }
     si.fMask = SIF_POS;
@@ -1632,7 +1633,7 @@ CODE:
         /* Under Cygwin, convert paths to windows
          * paths. E.g. convert /usr/local... and /cygdrive/c/...
          */
-#ifdef __x86_64__
+#if CYGWIN_VERSION_API_MAJOR > 0 || CYGWIN_VERSION_API_MINOR >= 181
     i = cygwin_conv_path(CCP_POSIX_TO_WIN_A|CCP_RELATIVE,name,buffer,MAX_PATH+1);
     if (i < 0) XSRETURN_UNDEF;
 #else
@@ -1954,30 +1955,24 @@ OUTPUT:
     # (@)METHOD:GetWindowLong(INDEX)
     # Retrieves a windows property; for more info consult the original API
     # documentation.
-LONG
+void
 GetWindowLong(handle,index)
     HWND handle
     int index
-CODE:
-    RETVAL = GetWindowLongPtr(handle, index);
-OUTPUT:
-    RETVAL
-
+PPCODE:
+    XSRETURN_IV(PTR2IV(GetWindowLongPtr(handle, index)));
 
     ###########################################################################
     # (@)METHOD:SetWindowLong(INDEX, VALUE)
     # Sets a windows property; for more info consult the original API
     # documentation.
-LONG
+void
 SetWindowLong(handle,index,value)
     HWND handle
     int  index
-    LONG value
-CODE:
-    RETVAL = SetWindowLongPtr(handle, index, value);
-OUTPUT:
-    RETVAL
-
+    LONG_PTR value
+PPCODE:
+    XSRETURN_IV(PTR2IV(SetWindowLongPtr(handle, index, value)));
 
     ###########################################################################
     # (@)METHOD:SetWindowPos(INSERTAFTER,X,Y,cx,cy,FLAGS)
@@ -2172,10 +2167,10 @@ CODE:
         flags = (UINT) SvIV(ST(1));
     }
     else {
-        rect.left = SvIV(ST(1));
-        rect.top = SvIV(ST(2));
-        rect.right = SvIV(ST(3));
-        rect.bottom = SvIV(ST(4));
+        rect.left = (LONG)SvIV(ST(1));
+        rect.top = (LONG)SvIV(ST(2));
+        rect.right = (LONG)SvIV(ST(3));
+        rect.bottom = (LONG)SvIV(ST(4));
         flags = (UINT) SvIV(ST(5));
         lpRect = &rect;
     }
@@ -2230,10 +2225,10 @@ CODE:
         lpRect = (LPRECT) NULL;
         bErase = (BOOL) SvIV(ST(1));
     } else {
-        rect.left   = SvIV(ST(1));
-        rect.top    = SvIV(ST(2));
-        rect.right  = SvIV(ST(3));
-        rect.bottom = SvIV(ST(4));
+        rect.left   = (LONG)SvIV(ST(1));
+        rect.top    = (LONG)SvIV(ST(2));
+        rect.right  = (LONG)SvIV(ST(3));
+        rect.bottom = (LONG)SvIV(ST(4));
         if(items == 5)
             bErase      = TRUE;
         else
@@ -2384,7 +2379,7 @@ PostQuitMessage(...)
 PPCODE:
     int exitcode;
     if(items > 0)
-        exitcode = SvIV(ST(items-1));
+        exitcode = (int)SvIV(ST(items-1));
     else
         exitcode = 0;
     PostQuitMessage(exitcode);
@@ -2421,7 +2416,7 @@ CODE:
     if(message != &PL_sv_undef) {
         if(SvROK(message) && SvTYPE(SvRV(message)) == SVt_PVAV) {
             av_clear((AV*) SvRV(message));
-            av_push((AV*) SvRV(message), newSViv((IV) msg.hwnd));
+            av_push((AV*) SvRV(message), newSViv(PTR2IV(msg.hwnd)));
             av_push((AV*) SvRV(message), newSViv(msg.message));
             av_push((AV*) SvRV(message), newSViv(msg.wParam));
             av_push((AV*) SvRV(message), newSViv(msg.lParam));
@@ -2720,7 +2715,7 @@ PPCODE:
         }
         XSRETURN_NO;
     } else {
-        XSRETURN_IV((long) SetWindowText(handle, (LPCTSTR) SvPV_nolen(ST(1))));
+        XSRETURN_IV((IV) SetWindowText(handle, (LPCTSTR) SvPV_nolen(ST(1))));
     }
 
 
@@ -2992,7 +2987,7 @@ PPCODE:
 
     /* Set */
     if(items > 1) {
-        myRect.left = SvIV(ST(1));
+        myRect.left = (LONG)SvIV(ST(1));
 
         /* If we're a child window convert to parent's client co-ordinates */
         if(parent = GetAncestor(handle, GA_PARENT)) {
@@ -3032,7 +3027,7 @@ PPCODE:
 
     /* Set */
     if(items > 1) {
-        myRect.top = SvIV(ST(1));
+        myRect.top = (LONG)SvIV(ST(1));
 
         /* If we're a child window convert to parent's client co-ordinates */
         if(parent = GetAncestor(handle, GA_PARENT)) {
@@ -3688,20 +3683,20 @@ CODE:
 
     switch (items) {
       case 10: coderef              = ST(9);
-      case  9: flags                = SvIV(ST(8));
-      case  8: tpm.rcExclude.bottom = SvIV(ST(7));
-               tpm.rcExclude.right  = SvIV(ST(6));
-               tpm.rcExclude.top    = SvIV(ST(5));
-               tpm.rcExclude.left   = SvIV(ST(4));
+      case  9: flags                = (UINT)SvIV(ST(8));
+      case  8: tpm.rcExclude.bottom = (LONG)SvIV(ST(7));
+               tpm.rcExclude.right  = (LONG)SvIV(ST(6));
+               tpm.rcExclude.top    = (LONG)SvIV(ST(5));
+               tpm.rcExclude.left   = (LONG)SvIV(ST(4));
                tpm.cbSize           = sizeof(TPMPARAMS);
-               y                    = SvIV(ST(3));
-               x                    = SvIV(ST(2));
+               y                    = (int)SvIV(ST(3));
+               x                    = (int)SvIV(ST(2));
            break;
 
       case  6: coderef              = ST(5);
-      case  5: flags                = SvIV(ST(4));
-      case  4: y                    = SvIV(ST(3));
-               x                    = SvIV(ST(2));
+      case  5: flags                = (UINT)SvIV(ST(4));
+      case  4: y                    = (int)SvIV(ST(3));
+               x                    = (int)SvIV(ST(2));
            break;
 
       case  2: if(GetCursorPos(&pt)) {
@@ -3780,10 +3775,10 @@ OUTPUT:
 
     ###########################################################################
     # (@)INTERNAL:SetTimer(HANDLE, ID, ELAPSE)
-UINT
+UINT_PTR
 SetTimer(handle,id,elapse)
     HWND handle
-    UINT id
+    UINT_PTR id
     UINT elapse
 CODE:
     RETVAL = SetTimer(handle, id, elapse, NULL);
@@ -3796,7 +3791,7 @@ OUTPUT:
 UINT
 KillTimer(handle,id)
     HWND handle
-    UINT id
+    UINT_PTR id
 CODE:
     RETVAL = KillTimer(handle, id);
 OUTPUT:
@@ -3854,10 +3849,10 @@ PPCODE:
         XSRETURN_UNDEF;
     } else {
         if(items == 1) {
-            XSRETURN_IV( (long) perlud->dwPlStyle & PERLWIN32GUI_DIALOGUI );
+            XSRETURN_IV( (IV) perlud->dwPlStyle & PERLWIN32GUI_DIALOGUI );
         } else {
             SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_DIALOGUI, SvIV(ST(1)));
-            XSRETURN_IV( (long) perlud->dwPlStyle & PERLWIN32GUI_DIALOGUI );
+            XSRETURN_IV( (IV) perlud->dwPlStyle & PERLWIN32GUI_DIALOGUI );
         }
     }
 
@@ -4087,7 +4082,7 @@ OUTPUT:
     #        hwnd = (HWND) SvIV(*obj_hwnd);
     #        hdc = GetDC(hwnd);
     #        __DEBUG("!XS(GetOrInitDC): GetDC = %ld\n", hdc);
-    #        hv_store((HV*) SvRV(obj), "dc", 2, newSViv((long) hdc), 0);
+    #        hv_store((HV*) SvRV(obj), "dc", 2, newSViv(PTR2IV(hdc)), 0);
     #        return hdc;
     #    }
     #}
@@ -4130,7 +4125,7 @@ OUTPUT:
     #                           cbString,
     #                           &myRect,
     #                           uFormat);
-    #    XSRETURN_IV((long) result);
+    #    XSRETURN_IV((IV) result);
     #}
     #
     #
@@ -4361,8 +4356,8 @@ PPCODE:
     hwnd = INT2PTR(HWND,SvIV(*hv_fetch(self, "-handle", 7, 0)));
     if(hwnd) {
         if(hdc = BeginPaint(hwnd, &ps)) {
-            hv_store(self, "-DC", 3, newSViv((IV) hdc), 0);
-            hv_store(self, "-ps.hdc", 7, newSViv((IV) ps.hdc), 0);
+            hv_store(self, "-DC", 3, newSViv(PTR2IV(hdc)), 0);
+            hv_store(self, "-ps.hdc", 7, newSViv(PTR2IV(ps.hdc)), 0);
             hv_store(self, "-ps.fErase", 10, newSViv((IV) ps.fErase), 0);
             hv_store(self, "-ps.rcPaint.left", 16, newSViv((IV) ps.rcPaint.left), 0);
             hv_store(self, "-ps.rcPaint.top", 15, newSViv((IV) ps.rcPaint.top), 0);
@@ -4442,7 +4437,7 @@ PPCODE:
             sprintf(tmprgb, "-ps.rgbReserved%02d", i);
             hv_delete(self, tmprgb, 17, 0);
         }
-        XSRETURN_IV((long) result);
+        XSRETURN_IV((IV) result);
     } else {
         XSRETURN_NO;
     }
@@ -4899,13 +4894,13 @@ PPCODE:
                 }
             } else if(strcmp(option, "-defaultfilter") == 0 ) {
                 next_i = i + 1;
-                ofn.nFilterIndex = SvIV(ST(next_i)) + 1;
+                ofn.nFilterIndex = (DWORD)SvIV(ST(next_i)) + 1;
             } else if(strcmp(option, "-flags") == 0) {
                 next_i = i + 1;
-                ofn.Flags = SvIV(ST(next_i));
+                ofn.Flags = (DWORD)SvIV(ST(next_i));
             } else BitmaskOption( "-multisel", ofn.Flags, OFN_ALLOWMULTISELECT )
-                if(fnlen < (unsigned) 4000 * SvIV(ST(next_i))) {
-                  fnlen = (unsigned) 4000 * SvIV(ST(next_i));
+                if(fnlen < 4000 * (unsigned)SvIV(ST(next_i))) {
+                  fnlen = 4000 * (unsigned)SvIV(ST(next_i));
                 }
             } else BitmaskOption( "-createprompt", ofn.Flags, OFN_CREATEPROMPT )
             } else BitmaskOption( "-explorer", ofn.Flags, OFN_EXPLORER )
@@ -5128,10 +5123,10 @@ PPCODE:
                 }
             } else if(strcmp(option, "-defaultfilter") == 0 ) {
                 next_i = i + 1;
-                ofn.nFilterIndex = SvIV(ST(next_i)) + 1;
+                ofn.nFilterIndex = (DWORD)SvIV(ST(next_i)) + 1;
             } else if(strcmp(option, "-flags") == 0) {
                 next_i = i + 1;
-                ofn.Flags = SvIV(ST(next_i));
+                ofn.Flags = (DWORD)SvIV(ST(next_i));
             } else BitmaskOption( "-createprompt", ofn.Flags, OFN_CREATEPROMPT )
             } else BitmaskOption( "-explorer", ofn.Flags, OFN_EXPLORER )
             } else BitmaskOption( "-extensiondifferent", ofn.Flags, OFN_EXTENSIONDIFFERENT )
@@ -5497,30 +5492,30 @@ PPCODE:
             }
             if(strcmp(option, "-pointsize") == 0) {
                 next_i = i + 1;
-                cf.iPointSize = SvIV(ST(next_i));
+                cf.iPointSize = (INT)SvIV(ST(next_i));
             }
             if(strcmp(option, "-height") == 0) {
                 HDC hDisplay;
                 hDisplay = CreateDC("DISPLAY", NULL, NULL, NULL);
                 next_i = i + 1;
-                lf.lfHeight = -MulDiv(SvIV(ST(next_i)), GetDeviceCaps(hDisplay, LOGPIXELSY), 72);
+                lf.lfHeight = -MulDiv((int)SvIV(ST(next_i)), GetDeviceCaps(hDisplay, LOGPIXELSY), 72);
                 DeleteDC(hDisplay);
                 SwitchBit(cf.Flags, CF_INITTOLOGFONTSTRUCT, 1);
 
             }
             if(strcmp(option, "-width") == 0) {
                 next_i = i + 1;
-                lf.lfWidth = SvIV(ST(next_i));
+                lf.lfWidth = (LONG)SvIV(ST(next_i));
                 SwitchBit(cf.Flags, CF_INITTOLOGFONTSTRUCT, 1);
             }
             if(strcmp(option, "-escapement") == 0) {
                 next_i = i + 1;
-                lf.lfEscapement = SvIV(ST(next_i));
+                lf.lfEscapement = (LONG)SvIV(ST(next_i));
                 SwitchBit(cf.Flags, CF_INITTOLOGFONTSTRUCT, 1);
             }
             if(strcmp(option, "-orientation") == 0) {
                 next_i = i + 1;
-                lf.lfOrientation = SvIV(ST(next_i));
+                lf.lfOrientation = (LONG)SvIV(ST(next_i));
                 SwitchBit(cf.Flags, CF_INITTOLOGFONTSTRUCT, 1);
             }
             if(strcmp(option, "-weight") == 0) {
@@ -5606,12 +5601,12 @@ PPCODE:
             }
             if(strcmp(option, "-minsize") == 0) {
                 next_i = i + 1;
-                cf.nSizeMin = SvIV(ST(next_i));
+                cf.nSizeMin = (INT)SvIV(ST(next_i));
                 SwitchBit(cf.Flags, CF_LIMITSIZE, 1);
             }
             if(strcmp(option, "-maxsize") == 0) {
                 next_i = i + 1;
-                cf.nSizeMax = SvIV(ST(next_i));
+                cf.nSizeMax = (INT)SvIV(ST(next_i));
                 SwitchBit(cf.Flags, CF_LIMITSIZE, 1);
             }
 
@@ -6029,7 +6024,7 @@ PPCODE:
         parentmenu = hv_fetch((HV*)SvRV((ST(0))), "-menu", 5, 0);
         if(parentmenu != NULL) {
             hMenu = INT2PTR(HMENU,SvIV(*parentmenu));
-            myItem = SvIV(*(hv_fetch((HV*)SvRV(ST(0)), "-id", 3, 0)));
+            myItem = (UINT)SvIV(*(hv_fetch((HV*)SvRV(ST(0)), "-id", 3, 0)));
         } else {
             hMenu = (HMENU) handle_From(NOTXSCALL ST(0));
         }
@@ -6071,11 +6066,11 @@ PPCODE:
         parentmenu = hv_fetch((HV*)SvRV((ST(0))), "-menu", 5, 0);
         if(parentmenu != NULL) {
             hMenu = INT2PTR(HMENU,SvIV(*parentmenu));
-            myItem = SvIV(*(hv_fetch((HV*)SvRV(ST(0)), "-id", 3, 0)));
+            myItem = (UINT)SvIV(*(hv_fetch((HV*)SvRV(ST(0)), "-id", 3, 0)));
             i = 1;
         } else {
             hMenu = (HMENU) handle_From(NOTXSCALL ST(0));
-            myItem = SvIV(ST(1));
+            myItem = (UINT)SvIV(ST(1));
             i = 2;
         }
     }
@@ -6118,11 +6113,11 @@ PPCODE:
         parentmenu = hv_fetch((HV*)SvRV((ST(0))), "-menu", 5, 0);
         if(parentmenu != NULL) {
             hMenu = INT2PTR(HMENU,SvIV(*parentmenu));
-            myItem = SvIV(*(hv_fetch((HV*)SvRV(ST(0)), "-id", 3, 0)));
+            myItem = (UINT)SvIV(*(hv_fetch((HV*)SvRV(ST(0)), "-id", 3, 0)));
             i = 1;
         } else {
             hMenu = (HMENU) handle_From(NOTXSCALL ST(0));
-            myItem = SvIV(ST(1));
+            myItem = (UINT)SvIV(ST(1));
             i = 2;
         }
     }

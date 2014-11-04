@@ -1,8 +1,11 @@
 Revision history for Perl module Win32::GUI
 
-1.08_07 2014-10-14
+1.08_08 2014-11-04
 
     * tuning POD to be correctly published on metacpan.org and search.cpan.org
+    * fix for gcc3 failure http://www.cpantesters.org/cpan/report/af62eb6b-6bfa-1014-83e1-562a373b20f7
+    * better handling of deprecated cygwin_conv_to_win32_path() & co.
+    * dwData changed from void* to IV
 
 1.08   2014-10-13
 

@@ -82,11 +82,11 @@ COLORREF SvCOLORREF(pTHX_ SV* c)
   {
     r = g = b = 0;
     t = av_fetch((AV*)SvRV(c), 0, 0);
-    if (t != NULL) r = SvIV(*t);
+    if (t != NULL) r = (int)SvIV(*t);
     t = av_fetch((AV*)SvRV(c), 1, 0);
-    if (t != NULL) g = SvIV(*t);
+    if (t != NULL) g = (int)SvIV(*t);
     t = av_fetch((AV*)SvRV(c), 2, 0);
-    if(t != NULL) b = SvIV(*t);
+    if(t != NULL) b = (int)SvIV(*t);
     return RGB((BYTE) r, (BYTE) g, (BYTE) b);
   }
   // HTML : #RRGGBB
@@ -908,7 +908,7 @@ CODE:
     {
       // Store Object pointer
       hvSelf = (HV*) SvRV(ST(0));
-      storing = newSViv((long) object);
+      storing = newSViv(PTR2IV(object));
       stored  = hv_store_mg(hvSelf, "-CMFCWnd", 8, storing, 0);
 
       RETVAL = object->GetSafeHwnd();

@@ -664,7 +664,7 @@ SetTabStops(handle,tab,...)
 CODE:
     DWORD * pBuf = (DWORD *) safemalloc((items-1) * sizeof(DWORD));
     for (int i = 1; i < items; i++)
-        pBuf[i-1] = SvIV(ST(i));
+        pBuf[i-1] = (DWORD)SvIV(ST(i));
     RETVAL = SendMessage(handle, LB_SETTABSTOPS, items-1, (LPARAM) pBuf);
     safefree(pBuf);
 OUTPUT:

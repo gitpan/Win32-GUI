@@ -403,8 +403,8 @@ CODE:
     lpPoints = (POINT *) safemalloc(nCount * sizeof(POINT));
 
     for (i = 1, j = 0; i < items; i += 2, j++) {
-        lpPoints[j].x = SvIV(ST(i));
-        lpPoints[j].y = SvIV(ST(i+1));
+        lpPoints[j].x = (LONG)SvIV(ST(i));
+        lpPoints[j].y = (LONG)SvIV(ST(i+1));
     }
         
     RETVAL = Polygon(handle, lpPoints, nCount);
@@ -718,8 +718,8 @@ CODE:
     lpPoints = (POINT *) safemalloc(nCount * sizeof(POINT));
 
     for (i = 1, j = 0; i < items; i += 2, j++) {
-        lpPoints[j].x = SvIV(ST(i));
-        lpPoints[j].y = SvIV(ST(i+1));
+        lpPoints[j].x = (LONG)SvIV(ST(i));
+        lpPoints[j].y = (LONG)SvIV(ST(i+1));
     }
         
     RETVAL = PolyBezier(handle, lpPoints, nCount);
@@ -748,8 +748,8 @@ CODE:
     lpPoints = (POINT *) safemalloc(nCount * sizeof(POINT));
 
     for (i = 1, j = 0; i < items; i += 2, j++) {
-        lpPoints[j].x = SvIV(ST(i));
-        lpPoints[j].y = SvIV(ST(i+1));
+        lpPoints[j].x = (LONG)SvIV(ST(i));
+        lpPoints[j].y = (LONG)SvIV(ST(i+1));
     }
         
     RETVAL = PolyBezierTo (handle, lpPoints, nCount);
@@ -776,8 +776,8 @@ CODE:
     lpPoints = (POINT *) safemalloc(nCount * sizeof(POINT));
 
     for (i = 1, j = 0; i < items; i += 2, j++) {
-        lpPoints[j].x = SvIV(ST(i));
-        lpPoints[j].y = SvIV(ST(i+1));
+        lpPoints[j].x = (LONG)SvIV(ST(i));
+        lpPoints[j].y = (LONG)SvIV(ST(i+1));
     }
         
     RETVAL = Polyline (handle, lpPoints, nCount);
@@ -802,8 +802,8 @@ CODE:
     lpPoints = (POINT *) safemalloc(nCount * sizeof(POINT));
 
     for (i = 1, j = 0; i < items; i += 2, j++) {
-        lpPoints[j].x = SvIV(ST(i));
-        lpPoints[j].y = SvIV(ST(i+1));
+        lpPoints[j].x = (LONG)SvIV(ST(i));
+        lpPoints[j].y = (LONG)SvIV(ST(i+1));
     }
         
     RETVAL = PolylineTo(handle, lpPoints, nCount);
@@ -1605,14 +1605,14 @@ PPCODE:
                     lb.lbColor = SvCOLORREF(NOTXSCALL ST(next_i));
                 } else if(strcmp(option, "-system") == 0) {
                     next_i = i + 1;
-                    XSRETURN_IV((IV) GetSysColorBrush(SvIV(ST(next_i))));
+                    XSRETURN_IV(PTR2IV(GetSysColorBrush((int)SvIV(ST(next_i)))));
                 }
             } else {
                 next_i = -1;
             }
         }
     }
-    XSRETURN_IV((IV) CreateBrushIndirect(&lb));
+    XSRETURN_IV(PTR2IV(CreateBrushIndirect(&lb)));
 
     ###########################################################################
     # (@)METHOD:Info()
@@ -1709,7 +1709,7 @@ PPCODE:
             }
         }
     }
-    XSRETURN_IV((IV) CreatePen(penstyle, penwidth, pencolor));
+    XSRETURN_IV(PTR2IV(CreatePen(penstyle, penwidth, pencolor)));
 
     ###########################################################################
     # (@)METHOD:Info()

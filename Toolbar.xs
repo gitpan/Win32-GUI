@@ -127,7 +127,7 @@ PREINIT:
     BOOL hasBitmaps = 0;
 CODE:
     TbAddBitmap.hInst = (HINSTANCE) NULL;
-    TbAddBitmap.nID = (IV) bitmap;
+    TbAddBitmap.nID = (UINT_PTR) bitmap;
     
     perlud = (LPPERLWIN32GUI_USERDATA) GetWindowLongPtr((HWND) handle, GWLP_USERDATA);
     if( ValidUserData(perlud) )  {
@@ -1173,11 +1173,11 @@ CODE:
             option = SvPV_nolen(ST(i));
             if(strcmp(option, "-command") == 0) {
                 next_i = i + 1;
-                button.idCommand = SvIV(ST(next_i));
+                button.idCommand = (int)SvIV(ST(next_i));
                 button.dwMask |= TBIF_COMMAND;
             } else if (strcmp(option, "-image") == 0) {
                 next_i = i + 1;
-                button.iImage = SvIV(ST(next_i));
+                button.iImage = (int)SvIV(ST(next_i));
                 button.dwMask |= TBIF_IMAGE;
             } else if (strcmp(option, "-state") == 0) {
                 next_i = i + 1;

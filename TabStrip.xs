@@ -404,7 +404,7 @@ CODE:
         if(next_i == -1) {
             if(strcmp(SvPV_nolen(ST(i)), "-image") == 0) {
                 next_i = i + 1;
-                Item.iImage = SvIV(ST(next_i));
+                Item.iImage = (int)SvIV(ST(next_i));
                 Item.mask |= TCIF_IMAGE;
             }
             else if(strcmp(SvPV_nolen(ST(i)), "-index") == 0) {
@@ -516,7 +516,7 @@ CODE:
             if(strcmp(SvPV_nolen(ST(i)), "-image") == 0) {
                 next_i = i + 1;
                 Item.mask = Item.mask | TCIF_IMAGE;
-                Item.iImage = SvIV(ST(next_i));
+                Item.iImage = (int)SvIV(ST(next_i));
             }
             if(strcmp(SvPV_nolen(ST(i)), "-text") == 0) {
                 next_i = i + 1;

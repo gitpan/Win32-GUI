@@ -110,7 +110,7 @@ LRESULT CommonMsgLoop(NOTXSPROC HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
                 }
             }
 
-            DWORD hbrBackground;
+            LONG_PTR hbrBackground;
             if(hbrBackground = GetClassLongPtr((HWND)lParam, GCLP_HBRBACKGROUND))
                 return ((LRESULT) hbrBackground);
 
@@ -205,7 +205,7 @@ LRESULT CALLBACK WindowMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
         if(perlud != NULL) {
             PERLUD_FETCH;
             SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR) perlud);
-            hv_store_mg(NOTXSCALL (HV*)SvRV(perlud->svSelf), "-handle", 7, newSViv((IV)hwnd), 0);
+            hv_store_mg(NOTXSCALL (HV*)SvRV(perlud->svSelf), "-handle", 7, newSViv(PTR2IV(hwnd)), 0);
             SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_CUSTOMCLASS, 1);  // Set Custom class flag
 
             // Search for an extend MsgLoop procedure (-extends option in RegisterClassEx)
@@ -692,7 +692,7 @@ LRESULT CALLBACK DefMDIFrameLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
     if( !ValidUserData(perlud)) {
         return DefWindowProc(hwnd, uMsg, wParam, lParam);
     }
-    return DefFrameProc(hwnd, (HWND) perlud->dwData, uMsg, wParam, lParam);
+    return DefFrameProc(hwnd, INT2PTR(HWND, perlud->dwData), uMsg, wParam, lParam);
 }
 
     /*
@@ -717,7 +717,7 @@ LRESULT CALLBACK MDIFrameMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
         if(perlud != NULL) {
             PERLUD_FETCH;
             SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR) perlud);
-            hv_store_mg(NOTXSCALL (HV*)SvRV(perlud->svSelf), "-handle", 7, newSViv((IV)hwnd), 0);
+            hv_store_mg(NOTXSCALL (HV*)SvRV(perlud->svSelf), "-handle", 7, newSViv(PTR2IV(hwnd)), 0);
             SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_CUSTOMCLASS, 1);  // Set Custom class flag
             SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_MDIFRAME   , 1);  // Set MDI Frame flag
             perlud->WndProc = (LWNDPROC_CAST) DefMDIFrameLoop;          // Set DefFrameProc
@@ -799,11 +799,11 @@ LRESULT CALLBACK MDIChildMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPa
         if(perlud != NULL) {
             PERLUD_FETCH;
             SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR) perlud);
-            hv_store_mg(NOTXSCALL (HV*)SvRV(perlud->svSelf), "-handle", 7, newSViv((IV)hwnd), 0);
+            hv_store_mg(NOTXSCALL (HV*)SvRV(perlud->svSelf), "-handle", 7, newSViv(PTR2IV(hwnd)), 0);
             SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_CUSTOMCLASS, 1);  // Set Custom class flag
             SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_MDICHILD   , 1);  // Set MDI Frame flag
             perlud->WndProc = (LWNDPROC_CAST) DefMDIChildLoop;          // Set DefMDIChildProc
-            perlud->dwData = (void*) hwnd;                              // For fast hwnd acces (Activate/Deactivate)
+            perlud->dwData = PTR2IV(hwnd);                              // For fast hwnd acces (Activate/Deactivate)
             if (perlud->WndProc) {
                 return CallWindowProc((WNDPROC_CAST) perlud->WndProc, hwnd, uMsg, wParam, lParam);
             }
@@ -836,7 +836,7 @@ LRESULT CALLBACK ControlMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPar
         if(perlud != NULL) {
             PERLUD_FETCH;
             SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR) perlud);
-            hv_store_mg(NOTXSCALL (HV*)SvRV(perlud->svSelf), "-handle", 7, newSViv((IV)hwnd), 0);
+            hv_store_mg(NOTXSCALL (HV*)SvRV(perlud->svSelf), "-handle", 7, newSViv(PTR2IV(hwnd)), 0);
             SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_CUSTOMCLASS, 1);  // Set Custom class flag
 
             // Search for an extend MsgLoop procedure (-extends option in RegisterClassEx)
@@ -1034,7 +1034,7 @@ LRESULT CALLBACK ContainerMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lP
         if(perlud != NULL) {
             PERLUD_FETCH;
             SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR) perlud);
-            hv_store_mg(NOTXSCALL (HV*)SvRV(perlud->svSelf), "-handle", 7, newSViv((IV)hwnd), 0);
+            hv_store_mg(NOTXSCALL (HV*)SvRV(perlud->svSelf), "-handle", 7, newSViv(PTR2IV(hwnd)), 0);
             SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_CUSTOMCLASS, 1);  // Set Custom class flag
             SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_CONTAINER  , 1);  // Set Container flag
 
@@ -1073,7 +1073,7 @@ LRESULT CALLBACK CustomMsgLoop(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lPara
         if(perlud != NULL) {
             PERLUD_FETCH;
             SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR) perlud);
-            hv_store_mg(NOTXSCALL (HV*)SvRV(perlud->svSelf), "-handle", 7, newSViv((IV)hwnd), 0);
+            hv_store_mg(NOTXSCALL (HV*)SvRV(perlud->svSelf), "-handle", 7, newSViv(PTR2IV(hwnd)), 0);
             SwitchBit(perlud->dwPlStyle, PERLWIN32GUI_CUSTOMCLASS, 1);  // Set Custom class flag
 
             // Search for an extend MsgLoop procedure (-extends option in RegisterClassEx)

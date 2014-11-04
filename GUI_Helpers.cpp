@@ -263,7 +263,7 @@ WNDPROC GetDefClassProc (NOTXSPROC const char *Name) {
 BOOL SetDefClassProc (NOTXSPROC const char *Name, WNDPROC DefClassProc) {
 
     HV* hash    = perl_get_hv("Win32::GUI::DefClassProc", FALSE);
-    return (hv_store_mg(NOTXSCALL hash, (char*) Name, strlen(Name), newSViv((IV) DefClassProc), 0) != NULL);
+    return (hv_store_mg(NOTXSCALL hash, (char*) Name, strlen(Name), newSViv(PTR2IV(DefClassProc)), 0) != NULL);
 }
 
     /*
@@ -354,7 +354,7 @@ HWND CreateTooltip(
         SetWindowPos(
             hTooltip, HWND_TOPMOST,0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE
             );
-        hv_store_mg(NOTXSCALL parent, "-tooltip", 8, newSViv((IV) hTooltip), 0);
+        hv_store_mg(NOTXSCALL parent, "-tooltip", 8, newSViv(PTR2IV(hTooltip)), 0);
     }
     return hTooltip;
 }
@@ -454,7 +454,7 @@ BOOL GetObjectNameAndClass(NOTXSPROC HWND hwnd, char *Name, int *obj_class) {
      */
 SV* CreateObjectWithHandle(NOTXSPROC char* class_name, HWND handle) {
     HV* hv = newHV();
-    hv_store(hv, "-handle", 7, newSViv((IV) handle), 0);
+    hv_store(hv, "-handle", 7, newSViv(PTR2IV(handle)), 0);
     SV* cv = sv_2mortal(newRV((SV*)hv));
     sv_bless(cv, gv_stashpv(class_name, 0));
     SvREFCNT_dec(hv);
@@ -683,7 +683,7 @@ BOOL CALLBACK EnumMyWindowsProc(HWND hwnd, LPARAM lparam) {
     ary = (AV*) lparam;
     GetWindowThreadProcessId(hwnd, &pid);
     if(pid == GetCurrentProcessId()) {
-			av_push(ary, newSViv((IV)hwnd));
+			av_push(ary, newSViv(PTR2IV(hwnd)));
     }
     return TRUE;
 }
