@@ -14,7 +14,6 @@
 #define WINVER 0x501
 #undef NOTRACKMOUSEEVENT
 #include <stdarg.h>
-#include <string.h>
 #include <windows.h>
 #include <commctrl.h>
 #include <commdlg.h>
@@ -34,10 +33,14 @@
 
 #ifdef __CYGWIN__
   #ifdef __cplusplus
-		extern "C"
-	#endif
+    extern "C"
+  #endif
   /* This is no strict ANSI definition, and not in newlib */
-	char* itoa (int, char*, int);
+  char* itoa (int, char*, int);
+  /* fix for error: ‘stricmp’ was not declared in this scope */
+  #ifndef stricmp
+  #define stricmp strcasecmp
+  #endif
 #endif /* __CYGWIN__ */
 
 /*
