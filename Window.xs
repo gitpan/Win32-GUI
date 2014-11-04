@@ -79,7 +79,7 @@ Window_onParseOption(NOTXSPROC char *option, SV* value, LPPERLWIN32GUI_CREATESTR
     ||        strcmp(option, "-accelerators") == 0
     ||        strcmp(option, "-acceleratortable") == 0) {
         perlcs->hAcc = (HACCEL) handle_From(NOTXSCALL value);
-        storing = newSViv((IV) handle_From(NOTXSCALL value));
+        storing = newSViv(PTR2IV(handle_From(NOTXSCALL value)));
         stored = hv_store_mg(NOTXSCALL perlcs->hvSelf, "-accel", 6, storing, 0);
     } else if(strcmp(option, "-hasmaximize") == 0
     ||        strcmp(option, "-maximizebox") == 0) {
