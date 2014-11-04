@@ -42,8 +42,21 @@ if($Config{cc} =~ /gcc/i) {
     $config{CCFLAGS} = '-Wno-write-strings';
 }
 
-# Can only build with mscv.
-if($Config{cc} !~ /cl/i || $Config{archname} =~ /x64/) {
+if($Config{cc} =~ /cl/i) {
+    # workaround for: cannot convert from 'INT_PTR (__stdcall *)(HWND,UINT,WPARAM,LPARAM)' to 'DLGPROC'
+    # http://sourceforge.net/p/perl-win32-gui/mailman/message/2618474/
+    $config{CCFLAGS} = '-UNO_STRICT';
+}
+
+if($ENV{SKIP_WIN32_GUI_AXWINDOW}) {
+    print <<__EXPLAIN;
+
+Win32::GUI::AxWindow skipped
+
+__EXPLAIN
+    ExtUtils::MakeMaker::WriteEmptyMakefile(NAME => 'Win32::GUI::AxWindow');
+}
+elsif($Config{cc} !~ /cl/i || $Config{archname} =~ /x64/) {
     print <<__EXPLAIN;
 
 Win32::GUI::AxWindow can only be built using MSVC (currently 32bit only)',

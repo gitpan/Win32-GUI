@@ -43,7 +43,15 @@ if($Config{cc} =~ /gcc/i) {
 }
 
 # Can only build with mscv.
-if($Config{cc} !~ /cl/i) {
+if($ENV{SKIP_WIN32_GUI_GRID}) {
+    print <<__EXPLAIN;
+
+Win32::GUI::Grid skipped
+
+__EXPLAIN
+    ExtUtils::MakeMaker::WriteEmptyMakefile(NAME => 'Win32::GUI::Grid');
+}
+elsif($Config{cc} !~ /cl/i) {
     print <<__EXPLAIN;
 
 Win32::GUI::Grid can only be built using MSVC, not '$Config{cc}',

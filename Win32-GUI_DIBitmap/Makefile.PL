@@ -47,7 +47,15 @@ if($Config{cc} =~ /gcc/i) {
 }
 
 # Can't build with gcc (yet).
-if($Config{cc} =~ /gcc/i || $Config{archname} =~ /x64/) {
+if($ENV{SKIP_WIN32_GUI_DIBITMAP}) {
+    print <<__EXPLAIN;
+
+Win32::GUI::DIBitmap skipped
+
+__EXPLAIN
+    ExtUtils::MakeMaker::WriteEmptyMakefile(NAME => 'Win32::GUI::DIBitmap');
+}
+elsif($Config{cc} =~ /gcc/i || $Config{archname} =~ /x64/) {
     print <<__EXPLAIN;
 
 At this time Win32::GUI::DIBitmap cannot be build using gcc or 64bit msvc.
