@@ -61,7 +61,7 @@
          }
       }
    },
-   "release_status" : "testing",
+   "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
          "web" : "http://sourceforge.net/p/perl-win32-gui/bugs/"
@@ -70,5 +70,5 @@
          "url" : "http://sourceforge.net/p/perl-win32-gui/git/"
       }
    },
-   "version" : "1.08_12"
+   "version" : "1.09"
 }
