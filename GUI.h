@@ -37,7 +37,7 @@
   #endif
   /* This is no strict ANSI definition, and not in newlib */
   char* itoa (int, char*, int);
-  /* fix for error: ‘stricmp’ was not declared in this scope */
+  /* fix for error: 'stricmp' was not declared in this scope */
   #ifndef stricmp
   #define stricmp strcasecmp
   #endif

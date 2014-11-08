@@ -447,7 +447,7 @@ PPCODE:
                 wcx.lpszClassName = (char *) SvPV_nolen(ST(next_i));
             } else if(strcmp(option, "-color") == 0) {
                 next_i = i + 1;
-                wcx.hbrBackground = CreateSolidBrush(SvCOLORREF(NOTXSCALL ST(next_i)));
+                wcx.hbrBackground = (HBRUSH) SvCOLORREF(NOTXSCALL ST(next_i));
             } else if(strcmp(option, "-brush") == 0) {
                 next_i = i + 1;
                 wcx.hbrBackground = (HBRUSH) handle_From(NOTXSCALL ST(next_i));
